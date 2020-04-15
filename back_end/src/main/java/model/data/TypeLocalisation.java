@@ -1,5 +1,5 @@
 package model.data;
 
 public enum TypeLocalisation {
-  FRANCE, REGION, COUNTY;
+  DEPARTEMENT, FRANCE, REGION, MONDE
 }
