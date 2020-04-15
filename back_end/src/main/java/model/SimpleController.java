@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleController {
 
   @RequestMapping("/")
-  public String index() {
+  String index() {
     return "Greetings from Spring Boot!";
   }
 
