@@ -11,6 +11,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { RightBarComponent } from './right-bar/right-bar.component';
 import { SimulationComponent } from './simulation/simulation.component';
+import { LeftSimulationComponent } from './left-simulation/left-simulation.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { SimulationComponent } from './simulation/simulation.component';
     SideBarComponent,
     RightBarComponent,
     SimulationComponent,
+    LeftSimulationComponent,
   ],
   imports: [
     BrowserModule,
