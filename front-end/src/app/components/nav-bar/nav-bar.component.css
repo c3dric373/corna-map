@@ -3,7 +3,7 @@
 }
 
 .nav-link{
-  color: black;
+  font-size: 150%;
 }
 
 .navbar-brand{
@@ -12,4 +12,3 @@
   font-size: 150%;
   width: 19%;
 }
-
