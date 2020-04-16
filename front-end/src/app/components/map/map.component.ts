@@ -7,7 +7,9 @@ import {MapService} from '../../service/map/map.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  tabColor = [ '#d4b7a1', '#deab8b', '#bd5b1a'];
+  isRegion;
+  tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
+  result;
 
   tabtab = [
   'Guadeloupe' ,
@@ -314,21 +316,62 @@ export class MapComponent implements OnInit {
   'Corse-du-Sud' ,
   'Haute-Corse' ];
 
+  tabReg = [
+    'Guadeloupe',
+  'Martinique',
+  'Guyane',
+  'La Réunion',
+  'Mayotte',
+  'Île-de-France',
+  'Centre-Val de Loire',
+  'Bourgogne-Franche-Comté',
+  'Normandie',
+  'Hauts-de-France',
+  'Grand Est',
+  'Pays de la Loire',
+  'Bretagne',
+  'Nouvelle-Aquitaine',
+  'Occitanie',
+  'Auvergne-Rhône-Alpes',
+  'Provence-Alpes-Côte d\'Azur',
+  'Corse',
+  'Guadeloupe',
+  'Martinique',
+  'Guyane',
+  'La Réunion',
+  'Mayotte',
+  'Île-de-France',
+  'Centre-Val de Loire',
+  'Bourgogne-Franche-Comté',
+  'Normandie',
+  'Hauts-de-France',
+  'Grand Est',
+  'Pays de la Loire',
+  'Bretagne',
+  'Nouvelle-Aquitaine',
+  'Occitanie',
+  'Auvergne-Rhône-Alpes',
+  'Provence-Alpes-Côte d\'Azur',
+  'Corse'
+  ];
+
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
-    this.essaiCouleur();
+    this.isRegion = true;
+    this.essaiCouleurReg();
   }
 
   essaiMap() {
     this.mapService.getMap().subscribe(
       data => {
-        console.log(JSON.parse(data));
+        this.result = data;
+        console.log(data);
       }
     );
   }
 
-  essaiCouleur() {
+  essaiCouleurDept() {
     for (const index in this.tabtab) {
       const depName = this.tabtab[index];
       const color = this.assignColor(index);
@@ -345,7 +388,55 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom.value === depName) {
+            depElement.addEventListener('mouseover',  function(){ depElement.style.fill = 'gold'; } );
+            depElement.addEventListener('mouseleave',  function(){ depElement.style.fill = color; } );
             depElement.style.fill = color;
+            console.log(depElement);
+          }
+        }
+      }
+    }
+  }
+
+  essaiCouleurReg() {
+    for (const index in this.tabReg) {
+      const RegName = this.tabReg[index];
+      const color = this.assignColor(index);
+
+      // Get the elements of regions
+      const pathElements = document.getElementsByClassName('region');
+      for (const element in pathElements) {
+        const regElement = pathElements[element] as HTMLElement;
+        const elementAttributes = regElement.attributes;
+
+        // If the element has attributes and
+        // If the element name is 'data-nom'
+        // Color the departements of the element with the corresponding color
+        if (elementAttributes) {
+          const dataNom = elementAttributes.getNamedItem('data-nom');
+          if ( dataNom.value === RegName) {
+              for ( let i = 0; i < regElement.children.length ; i ++) {
+                const regDept = regElement.children[i]  as HTMLElement;
+                regDept.addEventListener('mouseover',
+                  function() {
+                              for (let a = 0; a < regElement.children.length; a++) {
+                                const reDept = regElement.children[a] as HTMLElement;
+                                reDept.style.fillOpacity = '0.7';
+                                reDept.style.strokeOpacity = '0.1';
+                              }
+                            });
+                regDept.addEventListener('mouseleave',
+                  function(){
+                            for (let a = 0; a < regElement.children.length; a++) {
+                              const reDept = regElement.children[a] as HTMLElement;
+                              reDept.style.fillOpacity = '1';
+                              reDept.style.strokeOpacity = '0.6';
+                            }
+                          });
+                regDept.style.fill = color;
+                regDept.style.stroke = color;
+                regDept.style.strokeOpacity = '0.6';
+                }
           }
         }
       }
@@ -356,4 +447,5 @@ export class MapComponent implements OnInit {
     const color = this.tabColor[nb % 3];
     return color;
   }
+
 }
