@@ -345,7 +345,10 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom.value === depName) {
+            depElement.addEventListener('mouseover',  function(){ depElement.style.fill = 'gold'; } );
+            depElement.addEventListener('mouseleave',  function(){ depElement.style.fill = color; } );
             depElement.style.fill = color;
+            console.log(depElement);
           }
         }
       }
@@ -356,4 +359,5 @@ export class MapComponent implements OnInit {
     const color = this.tabColor[nb % 3];
     return color;
   }
+
 }

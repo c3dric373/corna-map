@@ -1,6 +1,13 @@
 .carte {
+  width: 60%;
+  align: center;
+  margin: 0 auto;
+}
+
+.map-zone {
   width: 60vw;
-  margin: 5px 10px 10px 0;
+  height: 85vh;
+  margin: 5px 10px 10px 10px;
   background-color: rgb(238,234,222);
 }
 
