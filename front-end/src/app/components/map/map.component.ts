@@ -7,6 +7,7 @@ import {MapService} from '../../service/map/map.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+  isRegion;
   tabColor = [ '#d4b7a1', '#deab8b', '#bd5b1a'];
 
   tabtab = [
@@ -314,10 +315,50 @@ export class MapComponent implements OnInit {
   'Corse-du-Sud' ,
   'Haute-Corse' ];
 
+  tabReg = [
+    'Guadeloupe',
+  'Martinique',
+  'Guyane',
+  'La Réunion',
+  'Mayotte',
+  'Île-de-France',
+  'Centre-Val de Loire',
+  'Bourgogne-Franche-Comté',
+  'Normandie',
+  'Hauts-de-France',
+  'Grand Est',
+  'Pays de la Loire',
+  'Bretagne',
+  'Nouvelle-Aquitaine',
+  'Occitanie',
+  'Auvergne-Rhône-Alpes',
+  'Provence-Alpes-Côte d\'Azur',
+  'Corse',
+  'Guadeloupe',
+  'Martinique',
+  'Guyane',
+  'La Réunion',
+  'Mayotte',
+  'Île-de-France',
+  'Centre-Val de Loire',
+  'Bourgogne-Franche-Comté',
+  'Normandie',
+  'Hauts-de-France',
+  'Grand Est',
+  'Pays de la Loire',
+  'Bretagne',
+  'Nouvelle-Aquitaine',
+  'Occitanie',
+  'Auvergne-Rhône-Alpes',
+  'Provence-Alpes-Côte d\'Azur',
+  'Corse'
+  ];
+
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
-    this.essaiCouleur();
+    this.isRegion = true;
+    this.essaiCouleurReg();
   }
 
   essaiMap() {
@@ -328,7 +369,7 @@ export class MapComponent implements OnInit {
     );
   }
 
-  essaiCouleur() {
+  essaiCouleurDept() {
     for (const index in this.tabtab) {
       const depName = this.tabtab[index];
       const color = this.assignColor(index);
@@ -349,6 +390,35 @@ export class MapComponent implements OnInit {
             depElement.addEventListener('mouseleave',  function(){ depElement.style.fill = color; } );
             depElement.style.fill = color;
             console.log(depElement);
+          }
+        }
+      }
+    }
+  }
+
+  essaiCouleurReg() {
+    for (const index in this.tabReg) {
+      const RegName = this.tabReg[index];
+      const color = this.assignColor(index);
+
+      // Get the elements starting with <path
+      const pathElements = document.getElementsByClassName('region');
+      for (const element in pathElements) {
+        const regElement = pathElements[element];
+        const elementAttributes = regElement.attributes;
+
+        // If the element has attributes and
+        // If the element name is 'data-nom'
+        // Color the element with the corresponding color
+        if (elementAttributes) {
+          const dataNom = elementAttributes.getNamedItem('data-nom');
+          if ( dataNom.value === RegName) {
+              for ( let i = 0; i < regElement.children.length ; i ++) {
+                const regDept = regElement.children[i]  as HTMLElement;
+                regDept.addEventListener('mouseover',  function(){ regDept.style.fill = 'gold'; } );
+                regDept.addEventListener('mouseleave',  function(){ regDept.style.fill = color; } );
+                regDept.style.fill = color;
+                }
           }
         }
       }
