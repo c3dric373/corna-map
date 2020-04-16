@@ -23,18 +23,23 @@
 .container{
   display: block;
   margin-top: 15%;
+  height:12%;
+  color: whitesmoke;
 }
 
 .row{
 
-  width:70%;
+  width:75%;
+  height:100%;
   margin-left: 10%;
   margin-bottom: 8%;
-  font-size: 100%;
+  font-size: 110%;
   display: grid;
   text-align: center;
+  padding-top: 5%;
 
 }
+
 
 
 
