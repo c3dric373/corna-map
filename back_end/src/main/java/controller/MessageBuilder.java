@@ -6,9 +6,10 @@ package controller;
 public class MessageBuilder {
   /**
    * ntm.
+   *
    * @param name ntm.
    * @return ntm
-   * */
+   */
   public String getMessage(final String name) {
 
     StringBuilder result = new StringBuilder();

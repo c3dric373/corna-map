@@ -11,12 +11,10 @@ import java.util.List;
 @Setter
 public class ProjectDataImpl {
 
-
   /**
    * List which contains the data about corona for each county in france.
    */
   public List<DayData> county = new ArrayList<>();
-
 
   /**
    * List which contains the data about corona for each region in france.
@@ -26,7 +24,6 @@ public class ProjectDataImpl {
   /**
    * Data about corona for france.
    */
-  public List<DayData> france =  new ArrayList<>();
-
+  public List<DayData> france = new ArrayList<>();
 
 }
