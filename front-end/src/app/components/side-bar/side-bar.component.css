@@ -9,13 +9,41 @@
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #6d7fcc;
+  background: #f2f2f2ff;
 }
+
+.h4{
+  color: black;
+}
+
+#CasConfirmés{
+  background-color: #ffd966ff;
+  font-size: 80%;
+  display: grid;
+  text-align: center;
+}
+
 
 #Guéris{
-  background-color: #86eee0;
+  background-color: #6ca644ff;
+  font-size: 80%;
+  display: grid;
+  text-align: center;
 }
 
+#Hospitalisations{
+  background-color: #fd9d3dff;
+  font-size: 80%;
+  display: grid;
+  text-align: center;
+}
+
+#Deces{
+  background-color: #a50026ff;
+  font-size: 80%;
+  display: grid;
+  text-align: center;
+}
 
 
 
