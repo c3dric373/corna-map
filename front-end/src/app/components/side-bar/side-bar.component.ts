@@ -9,6 +9,11 @@ export class SideBarComponent implements OnInit {
 
   constructor() { }
 
+  nbCC = 548;
+  nbG = 444;
+  nbH = 128;
+  nbD = 185;
+
   ngOnInit(): void {
   }
 
