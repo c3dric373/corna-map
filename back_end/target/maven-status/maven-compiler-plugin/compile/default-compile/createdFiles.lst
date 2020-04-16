@@ -1,1 +1,4 @@
+model/simulator/Simulator.class
+controller/MessageBuilder.class
+model/Application.class
 controller/SimpleController.class

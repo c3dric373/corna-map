@@ -1,12 +1,29 @@
 image: maven:3-jdk-13
 
+stages:
+      - checkstyle
+      - compile
+      - test
+      - evaluate_coverage
+
 checkstyle:
-    script: "mvn -f code/pom.xml clean validate -B"
-
-
+    stage: checkstyle
+    script: "cd back_end; mvn checkstyle:checkstyle"
 compile:
-  script: "mvn -f code/pom.xml clean compile test-compile -B"
+  stage: compile
+  script: "cd back_end; mvn clean compile test-compile -B"
   
 test: 
-    script: " mvn -f code/pom.xml clean test -B"
-   
+    stage: test
+    script: 
+        - "cd back_end; mvn clean test -B"
+    artifacts:
+        paths:
+            -  $CI_PROJECT_DIR/back_end/target/site/jacoco/index.html
+
+evaluate_coverage:
+      stage: evaluate_coverage
+      image: alpine:3.6
+      script:
+        - cat $CI_PROJECT_DIR/back_end/target/site/jacoco/index.html
+
