@@ -401,7 +401,7 @@ export class MapComponent implements OnInit {
       const RegName = this.tabReg[index];
       const color = this.assignColor(index);
 
-      // Get the elements starting with <path
+      // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
       for (const element in pathElements) {
         const regElement = pathElements[element];
@@ -409,7 +409,7 @@ export class MapComponent implements OnInit {
 
         // If the element has attributes and
         // If the element name is 'data-nom'
-        // Color the element with the corresponding color
+        // Color the departements of the element with the corresponding color
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom.value === RegName) {
