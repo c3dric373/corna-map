@@ -8,5 +8,5 @@ compile:
   script: "cd back_end; mvn clean compile test-compile -B"
   
 test: 
-    script: " mvn -f code/pom.xml clean test -B"
+    script: "cd back_end; mvn clean test -B"
    
