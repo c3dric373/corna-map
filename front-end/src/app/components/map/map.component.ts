@@ -359,7 +359,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     this.isRegion = true;
-    this.essaiCouleurReg();
+    this.initializeMapReg();
   }
 
   essaiMap() {
@@ -371,7 +371,7 @@ export class MapComponent implements OnInit {
     );
   }
 
-  essaiCouleurDept() {
+  initializeMapDept() {
     for (const index in this.tabtab) {
       const depName = this.tabtab[index];
       const color = this.assignColor(index);
@@ -398,7 +398,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  essaiCouleurReg() {
+  initializeMapReg() {
     for (const index in this.tabReg) {
       const RegName = this.tabReg[index];
       const color = this.assignColor(index);

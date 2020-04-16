@@ -7,7 +7,7 @@ import {SimulationComponent} from '../components/simulation/simulation.component
 const routes: Routes = [
   {
     path: '',
-    component: MenuComponent,
+    component: MapComponent,
   },
   {
     path: 'map',
