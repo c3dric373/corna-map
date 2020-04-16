@@ -8,6 +8,8 @@ import {MapService} from '../../service/map/map.service';
 })
 export class MapComponent implements OnInit {
   result = 'rien';
+  color = 'blue';
+  tab = ['Rhône', 'Ille-et-Vilaine', 'Aude'];
 
   constructor(private mapService: MapService) {}
 
@@ -21,4 +23,26 @@ export class MapComponent implements OnInit {
       }
     );
   }
+
+  essaiCouleur() {
+    this.color = 'yell';
+    for (const mot in this.tab) {
+      let word = this.tab[mot];
+      console.log(word);
+
+      const depts = document.getElementsByTagName('path'); // document.getElementsByTagName('path')[0].style.fill = 'darkblue';
+      for (const dep in depts) {
+        const depElement = depts[dep];
+        const attribut = depElement.attributes;
+        if (attribut) {
+          const nomDep = attribut.getNamedItem('data-nom');
+          /*if( nomDep.toString() === word) {
+            console.log(nomDep);
+            depElement..style.fill = 'darkblue';
+          }*/
+        }
+      }
+    }
+  }
+
 }
