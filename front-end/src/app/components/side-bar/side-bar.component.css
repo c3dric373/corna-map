@@ -1,6 +1,6 @@
 #sidebar {
-  min-width: 400px;
-  max-width: 400px;
+  min-width: 50%;
+  max-width: 90%;
   height:100%;
   background: #7386D5;
   color: #fff;
@@ -10,6 +10,10 @@
 #sidebar .sidebar-header {
   padding: 20px;
   background: #6d7fcc;
+}
+
+#Guéris{
+  background-color: #86eee0;
 }
 
 
