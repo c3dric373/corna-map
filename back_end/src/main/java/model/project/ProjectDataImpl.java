@@ -26,7 +26,7 @@ public class ProjectDataImpl {
   /**
    * Data about corona for france.
    */
-  public DayData france = null;
+  public List<DayData> france =  new ArrayList<>();
 
 
 }

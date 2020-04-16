@@ -13,7 +13,10 @@ import java.util.Objects;
 
 public class DataScrapperImpl implements DataScrapper {
 
-
+    /**
+     * This procedure download the csv file directly from the french government official dataset
+     * Read error @throws IOException
+     */
     @Override
     public void getCurrentDataFromWeb() throws IOException {
 

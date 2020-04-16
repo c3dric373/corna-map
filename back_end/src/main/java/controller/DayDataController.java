@@ -20,6 +20,7 @@ import model.data.DayData;
 @RestController
 public class DayDataController
 {
+
     @RequestMapping(value = "/testday", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     String index() throws IOException {
@@ -30,6 +31,6 @@ public class DayDataController
 
 
         // 2. Java object to JSON string
-        return gson.toJson(test.county);
+        return gson.toJson(test.france);
     }
 }

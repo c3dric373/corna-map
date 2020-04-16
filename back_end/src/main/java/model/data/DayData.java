@@ -4,9 +4,12 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 
 public class DayData {
-
+    /**
+     * Default constructor of DayData class
+     */
     public DayData() {
     }
+
 
     public DayData(TypeLocalisation type ,LocalDate date,String id,String nom, Integer totalCases, Integer ephadCases, Integer ephadConfirmedCases, Integer ephadPossibleCases, Integer totalDeaths,Integer totalEphadDeaths, Integer criticalCases, Integer hospitalized, Integer recoveredCases, Integer totalTests) {
         this.id = id;
