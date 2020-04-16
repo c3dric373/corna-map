@@ -8,7 +8,7 @@ import {MapService} from '../../service/map/map.service';
 })
 export class MapComponent implements OnInit {
   isRegion;
-  tabColor = [ '#d4b7a1', '#deab8b', '#bd5b1a'];
+  tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
 
   tabtab = [
   'Guadeloupe' ,
@@ -419,17 +419,21 @@ export class MapComponent implements OnInit {
                   function() {
                               for (let a = 0; a < regElement.children.length; a++) {
                                 const reDept = regElement.children[a] as HTMLElement;
-                                reDept.style.fill = 'gold';
+                                reDept.style.fillOpacity = '0.7';
+                                reDept.style.strokeOpacity = '0.1';
                               }
                             });
                 regDept.addEventListener('mouseleave',
                   function(){
                             for (let a = 0; a < regElement.children.length; a++) {
                               const reDept = regElement.children[a] as HTMLElement;
-                              reDept.style.fill = color;
+                              reDept.style.fillOpacity = '1';
+                              reDept.style.strokeOpacity = '0.6';
                             }
                           });
                 regDept.style.fill = color;
+                regDept.style.stroke = color;
+                regDept.style.strokeOpacity = '0.6';
                 }
           }
         }
