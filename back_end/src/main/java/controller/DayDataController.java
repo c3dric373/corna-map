@@ -23,6 +23,6 @@ public class DayDataController {
     Gson gson = new Gson();
 
     // 2. Java object to JSON string
-    return gson.toJson(test.france);
+    return gson.toJson(test.getFrance());
   }
 }
