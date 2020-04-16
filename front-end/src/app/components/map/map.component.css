@@ -1,0 +1,31 @@
+.carte {
+  width: 85%;
+  margin: 0 auto;
+}
+path {
+  stroke: #000000;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-opacity: .25;
+  fill: #86aae0;
+}
+g:hover path {
+  fill: #86cce0;
+}
+g path:hover {
+  fill: #86eee0;
+}
+
+footer {
+  text-align: center;
+  font-size: 12px;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+
