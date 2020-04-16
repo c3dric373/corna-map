@@ -40,7 +40,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
 
-  private void extraction(ProjectDataImpl rawData, String[] row) {
+  private void extraction(final ProjectDataImpl rawData,final  String[] row) {
     for (int i = 0; i < row.length; i++) {
       if (row[i].equals("")) {
         row[i] = "0";
