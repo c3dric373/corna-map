@@ -15,6 +15,10 @@ export class MapComponent implements OnInit {
   }
 
   essaiMap() {
-    this.result = this.mapService.getMap();
+    this.mapService.getMap().subscribe(
+      data => {
+        console.log(JSON.parse(data));
+      }
+    );
   }
 }
