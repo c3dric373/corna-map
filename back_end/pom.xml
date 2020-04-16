@@ -15,7 +15,7 @@
 	<description>Map allowing to do simulations on the coronavirus</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
@@ -61,7 +61,12 @@
 		<artifactId>okhttp</artifactId>
 		<version>4.5.0</version>
 	</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>com.puppycrawl.tools</groupId>
+      <artifactId>checkstyle</artifactId>
+      <version>8.26</version>
+    </dependency>
+  </dependencies>
 
 	<build>
 		<plugins>
@@ -69,21 +74,36 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
-	</build>
-
-  <reporting>
-    <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.26</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>checkstyle</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <configLocation>checkstyle.xml</configLocation>
+          <configLocation>.idea/checkstyle/style.xml</configLocation>
+          <encoding>UTF-8</encoding>
+          <consoleOutput>true</consoleOutput>
+          <failsOnError>true</failsOnError>
         </configuration>
       </plugin>
-    </plugins>
-  </reporting>
+		</plugins>
+	</build>
+
 
 
 </project>
