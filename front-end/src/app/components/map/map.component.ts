@@ -404,7 +404,7 @@ export class MapComponent implements OnInit {
       // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
       for (const element in pathElements) {
-        const regElement = pathElements[element];
+        const regElement = pathElements[element] as HTMLElement;
         const elementAttributes = regElement.attributes;
 
         // If the element has attributes and
@@ -415,8 +415,20 @@ export class MapComponent implements OnInit {
           if ( dataNom.value === RegName) {
               for ( let i = 0; i < regElement.children.length ; i ++) {
                 const regDept = regElement.children[i]  as HTMLElement;
-                regDept.addEventListener('mouseover',  function(){ regDept.style.fill = 'gold'; } );
-                regDept.addEventListener('mouseleave',  function(){ regDept.style.fill = color; } );
+                regDept.addEventListener('mouseover',
+                  function() {
+                              for (let a = 0; a < regElement.children.length; a++) {
+                                const reDept = regElement.children[a] as HTMLElement;
+                                reDept.style.fill = 'gold';
+                              }
+                            });
+                regDept.addEventListener('mouseleave',
+                  function(){
+                            for (let a = 0; a < regElement.children.length; a++) {
+                              const reDept = regElement.children[a] as HTMLElement;
+                              reDept.style.fill = color;
+                            }
+                          });
                 regDept.style.fill = color;
                 }
           }
