@@ -25,12 +25,18 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
     final int minusDays = 2;
+    final String pathToData = "/home/c3dric/Uni/Studium/master"
+      + "/ss20/smart"
+      + "/back_end/src/main"
+      + "/java"
+      + "/model"
+      + "/data"
+      + "/output.csv";
     ProjectDataImpl rawData = new ProjectDataImpl();
     DataScrapperImpl dataScrapper = new DataScrapperImpl();
     dataScrapper.getCurrentDataFromWeb();
     BufferedReader br = new BufferedReader(new FileReader(
-      "back_end/src/main"
-        + "/java/model/data/output.csv"));
+      pathToData));
     String line;
     while ((line = br.readLine()) != null) {
       String[] row = line.split(",");

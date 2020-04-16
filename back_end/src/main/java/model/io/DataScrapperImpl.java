@@ -23,7 +23,11 @@ public class DataScrapperImpl implements DataScrapper {
   /**
    * Path where the data will be stored.
    */
-  private static final String PATH_TO_DATA = "back_end/src/main/java/model"
+  private static final String PATH_TO_DATA = "/home/c3dric/Uni/Studium/master"
+    + "/ss20/smart"
+    + "/back_end/src/main"
+    + "/java"
+    + "/model"
     + "/data"
     + "/output.csv";
 
