@@ -9,6 +9,7 @@ import {MapService} from '../../service/map/map.service';
 export class MapComponent implements OnInit {
   isRegion;
   tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
+  result;
 
   tabtab = [
   'Guadeloupe' ,
@@ -364,7 +365,8 @@ export class MapComponent implements OnInit {
   essaiMap() {
     this.mapService.getMap().subscribe(
       data => {
-        console.log(JSON.parse(data));
+        this.result = data;
+        console.log(data);
       }
     );
   }
