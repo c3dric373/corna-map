@@ -1,7 +1,12 @@
 package model.project;
 
+import model.data.DayData;
+
+import java.io.IOException;
+import java.util.List;
+
 public interface ProjectDataWrapper {
 
-  public Object getCurrentData();
+  ProjectDataImpl getCurrentAllDataFrance() throws IOException;
 
 }
