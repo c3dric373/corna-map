@@ -15,5 +15,5 @@ test:
 evaluate_coverage:
       image: alpine:3.6
       script:
-        - cat $CI_PROJECT_DIR/code/out/site/jacoco-ut/index.html
+        - cat $CI_PROJECT_DIR/back_end/target/site/jacoco/index.html
 
