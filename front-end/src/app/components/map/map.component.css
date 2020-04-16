@@ -1,6 +1,6 @@
 .carte {
-  width: 85%;
-  margin: 0 auto;
+  width: 60vw;
+  margin: 5px 10px 10px 0;
 }
 path {
   stroke: #000000;
