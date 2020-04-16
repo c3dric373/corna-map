@@ -8,8 +8,13 @@ compile:
 test: 
     script: 
         - "cd back_end; mvn clean test -B"
-        - "echo \"$(awk -F\",\" '{ instructions += { }'+ $5; covered += $5 } END { print covered, \"/\", instructions,\" instructions covered\"; print 100*covered/instructions, \"% covered\"  }' target/jacoco/jacoco.csv')\""
     artifacts:
         paths:
-            - target/site/jacoco/
-   
+            -  $CI_PROJECT_DIR/back_end/target/site/jacoco/index.html
+
+evaluate_coverage:
+      stage: evaluate_coverage
+      image: alpine:3.6
+      script:
+        - cat $CI_PROJECT_DIR/code/out/site/jacoco-ut/index.html
+
