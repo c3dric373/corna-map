@@ -1,14 +1,14 @@
 .carte {
-  width: 60vw;
-  margin: 5px 10px 10px 0;
-  background-color: rgb(238,234,222);
+  width: 70%;
+  align: center;
+  margin: 5vh auto;
 }
 
-g:hover path {
-  fill: #86cce0;
-}
-g path:hover {
-  fill: #86eee0;
+.map-zone {
+  width: 60vw;
+  height: 85vh;
+  margin: 5px 10px 10px 10px;
+  background-color: rgb(238,234,222);
 }
 
 footer {
