@@ -9,5 +9,7 @@ import java.util.List;
 public interface DataScrapper {
 
   List<DayData> getCurrentDataFrance() throws IOException;
+  List<DayData> getCurrentDataRegions() throws IOException;
+  List<DayData> getCurrentDataFDepartements() throws IOException;
 
 }
