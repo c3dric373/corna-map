@@ -25,12 +25,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
     final int minusDays = 2;
-    final String pathToData = "/home/c3dric/Uni/Studium/master"
-      + "/ss20/smart"
-      + "/back_end/src/main"
-      + "/java"
-      + "/model"
-      + "/data"
+    final String pathToData = System.getProperty("user.dir")
+      + "/src/main"
+      + "/resources"
       + "/output.csv";
     ProjectDataImpl rawData = new ProjectDataImpl();
     DataScrapperImpl dataScrapper = new DataScrapperImpl();
