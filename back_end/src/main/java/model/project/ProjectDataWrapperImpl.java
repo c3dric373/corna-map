@@ -2,6 +2,7 @@ package model.project;
 
 import model.data.DayData;
 import model.data.TypeLocalisation;
+import model.io.DataScrapperImpl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,6 +19,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public ProjectDataImpl getCurrentAllDataFrance() throws IOException {
     ProjectDataImpl rawData = new ProjectDataImpl();
+    DataScrapperImpl dataScrapper=new DataScrapperImpl();
+    dataScrapper.getCurrentDataFromWeb();
     BufferedReader br = new BufferedReader(new FileReader("back_end/src/main/java/model/data/output.csv"));
     String line;
     while ((line = br.readLine()) != null) {
@@ -26,8 +29,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
         continue;
       }
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-      LocalDate date = LocalDate.parse(row[0]);
-      if ((row[1].equals("pays") || row[1].equals("departement") ||row[1].equals("region")) && date.equals(java.time.LocalDate.now().minusDays(1))) {
+      String date = LocalDate.parse(row[0]).toString();
+      String today= LocalDate.now().minusDays(1).toString();
+      if (row[1].equals("pays") || row[1].equals("departement") ||row[1].equals("region") && date.equals(today)  ){
         extraction(rawData, row);
       }
 

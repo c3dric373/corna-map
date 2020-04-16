@@ -30,6 +30,6 @@ public class DayDataController
 
 
         // 2. Java object to JSON string
-        return gson.toJson(test.region);
+        return gson.toJson(test.county);
     }
 }
