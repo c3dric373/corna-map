@@ -1,1 +1,3 @@
+model/simulator/Simulator.class
+model/Application.class
 controller/SimpleController.class
