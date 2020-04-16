@@ -1,11 +1,20 @@
 image: maven:3-jdk-13
 
+stages:
+      - checkstyle
+      - compile
+      - test
+      - evaluate_coverage
+
 checkstyle:
+    stage: checkstyle
     script: "cd back_end; mvn checkstyle:checkstyle"
 compile:
+  stage: compile
   script: "cd back_end; mvn clean compile test-compile -B"
   
 test: 
+    stage: test
     script: 
         - "cd back_end; mvn clean test -B"
     artifacts:
@@ -13,6 +22,7 @@ test:
             -  $CI_PROJECT_DIR/back_end/target/site/jacoco/index.html
 
 evaluate_coverage:
+      stage: evaluate_coverage
       image: alpine:3.6
       script:
         - cat $CI_PROJECT_DIR/back_end/target/site/jacoco/index.html
