@@ -10,6 +10,7 @@ import { MenuComponent } from './menu/menu.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { RightBarComponent } from './right-bar/right-bar.component';
+import { SimulationComponent } from './simulation/simulation.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { RightBarComponent } from './right-bar/right-bar.component';
     NavBarComponent,
     SideBarComponent,
     RightBarComponent,
+    SimulationComponent,
   ],
   imports: [
     BrowserModule,
