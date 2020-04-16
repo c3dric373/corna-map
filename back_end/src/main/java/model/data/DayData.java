@@ -2,47 +2,120 @@ package model.data;
 
 import java.time.LocalDate;
 
+/**
+ * This class is a data container class which holds all the necessary
+ * information about the COVID-19 cases for a given day and region, county in
+ * france or france itself.
+ */
 public class DayData {
   /**
-   * Default constructor of DayData class
+   * Default constructor of DayData class.
    */
   public DayData() {
   }
 
-  public DayData(TypeLocalisation type, LocalDate date, String id, String nom
-    , Integer totalCases, Integer ephadCases, Integer ephadConfirmedCases,
-                 Integer ephadPossibleCases, Integer totalDeaths,
-                 Integer totalEphadDeaths, Integer criticalCases,
-                 Integer hospitalized, Integer recoveredCases,
-                 Integer totalTests) {
-    this.id = id;
-    this.nom = nom;
-    this.criticalCases = criticalCases;
-    this.hospitalized = hospitalized;
-    this.totalCases = totalCases;
-    this.ephadCases = ephadCases;
-    this.ephadConfirmedCases = ephadConfirmedCases;
-    this.ephadPossibleCases = ephadPossibleCases;
-    this.totalDeaths = totalDeaths;
-    this.totalEphadDeaths = totalEphadDeaths;
-    this.recoveredCases = recoveredCases;
-    this.totalTests = totalTests;
-    this.date = date;
-    this.type = type;
-  }
-
+  /**
+   * wip.
+   */
   private String id;
+  /**
+   * wip.
+   */
   private String nom;
+  /**
+   * wip.
+   */
   private Integer criticalCases;
+  /**
+   * wip.
+   */
   private Integer hospitalized;
+  /**
+   * wip.
+   */
   private Integer totalCases;
+  /**
+   * wip.
+   */
   private Integer ephadCases;
+  /**
+   * wip.
+   */
   private Integer ephadConfirmedCases;
+  /**
+   * wip.
+   */
   private Integer ephadPossibleCases;
+  /**
+   * wip.
+   */
   private Integer totalDeaths;
+  /**
+   * wip.
+   */
   private Integer totalEphadDeaths;
+  /**
+   * wip.
+   */
   private Integer recoveredCases;
+  /**
+   * wip.
+   */
   private Integer totalTests;
+  /**
+   * wip.
+   */
   private LocalDate date;
+  /**
+   * wip.
+   */
   private TypeLocalisation type;
+
+  /**
+   * Constructor. All the number arguments are the numbers of people in a
+   * given category related to the covid-19.
+   *
+   * @param typeNew                Type of the data it represents, i.e region
+   *                               county or country.
+   * @param dateNew                Date of data.
+   * @param idNew                  Id of the type of data.
+   * @param nomNew                 Name.
+   * @param totalCasesNew          Total infected cases.
+   * @param ephadCasesNew          Cases in ephad.
+   * @param ephadConfirmedCasesNew Confirmed cases in ephad.
+   * @param ephadPossibleCasesNew  Possible cases in ephad.
+   * @param totalDeathsNew         Total deaths.
+   * @param totalEphadDeathsNew    Total deaths in ephad facilities.
+   * @param criticalCasesNew       Number of critical cases.
+   * @param hospitalizedNew        Number of hospitalized cases.
+   * @param recoveredCasesNew      Number of recovered cases.
+   * @param totalTestsNew          Number of tests done in this location.
+   */
+  public DayData(final TypeLocalisation typeNew, final LocalDate dateNew,
+                 final String idNew,
+                 final String nomNew, final Integer totalCasesNew,
+                 final Integer ephadCasesNew,
+                 final Integer ephadConfirmedCasesNew,
+                 final Integer ephadPossibleCasesNew,
+                 final Integer totalDeathsNew,
+                 final Integer totalEphadDeathsNew,
+                 final Integer criticalCasesNew,
+                 final Integer hospitalizedNew,
+                 final Integer recoveredCasesNew,
+                 final Integer totalTestsNew) {
+    this.id = idNew;
+    this.nom = nomNew;
+    this.criticalCases = criticalCasesNew;
+    this.hospitalized = hospitalizedNew;
+    this.totalCases = totalCasesNew;
+    this.ephadCases = ephadCasesNew;
+    this.ephadConfirmedCases = ephadConfirmedCasesNew;
+    this.ephadPossibleCases = ephadPossibleCasesNew;
+    this.totalDeaths = totalDeathsNew;
+    this.totalEphadDeaths = totalEphadDeathsNew;
+    this.recoveredCases = recoveredCasesNew;
+    this.totalTests = totalTestsNew;
+    this.date = dateNew;
+    this.type = typeNew;
+  }
 }

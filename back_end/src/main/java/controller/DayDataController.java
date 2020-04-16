@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
+
 @RestController
-public class fDayDataController {
+public class DayDataController {
 
   @RequestMapping(value = "/testday", method = RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
