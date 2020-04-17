@@ -25,11 +25,11 @@ public class DayDataController {
 
     // 2. Java object to JSON string
     switch (param) {
-      case france:
+      case "france":
         return gson.toJson(test.getFrance());
-      case region:
+      case "region":
         return gson.toJson(test.getRegion());
-      case dept:
+      case "dept":
         return gson.toJson(test.getCounty());
       default :
         throw new ResponseStatusException(

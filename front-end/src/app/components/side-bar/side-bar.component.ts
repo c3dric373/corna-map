@@ -19,7 +19,7 @@ export class SideBarComponent implements OnInit {
   donnees ;
 
   ngOnInit(): void {
-    this.essaiMapRegion();
+    this.essaiMap();
   }
   essaiMap() {
     this.leftService.getMap().subscribe(
