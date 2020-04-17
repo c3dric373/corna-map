@@ -402,7 +402,7 @@ export class MapComponent implements OnInit {
         // Color the element with the corresponding color
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
-          if ( dataNom.value === depName) {
+          if ( dataNom && dataNom.value === depName) {
             depElement.addEventListener('mouseover',
               function(){
                         depElement.style.fillOpacity = '0.7';
@@ -437,7 +437,7 @@ export class MapComponent implements OnInit {
         // Color the departements of the element with the corresponding color
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
-          if ( dataNom.value === RegName) {
+          if ( dataNom && dataNom.value === RegName) {
               for ( let i = 0; i < regElement.children.length ; i ++) {
                 const regDept = regElement.children[i]  as HTMLElement;
                 let f1 = function() {
