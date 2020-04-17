@@ -329,29 +329,11 @@ export class MapComponent implements OnInit {
   'Hauts-de-France',
   'Grand Est',
   'Pays de la Loire',
-  'Bretagne',
   'Nouvelle-Aquitaine',
   'Occitanie',
   'Auvergne-Rhône-Alpes',
   'Provence-Alpes-Côte d\'Azur',
-  'Corse',
-  'Guadeloupe',
-  'Martinique',
-  'Guyane',
-  'La Réunion',
-  'Mayotte',
-  'Île-de-France',
-  'Centre-Val de Loire',
-  'Bourgogne-Franche-Comté',
-  'Normandie',
-  'Hauts-de-France',
-  'Grand Est',
-  'Pays de la Loire',
   'Bretagne',
-  'Nouvelle-Aquitaine',
-  'Occitanie',
-  'Auvergne-Rhône-Alpes',
-  'Provence-Alpes-Côte d\'Azur',
   'Corse'
   ];
  try = [];
@@ -370,7 +352,7 @@ export class MapComponent implements OnInit {
     if (this.isRegion){
       this.initializeMapReg();
     } else{
-      // this.removeRegListener();
+       this.removeRegListener();
        this.initializeMapDept();
     }
   }
@@ -438,30 +420,31 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom && dataNom.value === RegName) {
-              for ( let i = 0; i < regElement.children.length ; i ++) {
-                const regDept = regElement.children[i]  as HTMLElement;
-                let f1 = function() {
-                  for (let a = 0; a < regElement.children.length; a++) {
-                    const reDept = regElement.children[a] as HTMLElement;
-                    reDept.style.fillOpacity = '0.7';
-                    reDept.style.strokeOpacity = '0.1';
-                  }
-                };
-                this.try.push(f1);
-                let f2 =function(){
-                  for (let a = 0; a < regElement.children.length; a++) {
-                    const reDept = regElement.children[a] as HTMLElement;
-                    reDept.style.fillOpacity = '1';
-                    reDept.style.strokeOpacity = '0.6';
-                  }
-                }
-                this.try2.push(f2);
-                regDept.addEventListener('mouseover', f1 );
-                regDept.addEventListener('mouseleave', f2 );
-                regDept.style.fill = color;
-                regDept.style.stroke = color;
-                regDept.style.strokeOpacity = '0.6';
-                }
+            let f1 = function() {
+              for (let a = 0; a < regElement.children.length; a++) {
+                const reDept = regElement.children[a] as HTMLElement;
+                reDept.style.fillOpacity = '0.7';
+                reDept.style.strokeOpacity = '0.1';
+              }
+            };
+            regElement.addEventListener('mouseover', f1);
+            this.try.push(f1);
+            let f2 =function() {
+              for (let a = 0; a < regElement.children.length; a++) {
+                const reDept = regElement.children[a] as HTMLElement;
+                reDept.style.fillOpacity = '1';
+                reDept.style.strokeOpacity = '0.6';
+              }
+            };
+            regElement.addEventListener('mouseleave', f2);
+            this.try2.push(f2);
+
+            for ( let i = 0; i < regElement.children.length ; i ++) {
+              const regDept = regElement.children[i]  as HTMLElement;
+              regDept.style.fill = color;
+              regDept.style.stroke = color;
+              regDept.style.strokeOpacity = '0.6';
+              }
           }
         }
       }
@@ -469,19 +452,25 @@ export class MapComponent implements OnInit {
   }
 
   removeRegListener(): void {
-    // Get the elements of regions
     const pathElements = document.getElementsByClassName('region');
     for (const element in pathElements) {
       const regElement = pathElements[element] as HTMLElement;
+      const elementAttributes = regElement.attributes;
 
-      for (let i = 0; i < regElement.children.length; i++) {
-        const regDept = regElement.children[i] as HTMLElement;
-        regDept.removeEventListener('mouseover', this.try[element]);
-        regDept.removeEventListener('mouseleave', this.try2[element]);
+      // If the element has attributes and
+      // If the element name is 'data-nom'
+      // Color the departements of the element with the corresponding color
+      if (elementAttributes) {
+        const dataNom = elementAttributes.getNamedItem('data-nom');
+        if (dataNom) {
+          console.log(this.try[element]);
+          regElement.removeEventListener('mouseover', this.try[element]);
+          regElement.removeEventListener('mouseleave', this.try2[element]);
+        }
       }
+      this.try = [];
+      this.try2 = [];
     }
-    this.try = [];
-    this.try2 = [];
   }
 
   assignColor(nb){
