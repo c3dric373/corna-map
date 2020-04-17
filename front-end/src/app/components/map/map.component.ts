@@ -80,208 +80,6 @@ export class MapComponent implements OnInit {
   'Deux-Sèvres' ,
   'Vienne' ,
   'Haute-Vienne' ,
-  'Ariège' ,
-  'Aude' ,
-  'Aveyron' ,
-  'Gard' ,
-  'Haute-Garonne' ,
-  'Gers' ,
-  'Hérault' ,
-  'Lot' ,
-  'Lozère' ,
-  'Hautes-Pyrénées' ,
-  'Pyrénées-Orientales' ,
-  'Tarn' ,
-  'Tarn-et-Garonne' ,
-  'Ain' ,
-  'Allier' ,
-  'Ardèche' ,
-  'Cantal' ,
-  'Drôme' ,
-  'Isère' ,
-  'Loire' ,
-  'Haute-Loire' ,
-  'Puy-de-Dôme' ,
-  'Rhône' ,
-  'Savoie' ,
-  'Haute-Savoie' ,
-  'Alpes-de-Haute-Provence' ,
-  'Hautes-Alpes' ,
-  'Alpes-Maritimes' ,
-  'Bouches-du-Rhône' ,
-  'Var' ,
-  'Vaucluse' ,
-  'Corse-du-Sud' ,
-  'Haute-Corse' ,
-  'Guadeloupe' ,
-  'Martinique' ,
-  'Guyane' ,
-  'La Réunion' ,
-  'Mayotte' ,
-  'Paris' ,
-  'Seine-et-Marne' ,
-  'Yvelines' ,
-  'Essonne' ,
-  'Hauts-de-Seine' ,
-  'Seine-Saint-Denis' ,
-  'Val-de-Marne' ,
-  'Val-d’Oise' ,
-  'Cher' ,
-  'Eure-et-Loir' ,
-  'Indre' ,
-  'Indre-et-Loire' ,
-  'Loir-et-Cher' ,
-  'Loiret' ,
-  'Côte-d’Or' ,
-  'Doubs' ,
-  'Jura' ,
-  'Nièvre' ,
-  'Haute-Saône' ,
-  'Saône-et-Loire' ,
-  'Yonne' ,
-  'Territoire de Belfort' ,
-  'Calvados' ,
-  'Eure' ,
-  'Manche' ,
-  'Orne' ,
-  'Seine-Maritime' ,
-  'Aisne' ,
-  'Nord' ,
-  'Oise' ,
-  'Pas-de-Calais' ,
-  'Somme' ,
-  'Ardennes' ,
-  'Aube' ,
-  'Marne' ,
-  'Haute-Marne' ,
-  'Meurthe-et-Moselle' ,
-  'Meuse' ,
-  'Moselle' ,
-  'Bas-Rhin' ,
-  'Haut-Rhin' ,
-  'Vosges' ,
-  'Loire-Atlantique' ,
-  'Maine-et-Loire' ,
-  'Mayenne' ,
-  'Sarthe' ,
-  'Vendée' ,
-  'Côtes-d’Armor' ,
-  'Finistère' ,
-  'Ille-et-Vilaine' ,
-  'Morbihan' ,
-  'Charente' ,
-  'Charente-Maritime' ,
-  'Corrèze' ,
-  'Creuse' ,
-  'Dordogne' ,
-  'Gironde' ,
-  'Landes' ,
-  'Lot-et-Garonne' ,
-  'Pyrénées-Atlantiques' ,
-  'Deux-Sèvres' ,
-  'Vienne' ,
-  'Haute-Vienne' ,
-  'Ariège' ,
-  'Aude' ,
-  'Aveyron' ,
-  'Gard' ,
-  'Haute-Garonne' ,
-  'Gers' ,
-  'Hérault' ,
-  'Lot' ,
-  'Lozère' ,
-  'Hautes-Pyrénées' ,
-  'Pyrénées-Orientales' ,
-  'Tarn' ,
-  'Tarn-et-Garonne' ,
-  'Ain' ,
-  'Allier' ,
-  'Ardèche' ,
-  'Cantal' ,
-  'Drôme' ,
-  'Isère' ,
-  'Loire' ,
-  'Haute-Loire' ,
-  'Puy-de-Dôme' ,
-  'Rhône' ,
-  'Savoie' ,
-  'Haute-Savoie' ,
-  'Alpes-de-Haute-Provence' ,
-  'Hautes-Alpes' ,
-  'Alpes-Maritimes' ,
-  'Bouches-du-Rhône' ,
-  'Var' ,
-  'Vaucluse' ,
-  'Corse-du-Sud' ,
-  'Haute-Corse' ,
-  'Guadeloupe' ,
-  'Martinique' ,
-  'Guyane' ,
-  'La Réunion' ,
-  'Mayotte' ,
-  'Paris' ,
-  'Seine-et-Marne' ,
-  'Yvelines' ,
-  'Essonne' ,
-  'Hauts-de-Seine' ,
-  'Seine-Saint-Denis' ,
-  'Val-de-Marne' ,
-  'Val-d’Oise' ,
-  'Cher' ,
-  'Eure-et-Loir' ,
-  'Indre' ,
-  'Indre-et-Loire' ,
-  'Loir-et-Cher' ,
-  'Loiret' ,
-  'Côte-d’Or' ,
-  'Doubs' ,
-  'Jura' ,
-  'Nièvre' ,
-  'Haute-Saône' ,
-  'Saône-et-Loire' ,
-  'Yonne' ,
-  'Territoire de Belfort' ,
-  'Calvados' ,
-  'Eure' ,
-  'Manche' ,
-  'Orne' ,
-  'Seine-Maritime' ,
-  'Aisne' ,
-  'Nord' ,
-  'Oise' ,
-  'Pas-de-Calais' ,
-  'Somme' ,
-  'Ardennes' ,
-  'Aube' ,
-  'Marne' ,
-  'Haute-Marne' ,
-  'Meurthe-et-Moselle' ,
-  'Meuse' ,
-  'Moselle' ,
-  'Bas-Rhin' ,
-  'Haut-Rhin' ,
-  'Vosges' ,
-  'Loire-Atlantique' ,
-  'Maine-et-Loire' ,
-  'Mayenne' ,
-  'Sarthe' ,
-  'Vendée' ,
-  'Côtes-d’Armor' ,
-  'Finistère',
-  'Ille-et-Vilaine' ,
-  'Morbihan' ,
-  'Charente' ,
-  'Charente-Maritime' ,
-  'Corrèze' ,
-  'Creuse' ,
-  'Dordogne' ,
-  'Gironde' ,
-  'Landes' ,
-  'Lot-et-Garonne' ,
-  'Pyrénées-Atlantiques' ,
-  'Deux-Sèvres' ,
-  'Vienne' ,
-  'Haute-Vienne' ,
   'Ariège',
   'Aude' ,
   'Aveyron' ,
@@ -329,33 +127,18 @@ export class MapComponent implements OnInit {
   'Hauts-de-France',
   'Grand Est',
   'Pays de la Loire',
-  'Bretagne',
   'Nouvelle-Aquitaine',
   'Occitanie',
   'Auvergne-Rhône-Alpes',
   'Provence-Alpes-Côte d\'Azur',
-  'Corse',
-  'Guadeloupe',
-  'Martinique',
-  'Guyane',
-  'La Réunion',
-  'Mayotte',
-  'Île-de-France',
-  'Centre-Val de Loire',
-  'Bourgogne-Franche-Comté',
-  'Normandie',
-  'Hauts-de-France',
-  'Grand Est',
-  'Pays de la Loire',
   'Bretagne',
-  'Nouvelle-Aquitaine',
-  'Occitanie',
-  'Auvergne-Rhône-Alpes',
-  'Provence-Alpes-Côte d\'Azur',
   'Corse'
   ];
- try = [];
-  try2 = [];
+  mousOverReg = new Object();
+  mousLeaveReg = new Object();
+
+  mousOverDept = new Object();
+  mousLeaveDept = new Object();
 
   constructor(private mapService: MapService) {}
 
@@ -368,9 +151,10 @@ export class MapComponent implements OnInit {
     this.isRegion = !this.isRegion;
     console.log(this.isRegion);
     if (this.isRegion){
+      this.removeDeptListener();
       this.initializeMapReg();
     } else{
-      // this.removeRegListener();
+       this.removeRegListener();
        this.initializeMapDept();
     }
   }
@@ -383,8 +167,6 @@ export class MapComponent implements OnInit {
       }
     );
   }
-
-
 
   initializeMapDept() {
     for (const index in this.tabtab) {
@@ -403,18 +185,24 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom && dataNom.value === depName) {
-            depElement.addEventListener('mouseover',
-              function(){
-                        depElement.style.fillOpacity = '0.7';
-                        depElement.style.stroke = 'white';
-                        depElement.style.strokeOpacity = '0.8';
-                      } );
-            depElement.addEventListener('mouseleave',
-              function(){
-                        depElement.style.fillOpacity = '1';
-                        depElement.style.stroke = color;
-                      } );
+            let mousOver = function() {
+              depElement.style.fillOpacity = '0.7';
+              depElement.style.stroke = 'white';
+              depElement.style.strokeOpacity = '0.8';
+            };
+            depElement.addEventListener('mouseover', mousOver );
+            this.mousOverDept[dataNom.value] = mousOver;
+
+            let mousLeave = function(){
+              depElement.style.fillOpacity = '1';
+              depElement.style.stroke = color;
+            };
+            depElement.addEventListener('mouseleave', mousLeave );
+            this.mousLeaveDept[dataNom.value] = mousLeave;
+
             depElement.style.fill = color;
+            depElement.style.fillOpacity = '1';
+            depElement.style.stroke = color;
           }
         }
       }
@@ -438,30 +226,32 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom && dataNom.value === RegName) {
-              for ( let i = 0; i < regElement.children.length ; i ++) {
-                const regDept = regElement.children[i]  as HTMLElement;
-                let f1 = function() {
-                  for (let a = 0; a < regElement.children.length; a++) {
-                    const reDept = regElement.children[a] as HTMLElement;
-                    reDept.style.fillOpacity = '0.7';
-                    reDept.style.strokeOpacity = '0.1';
-                  }
-                };
-                this.try.push(f1);
-                let f2 =function(){
-                  for (let a = 0; a < regElement.children.length; a++) {
-                    const reDept = regElement.children[a] as HTMLElement;
-                    reDept.style.fillOpacity = '1';
-                    reDept.style.strokeOpacity = '0.6';
-                  }
-                }
-                this.try2.push(f2);
-                regDept.addEventListener('mouseover', f1 );
-                regDept.addEventListener('mouseleave', f2 );
-                regDept.style.fill = color;
-                regDept.style.stroke = color;
-                regDept.style.strokeOpacity = '0.6';
-                }
+            let mousOver = function() {
+              for (let a = 0; a < regElement.children.length; a++) {
+                const reDept = regElement.children[a] as HTMLElement;
+                reDept.style.fillOpacity = '0.7';
+                reDept.style.strokeOpacity = '0.1';
+              }
+            };
+            regElement.addEventListener('mouseover', mousOver);
+            this.mousOverReg[dataNom.value] = mousOver;
+
+            let mousLeave =function() {
+              for (let a = 0; a < regElement.children.length; a++) {
+                const reDept = regElement.children[a] as HTMLElement;
+                reDept.style.fillOpacity = '1';
+                reDept.style.strokeOpacity = '0.6';
+              }
+            };
+            regElement.addEventListener('mouseleave', mousLeave);
+            this.mousLeaveReg[dataNom.value] = mousLeave;
+
+            for ( let i = 0; i < regElement.children.length ; i ++) {
+              const regDept = regElement.children[i]  as HTMLElement;
+              regDept.style.fill = color;
+              regDept.style.stroke = color;
+              regDept.style.strokeOpacity = '0.6';
+              }
           }
         }
       }
@@ -469,19 +259,57 @@ export class MapComponent implements OnInit {
   }
 
   removeRegListener(): void {
-    // Get the elements of regions
     const pathElements = document.getElementsByClassName('region');
     for (const element in pathElements) {
       const regElement = pathElements[element] as HTMLElement;
+      const elementAttributes = regElement.attributes;
 
-      for (let i = 0; i < regElement.children.length; i++) {
-        const regDept = regElement.children[i] as HTMLElement;
-        regDept.removeEventListener('mouseover', this.try[element]);
-        regDept.removeEventListener('mouseleave', this.try2[element]);
+      // If the element has attributes and
+      // If the element name is 'data-nom'
+      // Color the departements of the element with the corresponding color
+      if (elementAttributes) {
+        const dataNom = elementAttributes.getNamedItem('data-nom');
+        if (dataNom) {
+          regElement.removeEventListener('mouseover', this.mousOverReg[dataNom.value]);
+          regElement.removeEventListener('mouseleave', this.mousLeaveReg[dataNom.value]);
+        }
       }
     }
-    this.try = [];
-    this.try2 = [];
+    this.mousOverReg = new Object();
+    this.mousLeaveReg = new Object();
+  }
+
+  removeDeptListener(): void {
+    const pathElements = document.getElementsByTagName('path');
+    for (const element in pathElements) {
+      const depElement = pathElements[element];
+      const elementAttributes = depElement.attributes;
+
+      if (elementAttributes) {
+        const dataNom = elementAttributes.getNamedItem('data-nom');
+        if (dataNom ) {
+          depElement.removeEventListener('mouseover', this.mousOverDept[dataNom.value]);
+          depElement.removeEventListener('mouseleave', this.mousLeaveDept[dataNom.value]);
+        }
+      }
+    }
+    /*
+    const pathElements = document.getElementsByTagName('path');
+    let i=0;
+    for (const element in pathElements) {
+      const depElement = pathElements[element];
+      const elementAttributes = depElement.attributes;
+
+      if (elementAttributes) {
+        const dataNom = elementAttributes.getNamedItem('data-nom');
+        if (dataNom) {
+          depElement.removeEventListener('mouseover', this.mousOverDept[dataNom.value]);
+          depElement.removeEventListener('mouseleave', this.mousLeaveDept[dataNom.value]);
+        }
+      }
+    }*/
+    this.mousOverDept = new Object();
+    this.mousLeaveDept = new Object();
   }
 
   assignColor(nb){
