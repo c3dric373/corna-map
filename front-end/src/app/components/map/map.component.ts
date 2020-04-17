@@ -140,6 +140,8 @@ export class MapComponent implements OnInit {
   mousOverDept = new Object();
   mousLeaveDept = new Object();
 
+  click = 'click';
+
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
@@ -148,15 +150,19 @@ export class MapComponent implements OnInit {
   }
 
   dispReg(): void {
-    this.isRegion = true;
-    this.removeDeptListener();
-    this.initializeMapReg();
+    if(!this.isRegion) {
+      this.isRegion = true;
+      this.removeDeptListener();
+      this.initializeMapReg();
+    }
   }
 
   dispDept(): void {
-    this.isRegion = false;
-    this.removeRegListener();
-    this.initializeMapDept();
+    if(this.isRegion) {
+      this.isRegion = false;
+      this.removeRegListener();
+      this.initializeMapDept();
+    }
   }
 
   essaiMap() {
@@ -296,6 +302,18 @@ export class MapComponent implements OnInit {
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
   }
+
+  clickReg(res): void{
+    if(this.isRegion) {
+      this.click = res;
+    }
+   }
+
+  clickDept(res): void{
+    if ( !this.isRegion ) {
+      this.click = res;
+    }
+   }
 
   assignColor(nb){
     const color = this.tabColor[nb % 3];
