@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SideBarLeftService} from '../../side-bar-left.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,14 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideBarComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private leftService: SideBarLeftService ) {}
 
   nbCC = 548;
   nbG = 444;
   nbH = 128;
   nbD = 185;
 
-  ngOnInit(): void {
-  }
+  donnees ;
 
-}
+  ngOnInit(): void {
+    this.essaiMap();
+  }
+  essaiMap() {
+    this.leftService.getMap().subscribe(
+      data => {
+        this.donnees = data;
+        console.log(data);
+      }
+    );
+
+
+}}
