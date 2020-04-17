@@ -4,12 +4,12 @@
     CoronaMap
   </a>
   <div>
-    <ul class="navbar-nav list-inline">
-      <li class="nav-item active">
-        <a class="nav-link" href="/map">Map</a>
+    <ul class="navbar-nav list-inline" >
+      <li class="nav-item " >
+        <a class="nav-link"[ngClass]="{active: act}" (click)="changeAct()" href="/map">Map</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/simulation">Simulation</a>
+        <a class="nav-link"[ngClass]="{active: !act}" (click)="changeAct()" href="/simulation">Simulation</a>
       </li>
     </ul>
   </div>
