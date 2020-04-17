@@ -23,3 +23,9 @@
   text-align:center;
   font-size: 150%;
 }
+
+#click{
+  font-size: xx-small;
+  max-width: 30vw !important;
+  overflow: paged-x-controls;
+}
