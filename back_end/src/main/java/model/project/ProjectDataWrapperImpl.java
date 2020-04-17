@@ -24,7 +24,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   public ProjectDataImpl getCurrentAllDataFrance() throws IOException {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
-    final int minusDays = 2;
+    final int minusDays = 3;
     final String pathToData = System.getProperty("user.dir")
       + "/src/main"
       + "/resources"

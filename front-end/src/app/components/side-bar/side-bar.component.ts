@@ -30,4 +30,18 @@ export class SideBarComponent implements OnInit {
     );
 
 
-}}
+}
+
+  essaiMapRegion() {
+    this.leftService.getMapRegion().subscribe(
+      data => {
+        this.donnees = data;
+        console.log(data);
+      }
+    );
+
+
+  }
+
+
+}
