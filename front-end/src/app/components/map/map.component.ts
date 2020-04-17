@@ -336,8 +336,8 @@ export class MapComponent implements OnInit {
   'Bretagne',
   'Corse'
   ];
- try = [];
-  try2 = [];
+  mousOverReg = new Object();
+  mousLeaveReg = new Object();
 
   constructor(private mapService: MapService) {}
 
@@ -365,8 +365,6 @@ export class MapComponent implements OnInit {
       }
     );
   }
-
-
 
   initializeMapDept() {
     for (const index in this.tabtab) {
@@ -420,24 +418,25 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom && dataNom.value === RegName) {
-            let f1 = function() {
+            let mousOver = function() {
               for (let a = 0; a < regElement.children.length; a++) {
                 const reDept = regElement.children[a] as HTMLElement;
                 reDept.style.fillOpacity = '0.7';
                 reDept.style.strokeOpacity = '0.1';
               }
             };
-            regElement.addEventListener('mouseover', f1);
-            this.try.push(f1);
-            let f2 =function() {
+            regElement.addEventListener('mouseover', mousOver);
+            this.mousOverReg[dataNom.value] = mousOver;
+
+            let mousLeave =function() {
               for (let a = 0; a < regElement.children.length; a++) {
                 const reDept = regElement.children[a] as HTMLElement;
                 reDept.style.fillOpacity = '1';
                 reDept.style.strokeOpacity = '0.6';
               }
             };
-            regElement.addEventListener('mouseleave', f2);
-            this.try2.push(f2);
+            regElement.addEventListener('mouseleave', mousLeave);
+            this.mousLeaveReg[dataNom.value] = mousLeave;
 
             for ( let i = 0; i < regElement.children.length ; i ++) {
               const regDept = regElement.children[i]  as HTMLElement;
@@ -463,14 +462,13 @@ export class MapComponent implements OnInit {
       if (elementAttributes) {
         const dataNom = elementAttributes.getNamedItem('data-nom');
         if (dataNom) {
-          console.log(this.try[element]);
-          regElement.removeEventListener('mouseover', this.try[element]);
-          regElement.removeEventListener('mouseleave', this.try2[element]);
+          regElement.removeEventListener('mouseover', this.mousOverReg[dataNom.value]);
+          regElement.removeEventListener('mouseleave', this.mousLeaveReg[dataNom.value]);
         }
       }
-      this.try = [];
-      this.try2 = [];
     }
+    this.mousOverReg = new Object();
+    this.mousLeaveReg = new Object();
   }
 
   assignColor(nb){
