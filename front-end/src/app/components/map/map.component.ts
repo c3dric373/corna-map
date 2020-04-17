@@ -147,16 +147,16 @@ export class MapComponent implements OnInit {
     this.initializeMapReg();
   }
 
-  changeScale(): void {
-    this.isRegion = !this.isRegion;
-    console.log(this.isRegion);
-    if (this.isRegion){
-      this.removeDeptListener();
-      this.initializeMapReg();
-    } else{
-       this.removeRegListener();
-       this.initializeMapDept();
-    }
+  dispReg(): void {
+    this.isRegion = true;
+    this.removeDeptListener();
+    this.initializeMapReg();
+  }
+
+  dispDept(): void {
+    this.isRegion = false;
+    this.removeRegListener();
+    this.initializeMapDept();
   }
 
   essaiMap() {
@@ -293,21 +293,6 @@ export class MapComponent implements OnInit {
         }
       }
     }
-    /*
-    const pathElements = document.getElementsByTagName('path');
-    let i=0;
-    for (const element in pathElements) {
-      const depElement = pathElements[element];
-      const elementAttributes = depElement.attributes;
-
-      if (elementAttributes) {
-        const dataNom = elementAttributes.getNamedItem('data-nom');
-        if (dataNom) {
-          depElement.removeEventListener('mouseover', this.mousOverDept[dataNom.value]);
-          depElement.removeEventListener('mouseleave', this.mousLeaveDept[dataNom.value]);
-        }
-      }
-    }*/
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
   }
