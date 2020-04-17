@@ -10,8 +10,8 @@
   <div class="map-zone">
 
     <nav class="nav nav-pills">
-      <button class="btn btn-light" (click)="initializeMapReg()">Régions</button>
-      <button class="btn btn-light" (click)="initializeMapDept()" >Départements</button>
+      <button class="btn btn-light" [ngClass]="{active : isRegion}" (click)="changeScale()">Régions</button>
+      <button class="btn btn-light" [ngClass]="{active : !isRegion}" (click)="changeScale()" >Départements</button>
     </nav>
 
     <div class="carte">

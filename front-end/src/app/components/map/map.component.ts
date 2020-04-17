@@ -354,12 +354,25 @@ export class MapComponent implements OnInit {
   'Provence-Alpes-Côte d\'Azur',
   'Corse'
   ];
+ try = [];
+  try2 = [];
 
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.isRegion = true;
     this.initializeMapReg();
+  }
+
+  changeScale(): void {
+    this.isRegion = !this.isRegion;
+    console.log(this.isRegion);
+    if (this.isRegion){
+      this.initializeMapReg();
+    } else{
+      // this.removeRegListener();
+       this.initializeMapDept();
+    }
   }
 
   essaiMap() {
@@ -370,6 +383,8 @@ export class MapComponent implements OnInit {
       }
     );
   }
+
+
 
   initializeMapDept() {
     for (const index in this.tabtab) {
@@ -388,10 +403,18 @@ export class MapComponent implements OnInit {
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
           if ( dataNom.value === depName) {
-            depElement.addEventListener('mouseover',  function(){ depElement.style.fill = 'gold'; } );
-            depElement.addEventListener('mouseleave',  function(){ depElement.style.fill = color; } );
+            depElement.addEventListener('mouseover',
+              function(){
+                        depElement.style.fillOpacity = '0.7';
+                        depElement.style.stroke = 'white';
+                        depElement.style.strokeOpacity = '0.8';
+                      } );
+            depElement.addEventListener('mouseleave',
+              function(){
+                        depElement.style.fillOpacity = '1';
+                        depElement.style.stroke = color;
+                      } );
             depElement.style.fill = color;
-            console.log(depElement);
           }
         }
       }
@@ -417,22 +440,24 @@ export class MapComponent implements OnInit {
           if ( dataNom.value === RegName) {
               for ( let i = 0; i < regElement.children.length ; i ++) {
                 const regDept = regElement.children[i]  as HTMLElement;
-                regDept.addEventListener('mouseover',
-                  function() {
-                              for (let a = 0; a < regElement.children.length; a++) {
-                                const reDept = regElement.children[a] as HTMLElement;
-                                reDept.style.fillOpacity = '0.7';
-                                reDept.style.strokeOpacity = '0.1';
-                              }
-                            });
-                regDept.addEventListener('mouseleave',
-                  function(){
-                            for (let a = 0; a < regElement.children.length; a++) {
-                              const reDept = regElement.children[a] as HTMLElement;
-                              reDept.style.fillOpacity = '1';
-                              reDept.style.strokeOpacity = '0.6';
-                            }
-                          });
+                let f1 = function() {
+                  for (let a = 0; a < regElement.children.length; a++) {
+                    const reDept = regElement.children[a] as HTMLElement;
+                    reDept.style.fillOpacity = '0.7';
+                    reDept.style.strokeOpacity = '0.1';
+                  }
+                };
+                this.try.push(f1);
+                let f2 =function(){
+                  for (let a = 0; a < regElement.children.length; a++) {
+                    const reDept = regElement.children[a] as HTMLElement;
+                    reDept.style.fillOpacity = '1';
+                    reDept.style.strokeOpacity = '0.6';
+                  }
+                }
+                this.try2.push(f2);
+                regDept.addEventListener('mouseover', f1 );
+                regDept.addEventListener('mouseleave', f2 );
                 regDept.style.fill = color;
                 regDept.style.stroke = color;
                 regDept.style.strokeOpacity = '0.6';
@@ -441,6 +466,22 @@ export class MapComponent implements OnInit {
         }
       }
     }
+  }
+
+  removeRegListener(): void {
+    // Get the elements of regions
+    const pathElements = document.getElementsByClassName('region');
+    for (const element in pathElements) {
+      const regElement = pathElements[element] as HTMLElement;
+
+      for (let i = 0; i < regElement.children.length; i++) {
+        const regDept = regElement.children[i] as HTMLElement;
+        regDept.removeEventListener('mouseover', this.try[element]);
+        regDept.removeEventListener('mouseleave', this.try2[element]);
+      }
+    }
+    this.try = [];
+    this.try2 = [];
   }
 
   assignColor(nb){
