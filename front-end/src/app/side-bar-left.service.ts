@@ -12,6 +12,14 @@ export class SideBarLeftService {
   constructor(private httpClient: HttpClient) { }
 
   getMap(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday' );
+    return this.httpClient.get(this.API_URL + 'testday?paramName=france' );
+  }
+
+  getMapRegion(): Observable<any>{
+    return this.httpClient.get(this.API_URL + 'testday?paramName=region' );
+  }
+
+  getMapDept(): Observable<any>{
+    return this.httpClient.get(this.API_URL + 'testday?paramName=dept' );
   }
 }

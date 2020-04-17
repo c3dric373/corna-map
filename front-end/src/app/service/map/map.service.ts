@@ -14,4 +14,13 @@ export class MapService {
   getMap(): Observable<any>{
     return this.httpClient.get(this.API_URL + 'testday' );
   }
+
+  getMapRegion(): Observable<any>{
+    return this.httpClient.get(this.API_URL + 'testday?paramName=region' );
+  }
+
+  getMapDept(): Observable<any>{
+    return this.httpClient.get(this.API_URL + 'testday?paramName=dept' );
+  }
+
 }

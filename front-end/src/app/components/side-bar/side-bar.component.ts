@@ -19,7 +19,7 @@ export class SideBarComponent implements OnInit {
   donnees ;
 
   ngOnInit(): void {
-    this.essaiMap();
+    this.essaiMapRegion();
   }
   essaiMap() {
     this.leftService.getMap().subscribe(
@@ -30,4 +30,18 @@ export class SideBarComponent implements OnInit {
     );
 
 
-}}
+}
+
+  essaiMapRegion() {
+    this.leftService.getMapRegion().subscribe(
+      data => {
+        this.donnees = data;
+        console.log(data);
+      }
+    );
+
+
+  }
+
+
+}
