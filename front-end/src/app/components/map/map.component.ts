@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MapService} from '../../service/map/map.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-map',
@@ -18,7 +19,7 @@ export class MapComponent implements OnInit {
   private deptList;
   loading: boolean;
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loading = true;
