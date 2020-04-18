@@ -143,6 +143,7 @@ export class MapComponent implements OnInit {
 
   chosenLocation: string;
   reglist;
+  deptList;
 
   constructor(private mapService: MapService) {}
 
@@ -176,10 +177,19 @@ export class MapComponent implements OnInit {
     );
   }
 
+  getRDeptInfos() {
+    this.mapService.getMapDept().subscribe(
+      data => {
+        this.deptList = data;
+        this.initializeMapDept();
+      }
+    );
+  }
+
   initializeMapDept() {
     for (const index in this.tabtab) {
       const depName = this.tabtab[index];
-      const color = this.assignColor(index); // , this.tabReg);
+      const color = this.assignColor(index, this.tabReg);
 
       // Get the elements starting with <path
       const pathElements = document.getElementsByTagName('path');
@@ -220,7 +230,8 @@ export class MapComponent implements OnInit {
   initializeMapReg() {
     for (const index in this.reglist) {
       const RegName = this.reglist[index].nom;
-      const color = this.assignColor(index); // this.reglist);
+      const nbHospitalized = this.reglist[index].hospitalized;
+      const color = this.assignColor(nbHospitalized, this.reglist);
 
       // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
@@ -317,12 +328,7 @@ export class MapComponent implements OnInit {
     }
    }
 
-   assignColor(nb): string {
-    const color = this.tabColor[nb % 3];
-     return color;
-   }
-
-  /* assignColor(nb, list): string{
+   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
     const diff = max - min;
@@ -330,7 +336,7 @@ export class MapComponent implements OnInit {
     const category = Math.floor((nb - min) / categorySize);
     const color = this.tabColor[category];
     return color;
-  }*/
+  }
 
   minNumber(list): number{
     let min = 185555555;
