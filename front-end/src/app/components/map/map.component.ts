@@ -164,7 +164,11 @@ export class MapComponent implements OnInit {
     if(this.isRegion) {
       this.isRegion = false;
       this.removeRegListener();
-      this.initializeMapDept();
+      if(!this.deptList) {
+        this.getRDeptInfos();
+      } else {
+        this.initializeMapDept();
+      }
     }
   }
 
@@ -181,15 +185,17 @@ export class MapComponent implements OnInit {
     this.mapService.getMapDept().subscribe(
       data => {
         this.deptList = data;
+        console.log(data);
         this.initializeMapDept();
       }
     );
   }
 
   initializeMapDept() {
-    for (const index in this.tabtab) {
-      const depName = this.tabtab[index];
-      const color = this.assignColor(index, this.tabReg);
+    for (const index in this.deptList) {
+      const depName = this.deptList[index].nom;
+      const nbHospitalized = this.deptList[index].hospitalized;
+      const color = this.assignColor(nbHospitalized, this.deptList);
 
       // Get the elements starting with <path
       const pathElements = document.getElementsByTagName('path');
