@@ -8,7 +8,6 @@ import {SideBarLeftService} from '../../side-bar-left.service';
 })
 export class SideBarComponent implements OnInit {
 
-
   constructor(private leftService: SideBarLeftService ) {}
 
   nbCC = 548;

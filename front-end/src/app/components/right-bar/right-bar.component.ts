@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as Highcharts from 'highcharts';
 
 @Component({
@@ -7,9 +7,9 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./right-bar.component.css']
 })
 export class RightBarComponent implements OnInit {
+  @Input() locationName: string;
+  @Input() isRegion: boolean;
 
-  // @ts-ignore
-  // @ts-ignore
   public options: any = {
     Chart: {
       type: 'area',

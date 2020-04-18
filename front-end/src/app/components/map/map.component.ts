@@ -7,171 +7,69 @@ import {MapService} from '../../service/map/map.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  isRegion;
-  tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
-  result;
-
-  tabtab = [
-  'Guadeloupe' ,
-  'Martinique' ,
-  'Guyane' ,
-  'La Réunion' ,
-  'Mayotte' ,
-  'Paris' ,
-  'Seine-et-Marne' ,
-  'Yvelines' ,
-  'Essonne' ,
-  'Hauts-de-Seine' ,
-  'Seine-Saint-Denis' ,
-  'Val-de-Marne' ,
-  'Val-d’Oise' ,
-  'Cher' ,
-  'Eure-et-Loir' ,
-  'Indre' ,
-  'Indre-et-Loire' ,
-  'Loir-et-Cher' ,
-  'Loiret' ,
-  'Côte-d’Or' ,
-  'Doubs' ,
-  'Jura' ,
-  'Nièvre' ,
-  'Haute-Saône' ,
-  'Saône-et-Loire' ,
-  'Yonne' ,
-  'Territoire de Belfort' ,
-  'Calvados' ,
-  'Eure' ,
-  'Manche' ,
-  'Orne' ,
-  'Seine-Maritime' ,
-  'Aisne' ,
-  'Nord' ,
-  'Oise' ,
-  'Pas-de-Calais' ,
-  'Somme' ,
-  'Ardennes' ,
-  'Aube' ,
-  'Marne' ,
-  'Haute-Marne' ,
-  'Meurthe-et-Moselle' ,
-  'Meuse' ,
-  'Moselle' ,
-  'Bas-Rhin' ,
-  'Haut-Rhin' ,
-  'Vosges' ,
-  'Loire-Atlantique' ,
-  'Maine-et-Loire' ,
-  'Mayenne' ,
-  'Sarthe' ,
-  'Vendée' ,
-  'Côtes-d’Armor' ,
-  'Finistère' ,
-  'Ille-et-Vilaine' ,
-  'Morbihan' ,
-  'Charente' ,
-  'Charente-Maritime' ,
-  'Corrèze' ,
-  'Creuse' ,
-  'Dordogne' ,
-  'Gironde' ,
-  'Landes' ,
-  'Lot-et-Garonne' ,
-  'Pyrénées-Atlantiques' ,
-  'Deux-Sèvres' ,
-  'Vienne' ,
-  'Haute-Vienne' ,
-  'Ariège',
-  'Aude' ,
-  'Aveyron' ,
-  'Gard' ,
-  'Haute-Garonne' ,
-  'Gers' ,
-  'Hérault' ,
-  'Lot' ,
-  'Lozère' ,
-  'Hautes-Pyrénées' ,
-  'Pyrénées-Orientales' ,
-  'Tarn' ,
-  'Tarn-et-Garonne' ,
-  'Ain' ,
-  'Allier' ,
-  'Ardèche' ,
-  'Cantal' ,
-  'Drôme' ,
-  'Isère' ,
-  'Loire' ,
-  'Haute-Loire' ,
-  'Puy-de-Dôme' ,
-  'Rhône' ,
-  'Savoie' ,
-  'Haute-Savoie' ,
-  'Alpes-de-Haute-Provence' ,
-  'Hautes-Alpes' ,
-  'Alpes-Maritimes' ,
-  'Bouches-du-Rhône' ,
-  'Var' ,
-  'Vaucluse' ,
-  'Corse-du-Sud' ,
-  'Haute-Corse' ];
-
-  tabReg = [
-    'Guadeloupe',
-  'Martinique',
-  'Guyane',
-  'La Réunion',
-  'Mayotte',
-  'Île-de-France',
-  'Centre-Val de Loire',
-  'Bourgogne-Franche-Comté',
-  'Normandie',
-  'Hauts-de-France',
-  'Grand Est',
-  'Pays de la Loire',
-  'Nouvelle-Aquitaine',
-  'Occitanie',
-  'Auvergne-Rhône-Alpes',
-  'Provence-Alpes-Côte d\'Azur',
-  'Bretagne',
-  'Corse'
-  ];
-  mousOverReg = new Object();
-  mousLeaveReg = new Object();
-
-  mousOverDept = new Object();
-  mousLeaveDept = new Object();
+  isRegion: boolean;
+  private tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
+  private mousOverReg = new Object();
+  private mousLeaveReg = new Object();
+  private mousOverDept = new Object();
+  private mousLeaveDept = new Object();
+  chosenLocation: string;
+  private reglist;
+  private deptList;
+  loading: boolean;
 
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.isRegion = true;
-    this.initializeMapReg();
+    this.getRegInfos();
   }
 
-  changeScale(): void {
-    this.isRegion = !this.isRegion;
-    console.log(this.isRegion);
-    if (this.isRegion){
+  dispReg(): void {
+    if(!this.isRegion) {
+      this.isRegion = true;
       this.removeDeptListener();
       this.initializeMapReg();
-    } else{
-       this.removeRegListener();
-       this.initializeMapDept();
     }
   }
 
-  essaiMap() {
-    this.mapService.getMap().subscribe(
+  dispDept(): void {
+    if(this.isRegion) {
+      this.isRegion = false;
+      this.removeRegListener();
+      if(!this.deptList) {
+        this.getRDeptInfos();
+      } else {
+        this.initializeMapDept();
+      }
+    }
+  }
+
+  getRegInfos() {
+    this.mapService.getMapRegion().subscribe(
       data => {
-        this.result = data;
+        this.reglist = data;
+        this.initializeMapReg();
+      }
+    );
+  }
+
+  getRDeptInfos() {
+    this.mapService.getMapDept().subscribe(
+      data => {
+        this.deptList = data;
         console.log(data);
+        this.initializeMapDept();
       }
     );
   }
 
   initializeMapDept() {
-    for (const index in this.tabtab) {
-      const depName = this.tabtab[index];
-      const color = this.assignColor(index);
+    for (const index in this.deptList) {
+      const depName = this.deptList[index].nom;
+      const nbHospitalized = this.deptList[index].hospitalized;
+      const color = this.assignColor(nbHospitalized, this.deptList);
 
       // Get the elements starting with <path
       const pathElements = document.getElementsByTagName('path');
@@ -210,9 +108,10 @@ export class MapComponent implements OnInit {
   }
 
   initializeMapReg() {
-    for (const index in this.tabReg) {
-      const RegName = this.tabReg[index];
-      const color = this.assignColor(index);
+    for (const index in this.reglist) {
+      const RegName = this.reglist[index].nom;
+      const nbHospitalized = this.reglist[index].hospitalized;
+      const color = this.assignColor(nbHospitalized, this.reglist);
 
       // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
@@ -225,7 +124,7 @@ export class MapComponent implements OnInit {
         // Color the departements of the element with the corresponding color
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
-          if ( dataNom && dataNom.value === RegName) {
+          if (dataNom && dataNom.value === RegName) {
             let mousOver = function() {
               for (let a = 0; a < regElement.children.length; a++) {
                 const reDept = regElement.children[a] as HTMLElement;
@@ -236,7 +135,7 @@ export class MapComponent implements OnInit {
             regElement.addEventListener('mouseover', mousOver);
             this.mousOverReg[dataNom.value] = mousOver;
 
-            let mousLeave =function() {
+            let mousLeave = function() {
               for (let a = 0; a < regElement.children.length; a++) {
                 const reDept = regElement.children[a] as HTMLElement;
                 reDept.style.fillOpacity = '1';
@@ -246,16 +145,17 @@ export class MapComponent implements OnInit {
             regElement.addEventListener('mouseleave', mousLeave);
             this.mousLeaveReg[dataNom.value] = mousLeave;
 
-            for ( let i = 0; i < regElement.children.length ; i ++) {
-              const regDept = regElement.children[i]  as HTMLElement;
+            for (let i = 0; i < regElement.children.length; i++) {
+              const regDept = regElement.children[i] as HTMLElement;
               regDept.style.fill = color;
               regDept.style.stroke = color;
               regDept.style.strokeOpacity = '0.6';
-              }
+            }
           }
         }
       }
     }
+    this.loading = false;
   }
 
   removeRegListener(): void {
@@ -293,28 +193,50 @@ export class MapComponent implements OnInit {
         }
       }
     }
-    /*
-    const pathElements = document.getElementsByTagName('path');
-    let i=0;
-    for (const element in pathElements) {
-      const depElement = pathElements[element];
-      const elementAttributes = depElement.attributes;
-
-      if (elementAttributes) {
-        const dataNom = elementAttributes.getNamedItem('data-nom');
-        if (dataNom) {
-          depElement.removeEventListener('mouseover', this.mousOverDept[dataNom.value]);
-          depElement.removeEventListener('mouseleave', this.mousLeaveDept[dataNom.value]);
-        }
-      }
-    }*/
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
   }
 
-  assignColor(nb){
-    const color = this.tabColor[nb % 3];
+  clickReg(region): void{
+    if(this.isRegion) {
+      this.chosenLocation = region;
+    }
+   }
+
+  clickDept(departement): void{
+    if ( !this.isRegion ) {
+      this.chosenLocation = departement;
+    }
+   }
+
+   assignColor(nb, list): string{
+    const min = this.minNumber(list);
+    const max = this.maxNumber(list);
+    const diff = max - min;
+    const categorySize = Math.floor(diff / 3) + 1;
+    const category = Math.floor((nb - min) / categorySize);
+    const color = this.tabColor[category];
     return color;
+  }
+
+  minNumber(list): number{
+    let min = 185555555;
+    for( const element in list ) {
+      if( min > list[element].hospitalized ){
+        min = list[element].hospitalized;
+      }
+    }
+    return min;
+  }
+
+  maxNumber(list): number{
+    let max = 0;
+    for( const element in list ) {
+      if( max < list[element].hospitalized ){
+        max = list[element].hospitalized;
+      }
+    }
+    return max;
   }
 
 }
