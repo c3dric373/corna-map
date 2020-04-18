@@ -7,11 +7,11 @@ import {MapService} from '../../service/map/map.service';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  isRegion;
-  tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
+  isRegion: boolean;
+  private tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
   result;
 
-  tabtab = [
+  private tabtab = [
   'Guadeloupe' ,
   'Martinique' ,
   'Guyane' ,
@@ -134,19 +134,21 @@ export class MapComponent implements OnInit {
   'Bretagne',
   'Corse'
   ];
-  mousOverReg = new Object();
-  mousLeaveReg = new Object();
 
-  mousOverDept = new Object();
-  mousLeaveDept = new Object();
+  private mousOverReg = new Object();
+  private mousLeaveReg = new Object();
 
-  click = 'click';
+  private mousOverDept = new Object();
+  private mousLeaveDept = new Object();
+
+  chosenLocation: string;
+  reglist;
 
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.isRegion = true;
-    this.initializeMapReg();
+    this.getRegInfos();
   }
 
   dispReg(): void {
@@ -165,11 +167,11 @@ export class MapComponent implements OnInit {
     }
   }
 
-  essaiMap() {
-    this.mapService.getMap().subscribe(
+  getRegInfos() {
+    this.mapService.getMapRegion().subscribe(
       data => {
-        this.result = data;
-        console.log(data);
+        this.reglist = data;
+        this.initializeMapReg();
       }
     );
   }
@@ -177,7 +179,7 @@ export class MapComponent implements OnInit {
   initializeMapDept() {
     for (const index in this.tabtab) {
       const depName = this.tabtab[index];
-      const color = this.assignColor(index);
+      const color = this.assignColor(index); // , this.tabReg);
 
       // Get the elements starting with <path
       const pathElements = document.getElementsByTagName('path');
@@ -216,9 +218,9 @@ export class MapComponent implements OnInit {
   }
 
   initializeMapReg() {
-    for (const index in this.tabReg) {
-      const RegName = this.tabReg[index];
-      const color = this.assignColor(index);
+    for (const index in this.reglist) {
+      const RegName = this.reglist[index].nom;
+      const color = this.assignColor(index); // this.reglist);
 
       // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
@@ -231,7 +233,7 @@ export class MapComponent implements OnInit {
         // Color the departements of the element with the corresponding color
         if (elementAttributes) {
           const dataNom = elementAttributes.getNamedItem('data-nom');
-          if ( dataNom && dataNom.value === RegName) {
+          if (dataNom && dataNom.value === RegName) {
             let mousOver = function() {
               for (let a = 0; a < regElement.children.length; a++) {
                 const reDept = regElement.children[a] as HTMLElement;
@@ -242,7 +244,7 @@ export class MapComponent implements OnInit {
             regElement.addEventListener('mouseover', mousOver);
             this.mousOverReg[dataNom.value] = mousOver;
 
-            let mousLeave =function() {
+            let mousLeave = function() {
               for (let a = 0; a < regElement.children.length; a++) {
                 const reDept = regElement.children[a] as HTMLElement;
                 reDept.style.fillOpacity = '1';
@@ -252,12 +254,12 @@ export class MapComponent implements OnInit {
             regElement.addEventListener('mouseleave', mousLeave);
             this.mousLeaveReg[dataNom.value] = mousLeave;
 
-            for ( let i = 0; i < regElement.children.length ; i ++) {
-              const regDept = regElement.children[i]  as HTMLElement;
+            for (let i = 0; i < regElement.children.length; i++) {
+              const regDept = regElement.children[i] as HTMLElement;
               regDept.style.fill = color;
               regDept.style.stroke = color;
               regDept.style.strokeOpacity = '0.6';
-              }
+            }
           }
         }
       }
@@ -303,21 +305,51 @@ export class MapComponent implements OnInit {
     this.mousLeaveDept = new Object();
   }
 
-  clickReg(res): void{
+  clickReg(region): void{
     if(this.isRegion) {
-      this.click = res;
+      this.chosenLocation = region;
     }
    }
 
-  clickDept(res): void{
+  clickDept(departement): void{
     if ( !this.isRegion ) {
-      this.click = res;
+      this.chosenLocation = departement;
     }
    }
 
-  assignColor(nb){
+   assignColor(nb): string {
     const color = this.tabColor[nb % 3];
+     return color;
+   }
+
+  /* assignColor(nb, list): string{
+    const min = this.minNumber(list);
+    const max = this.maxNumber(list);
+    const diff = max - min;
+    const categorySize = Math.floor(diff / 3) + 1;
+    const category = Math.floor((nb - min) / categorySize);
+    const color = this.tabColor[category];
     return color;
+  }*/
+
+  minNumber(list): number{
+    let min = 185555555;
+    for( const element in list ) {
+      if( min > list[element].hospitalized ){
+        min = list[element].hospitalized;
+      }
+    }
+    return min;
+  }
+
+  maxNumber(list): number{
+    let max = 0;
+    for( const element in list ) {
+      if( max < list[element].hospitalized ){
+        max = list[element].hospitalized;
+      }
+    }
+    return max;
   }
 
 }

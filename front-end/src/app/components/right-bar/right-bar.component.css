@@ -29,3 +29,7 @@
   max-width: 30vw !important;
   overflow: paged-x-controls;
 }
+
+.container {
+  color : black;
+}
