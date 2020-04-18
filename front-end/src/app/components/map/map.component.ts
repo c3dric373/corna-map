@@ -41,7 +41,7 @@ export class MapComponent implements OnInit {
     if(this.isRegion) {
       this.isRegion = false;
       this.removeRegListener();
-      // if depList has not been initialized
+      // set deptList if it has not been initialized
       if(!this.deptList) {
         this.getRDeptInfos();
       } else {
@@ -53,6 +53,7 @@ export class MapComponent implements OnInit {
   getRegInfos() {
     this.mapService.getMapRegion().subscribe(
       data => {
+        this.reglist = data;
         this.initializeMapReg();
       }
     );
