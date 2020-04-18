@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MapService} from '../../service/map/map.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-map',
@@ -8,7 +9,9 @@ import {MapService} from '../../service/map/map.service';
 })
 export class MapComponent implements OnInit {
   isRegion: boolean;
-  private tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
+  // private tabColor = [ 'rgb(244,165,130)', 'rgb(214,96,77)', 'rgb(178,24,43)'];
+  private rgbYellow = [244, 165, 130];
+  private rgbRed = [178, 24, 43];
   private mousOverReg = new Object();
   private mousLeaveReg = new Object();
   private mousOverDept = new Object();
@@ -18,7 +21,7 @@ export class MapComponent implements OnInit {
   private deptList;
   loading: boolean;
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, private spinner: NgxSpinnerService) {}
 
   ngOnInit(): void {
     this.loading = true;
@@ -38,6 +41,7 @@ export class MapComponent implements OnInit {
     if(this.isRegion) {
       this.isRegion = false;
       this.removeRegListener();
+      // set deptList if it has not been initialized
       if(!this.deptList) {
         this.getRDeptInfos();
       } else {
@@ -59,7 +63,6 @@ export class MapComponent implements OnInit {
     this.mapService.getMapDept().subscribe(
       data => {
         this.deptList = data;
-        console.log(data);
         this.initializeMapDept();
       }
     );
@@ -212,17 +215,20 @@ export class MapComponent implements OnInit {
    assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
-    const diff = max - min;
-    const categorySize = Math.floor(diff / 3) + 1;
-    const category = Math.floor((nb - min) / categorySize);
-    const color = this.tabColor[category];
+    const coeff = (nb - min) / (max - min);
+    const colorTab = [];
+    for (let i = 0; i < this.rgbRed.length; i++ ) {
+      const value = this.rgbYellow[i] * (1 - coeff) + this.rgbRed[i] * coeff;
+      colorTab.push(value);
+    }
+    const color = 'rgb(' + colorTab[0] + ', ' +  colorTab[1] + ', ' + colorTab[2] + ')';
     return color;
   }
 
   minNumber(list): number{
     let min = 185555555;
-    for( const element in list ) {
-      if( min > list[element].hospitalized ){
+    for ( const element in list ) {
+      if ( min > list[element].hospitalized ){
         min = list[element].hospitalized;
       }
     }
@@ -231,8 +237,8 @@ export class MapComponent implements OnInit {
 
   maxNumber(list): number{
     let max = 0;
-    for( const element in list ) {
-      if( max < list[element].hospitalized ){
+    for ( const element in list ) {
+      if ( max < list[element].hospitalized ){
         max = list[element].hospitalized;
       }
     }
