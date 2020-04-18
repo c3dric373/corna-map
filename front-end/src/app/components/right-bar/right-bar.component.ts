@@ -8,6 +8,7 @@ import * as Highcharts from 'highcharts';
 })
 export class RightBarComponent implements OnInit {
   @Input() locationName: string;
+  @Input() isRegion: boolean;
 
   public options: any = {
     Chart: {
