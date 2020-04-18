@@ -9,145 +9,19 @@ import {MapService} from '../../service/map/map.service';
 export class MapComponent implements OnInit {
   isRegion: boolean;
   private tabColor = [ '#f4a582', '#d6604d', '#b2182b'];
-  result;
-
-  private tabtab = [
-  'Guadeloupe' ,
-  'Martinique' ,
-  'Guyane' ,
-  'La Réunion' ,
-  'Mayotte' ,
-  'Paris' ,
-  'Seine-et-Marne' ,
-  'Yvelines' ,
-  'Essonne' ,
-  'Hauts-de-Seine' ,
-  'Seine-Saint-Denis' ,
-  'Val-de-Marne' ,
-  'Val-d’Oise' ,
-  'Cher' ,
-  'Eure-et-Loir' ,
-  'Indre' ,
-  'Indre-et-Loire' ,
-  'Loir-et-Cher' ,
-  'Loiret' ,
-  'Côte-d’Or' ,
-  'Doubs' ,
-  'Jura' ,
-  'Nièvre' ,
-  'Haute-Saône' ,
-  'Saône-et-Loire' ,
-  'Yonne' ,
-  'Territoire de Belfort' ,
-  'Calvados' ,
-  'Eure' ,
-  'Manche' ,
-  'Orne' ,
-  'Seine-Maritime' ,
-  'Aisne' ,
-  'Nord' ,
-  'Oise' ,
-  'Pas-de-Calais' ,
-  'Somme' ,
-  'Ardennes' ,
-  'Aube' ,
-  'Marne' ,
-  'Haute-Marne' ,
-  'Meurthe-et-Moselle' ,
-  'Meuse' ,
-  'Moselle' ,
-  'Bas-Rhin' ,
-  'Haut-Rhin' ,
-  'Vosges' ,
-  'Loire-Atlantique' ,
-  'Maine-et-Loire' ,
-  'Mayenne' ,
-  'Sarthe' ,
-  'Vendée' ,
-  'Côtes-d’Armor' ,
-  'Finistère' ,
-  'Ille-et-Vilaine' ,
-  'Morbihan' ,
-  'Charente' ,
-  'Charente-Maritime' ,
-  'Corrèze' ,
-  'Creuse' ,
-  'Dordogne' ,
-  'Gironde' ,
-  'Landes' ,
-  'Lot-et-Garonne' ,
-  'Pyrénées-Atlantiques' ,
-  'Deux-Sèvres' ,
-  'Vienne' ,
-  'Haute-Vienne' ,
-  'Ariège',
-  'Aude' ,
-  'Aveyron' ,
-  'Gard' ,
-  'Haute-Garonne' ,
-  'Gers' ,
-  'Hérault' ,
-  'Lot' ,
-  'Lozère' ,
-  'Hautes-Pyrénées' ,
-  'Pyrénées-Orientales' ,
-  'Tarn' ,
-  'Tarn-et-Garonne' ,
-  'Ain' ,
-  'Allier' ,
-  'Ardèche' ,
-  'Cantal' ,
-  'Drôme' ,
-  'Isère' ,
-  'Loire' ,
-  'Haute-Loire' ,
-  'Puy-de-Dôme' ,
-  'Rhône' ,
-  'Savoie' ,
-  'Haute-Savoie' ,
-  'Alpes-de-Haute-Provence' ,
-  'Hautes-Alpes' ,
-  'Alpes-Maritimes' ,
-  'Bouches-du-Rhône' ,
-  'Var' ,
-  'Vaucluse' ,
-  'Corse-du-Sud' ,
-  'Haute-Corse' ];
-
-  tabReg = [
-    'Guadeloupe',
-  'Martinique',
-  'Guyane',
-  'La Réunion',
-  'Mayotte',
-  'Île-de-France',
-  'Centre-Val de Loire',
-  'Bourgogne-Franche-Comté',
-  'Normandie',
-  'Hauts-de-France',
-  'Grand Est',
-  'Pays de la Loire',
-  'Nouvelle-Aquitaine',
-  'Occitanie',
-  'Auvergne-Rhône-Alpes',
-  'Provence-Alpes-Côte d\'Azur',
-  'Bretagne',
-  'Corse'
-  ];
-
   private mousOverReg = new Object();
   private mousLeaveReg = new Object();
-
   private mousOverDept = new Object();
   private mousLeaveDept = new Object();
-
   chosenLocation: string;
-  reglist;
-  deptList;
+  private reglist;
+  private deptList;
+  loading: boolean;
 
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.isRegion = true;
     this.getRegInfos();
   }
@@ -281,6 +155,7 @@ export class MapComponent implements OnInit {
         }
       }
     }
+    this.loading = false;
   }
 
   removeRegListener(): void {
