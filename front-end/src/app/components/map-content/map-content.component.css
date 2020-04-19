@@ -1,0 +1,12 @@
+.carte {
+  width: 70%;
+  align: center;
+  margin: 5vh auto;
+}
+
+.map-zone {
+  width: 50vw;
+  height: 85vh;
+  margin: 0 auto;
+  background-color: rgb(238,234,222);
+}

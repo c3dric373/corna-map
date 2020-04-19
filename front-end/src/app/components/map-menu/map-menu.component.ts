@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  templateUrl: './map-menu.component.html',
+  styleUrls: ['./map-menu.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapMenuComponent implements OnInit {
 
   constructor() {}
 
