@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 
 @Component({
@@ -15,22 +15,26 @@ export class MapContentComponent implements OnInit {
   private mousLeaveReg = new Object();
   private mousOverDept = new Object();
   private mousLeaveDept = new Object();
-  chosenLocation: string;
   private reglist;
   private deptList;
   loading: boolean;
+
+  @Output() chosenLocation = new EventEmitter<string>();
+  @Output() boolIsRegion = new EventEmitter<boolean>();
 
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.loading = true;
     this.isRegion = true;
+    this.boolIsRegion.emit(true);
     this.getRegInfos();
   }
 
   dispReg(): void {
     if(!this.isRegion) {
       this.isRegion = true;
+      this.boolIsRegion.emit(true);
       this.removeDeptListener();
       this.initializeMapReg();
     }
@@ -39,6 +43,7 @@ export class MapContentComponent implements OnInit {
   dispDept(): void {
     if(this.isRegion) {
       this.isRegion = false;
+      this.boolIsRegion.emit(false);
       this.removeRegListener();
       // set deptList if it has not been initialized
       if(!this.deptList) {
@@ -201,13 +206,13 @@ export class MapContentComponent implements OnInit {
 
   clickReg(region): void{
     if(this.isRegion) {
-      this.chosenLocation = region;
+      this.chosenLocation.emit(region);
     }
   }
 
   clickDept(departement): void{
     if ( !this.isRegion ) {
-      this.chosenLocation = departement;
+      this.chosenLocation.emit(departement);
     }
   }
 
