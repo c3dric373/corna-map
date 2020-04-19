@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  selector: 'app-map-content',
+  templateUrl: './map-content.component.html',
+  styleUrls: ['./map-content.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapContentComponent implements OnInit {
   isRegion: boolean;
   // private tabColor = [ 'rgb(244,165,130)', 'rgb(214,96,77)', 'rgb(178,24,43)'];
   private rgbYellow = [244, 165, 130];
@@ -16,22 +15,26 @@ export class MapComponent implements OnInit {
   private mousLeaveReg = new Object();
   private mousOverDept = new Object();
   private mousLeaveDept = new Object();
-  chosenLocation: string;
   private reglist;
   private deptList;
   loading: boolean;
 
-  constructor(private mapService: MapService, private spinner: NgxSpinnerService) {}
+  @Output() chosenLocation = new EventEmitter<string>();
+  @Output() boolIsRegion = new EventEmitter<boolean>();
+
+  constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
     this.loading = true;
     this.isRegion = true;
+    this.boolIsRegion.emit(true);
     this.getRegInfos();
   }
 
   dispReg(): void {
     if(!this.isRegion) {
       this.isRegion = true;
+      this.boolIsRegion.emit(true);
       this.removeDeptListener();
       this.initializeMapReg();
     }
@@ -40,6 +43,7 @@ export class MapComponent implements OnInit {
   dispDept(): void {
     if(this.isRegion) {
       this.isRegion = false;
+      this.boolIsRegion.emit(false);
       this.removeRegListener();
       // set deptList if it has not been initialized
       if(!this.deptList) {
@@ -202,17 +206,17 @@ export class MapComponent implements OnInit {
 
   clickReg(region): void{
     if(this.isRegion) {
-      this.chosenLocation = region;
+      this.chosenLocation.emit(region);
     }
-   }
+  }
 
   clickDept(departement): void{
     if ( !this.isRegion ) {
-      this.chosenLocation = departement;
+      this.chosenLocation.emit(departement);
     }
-   }
+  }
 
-   assignColor(nb, list): string{
+  assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
     const coeff = (nb - min) / (max - min);

@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MapComponent } from './../components/map/map.component';
+import { MapMenuComponent } from '../components/map-menu/map-menu.component';
 import {SimulationComponent} from '../components/simulation/simulation.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MapComponent,
+    component: MapMenuComponent,
   },
   {
     path: 'map',
-    component: MapComponent,
+    component: MapMenuComponent,
   },
   {
     path: 'simulation',
