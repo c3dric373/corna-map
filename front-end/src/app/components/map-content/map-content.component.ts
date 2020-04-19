@@ -17,15 +17,15 @@ export class MapContentComponent implements OnInit {
   private mousLeaveDept = new Object();
   private reglist;
   private deptList;
-  loading: boolean;
 
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
+  @Output() loading = new EventEmitter<boolean>();
 
   constructor(private mapService: MapService) {}
 
   ngOnInit(): void {
-    this.loading = true;
+    this.loading.emit(true);
     this.isRegion = true;
     this.boolIsRegion.emit(true);
     this.getRegInfos();
@@ -162,7 +162,7 @@ export class MapContentComponent implements OnInit {
         }
       }
     }
-    this.loading = false;
+    this.loading.emit(false);
   }
 
   removeRegListener(): void {

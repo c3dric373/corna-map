@@ -8,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class MapMenuComponent implements OnInit {
   public location: string;
   public isRegion: boolean;
+  public loading: boolean;
 
   constructor() {}
 
   ngOnInit(): void {
+    this.loading = true;
   }
 
   clickOnLocation(location: string) {
@@ -20,5 +22,9 @@ export class MapMenuComponent implements OnInit {
 
   setIsRegion(isRegion: boolean) {
     this.isRegion = isRegion;
+  }
+
+  setLoading(loading: boolean) {
+    this.loading = loading;
   }
 }
