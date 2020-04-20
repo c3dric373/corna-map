@@ -21,7 +21,7 @@ public class CauchyProblemTest {
         final Double lambda = 0.1;
         final Double mu = 0.001;
         thrown.expect(IllegalArgumentException.class);
-//        thrown.expectMessage("derivative null");
+        thrown.expectMessage("derivative null");
 
         // Act
         CauchyProblem CP = CauchyProblem.builder()
