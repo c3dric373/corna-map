@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SideBarLeftService} from '../../side-bar-left.service';
+import {MapService} from '../../service/map/map.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,7 +8,7 @@ import {SideBarLeftService} from '../../side-bar-left.service';
 })
 export class SideBarComponent implements OnInit {
 
-  constructor(private leftService: SideBarLeftService ) {}
+  constructor(private mapService: MapService) {}
 
   nbCC = 548;
   nbG = 444;
@@ -20,19 +20,18 @@ export class SideBarComponent implements OnInit {
   ngOnInit(): void {
     this.essaiMap();
   }
+
   essaiMap() {
-    this.leftService.getMap().subscribe(
+    this.mapService.getMap().subscribe(
       data => {
         this.donnees = data;
         console.log(data);
       }
     );
-
-
 }
 
   essaiMapRegion() {
-    this.leftService.getMapRegion().subscribe(
+    this.mapService.getMapRegion().subscribe(
       data => {
         this.donnees = data;
         console.log(data);

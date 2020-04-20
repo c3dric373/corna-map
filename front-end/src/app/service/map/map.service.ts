@@ -12,7 +12,7 @@ export class MapService {
   constructor(private httpClient: HttpClient) { }
 
   getMap(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday' );
+    return this.httpClient.get(this.API_URL + 'testday?paramName=france' );
   }
 
   getMapRegion(): Observable<any>{
