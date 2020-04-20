@@ -12,6 +12,7 @@ import { RightBarComponent } from './right-bar/right-bar.component';
 import { SimulationComponent } from './simulation/simulation.component';
 import { LeftSimulationComponent } from './left-simulation/left-simulation.component';
 import { MapContentComponent } from './map-content/map-content.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { MapContentComponent } from './map-content/map-content.component';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    FontAwesomeModule,
   ],
   bootstrap: [AppComponent]
 })
