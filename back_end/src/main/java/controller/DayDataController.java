@@ -10,14 +10,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
-
 @RestController
 @CrossOrigin("http://localhost:4200")
 public class DayDataController {
 
   @RequestMapping(value = "/testday", method = RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String index(@RequestParam("paramName") String param) throws IOException {
+  String index(@RequestParam("paramName") final String param)
+    throws IOException {
     ProjectDataWrapperImpl testScrapper = new ProjectDataWrapperImpl();
     ProjectDataImpl test = testScrapper.getCurrentAllDataFrance();
 
@@ -31,9 +31,9 @@ public class DayDataController {
         return gson.toJson(test.getRegion());
       case "dept":
         return gson.toJson(test.getCounty());
-      default :
+      default:
         throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "entity not found"
+          HttpStatus.NOT_FOUND, "entity not found"
         );
     }
 
