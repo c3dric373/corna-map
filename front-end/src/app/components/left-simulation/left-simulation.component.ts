@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { faStop } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPause } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-left-simulation',
@@ -7,9 +11,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeftSimulationComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit(): void {
+  constructor() { }
+  faStop = faStop;
+  faPlay = faPlay;
+  faPause = faPause;
+
+
+    ngOnInit(): void {
   }
+
+
+
+
+
 
 }

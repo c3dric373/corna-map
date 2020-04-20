@@ -27,14 +27,20 @@
   margin-top: 5%;
   padding-left: 10%;
   width:98%;
+  height: 30%;
   flex-flow: row;
 
 }
 
-button{
-  background-color: #e5dfcdff !important;
+/*button{
+  border-radius: 50%;
+  margin-right: 10%;
   color: black;
-}
+}*/
+
+
+
+
 
 
 
