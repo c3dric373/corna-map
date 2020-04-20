@@ -1,17 +1,19 @@
 package model.simulator;
 
+import lombok.Getter;
 import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-
+@Getter
 public class CauchyProblem {
-    private List<Double> initialConditions;
-    private List<Function<List<Double>, Double>> system;
+    private List<Double> initialConditions; // [f1(t0), f2(t0), ..., fn(t0), t0]
+    private List<Function<List<Double>, Double>> system; // the time is at the end
 
     public static class Builder {
+        private Double time;
         private final List<Double> initialConditions;
         private final List<Function<List<Double>, Double>> system;
 
@@ -22,7 +24,7 @@ public class CauchyProblem {
             system = new ArrayList<>();
             initialConditions = new ArrayList<>();
         }
-
+        
         /**
          * TODO
          * @param initialCondition
@@ -38,10 +40,10 @@ public class CauchyProblem {
         }
 
         public CauchyProblem build() {
-            CauchyProblem CP = new CauchyProblem();
-            CP.system = system;
-            CP.initialConditions = initialConditions;
-            return CP;
+            CauchyProblem cauchyProblem = new CauchyProblem();
+            cauchyProblem.system = system;
+            cauchyProblem.initialConditions = initialConditions;
+            return cauchyProblem;
         }
     }
 
@@ -49,3 +51,19 @@ public class CauchyProblem {
         return new Builder();
     }
 }
+
+
+/**
+ Exemple de construction pour le modèle SIR
+
+ final Double beta = 0.1;
+ final Double lambda = 0.1;
+ final Double mu = 0.001;
+
+ CauchyProblem CP = CauchyProblem.builder()
+ .addParameter(0.9, T -> - beta * T.get(0) * T.get(1))
+ .addParameter(0.1, T -> beta * T.get(0) * T.get(1) - lambda * T.get(1) - mu * T.get(1))
+ .addParameter(0., T -> lambda * T.get(1))
+ .addParameter(0., T -> mu * T.get(1))
+ .build();
+ **/
