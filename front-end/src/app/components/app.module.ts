@@ -13,6 +13,7 @@ import { SimulationComponent } from './simulation/simulation.component';
 import { LeftSimulationComponent } from './left-simulation/left-simulation.component';
 import { MapContentComponent } from './map-content/map-content.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     SimulationComponent,
     LeftSimulationComponent,
     MapContentComponent,
+    LoadingSpinComponent,
   ],
   imports: [
     BrowserModule,
