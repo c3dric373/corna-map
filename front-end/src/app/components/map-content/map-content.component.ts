@@ -17,6 +17,8 @@ export class MapContentComponent implements OnInit {
   private mousLeaveDept = new Object();
   private reglist;
   private deptList;
+  public selectedCategory: string;
+  public tabCategory = ['cas hospitalisés', 'cas critiques', 'nombre de morts', 'cas soignés' ];
 
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
@@ -29,6 +31,7 @@ export class MapContentComponent implements OnInit {
     this.isRegion = true;
     this.boolIsRegion.emit(true);
     this.getRegInfos();
+    this.selectedCategory = this.tabCategory[0];
   }
 
   dispReg(): void {
@@ -75,7 +78,7 @@ export class MapContentComponent implements OnInit {
   initializeMapDept() {
     for (const index in this.deptList) {
       const depName = this.deptList[index].nom;
-      const nbHospitalized = this.deptList[index].hospitalized;
+      const nbHospitalized = this.getNbCas(index,  this.deptList);
       const color = this.assignColor(nbHospitalized, this.deptList);
 
       // Get the elements starting with <path
@@ -117,7 +120,7 @@ export class MapContentComponent implements OnInit {
   initializeMapReg() {
     for (const index in this.reglist) {
       const RegName = this.reglist[index].nom;
-      const nbHospitalized = this.reglist[index].hospitalized;
+      const nbHospitalized = this.getNbCas(index,  this.reglist);
       const color = this.assignColor(nbHospitalized, this.reglist);
 
       // Get the elements of regions
@@ -204,18 +207,6 @@ export class MapContentComponent implements OnInit {
     this.mousLeaveDept = new Object();
   }
 
-  clickReg(region): void{
-    if(this.isRegion) {
-      this.chosenLocation.emit(region);
-    }
-  }
-
-  clickDept(departement): void{
-    if ( !this.isRegion ) {
-      this.chosenLocation.emit(departement);
-    }
-  }
-
   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
@@ -232,8 +223,9 @@ export class MapContentComponent implements OnInit {
   minNumber(list): number{
     let min = 185555555;
     for ( const element in list ) {
-      if ( min > list[element].hospitalized ){
-        min = list[element].hospitalized;
+      const nbCas = this.getNbCas(element, list);
+      if ( min > nbCas ){
+        min = nbCas;
       }
     }
     return min;
@@ -242,11 +234,49 @@ export class MapContentComponent implements OnInit {
   maxNumber(list): number{
     let max = 0;
     for ( const element in list ) {
-      if ( max < list[element].hospitalized ){
-        max = list[element].hospitalized;
+      const nbCas = this.getNbCas(element, list);
+      if ( max < nbCas ){
+        max = nbCas;
       }
     }
     return max;
+  }
+
+  getNbCas(index, list): number{
+    let nbCas;
+    switch (this.selectedCategory){
+      case 'cas hospitalisés' :
+        nbCas = list[index].hospitalized;
+        break;
+      case 'cas critiques' :
+        nbCas = list[index].criticalCases;
+        break;
+      case 'nombre de morts' :
+        nbCas = list[index].totalDeaths;
+        break;
+      case 'cas soignés' :
+        nbCas = list[index].recoveredCases;
+        break;
+    }
+    return nbCas;
+  }
+
+  clickReg(region): void{
+    if (this.isRegion) {
+      this.chosenLocation.emit(region);
+    }
+  }
+
+  clickDept(departement): void{
+    if ( !this.isRegion ) {
+      this.chosenLocation.emit(departement);
+    }
+  }
+
+  onChangeCategory(category){
+    this.selectedCategory = category;
+    this.dispReg();
+    this.dispDept();
   }
 
 }
