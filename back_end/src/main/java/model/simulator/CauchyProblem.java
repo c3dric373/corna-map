@@ -33,7 +33,7 @@ public class CauchyProblem {
          */
         public Builder addParameter(final Double initialCondition, final Function<List<Double>, Double> derivative) {
             Validate.notNull(initialCondition, "initialCondition null");
-            Validate.notNull(derivative, "derivate null");
+            Validate.notNull(derivative, "derivative null");
             system.add(derivative);
             initialConditions.add(initialCondition);
             return this;
