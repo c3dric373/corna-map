@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class EulerSolver implements DifferentialSolver {
+public class RK4Solver implements DifferentialSolver {
     /**
      *
      * @param cauchyProblem
@@ -39,9 +39,14 @@ public class EulerSolver implements DifferentialSolver {
         nextResult.setTime(result.getTime() + delta);
         int i = 0;
         for(final Function<DerivativeParameters, Double> function : system){
-            Double nextValue = result.getIthState(i++) + delta * function.apply(result);
+            Double nextValue = rk4equation(result, function, delta, i++);
             nextResult.add(nextValue);
         }
         return nextResult;
+    }
+
+    private Double rk4equation(final DerivativeParameters result, final Function<DerivativeParameters, Double> function, final double delta, int i){
+        List<Double> kis = result.rungeKuttaKi(function, delta);
+        return result.getIthState(i) + delta / 6. * (kis.get(0) + 2. * kis.get(1) + 2. * kis.get(2) + kis.get(3));
     }
 }

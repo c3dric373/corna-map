@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EulerSolverTest {
+public class RK4SolverTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -20,7 +20,7 @@ public class EulerSolverTest {
         CauchyProblem cauchyProblem = CauchyProblem.builder()
                 .addParameter(4., T -> 0.)
                 .build();
-        EulerSolver subject = new EulerSolver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(4.);
@@ -41,7 +41,7 @@ public class EulerSolverTest {
                 .addParameter(5., T -> 0.)
                 .addParameter(6., T -> 0.)
                 .build();
-        EulerSolver subject = new EulerSolver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(4.);
@@ -63,7 +63,7 @@ public class EulerSolverTest {
         CauchyProblem cauchyProblem = CauchyProblem.builder()
                 .addParameter(4., T -> 2.)
                 .build();
-        EulerSolver subject = new EulerSolver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(6.);
@@ -91,7 +91,7 @@ public class EulerSolverTest {
                 .addParameter(-20., T -> -21.)
                 .addParameter(24., T -> 5.)
                 .build();
-        EulerSolver subject = new EulerSolver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(-4.);
@@ -113,65 +113,16 @@ public class EulerSolverTest {
     }
 
     @Test
-    public void testStep_exponentialOneIteration_correctResult() {
-
-        // Arrange
-        CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getIthState(0))
-                .build();
-        EulerSolver subject = new EulerSolver();
-        int nbIterations = 1;
-        List<Double> expected = new ArrayList<>(1);
-        expected.add(2.);
-
-        // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
-
-        // Assert
-        assertEquals("mismatch sizes", expected.size(), candidate.size());
-        for(int i = 0; i < expected.size(); ++i){
-            assertEquals("wrong " + i + "-th result", expected.get(i), candidate.get(i), 0.000001);
-        }
-    }
-
-    @Test
-    public void testStep_exponentialTwoIterations_correctResult() {
-
-        // Arrange
-        CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getIthState(0))
-                .build();
-        EulerSolver subject = new EulerSolver();
-        int nbIterations = 2;
-        List<Double> expected = new ArrayList<>(1);
-        expected.add(2.25);
-
-        // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
-
-        // Assert
-        assertEquals("mismatch sizes", expected.size(), candidate.size());
-        for(int i = 0; i < expected.size(); ++i){
-            assertEquals("wrong " + i + "-th result", expected.get(i), candidate.get(i), 0.000001);
-        }
-    }
-
-    @Test
     public void testStep_exponentialHundredIterations_correctResult() {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
                 .addParameter(1., T -> T.getIthState(0))
                 .build();
-        EulerSolver subject = new EulerSolver();
-        int nbIterations = 100;
+        RK4Solver subject = new RK4Solver();
+        int nbIterations = 1000;
         List<Double> expected = new ArrayList<>(1);
-        /*
-        y0 = 1
-        for i in range(100):
-            y0 += 0.01 * y0
-         */
-        expected.add(2.704813829421526);
+        expected.add(2.7182818284590);
 
         // Act
         List<Double> candidate = subject.step(cauchyProblem, nbIterations);
@@ -179,7 +130,7 @@ public class EulerSolverTest {
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
         for(int i = 0; i < expected.size(); ++i){
-            assertEquals("wrong " + i + "-th result", expected.get(i), candidate.get(i), 0.000001);
+            assertEquals("wrong " + i + "-th result", expected.get(i), candidate.get(i), 0.000000001);
         }
     }
 }

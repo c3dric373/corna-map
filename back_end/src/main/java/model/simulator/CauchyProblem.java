@@ -9,29 +9,38 @@ import java.util.function.Function;
 
 @Getter
 public class CauchyProblem {
-    private List<Double> initialConditions; // [f1(t0), f2(t0), ..., fn(t0), t0]
-    private List<Function<List<Double>, Double>> system; // the time is at the end
+    private DerivativeParameters initialConditions;
+    private List<Function<DerivativeParameters, Double>> system;
 
     public static class Builder {
-        private Double time;
-        private final List<Double> initialConditions;
-        private final List<Function<List<Double>, Double>> system;
+        private final DerivativeParameters initialConditions;
+        private final List<Function<DerivativeParameters, Double>> system;
 
         /**
          * TODO
          */
         public Builder() {
+            initialConditions = new DerivativeParameters();
             system = new ArrayList<>();
-            initialConditions = new ArrayList<>();
         }
-        
+
+        /**
+         *
+         * @param time
+         * @return
+         */
+        public Builder setInitialTime(final Double time){
+            initialConditions.setTime(time);
+            return this;
+        }
+
         /**
          * TODO
          * @param initialCondition
          * @param derivative
          * @return
          */
-        public Builder addParameter(final Double initialCondition, final Function<List<Double>, Double> derivative) {
+        public Builder addParameter(final Double initialCondition, final Function<DerivativeParameters, Double> derivative) {
             Validate.notNull(initialCondition, "initialCondition null");
             Validate.notNull(derivative, "derivative null");
             system.add(derivative);
