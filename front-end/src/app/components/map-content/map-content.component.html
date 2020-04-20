@@ -1,15 +1,24 @@
-<div class="map-zone">
+ <div class="map-zone">
 
   <nav class="nav nav-pills">
     <button class="btn btn-light" [ngClass]="{active : isRegion}" (click)="dispReg()">Régions</button>
     <button class="btn btn-light" [ngClass]="{active : !isRegion}" (click)="dispDept()" >Départements</button>
     <div class="btn-group" ngbDropdown role="group">
+      <!-- Select category -->
       <button class="btn btn-outline-secondary" ngbDropdownToggle>{{selectedCategory}}</button>
       <div class="dropdown-menu" ngbDropdownMenu>
         <button ngbDropdownItem *ngFor="let category of tabCategory" (click)="onChangeCategory(category)">{{category}}</button>
       </div>
     </div>
+    <!-- Select Date -->
+    <div class="btn-group" ngbDropdown role="group">
+      <button class="btn btn-outline-secondary" ngbDropdownToggle>select date</button>
+      <div class="dropdown-menu" ngbDropdownMenu>
+        <ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
+      </div>
+    </div>
   </nav>
+
 
   <div class="carte">
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 667 578" xml:space="preserve">
