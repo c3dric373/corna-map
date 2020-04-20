@@ -17,7 +17,7 @@ public class DayDataController {
 
   @RequestMapping(value = "/testday", method = RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String index(@RequestParam("paramName") String param) throws IOException {
+  String index(@RequestParam("paramName") final  String param) throws IOException {
     ProjectDataWrapperImpl testScrapper = new ProjectDataWrapperImpl();
     ProjectDataImpl test = testScrapper.getCurrentAllDataFrance();
 
