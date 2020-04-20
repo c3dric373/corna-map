@@ -14,6 +14,7 @@ import { LeftSimulationComponent } from './left-simulation/left-simulation.compo
 import { MapContentComponent } from './map-content/map-content.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
     HttpClientModule,
     AppRoutingModule,
     FontAwesomeModule,
+    NgbDropdownModule,
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,12 @@
   <nav class="nav nav-pills">
     <button class="btn btn-light" [ngClass]="{active : isRegion}" (click)="dispReg()">Régions</button>
     <button class="btn btn-light" [ngClass]="{active : !isRegion}" (click)="dispDept()" >Départements</button>
+    <div class="btn-group" ngbDropdown role="group">
+      <button class="btn btn-outline-primary" ngbDropdownToggle>{{selectedCategory}}</button>
+      <div class="dropdown-menu" ngbDropdownMenu>
+        <button ngbDropdownItem *ngFor="let category of tabCategory" (click)="onChangeCategory(category)">{{category}}</button>
+      </div>
+    </div>
   </nav>
 
   <div class="carte">
