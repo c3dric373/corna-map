@@ -207,24 +207,6 @@ export class MapContentComponent implements OnInit {
     this.mousLeaveDept = new Object();
   }
 
-  clickReg(region): void{
-    if(this.isRegion) {
-      this.chosenLocation.emit(region);
-    }
-  }
-
-  clickDept(departement): void{
-    if ( !this.isRegion ) {
-      this.chosenLocation.emit(departement);
-    }
-  }
-
-  onChangeCategory(category){
-    this.selectedCategory = category;
-    this.dispReg();
-    this.dispDept();
-  }
-
   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
@@ -277,6 +259,24 @@ export class MapContentComponent implements OnInit {
         break;
     }
     return nbCas;
+  }
+
+  clickReg(region): void{
+    if (this.isRegion) {
+      this.chosenLocation.emit(region);
+    }
+  }
+
+  clickDept(departement): void{
+    if ( !this.isRegion ) {
+      this.chosenLocation.emit(departement);
+    }
+  }
+
+  onChangeCategory(category){
+    this.selectedCategory = category;
+    this.dispReg();
+    this.dispDept();
   }
 
 }
