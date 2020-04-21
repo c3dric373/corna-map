@@ -17,10 +17,10 @@ export class MapContentComponent implements OnInit {
   private rgbYellow = [244, 165, 130];
   private rgbRed = [178, 24, 43];
   // list of function used in initializeMapReg and initializeMapDept
-  private mousOverReg = new Object();
-  private mousLeaveReg = new Object();
-  private mousOverDept = new Object();
-  private mousLeaveDept = new Object();
+  private mousOverReg;
+  private mousLeaveReg;
+  private mousOverDept;
+  private mousLeaveDept;
   // Json of the region
   private reglist;
   // Json of the Dept
@@ -40,6 +40,10 @@ export class MapContentComponent implements OnInit {
   constructor(private mapService: MapService, calendar: NgbCalendar) {
     this.date = calendar.getToday();
     this.model = calendar.getToday();
+    this.mousOverReg = new Object();
+    this.mousOverDept = new Object();
+    this.mousLeaveDept = new Object();
+    this.mousLeaveReg = new Object();
   }
 
   ngOnInit(): void {
@@ -223,6 +227,7 @@ export class MapContentComponent implements OnInit {
     this.mousLeaveDept = new Object();
   }
 
+  // Assign a gradient of color depending on the number provided in param
   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
@@ -236,6 +241,7 @@ export class MapContentComponent implements OnInit {
     return color;
   }
 
+  // get the min number of the list
   minNumber(list): number{
     let min = 185555555;
     for ( const element in list ) {
@@ -247,6 +253,7 @@ export class MapContentComponent implements OnInit {
     return min;
   }
 
+  // Get the max number of the list
   maxNumber(list): number{
     let max = 0;
     for ( const element in list ) {
@@ -258,6 +265,9 @@ export class MapContentComponent implements OnInit {
     return max;
   }
 
+  // Get the number of case depending of the selected category
+  // ex : if selectedCategory = 'cas hospitalisé',
+  //      then we need to get the number of hospitalized from the list
   getNbCas(index, list): number{
     let nbCas;
     switch (this.selectedCategory){
@@ -291,8 +301,14 @@ export class MapContentComponent implements OnInit {
 
   onChangeCategory(category){
     this.selectedCategory = category;
-    this.dispReg();
-    this.dispDept();
+    if (this.isRegion) {
+      this.removeDeptListener();
+      this.initializeMapReg();
+    } else {
+      this.removeRegListener();
+      this.initializeMapDept();
+    }
+
   }
 
   onDateSelect(date){
