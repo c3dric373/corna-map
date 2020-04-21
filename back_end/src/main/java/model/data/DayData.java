@@ -1,5 +1,8 @@
 package model.data;
 
+import lombok.Getter;
+import org.apache.commons.lang.Validate;
+
 import java.time.LocalDate;
 
 /**
@@ -7,6 +10,7 @@ import java.time.LocalDate;
  * information about the COVID-19 cases for a given day and region, county in
  * france or france itself.
  */
+@Getter
 public class DayData {
   /**
    * Default constructor of DayData class.
@@ -93,16 +97,42 @@ public class DayData {
    */
   public DayData(final TypeLocalisation typeNew, final LocalDate dateNew,
                  final String idNew,
-                 final String nomNew, final Integer totalCasesNew,
-                 final Integer ephadCasesNew,
-                 final Integer ephadConfirmedCasesNew,
-                 final Integer ephadPossibleCasesNew,
-                 final Integer totalDeathsNew,
-                 final Integer totalEphadDeathsNew,
-                 final Integer criticalCasesNew,
-                 final Integer hospitalizedNew,
-                 final Integer recoveredCasesNew,
-                 final Integer totalTestsNew) {
+                 final String nomNew, final int totalCasesNew,
+                 final int ephadCasesNew,
+                 final int ephadConfirmedCasesNew,
+                 final int ephadPossibleCasesNew,
+                 final int totalDeathsNew,
+                 final int totalEphadDeathsNew,
+                 final int criticalCasesNew,
+                 final int hospitalizedNew,
+                 final int recoveredCasesNew,
+                 final int totalTestsNew) {
+    Validate.notNull(typeNew, "typeNew null");
+    Validate.notNull(dateNew, "dateNew null");
+    Validate.notNull(idNew, "idNew null");
+    Validate.notEmpty(idNew, "idNew empty");
+    Validate.notNull(nomNew, "nomNew null");
+    Validate.notEmpty(nomNew, "nomNew empty");
+    Validate.isTrue(ephadCasesNew >= 0,
+      "ephadCasesNew negative");
+    Validate.isTrue(totalCasesNew >= 0,
+      "totalCasesNew negative");
+    Validate.isTrue(ephadConfirmedCasesNew >= 0,
+      "ephadConfirmedCasesNew negative");
+    Validate.isTrue(totalDeathsNew >= 0,
+      "totalDeathsNew negative");
+    Validate.isTrue(ephadPossibleCasesNew >= 0,
+      "ephadPossibleCasesNew negative");
+    Validate.isTrue(totalEphadDeathsNew >= 0,
+      "totalEphadDeathsNew negative");
+    Validate.isTrue(criticalCasesNew >= 0,
+      "criticalCasesNew negative");
+    Validate.isTrue(hospitalizedNew >= 0,
+      "hospitalizedNew negative");
+    Validate.isTrue(recoveredCasesNew >= 0,
+      "recoveredCasesNew negative");
+    Validate.isTrue(totalTestsNew >= 0,
+      "totalTestsNew negative");
     this.id = idNew;
     this.nom = nomNew;
     this.criticalCases = criticalCasesNew;

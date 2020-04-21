@@ -1,14 +1,15 @@
 package model.project;
 
+import lombok.Getter;
 import model.data.DayData;
-import model.data.TypeLocalisation;
 import model.io.DataScrapperImpl;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class acts as a wrapper for the {@link ProjectData} object. It offers
@@ -18,99 +19,75 @@ import java.time.format.DateTimeFormatter;
  * project return a value which will be passed on to  the View about those
  * changes.
  */
+@Getter
 public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
-  @Override
-  public ProjectDataImpl getCurrentAllDataFrance() throws IOException {
-    final int dateCsvIndex = 0;
-    final int typeIndex = 1;
-    final int minusDays = 3;
-    final String pathToData = System.getProperty("user.dir")
-      + "/src/main"
-      + "/resources"
-      + "/output.csv";
-    ProjectDataImpl rawData = new ProjectDataImpl();
-    DataScrapperImpl dataScrapper = new DataScrapperImpl();
-    dataScrapper.getCurrentDataFromWeb();
-    BufferedReader br = new BufferedReader(new FileReader(
-      pathToData));
-    String line;
-    while ((line = br.readLine()) != null) {
-      String[] row = line.split(",");
-      if (row[dateCsvIndex].equals("date")) {
-        continue;
-      }
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-      LocalDate date = LocalDate.parse(row[dateCsvIndex]);
-      LocalDate today = LocalDate.now().minusDays(minusDays);
-      if ((row[typeIndex].equals("pays") || row[typeIndex].equals(
-        "departement") || row[typeIndex].equals("region"))
-        && date.equals(today)) {
-        extraction(rawData, row);
-      }
-
-    }
-    return rawData;
-  }
+  /**
+   * The {@link ProjectData} this wrapper manages.
+   */
+  private ProjectData projectData = new ProjectDataImpl();
 
   /**
-   * Extract Data.
-   *
-   * @param rawData the projectData we want to create.
-   * @param row     the data to add to the project.
+   * Id for france to access data.
    */
-  private void extraction(final ProjectDataImpl rawData, final String[] row) {
-    final int dateCsvIndex = 0;
-    final int typeIndex = 1;
-    final int idIndex = 2;
-    final int nameIndex = 3;
-    final int totalCasesIndex = 4;
-    final int ephadCasesIndex = 5;
-    final int ephadConfirmedCasesIndex = 6;
-    final int ephadPossibleCasesIndex = 7;
-    final int totalDeathsIndex = 8;
-    final int totalEphadDeathsIndex = 9;
-    final int criticalCasesIndex = 10;
-    final int hospitalizedIndex = 11;
-    final int recoveredCasesIndex = 12;
-    final int totalTestsIndex = 13;
-    final int maxLength = 6;
-    for (int i = 0; i < row.length; i++) {
-      if (row[i].equals("")) {
-        row[i] = "0";
-      }
+  private static final String FRA = "FRA";
 
-    }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-    LocalDate date = LocalDate.parse(row[dateCsvIndex]);
-    if (row.length <= maxLength) {
-      return;
-    }
-    DayData dayData =
-      new DayData(TypeLocalisation.valueOf(row[typeIndex].toUpperCase()), date,
-        row[idIndex], row[nameIndex], Integer.parseInt(row[totalCasesIndex]),
-        Integer.parseInt(row[ephadCasesIndex]),
-        Integer.parseInt(row[ephadConfirmedCasesIndex]),
-        Integer.parseInt(row[ephadPossibleCasesIndex]),
-        Integer.parseInt(row[totalDeathsIndex]),
-        Integer.parseInt(row[totalEphadDeathsIndex]),
-        Integer.parseInt(row[criticalCasesIndex]),
-        Integer.parseInt(row[hospitalizedIndex]),
-        Integer.parseInt(row[recoveredCasesIndex]),
-        Integer.parseInt(row[totalTestsIndex]));
-    switch (row[typeIndex]) {
-      case "pays":
-        rawData.getFrance().add(dayData);
-        break;
-      case "departement":
-        rawData.getCounty().add(dayData);
-        break;
-      case "region":
-        rawData.getRegion().add(dayData);
-        break;
-      default:
-        break;
-    }
+  @Override
+  public void getCurrentAllDataFrance() throws IOException {
+    final DataScrapperImpl dataScrapper = new DataScrapperImpl();
+    dataScrapper.getCurrentDataFromWeb();
+    dataScrapper.extract(this);
+  }
 
+  @Override
+  public void addLocation(final String location, final String date,
+                          final DayData dayData) {
+    projectData.getLocations().get(location).put(date, dayData);
+  }
+
+  @Override
+  public DayData infosFrance(final String date) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocations();
+    final Map<String, DayData> tmp = localisations.get(FRA);
+    return tmp.get(date);
+  }
+
+  @Override
+  public List<DayData> historyLocalisation(final String name) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocations();
+    final Map<String, DayData> tmp = localisations.get(name);
+    return new ArrayList<>(tmp.values());
+  }
+
+  @Override
+  public DayData infosLocalisation(final String name, final String date) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocations();
+    final Map<String, DayData> tmp = localisations.get(name);
+    return tmp.get(date);
+  }
+
+  @Override
+  public List<DayData> infosRegion(final String date) {
+    final Map<String, Map<String, DayData>> locations =
+      projectData.getLocations().entrySet().stream().filter(map -> map.getKey()
+        .contains("REG")).
+        collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    final List<DayData> res = new ArrayList<>(locations.size());
+    for (Map<String, DayData> map : locations.values()) {
+      res.add(map.get(date));
+    }
+    return res;
+  }
+
+  @Override
+  public void addKey(final String key) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocations();
+    localisations.computeIfAbsent(key, k -> new HashMap<>());
   }
 }
+
+
