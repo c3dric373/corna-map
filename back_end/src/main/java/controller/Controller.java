@@ -35,20 +35,32 @@ public class Controller {
     return gson.toJson(wrapper.infosFrance(date));
   }
 
-  @RequestMapping(value = "/map/infosRegion", method = RequestMethod.GET,
+  @RequestMapping(value = {"/map/infosRegion", "/map/infosDept"}, method =
+    RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String infosRegion(@RequestParam("name") final String name,
-                     @RequestParam(value = "date", required = false) final String date)
+  String infosRegion(@RequestParam("date") final String date,
+                     @RequestParam(value = "name", required = false) final String name)
     throws IOException {
     ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
     wrapper.getCurrentAllDataFrance();
 
     Gson gson = new Gson();
-    if (date == null) {
-      return gson.toJson(wrapper.infosLocalisation(name));
+    if (name == null) {
+      return gson.toJson(wrapper.infosRegion(date));
     } else {
-      return gson.toJson(wrapper.infosLocalisation(date, name));
+      return gson.toJson(wrapper.infosLocalisation(name, date));
     }
+  }
+
+  @RequestMapping(value = {"/historique"}, method =
+    RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  String history(@RequestParam("location") final String location)
+    throws IOException {
+    ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
+    wrapper.getCurrentAllDataFrance();
+    Gson gson = new Gson();
+    return gson.toJson(wrapper.historyLocalisation(location));
   }
 
 }

@@ -30,9 +30,12 @@ public interface ProjectDataWrapper {
 
   DayData infosFrance(final String date);
 
-  List<DayData> infosLocalisation(final String name);
+  List<DayData> historyLocalisation(final String name);
 
   DayData infosLocalisation(final String name, final String date);
+
+  List<DayData> infosRegion(final String date);
+
 
   void addKey(final String key);
 }

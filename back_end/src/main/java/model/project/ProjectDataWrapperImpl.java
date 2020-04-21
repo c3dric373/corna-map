@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class acts as a wrapper for the {@link ProjectData} object. It offers
@@ -30,7 +31,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
     dataScrapper.getCurrentDataFromWeb();
     dataScrapper.extract(this);
-    int i = 0;
   }
 
   @Override
@@ -48,11 +48,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public List<DayData> infosLocalisation(final String name) {
+  public List<DayData> historyLocalisation(final String name) {
     final Map<String, Map<String, DayData>> localisations =
       projectData.getLocalisations();
     final Map<String, DayData> tmp = localisations.get(name);
-    System.out.println(tmp.values());
     return new ArrayList<>(tmp.values());
   }
 
@@ -62,6 +61,19 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       projectData.getLocalisations();
     final Map<String, DayData> tmp = localisations.get(name);
     return tmp.get(date);
+  }
+
+  @Override
+  public List<DayData> infosRegion(final String date) {
+    final Map<String, Map<String, DayData>> locations =
+      projectData.getLocalisations().entrySet().stream().filter(map -> map.getKey()
+        .contains("REG")).
+    collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+   final List<DayData> res = new ArrayList<>(locations.size());
+   for (Map<String,DayData> map : locations.values()){
+     res.add(map.get(date));
+   }
+    return res;
   }
 
   @Override
