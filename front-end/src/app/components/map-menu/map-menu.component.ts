@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-map-menu',
@@ -10,6 +11,7 @@ export class MapMenuComponent implements OnInit {
   public isRegion: boolean;
   public loading: boolean;
   public isOnlyMap = false;
+  public date: NgbDate;
 
   constructor() {}
 
@@ -31,5 +33,9 @@ export class MapMenuComponent implements OnInit {
 
   setOnlyMap(isMap: boolean) {
     this.isOnlyMap = isMap;
+  }
+
+  setDate(actualDate: NgbDate) {
+    this.date = actualDate;
   }
 }

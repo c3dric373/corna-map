@@ -40,6 +40,7 @@ export class MapContentComponent implements OnInit {
   @Output() boolIsRegion = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() isOnlyMap = new EventEmitter<boolean>();
+  @Output() emitDate = new EventEmitter<NgbDate>();
 
   constructor(private mapService: MapService, calendar: NgbCalendar) {
     this.date = calendar.getToday();
@@ -58,6 +59,7 @@ export class MapContentComponent implements OnInit {
     this.boolIsRegion.emit(true);
     this.getRegInfos();
     this.selectedCategory = this.tabCategory[0];
+    this.emitDate.emit(this.date);
   }
 
   dispReg(): void {
@@ -84,7 +86,7 @@ export class MapContentComponent implements OnInit {
   }
 
   getRegInfos() {
-    this.mapService.getMapRegion().subscribe(
+    this.mapService.getMapRegion(this.date).subscribe(
       data => {
         this.reglist = data;
         this.initializeMapReg();
@@ -93,7 +95,7 @@ export class MapContentComponent implements OnInit {
   }
 
   getDeptInfos() {
-    this.mapService.getMapDept().subscribe(
+    this.mapService.getMapDept(this.date).subscribe(
       data => {
         this.deptList = data;
         this.initializeMapDept();
@@ -318,6 +320,7 @@ export class MapContentComponent implements OnInit {
 
   onDateSelect(date){
     this.date = date;
+    this.emitDate.emit(this.date);
   }
 
   onClickExtend(): void {

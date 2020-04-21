@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-side-bar',
@@ -7,39 +8,23 @@ import {MapService} from '../../service/map/map.service';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent implements OnInit {
+  donnees ;
+  @Input() date: NgbDate;
 
   constructor(private mapService: MapService) {}
 
-  nbCC = 548;
-  nbG = 444;
-  nbH = 128;
-  nbD = 185;
-
-  donnees ;
 
   ngOnInit(): void {
-    this.essaiMap();
+    this.getInfosFrance();
   }
 
-  essaiMap() {
-    this.mapService.getMap().subscribe(
+  getInfosFrance() {
+    this.mapService.getInfosFrance(this.date).subscribe(
       data => {
         this.donnees = data;
         console.log(data);
       }
     );
 }
-
-  essaiMapRegion() {
-    this.mapService.getMapRegion().subscribe(
-      data => {
-        this.donnees = data;
-        console.log(data);
-      }
-    );
-
-
-  }
-
 
 }
