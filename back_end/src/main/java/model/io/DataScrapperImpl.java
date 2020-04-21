@@ -17,7 +17,6 @@ import java.util.Objects;
  * the web.
  */
 public class DataScrapperImpl implements DataScrapper {
-
   /**
    * Url from which we will pull data.
    */
@@ -71,16 +70,11 @@ public class DataScrapperImpl implements DataScrapper {
       if (row[dateCsvIndex].equals("date")) {
         continue;
       }
-      i++;
-      if (i== 150){
-        int j = 0;
-      }
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
       LocalDate date = LocalDate.parse(row[dateCsvIndex]);
       LocalDate today = LocalDate.now().minusDays(minusDays);
       if ((row[typeIndex].equals("pays") || row[typeIndex].equals(
-        "departement") || row[typeIndex].equals("region"))
-        && date.equals(today)) {
+        "departement") || row[typeIndex].equals("region"))) {
         extraction(projectDataWrapper, row);
       }
 

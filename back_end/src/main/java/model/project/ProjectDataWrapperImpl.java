@@ -30,6 +30,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
     dataScrapper.getCurrentDataFromWeb();
     dataScrapper.extract(this);
+    int i = 0;
   }
 
   @Override
