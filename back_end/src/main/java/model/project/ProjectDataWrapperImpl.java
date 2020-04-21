@@ -88,7 +88,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
             projectData.getLocations().entrySet().stream().filter(
                     map -> map.getKey()
                     .contains("DEP")).
-                    collect(Collectors.toMap(Map.Entry::getKey, 
+                    collect(Collectors.toMap(Map.Entry::getKey,
                             Map.Entry::getValue));
     final List<DayData> res = new ArrayList<>(locations.size());
     for (Map<String, DayData> map : locations.values()) {
