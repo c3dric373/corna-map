@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-map-content',
@@ -11,8 +11,11 @@ import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 export class MapContentComponent implements OnInit {
   // Icon
   calendarIcon = faCalendarAlt;
+  expand = faExpandAlt;
+  compress = faCompressAlt;
 
   isRegion: boolean;
+  onlyMap: boolean;
   // Color for gradient
   private rgbYellow = [244, 165, 130];
   private rgbRed = [178, 24, 43];
@@ -36,6 +39,7 @@ export class MapContentComponent implements OnInit {
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
+  @Output() isOnlyMap = new EventEmitter<boolean>();
 
   constructor(private mapService: MapService, calendar: NgbCalendar) {
     this.date = calendar.getToday();
@@ -44,9 +48,11 @@ export class MapContentComponent implements OnInit {
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
     this.mousLeaveReg = new Object();
+    this.onlyMap = false;
   }
 
   ngOnInit(): void {
+    this.isOnlyMap.emit(false);
     this.loading.emit(true);
     this.isRegion = true;
     this.boolIsRegion.emit(true);
@@ -299,7 +305,7 @@ export class MapContentComponent implements OnInit {
     }
   }
 
-  onChangeCategory(category){
+  onChangeCategory(category): void{
     this.selectedCategory = category;
     if (this.isRegion) {
       this.removeDeptListener();
@@ -308,11 +314,15 @@ export class MapContentComponent implements OnInit {
       this.removeRegListener();
       this.initializeMapDept();
     }
-
   }
 
   onDateSelect(date){
     this.date = date;
+  }
+
+  onClickExtend(): void {
+    this.onlyMap = ! this.onlyMap;
+    this.isOnlyMap.emit(this.onlyMap);
   }
 
 }

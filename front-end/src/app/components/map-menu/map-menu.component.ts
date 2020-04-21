@@ -9,6 +9,7 @@ export class MapMenuComponent implements OnInit {
   public location: string;
   public isRegion: boolean;
   public loading: boolean;
+  public isOnlyMap = false;
 
   constructor() {}
 
@@ -26,5 +27,9 @@ export class MapMenuComponent implements OnInit {
 
   setLoading(loading: boolean) {
     this.loading = loading;
+  }
+
+  setOnlyMap(isMap: boolean) {
+    this.isOnlyMap = isMap;
   }
 }
