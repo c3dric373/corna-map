@@ -6,6 +6,7 @@ import model.data.DayData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class containing all the data of the model. Given a Day we have the data
@@ -29,5 +30,17 @@ public class ProjectDataImpl {
    * Data about corona for france.
    */
   private List<DayData> france = new ArrayList<>();
+
+  /**
+   * This map will store for each region the data for each date.
+   * The first key is the region, the second one the date.
+   */
+  private Map<String,Map<String,DayData>> localisations;
+
+  /**
+   * This map will store for each date the data about all regions, county's
+   * and france.
+   */
+  private  Map<String,List<List<DayData>>> dates;
 
 }

@@ -16,4 +16,6 @@ public interface DataScrapper {
    */
   void getCurrentDataFromWeb() throws IOException;
 
+  Object extract() throws IOException;
+
 }
