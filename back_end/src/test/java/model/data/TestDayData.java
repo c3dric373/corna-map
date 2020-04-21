@@ -7,7 +7,7 @@ import org.junit.rules.ExpectedException;
 
 import java.time.LocalDate;
 
-public class DayDataTest {
+public class TestDayData {
 
   private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
   private final static LocalDate DATE = LocalDate.ofEpochDay(4);
