@@ -15,7 +15,8 @@ import { MapContentComponent } from './map-content/map-content.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
 import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,9 @@ import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
     FontAwesomeModule,
     NgbDropdownModule,
     NgbModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatSliderModule,
   ],
   bootstrap: [AppComponent]
 })

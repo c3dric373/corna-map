@@ -1,7 +1,7 @@
 <nav id="sidebar">
   <div class="sidebar-header">
 
-    <h4>France</h4>
+    <h2>France</h2>
 
     <div class="container" id="buttons1">
       <button type="button" class="btn btn-outline-secondary" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPause"></fa-icon>
@@ -12,6 +12,7 @@
       </button>
     </div>
 
+    <h4>Mèsures du gouvernement</h4>
     <nav  class="nav nav-pills" >
       <div class="btn-group" ngbDropdown role="group" >
         <!-- Select category -->
@@ -26,27 +27,40 @@
     <div class="input-group mb-3" style=" margin-top: 3%" >
       <div class="input-group-text">
           <input  type="checkbox" (click)=onChangeBorder()>
-          <span style="color:black; padding: 0%">Fermeture des frontières</span>
+          <span style=" padding: 0%">Fermeture des frontières</span>
       </div>
           <div class="input-group-text">
           <input  type="checkbox" (click)=onChangeShops()>
-          <span style="color:black ; padding: 0%">Fermeture des commerces</span>
+          <span style=" padding: 0%">Fermeture des commerces</span>
       </div>
       <div class="input-group-text">
         <input  type="checkbox" (click)=onChangeHosp()>
-        <span style="color:black ; padding: 0%">Répartition des hospitalisés</span>
+        <span style=" padding: 0%">Répartition des hospitalisés</span>
       </div>
     </div>
 
 
     <div class="container">
       <span>Port du masque</span>
-      <div class="btn-group btn-group" role="group" >
+      <div id="masque" class="btn-group btn-group" role="group" >
         <button id='0' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(0)">0-30</button>
         <button id='1' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(1)">31-60</button>
         <button id='2' type="button" class="btn btn-secondary"style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(2)">60+</button>
       </div>
-    </div>
+      <h4>Population</h4>
+      <span>Respect du confinement</span>
+      <mat-slider
+        thumbLabel
+        [displayWith]="onChangeConfinement"
+        step="5" tickInterval="20"
+        min="0"
+        max="100"></mat-slider>
+
+  </div>
+
+
+
+
 
   </div>
 
