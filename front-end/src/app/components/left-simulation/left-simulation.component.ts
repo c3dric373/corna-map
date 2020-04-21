@@ -19,11 +19,15 @@ export class LeftSimulationComponent implements OnInit {
   public selectedConfinement: string;
   public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
   public borders;
+  public shops;
+  public hosp;
   public mask = [false, false, false];
 
     ngOnInit(): void {
       this.selectedConfinement = this.tabConfinement[0];
       this.borders = false;
+      this.shops = false;
+      this.hosp = false;
   }
   onChangeCategory(category){
     this.selectedConfinement = category;
@@ -33,6 +37,16 @@ export class LeftSimulationComponent implements OnInit {
   onChangeBorder(){
       this.borders = !this.borders;
       console.log('frontières fermées :' + this.borders);
+  }
+
+  onChangeShops(){
+    this.shops = !this.shops;
+    console.log('Commerces fermés :' + this.shops);
+  }
+
+  onChangeHosp(){
+    this.hosp = !this.hosp;
+    console.log('Répartition hospitalisés :' + this.hosp);
   }
 
   onChangeMask(int){

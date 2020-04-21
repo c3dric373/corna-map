@@ -23,15 +23,21 @@
       </div>
     </nav>
 
-    <div class="input-group mb-3" >
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input id='border' type="checkbox" (click)=onChangeBorder()>
-          <span style="color:black">Fermeture des frontières</span>
-        </div>
+    <div class="input-group mb-3" style=" margin-top: 3%" >
+      <div class="input-group-text">
+          <input  type="checkbox" (click)=onChangeBorder()>
+          <span style="color:black; padding: 0%">Fermeture des frontières</span>
       </div>
-
+          <div class="input-group-text">
+          <input  type="checkbox" (click)=onChangeShops()>
+          <span style="color:black ; padding: 0%">Fermeture des commerces</span>
+      </div>
+      <div class="input-group-text">
+        <input  type="checkbox" (click)=onChangeHosp()>
+        <span style="color:black ; padding: 0%">Répartition des hospitalisés</span>
+      </div>
     </div>
+
 
     <div class="container">
       <span>Port du masque</span>
