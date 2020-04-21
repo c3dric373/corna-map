@@ -1,5 +1,7 @@
 package model.data;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 
 /**
@@ -7,6 +9,7 @@ import java.time.LocalDate;
  * information about the COVID-19 cases for a given day and region, county in
  * france or france itself.
  */
+@Getter
 public class DayData {
   /**
    * Default constructor of DayData class.
@@ -93,16 +96,16 @@ public class DayData {
    */
   public DayData(final TypeLocalisation typeNew, final LocalDate dateNew,
                  final String idNew,
-                 final String nomNew, final Integer totalCasesNew,
-                 final Integer ephadCasesNew,
-                 final Integer ephadConfirmedCasesNew,
-                 final Integer ephadPossibleCasesNew,
-                 final Integer totalDeathsNew,
-                 final Integer totalEphadDeathsNew,
-                 final Integer criticalCasesNew,
-                 final Integer hospitalizedNew,
-                 final Integer recoveredCasesNew,
-                 final Integer totalTestsNew) {
+                 final String nomNew, final int totalCasesNew,
+                 final int ephadCasesNew,
+                 final int ephadConfirmedCasesNew,
+                 final int ephadPossibleCasesNew,
+                 final int totalDeathsNew,
+                 final int totalEphadDeathsNew,
+                 final int criticalCasesNew,
+                 final int hospitalizedNew,
+                 final int recoveredCasesNew,
+                 final int totalTestsNew) {
     this.id = idNew;
     this.nom = nomNew;
     this.criticalCases = criticalCasesNew;

@@ -20,4 +20,6 @@ public interface ProjectDataWrapper {
    */
   ProjectDataImpl getCurrentAllDataFrance() throws IOException;
 
+  ProjectData getProjectData();
+
 }

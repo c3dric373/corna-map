@@ -1,5 +1,6 @@
 package model.project;
 
+import lombok.Getter;
 import model.data.DayData;
 import model.data.TypeLocalisation;
 import model.io.DataScrapperImpl;
@@ -18,7 +19,10 @@ import java.time.format.DateTimeFormatter;
  * project return a value which will be passed on to  the View about those
  * changes.
  */
+@Getter
 public class ProjectDataWrapperImpl implements ProjectDataWrapper {
+
+  ProjectData projectData;
 
   @Override
   public ProjectDataImpl getCurrentAllDataFrance() throws IOException {
