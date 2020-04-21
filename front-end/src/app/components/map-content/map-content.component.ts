@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
+import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-map-content',
@@ -7,6 +8,7 @@ import {MapService} from '../../service/map/map.service';
   styleUrls: ['./map-content.component.css']
 })
 export class MapContentComponent implements OnInit {
+  public date: NgbDateStruct;
   isRegion: boolean;
   // private tabColor = [ 'rgb(244,165,130)', 'rgb(214,96,77)', 'rgb(178,24,43)'];
   private rgbYellow = [244, 165, 130];
@@ -277,6 +279,10 @@ export class MapContentComponent implements OnInit {
     this.selectedCategory = category;
     this.dispReg();
     this.dispDept();
+  }
+
+  onDateSelect(date){
+    this.date = date;
   }
 
 }
