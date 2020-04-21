@@ -1,9 +1,13 @@
 package model.project;
 
 import lombok.Getter;
+import model.data.DayData;
 import model.io.DataScrapperImpl;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class acts as a wrapper for the {@link ProjectData} object. It offers
@@ -16,13 +20,51 @@ import java.io.IOException;
 @Getter
 public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
-  ProjectData projectData;
+  ProjectDataImpl projectData = new ProjectDataImpl();
+
+  private static final String FRA = "FRA";
 
   @Override
-  public ProjectDataImpl getCurrentAllDataFrance() throws IOException {
+  public void getCurrentAllDataFrance() throws IOException {
     DataScrapperImpl dataScrapper = new DataScrapperImpl();
     dataScrapper.getCurrentDataFromWeb();
-    return dataScrapper.extract();
+    dataScrapper.extract(this);
   }
+
+  @Override
+  public void addLocalisation(final String localisation, final String date,
+                              final DayData dayData) {
+    Map<String, Map<String, DayData>> localisations =
+      projectData.getLocalisations();
+    Map<String, DayData> info = localisations.get(localisation);
+    info.put(date, dayData);
+  }
+
+  @Override
+  public DayData infosFrance(final String date) {
+    Map<String, Map<String, DayData>> localisations =
+      projectData.getLocalisations();
+    Map<String, DayData> tmp = localisations.get(FRA);
+    return tmp.get(date);
+  }
+
+  @Override
+  public List<DayData> infosRegion(String name) {
+    return null;
+  }
+
+  @Override
+  public DayData infosRegion(String name, String date) {
+    return null;
+  }
+
+  @Override
+  public void addKey(String key) {
+    Map<String, Map<String, DayData>> localisations =
+      projectData.getLocalisations();
+    localisations.put(key, new HashMap<>());
+  }
+
 }
+
 

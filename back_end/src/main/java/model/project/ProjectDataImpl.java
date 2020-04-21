@@ -3,8 +3,10 @@ package model.project;
 import lombok.Getter;
 import lombok.Setter;
 import model.data.DayData;
+import model.data.LocalisationData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,15 +34,24 @@ public class ProjectDataImpl {
   private List<DayData> france = new ArrayList<>();
 
   /**
-   * This map will store for each region the data for each date.
+   * This map will store for each region or county the data for each date.
    * The first key is the region, the second one the date.
    */
-  private Map<String,Map<String,DayData>> localisations;
+  private Map<String, Map<String, DayData>> localisations = new HashMap<>();
 
   /**
    * This map will store for each date the data about all regions, county's
    * and france.
    */
-  private  Map<String,List<List<DayData>>> dates;
+  private Map<String, LocalisationData> datesRegion;
+
+  /**
+   * This map will store for each date the data about all county's
+   * and france.
+   */
+  private Map<String, LocalisationData> datesCounty;
+
+  ProjectDataImpl() {
+  }
 
 }

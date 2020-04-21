@@ -1,6 +1,9 @@
 package model.project;
 
+import model.data.DayData;
+
 import java.io.IOException;
+import java.util.List;
 
 /**
  * This class acts as a wrapper for the {@link ProjectData} object. It offers
@@ -18,8 +21,18 @@ public interface ProjectDataWrapper {
    * @return the data.
    * @throws IOException read error.
    */
-  ProjectDataImpl getCurrentAllDataFrance() throws IOException;
+  void getCurrentAllDataFrance() throws IOException;
 
-  ProjectData getProjectData();
+  //ProjectData getProjectData();
 
+  void addLocalisation(final String localisation, final String date,
+                       final DayData dayData);
+
+  DayData infosFrance(final String date);
+
+  List<DayData> infosRegion(final String name);
+
+  DayData infosRegion(final String name, final String date);
+
+  void addKey(final String key);
 }

@@ -2,7 +2,7 @@ package model.io;
 
 import model.data.DayData;
 import model.data.TypeLocalisation;
-import model.project.ProjectDataImpl;
+import model.project.ProjectDataWrapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -54,7 +54,7 @@ public class DataScrapperImpl implements DataScrapper {
 
   }
 
-  public ProjectDataImpl extract() throws IOException {
+  public void extract(final ProjectDataWrapper projectDataWrapper) throws IOException {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
     final int minusDays = 3;
@@ -62,7 +62,6 @@ public class DataScrapperImpl implements DataScrapper {
       + "/src/main"
       + "/resources"
       + "/output.csv";
-    ProjectDataImpl rawData = new ProjectDataImpl();
     BufferedReader br = new BufferedReader(new FileReader(
       pathToData));
     String line;
@@ -77,11 +76,10 @@ public class DataScrapperImpl implements DataScrapper {
       if ((row[typeIndex].equals("pays") || row[typeIndex].equals(
         "departement") || row[typeIndex].equals("region"))
         && date.equals(today)) {
-        extraction(rawData, row);
+        extraction(projectDataWrapper, row);
       }
 
     }
-    return rawData;
   }
 
   /**
@@ -90,7 +88,8 @@ public class DataScrapperImpl implements DataScrapper {
    * @param rawData the projectData we want to create.
    * @param row     the data to add to the project.
    */
-  private void extraction(final ProjectDataImpl rawData, final String[] row) {
+  private void extraction(final ProjectDataWrapper rawData,
+                          final String[] row) {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
     final int idIndex = 2;
@@ -129,19 +128,8 @@ public class DataScrapperImpl implements DataScrapper {
         Integer.parseInt(row[hospitalizedIndex]),
         Integer.parseInt(row[recoveredCasesIndex]),
         Integer.parseInt(row[totalTestsIndex]));
-    switch (row[typeIndex]) {
-      case "pays":
-        rawData.getFrance().add(dayData);
-        break;
-      case "departement":
-        rawData.getCounty().add(dayData);
-        break;
-      case "region":
-        rawData.getRegion().add(dayData);
-        break;
-      default:
-        break;
-    }
 
+    rawData.addKey(row[idIndex]);
+    rawData.addLocalisation(row[idIndex], row[dateCsvIndex], dayData);
   }
 }
