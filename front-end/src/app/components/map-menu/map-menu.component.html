@@ -1,5 +1,6 @@
-<div class="wrapper">
+<app-loading-spin *ngIf="loading"></app-loading-spin>
 
+<div class="wrapper">
   <app-side-bar *ngIf="!loading"></app-side-bar>
 
   <app-map-content [hidden]="loading" (chosenLocation)="clickOnLocation($event)" (boolIsRegion)="setIsRegion($event)" (loading)="setLoading($event)"></app-map-content>
