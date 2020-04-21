@@ -1,9 +1,6 @@
+<app-loading-spin *ngIf="loading"></app-loading-spin>
+
 <div class="wrapper">
-
-  <div class="spinner-border" role="status" *ngIf="loading">
-    <span class="sr-only">Loading...</span>
-  </div>
-
   <app-side-bar *ngIf="!loading"></app-side-bar>
 
   <app-map-content [hidden]="loading" (chosenLocation)="clickOnLocation($event)" (boolIsRegion)="setIsRegion($event)" (loading)="setLoading($event)"></app-map-content>
