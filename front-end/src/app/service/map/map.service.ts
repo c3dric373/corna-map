@@ -11,16 +11,34 @@ export class MapService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getMap(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday?paramName=france' );
+  getInfosFrance(date): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosFrance?date=2020-04-20' );
   }
 
-  getMapRegion(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday?paramName=region' );
+  getMapRegion(date): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-20' );
   }
 
-  getMapDept(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday?paramName=dept' );
+  getMapDept(date): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20' );
+  }
+
+  dateToString(date): string {
+    let dateString = '' + date.year;
+    if (date.month < 10 ){
+      dateString = dateString + '-0' + date.month;
+    } else {
+      dateString = dateString + '-' + date.month;
+    }
+    if (date.day < 10 ){
+      dateString = dateString + '-0' + date.day;
+    } else {
+      dateString = dateString + '-' + date.day;
+    }
+    return dateString;
   }
 
 }

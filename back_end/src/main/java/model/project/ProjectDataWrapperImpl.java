@@ -83,6 +83,21 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
+  public List<DayData> infosDept(final String date) {
+    final Map<String, Map<String, DayData>> locations =
+            projectData.getLocations().entrySet().stream().filter(
+                    map -> map.getKey()
+                    .contains("DEP")).
+                    collect(Collectors.toMap(Map.Entry::getKey,
+                            Map.Entry::getValue));
+    final List<DayData> res = new ArrayList<>(locations.size());
+    for (Map<String, DayData> map : locations.values()) {
+      res.add(map.get(date));
+    }
+    return res;
+  }
+
+  @Override
   public void addKey(final String key) {
     final Map<String, Map<String, DayData>> localisations =
       projectData.getLocations();

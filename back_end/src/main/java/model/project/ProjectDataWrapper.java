@@ -64,6 +64,14 @@ public interface ProjectDataWrapper {
   List<DayData> infosRegion(String date);
 
   /**
+   * Returns the data about all departements on a specific date.
+   *
+   * @param date the specific date.
+   * @return the queried data.
+   */
+  List<DayData> infosDept(String date);
+
+  /**
    * Adds a key to the map that stores data for each location. This is needed
    * to initialize the maps before adding data.
    *

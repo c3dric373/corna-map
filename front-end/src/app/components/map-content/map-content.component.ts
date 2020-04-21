@@ -40,6 +40,7 @@ export class MapContentComponent implements OnInit {
   @Output() boolIsRegion = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() isOnlyMap = new EventEmitter<boolean>();
+  @Output() emitDate = new EventEmitter<NgbDate>();
 
   constructor(private mapService: MapService, calendar: NgbCalendar) {
     this.date = calendar.getToday();
@@ -58,6 +59,7 @@ export class MapContentComponent implements OnInit {
     this.boolIsRegion.emit(true);
     this.getRegInfos();
     this.selectedCategory = this.tabCategory[0];
+    this.emitDate.emit(this.date);
   }
 
   dispReg(): void {
@@ -76,7 +78,7 @@ export class MapContentComponent implements OnInit {
       this.removeRegListener();
       // set deptList if it has not been initialized
       if(!this.deptList) {
-        this.getRDeptInfos();
+        this.getDeptInfos();
       } else {
         this.initializeMapDept();
       }
@@ -84,7 +86,7 @@ export class MapContentComponent implements OnInit {
   }
 
   getRegInfos() {
-    this.mapService.getMapRegion().subscribe(
+    this.mapService.getMapRegion(this.date).subscribe(
       data => {
         this.reglist = data;
         this.initializeMapReg();
@@ -92,8 +94,8 @@ export class MapContentComponent implements OnInit {
     );
   }
 
-  getRDeptInfos() {
-    this.mapService.getMapDept().subscribe(
+  getDeptInfos() {
+    this.mapService.getMapDept(this.date).subscribe(
       data => {
         this.deptList = data;
         this.initializeMapDept();
@@ -308,16 +310,17 @@ export class MapContentComponent implements OnInit {
   onChangeCategory(category): void{
     this.selectedCategory = category;
     if (this.isRegion) {
-      this.removeDeptListener();
+      this.removeRegListener();
       this.initializeMapReg();
     } else {
-      this.removeRegListener();
+      this.removeDeptListener();
       this.initializeMapDept();
     }
   }
 
   onDateSelect(date){
     this.date = date;
+    this.emitDate.emit(this.date);
   }
 
   onClickExtend(): void {
