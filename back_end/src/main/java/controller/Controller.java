@@ -95,15 +95,15 @@ public class Controller {
   /**
    * Get information about a specific location or type of location. For
    * example the information about all county's can be queried (then the
-   * param name is null) or the information about the region Ile de France
-   * can be queried (then the param name is REG-11).
+   * param name is null) or the information about the departement Paris
+   * can be queried .
    * A specific date always needs to be specified.  A call on the wrapper
    * will be invoked, which will
    * return the
    * requested data.
    *
    * @param date the date at which we want the data.
-   * @param name Name of region if it's specified.
+   * @param name Name of departement if it's specified.
    * @return the requested data in a json format.
    */
   @RequestMapping(value = {"/map/infosDept"}, method =
