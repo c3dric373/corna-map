@@ -18,6 +18,12 @@ public interface DataScrapper {
    */
   void getCurrentDataFromWeb() throws IOException;
 
+  /**
+   * Extracts all the necessary data from a resource file which has to been
+   * downloaded previously.
+   *
+   * @param projectDataWrapper the wrapper to which the data should be added.
+   */
   void extract(final ProjectDataWrapper projectDataWrapper) throws IOException;
 
 }

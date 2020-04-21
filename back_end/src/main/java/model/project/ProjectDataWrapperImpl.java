@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
-  ProjectDataImpl projectData = new ProjectDataImpl();
+  ProjectData projectData =  new ProjectDataImpl();
 
   private static final String FRA = "FRA";
 
@@ -34,15 +34,15 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void addLocalisation(final String localisation, final String date,
-                              final DayData dayData) {
-    projectData.getLocalisations().get(localisation).put(date, dayData);
+  public void addLocation(final String location, final String date,
+                          final DayData dayData) {
+    projectData.getLocations().get(location).put(date, dayData);
   }
 
   @Override
   public DayData infosFrance(final String date) {
     final Map<String, Map<String, DayData>> localisations =
-      projectData.getLocalisations();
+      projectData.getLocations();
     final Map<String, DayData> tmp = localisations.get(FRA);
     return tmp.get(date);
   }
@@ -50,7 +50,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public List<DayData> historyLocalisation(final String name) {
     final Map<String, Map<String, DayData>> localisations =
-      projectData.getLocalisations();
+      projectData.getLocations();
     final Map<String, DayData> tmp = localisations.get(name);
     return new ArrayList<>(tmp.values());
   }
@@ -58,7 +58,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public DayData infosLocalisation(final String name, final String date) {
     final Map<String, Map<String, DayData>> localisations =
-      projectData.getLocalisations();
+      projectData.getLocations();
     final Map<String, DayData> tmp = localisations.get(name);
     return tmp.get(date);
   }
@@ -66,20 +66,20 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public List<DayData> infosRegion(final String date) {
     final Map<String, Map<String, DayData>> locations =
-      projectData.getLocalisations().entrySet().stream().filter(map -> map.getKey()
+      projectData.getLocations().entrySet().stream().filter(map -> map.getKey()
         .contains("REG")).
-    collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-   final List<DayData> res = new ArrayList<>(locations.size());
-   for (Map<String,DayData> map : locations.values()){
-     res.add(map.get(date));
-   }
+        collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    final List<DayData> res = new ArrayList<>(locations.size());
+    for (Map<String, DayData> map : locations.values()) {
+      res.add(map.get(date));
+    }
     return res;
   }
 
   @Override
   public void addKey(final String key) {
     final Map<String, Map<String, DayData>> localisations =
-      projectData.getLocalisations();
+      projectData.getLocations();
     localisations.computeIfAbsent(key, k -> new HashMap<>());
   }
 }

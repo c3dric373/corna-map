@@ -22,6 +22,7 @@ public class DataScrapperImpl implements DataScrapper {
    */
   private static final String DATA_URL = "https://raw.githubusercontent"
     + ".com/opencovid19-fr/data/master/dist/chiffres-cles.csv";
+
   /**
    * Path where the data will be stored.
    */
@@ -53,6 +54,7 @@ public class DataScrapperImpl implements DataScrapper {
 
   }
 
+  @Override
   public void extract(final ProjectDataWrapper projectDataWrapper) throws IOException {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
@@ -129,6 +131,6 @@ public class DataScrapperImpl implements DataScrapper {
         Integer.parseInt(row[totalTestsIndex]));
 
     rawData.addKey(row[idIndex]);
-    rawData.addLocalisation(row[idIndex], row[dateCsvIndex], dayData);
+    rawData.addLocation(row[idIndex], row[dateCsvIndex], dayData);
   }
 }
