@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-map-content',
@@ -8,27 +9,50 @@ import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./map-content.component.css']
 })
 export class MapContentComponent implements OnInit {
-  public date: NgbDateStruct;
+  // Icon
+  calendarIcon = faCalendarAlt;
+  expand = faExpandAlt;
+  compress = faCompressAlt;
+
   isRegion: boolean;
-  // private tabColor = [ 'rgb(244,165,130)', 'rgb(214,96,77)', 'rgb(178,24,43)'];
+  onlyMap: boolean;
+  // Color for gradient
   private rgbYellow = [244, 165, 130];
   private rgbRed = [178, 24, 43];
-  private mousOverReg = new Object();
-  private mousLeaveReg = new Object();
-  private mousOverDept = new Object();
-  private mousLeaveDept = new Object();
+  // list of function used in initializeMapReg and initializeMapDept
+  private mousOverReg;
+  private mousLeaveReg;
+  private mousOverDept;
+  private mousLeaveDept;
+  // Json of the region
   private reglist;
+  // Json of the Dept
   private deptList;
+  // Selected category : ex : nbDeath, ...
   public selectedCategory: string;
   public tabCategory = ['cas hospitalisés', 'cas critiques', 'nombre de morts', 'cas soignés' ];
+  // date elements
+  public date: NgbDate;
+  model: NgbDateStruct;
 
+  //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
+  @Output() isOnlyMap = new EventEmitter<boolean>();
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, calendar: NgbCalendar) {
+    this.date = calendar.getToday();
+    this.model = calendar.getToday();
+    this.mousOverReg = new Object();
+    this.mousOverDept = new Object();
+    this.mousLeaveDept = new Object();
+    this.mousLeaveReg = new Object();
+    this.onlyMap = false;
+  }
 
   ngOnInit(): void {
+    this.isOnlyMap.emit(false);
     this.loading.emit(true);
     this.isRegion = true;
     this.boolIsRegion.emit(true);
@@ -209,6 +233,7 @@ export class MapContentComponent implements OnInit {
     this.mousLeaveDept = new Object();
   }
 
+  // Assign a gradient of color depending on the number provided in param
   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
@@ -222,6 +247,7 @@ export class MapContentComponent implements OnInit {
     return color;
   }
 
+  // get the min number of the list
   minNumber(list): number{
     let min = 185555555;
     for ( const element in list ) {
@@ -233,6 +259,7 @@ export class MapContentComponent implements OnInit {
     return min;
   }
 
+  // Get the max number of the list
   maxNumber(list): number{
     let max = 0;
     for ( const element in list ) {
@@ -244,6 +271,9 @@ export class MapContentComponent implements OnInit {
     return max;
   }
 
+  // Get the number of case depending of the selected category
+  // ex : if selectedCategory = 'cas hospitalisé',
+  //      then we need to get the number of hospitalized from the list
   getNbCas(index, list): number{
     let nbCas;
     switch (this.selectedCategory){
@@ -275,14 +305,24 @@ export class MapContentComponent implements OnInit {
     }
   }
 
-  onChangeCategory(category){
+  onChangeCategory(category): void{
     this.selectedCategory = category;
-    this.dispReg();
-    this.dispDept();
+    if (this.isRegion) {
+      this.removeDeptListener();
+      this.initializeMapReg();
+    } else {
+      this.removeRegListener();
+      this.initializeMapDept();
+    }
   }
 
   onDateSelect(date){
     this.date = date;
+  }
+
+  onClickExtend(): void {
+    this.onlyMap = ! this.onlyMap;
+    this.isOnlyMap.emit(this.onlyMap);
   }
 
 }

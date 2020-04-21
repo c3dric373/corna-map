@@ -1,12 +1,21 @@
 .carte {
-  width: 70%;
+  width: 80%;
   align: center;
   margin: 5vh auto;
 }
 
+.carte.extand {
+  width: 58%;
+}
+
 .map-zone {
   width: 50vw;
-  height: 85vh;
+  height: 88vh;
   margin: 0 auto;
   background-color: rgb(238,234,222);
 }
+
+.map-zone.extand {
+  width: 79vw;
+}
+

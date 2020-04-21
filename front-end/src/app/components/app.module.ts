@@ -15,6 +15,7 @@ import { MapContentComponent } from './map-content/map-content.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
 import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
     FontAwesomeModule,
     NgbDropdownModule,
     NgbModule,
+    FormsModule,
   ],
   bootstrap: [AppComponent]
 })
