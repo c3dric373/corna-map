@@ -5,6 +5,7 @@ import model.data.DayData;
 import model.io.DataScrapperImpl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public void getCurrentAllDataFrance() throws IOException {
-    DataScrapperImpl dataScrapper = new DataScrapperImpl();
+    final DataScrapperImpl dataScrapper = new DataScrapperImpl();
     dataScrapper.getCurrentDataFromWeb();
     dataScrapper.extract(this);
   }
@@ -34,37 +35,40 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public void addLocalisation(final String localisation, final String date,
                               final DayData dayData) {
-    Map<String, Map<String, DayData>> localisations =
-      projectData.getLocalisations();
-    Map<String, DayData> info = localisations.get(localisation);
-    info.put(date, dayData);
+    projectData.getLocalisations().get(localisation).put(date, dayData);
   }
 
   @Override
   public DayData infosFrance(final String date) {
-    Map<String, Map<String, DayData>> localisations =
+    final Map<String, Map<String, DayData>> localisations =
       projectData.getLocalisations();
-    Map<String, DayData> tmp = localisations.get(FRA);
+    final Map<String, DayData> tmp = localisations.get(FRA);
     return tmp.get(date);
   }
 
   @Override
-  public List<DayData> infosRegion(String name) {
-    return null;
-  }
-
-  @Override
-  public DayData infosRegion(String name, String date) {
-    return null;
-  }
-
-  @Override
-  public void addKey(String key) {
-    Map<String, Map<String, DayData>> localisations =
+  public List<DayData> infosLocalisation(final String name) {
+    final Map<String, Map<String, DayData>> localisations =
       projectData.getLocalisations();
-    localisations.put(key, new HashMap<>());
+    final Map<String, DayData> tmp = localisations.get(name);
+    System.out.println(tmp.values());
+    return new ArrayList<>(tmp.values());
   }
 
+  @Override
+  public DayData infosLocalisation(final String name, final String date) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocalisations();
+    final Map<String, DayData> tmp = localisations.get(name);
+    return tmp.get(date);
+  }
+
+  @Override
+  public void addKey(final String key) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocalisations();
+    localisations.computeIfAbsent(key, k -> new HashMap<>());
+  }
 }
 
 

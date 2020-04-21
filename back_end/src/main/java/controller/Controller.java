@@ -34,4 +34,21 @@ public class Controller {
     Gson gson = new Gson();
     return gson.toJson(wrapper.infosFrance(date));
   }
+
+  @RequestMapping(value = "/map/infosRegion", method = RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  String infosRegion(@RequestParam("name") final String name,
+                     @RequestParam(value = "date", required = false) final String date)
+    throws IOException {
+    ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
+    wrapper.getCurrentAllDataFrance();
+
+    Gson gson = new Gson();
+    if (date == null) {
+      return gson.toJson(wrapper.infosLocalisation(name));
+    } else {
+      return gson.toJson(wrapper.infosLocalisation(date, name));
+    }
+  }
+
 }

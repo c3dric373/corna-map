@@ -65,10 +65,15 @@ public class DataScrapperImpl implements DataScrapper {
     BufferedReader br = new BufferedReader(new FileReader(
       pathToData));
     String line;
+    int i = 0;
     while ((line = br.readLine()) != null) {
       String[] row = line.split(",");
       if (row[dateCsvIndex].equals("date")) {
         continue;
+      }
+      i++;
+      if (i== 150){
+        int j = 0;
       }
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
       LocalDate date = LocalDate.parse(row[dateCsvIndex]);
@@ -116,7 +121,7 @@ public class DataScrapperImpl implements DataScrapper {
     if (row.length <= maxLength) {
       return;
     }
-    DayData dayData =
+    final DayData dayData =
       new DayData(TypeLocalisation.valueOf(row[typeIndex].toUpperCase()), date,
         row[idIndex], row[nameIndex], Integer.parseInt(row[totalCasesIndex]),
         Integer.parseInt(row[ephadCasesIndex]),
