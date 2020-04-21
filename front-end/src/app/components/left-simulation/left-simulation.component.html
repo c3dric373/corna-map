@@ -4,40 +4,43 @@
     <h4>France</h4>
 
     <div class="container" id="buttons1">
-      <button type="button" class="btn btn-outline-secondary">  <fa-icon [icon]="faPause"></fa-icon>
+      <button type="button" class="btn btn-outline-secondary" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPause"></fa-icon>
       </button>
-      <button type="button" class="btn btn-outline-success">  <fa-icon [icon]="faPlay"></fa-icon>
+      <button type="button" class="btn btn-outline-success" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button type="button" class="btn btn-outline-danger">  <fa-icon [icon]="faStop"></fa-icon>
+      <button type="button" class="btn btn-outline-danger" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faStop"></fa-icon>
       </button>
+    </div>
+
+    <nav  class="nav nav-pills" >
+      <div class="btn-group" ngbDropdown role="group" >
+        <!-- Select category -->
+        <button id="btnLabel" disabled=true  type="button"   class="btn btn-outline-secondary" >Confinement : </button>
+        <button id="choix" class="btn btn-outline-secondary" ngbDropdownToggle>{{selectedConfinement}}</button>
+        <div id="drop" class="dropdown-menu" ngbDropdownMenu>
+          <button id="confs" ngbDropdownItem *ngFor="let category of tabConfinement" (click)="onChangeCategory(category)">{{category}}</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="input-group mb-3" >
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input id='border' type="checkbox" (click)=onChangeBorder()>
+          <span style="color:black">Fermeture des frontières</span>
+        </div>
+      </div>
 
     </div>
 
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <button class="dropdown-item" type="button">Action</button>
-        <button class="dropdown-item" type="button">Another action</button>
-        <button class="dropdown-item" type="button">Something else here</button>
+    <div class="container">
+      <span>Port du masque</span>
+      <div class="btn-group btn-group" role="group" >
+        <button id='0' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(0)">0-30</button>
+        <button id='1' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(1)">31-60</button>
+        <button id='2' type="button" class="btn btn-secondary"style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(2)">60+</button>
       </div>
     </div>
-
-    <div class="btn-group">
-    <button type="button" class="btn btn-outline-success">Plain ol' button</button>
-    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-      <button class="btn btn-outline-primary" ngbDropdownToggle>Drop me</button>
-      <div class="dropdown-menu" ngbDropdownMenu>
-        <button class="dropdown-item">One</button>
-        <button class="dropdown-item">Two</button>
-        <button class="dropdown-item">Four!</button>
-      </div>
-    </div>
-  </div>
-
-
-
 
   </div>
 

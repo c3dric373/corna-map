@@ -16,12 +16,34 @@ export class LeftSimulationComponent implements OnInit {
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
-
+  public selectedConfinement: string;
+  public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
+  public borders;
+  public mask = [false, false, false];
 
     ngOnInit(): void {
+      this.selectedConfinement = this.tabConfinement[0];
+      this.borders = false;
+  }
+  onChangeCategory(category){
+    this.selectedConfinement = category;
+    console.log('confinement : ' + this.selectedConfinement);
   }
 
+  onChangeBorder(){
+      this.borders = !this.borders;
+      console.log('frontières fermées :' + this.borders);
+  }
 
+  onChangeMask(int){
+    this.mask[int] = !this.mask[int];
+    if (this.mask[int] === true){
+      document.getElementById(int).style.backgroundColor = '#B1AEAD';
+    }else{
+      document.getElementById(int).style.backgroundColor = '#CFCDCC';
+    }
+    console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
+  }
 
 
 
