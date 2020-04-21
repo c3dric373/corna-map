@@ -118,13 +118,11 @@ public class DayData {
     Validate.isTrue(totalCasesNew >= 0,
       "totalCasesNew negative");
     Validate.isTrue(ephadConfirmedCasesNew >= 0,
-      "ephadConfirmedCasesNew " +
-        "negative");
+      "ephadConfirmedCasesNew negative");
     Validate.isTrue(totalDeathsNew >= 0,
       "totalDeathsNew negative");
     Validate.isTrue(ephadPossibleCasesNew >= 0,
-      "ephadPossibleCasesNew " +
-        "negative");
+      "ephadPossibleCasesNew negative");
     Validate.isTrue(totalEphadDeathsNew >= 0,
       "totalEphadDeathsNew negative");
     Validate.isTrue(criticalCasesNew >= 0,
