@@ -12,9 +12,11 @@
     </div>
     <!-- Select Date -->
     <div class="btn-group" ngbDropdown role="group">
-      <button class="btn btn-outline-secondary" ngbDropdownToggle>select date</button>
+      <button class="btn btn-outline-secondary" ngbDropdownToggle>{{date.day}}/{{date.month}}/{{date.year}}
+        <fa-icon [icon]="calendarIcon"></fa-icon>
+      </button>
       <div class="dropdown-menu" ngbDropdownMenu>
-        <ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
+        <ngb-datepicker ngbDropdownItem [(ngModel)]="model" (dateSelect)="onDateSelect($event)"></ngb-datepicker>
       </div>
     </div>
   </nav>

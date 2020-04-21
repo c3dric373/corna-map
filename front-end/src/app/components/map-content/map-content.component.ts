@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-map-content',
@@ -8,25 +9,38 @@ import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./map-content.component.css']
 })
 export class MapContentComponent implements OnInit {
-  public date: NgbDateStruct;
+  // Icon
+  calendarIcon = faCalendarAlt;
+
   isRegion: boolean;
-  // private tabColor = [ 'rgb(244,165,130)', 'rgb(214,96,77)', 'rgb(178,24,43)'];
+  // Color for gradient
   private rgbYellow = [244, 165, 130];
   private rgbRed = [178, 24, 43];
+  // list of function used in initializeMapReg and initializeMapDept
   private mousOverReg = new Object();
   private mousLeaveReg = new Object();
   private mousOverDept = new Object();
   private mousLeaveDept = new Object();
+  // Json of the region
   private reglist;
+  // Json of the Dept
   private deptList;
+  // Selected category : ex : nbDeath, ...
   public selectedCategory: string;
   public tabCategory = ['cas hospitalisés', 'cas critiques', 'nombre de morts', 'cas soignés' ];
+  // date elements
+  public date: NgbDate;
+  model: NgbDateStruct;
 
+  //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
   @Output() loading = new EventEmitter<boolean>();
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService, calendar: NgbCalendar) {
+    this.date = calendar.getToday();
+    this.model = calendar.getToday();
+  }
 
   ngOnInit(): void {
     this.loading.emit(true);
