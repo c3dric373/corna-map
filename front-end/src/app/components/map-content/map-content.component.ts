@@ -76,7 +76,7 @@ export class MapContentComponent implements OnInit {
       this.removeRegListener();
       // set deptList if it has not been initialized
       if(!this.deptList) {
-        this.getRDeptInfos();
+        this.getDeptInfos();
       } else {
         this.initializeMapDept();
       }
@@ -92,7 +92,7 @@ export class MapContentComponent implements OnInit {
     );
   }
 
-  getRDeptInfos() {
+  getDeptInfos() {
     this.mapService.getMapDept().subscribe(
       data => {
         this.deptList = data;
@@ -308,10 +308,10 @@ export class MapContentComponent implements OnInit {
   onChangeCategory(category): void{
     this.selectedCategory = category;
     if (this.isRegion) {
-      this.removeDeptListener();
+      this.removeRegListener();
       this.initializeMapReg();
     } else {
-      this.removeRegListener();
+      this.removeDeptListener();
       this.initializeMapDept();
     }
   }
