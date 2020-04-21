@@ -29,8 +29,8 @@ public interface ProjectDataWrapper {
    * @param date     the date.
    * @param dayData  the data.
    */
-  void addLocation(final String location, final String date,
-                   final DayData dayData);
+  void addLocation(String location,  String date,
+                    DayData dayData);
 
   /**
    * Query to get information about france at a given date.
@@ -38,13 +38,13 @@ public interface ProjectDataWrapper {
    * @param date the specific date.
    * @return the queried data.
    */
-  DayData infosFrance(final String date);
+  DayData infosFrance(String date);
 
   /**
    * @param name id of the Location of which the data is queried.
    * @return the queried data.
    */
-  List<DayData> historyLocalisation(final String name);
+  List<DayData> historyLocalisation(String name);
 
   /**
    * Returns the data for a specific location on a specific date.
@@ -53,7 +53,7 @@ public interface ProjectDataWrapper {
    * @param date the specific date.
    * @return the queried data.
    */
-  DayData infosLocalisation(final String name, final String date);
+  DayData infosLocalisation(String name,  String date);
 
   /**
    * Returns the data about all regions on a specific date.
@@ -61,7 +61,7 @@ public interface ProjectDataWrapper {
    * @param date the specific date.
    * @return the queried data.
    */
-  List<DayData> infosRegion(final String date);
+  List<DayData> infosRegion(String date);
 
   /**
    * Adds a key to the map that stores data for each location. This is needed
@@ -69,5 +69,5 @@ public interface ProjectDataWrapper {
    *
    * @param key key to add.
    */
-  void addKey(final String key);
+  void addKey(String key);
 }

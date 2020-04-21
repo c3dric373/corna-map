@@ -19,7 +19,7 @@ public class Controller {
   /**
    * Wrapper of data.
    */
-  ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
+  private ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
 
   /**
    * Constructor. We get all the data from the web when the constructor is
@@ -79,7 +79,8 @@ public class Controller {
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
   String infosRegion(@RequestParam("date") final String date,
-                     @RequestParam(value = "name", required = false) final String name) {
+                     @RequestParam(value = "name",
+                       required = false) final String name) {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
 

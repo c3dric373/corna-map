@@ -23,7 +23,8 @@ public interface DataScrapper {
    * downloaded previously.
    *
    * @param projectDataWrapper the wrapper to which the data should be added.
+  * @throws IOException Read error.
    */
-  void extract(final ProjectDataWrapper projectDataWrapper) throws IOException;
+  void extract(ProjectDataWrapper projectDataWrapper) throws IOException;
 
 }

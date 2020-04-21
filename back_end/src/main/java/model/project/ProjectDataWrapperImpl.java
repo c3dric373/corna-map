@@ -22,8 +22,14 @@ import java.util.stream.Collectors;
 @Getter
 public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
-  ProjectData projectData =  new ProjectDataImpl();
+  /**
+   * The {@link ProjectData} this wrapper manages.
+   */
+  private ProjectData projectData = new ProjectDataImpl();
 
+  /**
+   * Id for france to access data.
+   */
   private static final String FRA = "FRA";
 
   @Override

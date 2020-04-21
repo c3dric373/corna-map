@@ -55,7 +55,8 @@ public class DataScrapperImpl implements DataScrapper {
   }
 
   @Override
-  public void extract(final ProjectDataWrapper projectDataWrapper) throws IOException {
+  public void extract(final ProjectDataWrapper projectDataWrapper)
+    throws IOException {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
     final int minusDays = 3;
