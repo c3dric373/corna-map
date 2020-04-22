@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as Highcharts from 'highcharts';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-right-bar',
@@ -9,6 +10,7 @@ import * as Highcharts from 'highcharts';
 export class RightBarComponent implements OnInit {
   @Input() locationName: string;
   @Input() isRegion: boolean;
+  @Input() actualdate: NgbDate;
 
   public options: any = {
     Chart: {

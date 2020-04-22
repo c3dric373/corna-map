@@ -26,6 +26,16 @@ export class MapService {
     return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20' );
   }
 
+  getInfosRegion(date, name): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-20&name=' + name );
+  }
+
+  getInfosDept(date, name): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20&name=' + name );
+  }
+
   dateToString(date): string {
     let dateString = '' + date.year;
     if (date.month < 10 ){
