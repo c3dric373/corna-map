@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {InfosFrance} from '../../model/infosFrance';
 
 @Component({
   selector: 'app-side-bar',
@@ -8,7 +9,7 @@ import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent implements OnInit {
-  donnees ;
+  public donnees: InfosFrance;
   @Input() date: NgbDate;
 
   constructor(private mapService: MapService) {}
