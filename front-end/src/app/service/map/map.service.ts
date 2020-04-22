@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class MapService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getInfosFrance(date): Observable<any>{
+  getInfosFrance(date: NgbDate): Observable<any>{
     const stringDate = this.dateToString(date);
     return this.httpClient.get(this.API_URL + 'map/infosFrance?date=2020-04-20' );
   }
@@ -21,22 +22,22 @@ export class MapService {
     return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-20' );
   }
 
-  getMapDept(date): Observable<any>{
+  getMapDept(date: NgbDate): Observable<any>{
     const stringDate = this.dateToString(date);
     return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20' );
   }
 
-  getInfosRegion(date, name): Observable<any>{
+  getInfosRegion(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateToString(date);
     return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-20&name=' + name );
   }
 
-  getInfosDept(date, name): Observable<any>{
+  getInfosDept(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateToString(date);
     return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20&name=' + name );
   }
 
-  dateToString(date): string {
+  dateToString(date: NgbDate): string {
     let dateString = '' + date.year;
     if (date.month < 10 ){
       dateString = dateString + '-0' + date.month;

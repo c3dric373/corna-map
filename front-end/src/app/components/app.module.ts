@@ -39,6 +39,7 @@ import {FormsModule} from '@angular/forms';
     NgbModule,
     FormsModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [ HttpClientModule]
 })
 export class AppModule { }

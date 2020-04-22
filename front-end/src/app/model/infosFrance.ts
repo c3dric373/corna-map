@@ -15,4 +15,12 @@ export class InfosFrance {
   totalTests: number;
   date: NgbDate;
   type: string;
+
+  constructor() {
+    this.criticalCases = 0;
+    this.hospitalized = 0;
+    this.totalCases = 0;
+    this.totalDeaths = 0;
+    this.recoveredCases = 0;
+  }
 }
