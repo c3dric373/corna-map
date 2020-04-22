@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
-import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {InfosFrance} from '../../model/infosFrance';
 
 @Component({
@@ -12,10 +12,12 @@ export class SideBarComponent implements OnInit {
   public donnees: InfosFrance;
   @Input() date: NgbDate;
 
-  constructor(private mapService: MapService) {}
-
+  constructor(private mapService: MapService, calendar: NgbCalendar) {
+    this.date = calendar.getToday();
+  }
 
   ngOnInit(): void {
+    this.donnees = new InfosFrance();
     this.getInfosFrance();
   }
 
