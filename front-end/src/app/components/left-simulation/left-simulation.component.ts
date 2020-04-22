@@ -40,7 +40,7 @@ export class LeftSimulationComponent implements OnInit {
       this.stop = true;
   }
 
- 
+
 
 onChangeCategory(category) {
     this.selectedConfinement = category;
