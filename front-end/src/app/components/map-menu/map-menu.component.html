@@ -10,7 +10,8 @@
   </app-map-content>
 
   <!-- Sidebar  -->
-  <app-right-bar [ngbCollapse]="isOnlyMap" *ngIf="!loading" [locationName] = "location" [isRegion]="isRegion">
+  <app-right-bar [ngbCollapse]="isOnlyMap" *ngIf="!loading" [locationName] = "location"
+                 [isRegion]="isRegion" [actualdate]="date">
   </app-right-bar>
 
 </div>
