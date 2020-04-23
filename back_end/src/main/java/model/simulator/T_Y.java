@@ -10,27 +10,37 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * We will have to solve differential equations systems of order n
+ *
+ * y'(t) = (f_1(t, y(t)), f_2(t, y(t)), ... , f_n(t, y(t)))
+ *
+ * where y(t) is a vector of R^n, y'(t) its derivative and the f_i are maps from R^n+1 to R
+ *
+ * To this end, we will use the java class Function that allows to create functions with one parameter using lambdas
+ * Hence we need a class to implement this parameter (t, y(t))
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DerivativeParameters {
-    private double time = 0;
-    private List<Double> state = new ArrayList<>();
+public class T_Y {
+    private double t = 0;
+    private List<Double> y = new ArrayList<>();
 
     void add(final Double value) {
-        state.add(value);
+        y.add(value);
     }
 
-    Double getIthState(int i) {
-        return state.get(i);
+    Double getY_i(int i) {
+        return y.get(i);
     }
 
     public int size() {
-        return state.size();
+        return y.size();
     }
 
-    List<Double> rungeKuttaKi(final Function<DerivativeParameters, Double> function, final double delta) {
+    List<Double> rungeKuttaKi(final Function<T_Y, Double> function, final double delta) {
         final double alphak2k3 = 0.5;
         final double alphak4 = 1.;
 
@@ -47,10 +57,10 @@ public class DerivativeParameters {
         return result;
     }
 
-    private DerivativeParameters kiArgs(final double ki, final double delta, final double alpha) {
-        List<Double> tmpState = state.stream()
+    private T_Y kiArgs(final double ki, final double delta, final double alpha) {
+        List<Double> tmpState = y.stream()
                 .map(yn -> yn + alpha * delta * ki)
                 .collect(Collectors.toList());
-        return new DerivativeParameters(time + alpha * delta, tmpState);
+        return new T_Y(t + alpha * delta, tmpState);
     }
 }

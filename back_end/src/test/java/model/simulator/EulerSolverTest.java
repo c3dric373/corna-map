@@ -26,7 +26,7 @@ public class EulerSolverTest {
         expected.add(4.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("wrong result", expected, candidate);
@@ -49,7 +49,7 @@ public class EulerSolverTest {
         expected.add(6.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -69,7 +69,7 @@ public class EulerSolverTest {
         expected.add(6.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -103,7 +103,7 @@ public class EulerSolverTest {
         expected.add(29.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -117,7 +117,7 @@ public class EulerSolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getIthState(0))
+                .addParameter(1., T -> T.getY_i(0))
                 .build();
         EulerSolver subject = new EulerSolver();
         int nbIterations = 1;
@@ -125,7 +125,7 @@ public class EulerSolverTest {
         expected.add(2.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -139,7 +139,7 @@ public class EulerSolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getIthState(0))
+                .addParameter(1., T -> T.getY_i(0))
                 .build();
         EulerSolver subject = new EulerSolver();
         int nbIterations = 2;
@@ -147,7 +147,7 @@ public class EulerSolverTest {
         expected.add(2.25);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -161,7 +161,7 @@ public class EulerSolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getIthState(0))
+                .addParameter(1., T -> T.getY_i(0))
                 .build();
         EulerSolver subject = new EulerSolver();
         int nbIterations = 100;
@@ -174,7 +174,7 @@ public class EulerSolverTest {
         expected.add(2.704813829421526);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());

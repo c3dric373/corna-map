@@ -1,8 +1,7 @@
 package model.simulator;
 
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang.Validate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -14,15 +13,15 @@ public class RK4Solver implements DifferentialSolver {
      * @return
      */
     @Override
-    public List<Double> step(final CauchyProblem cauchyProblem, final int nbIterations) {
+    public List<Double> next(final CauchyProblem cauchyProblem, final int nbIterations) {
         Validate.notNull(cauchyProblem);
-        DerivativeParameters result = cauchyProblem.getInitialConditions();
-        final List<Function<DerivativeParameters, Double>> system = cauchyProblem.getSystem();
+        T_Y result = new T_Y(cauchyProblem.getT_0(), cauchyProblem.getY_0());
+        final List<Function<T_Y, Double>> system = cauchyProblem.getF();
         double delta = 1. / nbIterations;
         for(int i = 0; i < nbIterations; ++i){
             result = updateResult(system, result, delta);
         }
-        return result.getState();
+        return result.getY();
     }
 
     /**
@@ -32,21 +31,21 @@ public class RK4Solver implements DifferentialSolver {
      * @param delta
      * @return
      */
-    private DerivativeParameters updateResult(final List<Function<DerivativeParameters, Double>> system, final DerivativeParameters result, final double delta){
+    private T_Y updateResult(final List<Function<T_Y, Double>> system, final T_Y result, final double delta){
         Validate.notNull(system);
         Validate.notNull(result);
-        DerivativeParameters nextResult = new DerivativeParameters();
-        nextResult.setTime(result.getTime() + delta);
+        T_Y nextResult = new T_Y();
+        nextResult.setT(result.getT() + delta);
         int i = 0;
-        for(final Function<DerivativeParameters, Double> function : system){
+        for(final Function<T_Y, Double> function : system){
             Double nextValue = rk4equation(result, function, delta, i++);
             nextResult.add(nextValue);
         }
         return nextResult;
     }
 
-    private Double rk4equation(final DerivativeParameters result, final Function<DerivativeParameters, Double> function, final double delta, int i){
+    private Double rk4equation(final T_Y result, final Function<T_Y, Double> function, final double delta, int i){
         List<Double> kis = result.rungeKuttaKi(function, delta);
-        return result.getIthState(i) + delta / 6. * (kis.get(0) + 2. * kis.get(1) + 2. * kis.get(2) + kis.get(3));
+        return result.getY_i(i) + delta / 6. * (kis.get(0) + 2. * kis.get(1) + 2. * kis.get(2) + kis.get(3));
     }
 }

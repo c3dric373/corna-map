@@ -26,7 +26,7 @@ public class RK4SolverTest {
         expected.add(4.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("wrong result", expected, candidate);
@@ -49,7 +49,7 @@ public class RK4SolverTest {
         expected.add(6.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -69,7 +69,7 @@ public class RK4SolverTest {
         expected.add(6.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -103,7 +103,7 @@ public class RK4SolverTest {
         expected.add(29.);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
@@ -117,20 +117,20 @@ public class RK4SolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getIthState(0))
+                .addParameter(1., T -> T.getY_i(0))
                 .build();
         RK4Solver subject = new RK4Solver();
-        int nbIterations = 1000;
+        int nbIterations = 100;
         List<Double> expected = new ArrayList<>(1);
         expected.add(2.7182818284590);
 
         // Act
-        List<Double> candidate = subject.step(cauchyProblem, nbIterations);
+        List<Double> candidate = subject.next(cauchyProblem, nbIterations);
 
         // Assert
         assertEquals("mismatch sizes", expected.size(), candidate.size());
         for(int i = 0; i < expected.size(); ++i){
-            assertEquals("wrong " + i + "-th result", expected.get(i), candidate.get(i), 0.000000001);
+            assertEquals("wrong " + i + "-th result", expected.get(i), candidate.get(i), 0.00000001);
         }
     }
 }

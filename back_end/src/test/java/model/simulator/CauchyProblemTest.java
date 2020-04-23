@@ -4,10 +4,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
-
 public class CauchyProblemTest {
 
     @Rule
@@ -26,9 +22,9 @@ public class CauchyProblemTest {
         // Act
         CauchyProblem CP = CauchyProblem.builder()
                 .addParameter(0.9, null)
-                .addParameter(0.1, T -> beta * T.getIthState(0) * T.getIthState(1) - lambda * T.getIthState(1) - mu * T.getIthState(1))
-                .addParameter(0., T -> lambda * T.getIthState(1))
-                .addParameter(0., T -> mu * T.getIthState(1))
+                .addParameter(0.1, T -> beta * T.getY_i(0) * T.getY_i(1) - lambda * T.getY_i(1) - mu * T.getY_i(1))
+                .addParameter(0., T -> lambda * T.getY_i(1))
+                .addParameter(0., T -> mu * T.getY_i(1))
                 .build();
 
 
