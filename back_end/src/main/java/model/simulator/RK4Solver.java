@@ -1,51 +1,35 @@
 package model.simulator;
 
-import org.apache.commons.lang.Validate;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
-public class RK4Solver implements DifferentialSolver {
-    /**
-     *
-     * @param cauchyProblem
-     * @param nbIterations
-     * @return
-     */
-    @Override
-    public List<Double> next(final CauchyProblem cauchyProblem, final int nbIterations) {
-        Validate.notNull(cauchyProblem);
-        T_Y result = new T_Y(cauchyProblem.getT_0(), cauchyProblem.getY_0());
-        final List<Function<T_Y, Double>> system = cauchyProblem.getF();
-        double delta = 1. / nbIterations;
-        for(int i = 0; i < nbIterations; ++i){
-            result = updateResult(system, result, delta);
-        }
-        return result.getY();
-    }
+public class RK4Solver extends RungeKuttaSolver {
+    public RK4Solver(){
+        order = 4;
+        a = new ArrayList<>(order);
+        List<Double> a0 = new ArrayList<>(order);
+        List<Double> a1 = new ArrayList<>(order);
+        List<Double> a2 = new ArrayList<>(order);
+        List<Double> a3 = new ArrayList<>(order);
+        a0.add(0.);  a0.add(0.);  a0.add(0.);  a0.add(0.);
+        a1.add(0.5); a1.add(0.);  a1.add(0.);  a1.add(0.);
+        a2.add(0.);  a2.add(0.5); a2.add(0.);  a2.add(0.);
+        a3.add(0.);  a3.add(0.);  a3.add(1.);  a3.add(0.);
+        a.add(a0);
+        a.add(a1);
+        a.add(a2);
+        a.add(a3);
 
-    /**
-     *
-     * @param system
-     * @param result
-     * @param delta
-     * @return
-     */
-    private T_Y updateResult(final List<Function<T_Y, Double>> system, final T_Y result, final double delta){
-        Validate.notNull(system);
-        Validate.notNull(result);
-        T_Y nextResult = new T_Y();
-        nextResult.setT(result.getT() + delta);
-        int i = 0;
-        for(final Function<T_Y, Double> function : system){
-            Double nextValue = rk4equation(result, function, delta, i++);
-            nextResult.add(nextValue);
-        }
-        return nextResult;
-    }
+        b = new ArrayList<>(order);
+        b.add(1. / 6);
+        b.add(1. / 3);
+        b.add(1. / 3);
+        b.add(1. / 6);
 
-    private Double rk4equation(final T_Y result, final Function<T_Y, Double> function, final double delta, int i){
-        List<Double> kis = result.rungeKuttaKi(function, delta);
-        return result.getY_i(i) + delta / 6. * (kis.get(0) + 2. * kis.get(1) + 2. * kis.get(2) + kis.get(3));
+        c = new ArrayList<>(order);
+        c.add(0.);
+        c.add(0.5);
+        c.add(0.5);
+        c.add(1.);
     }
 }

@@ -19,7 +19,7 @@ public class SIRSimulator implements Simulator {
     private Double mu = 0.07;
 
     private CauchyProblem model;
-    private DifferentialSolver solver = new RK4Solver();
+    private DifferentialSolver solver = new OldRK4Solver();
     private int nbIterations = 500;
 
     public SIRSimulator(double iSuceptible, double iInfectious, double iRecovered, double iDead){
