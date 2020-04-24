@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { faStop } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @Component({
@@ -24,7 +26,8 @@ export class LeftSimulationComponent implements OnInit {
   public borders;
   public shops;
   public hosp;
-  public mask = [false, false, false];
+  public mask = [false, false, false, false, false];
+  public conf = [false, false, false, false, false];
   public respectConfinement;
   public timer;
 
@@ -65,14 +68,26 @@ onChangeHosp() {
 onChangeMask(int) {
     this.mask[int] = !this.mask[int];
     if (this.mask[int] === true){
-      document.getElementById(int).style.backgroundColor = '#B1AEAD';
+
+      document.getElementById(int).style.backgroundColor = '#B1AEAA';
     }else{
       document.getElementById(int).style.backgroundColor = '#CFCDCC';
     }
     console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
   }
 
-onChangeConfinement(value: number) {
+  onChangeConfinement(int) {
+    this.conf[int] = !this.conf[int];
+    if (this.conf[int] === true){
+      document.getElementById(int).style.backgroundColor = '#B1AEAA';
+    }else{
+      document.getElementById(int).style.backgroundColor = '#CFCDCC';
+    }
+    console.log('Confinement catégorie :' + int + ' : ' + this.conf[int]);
+  }
+
+
+onChangeRespectConfinement(value: number) {
     if (value >= 1000) {
       return Math.round(value / 1000) + 'k';
     }
@@ -81,5 +96,9 @@ onChangeConfinement(value: number) {
     return (value + '%');
   }
 
+  public beforeChange($event: NgbPanelChangeEvent) {
+
+
+  }
 
 }

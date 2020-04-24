@@ -1,9 +1,10 @@
 <nav id="sidebar">
   <div class="sidebar-header">
 
+
     <h2>France</h2>
 
-    <div class="container" id="buttons1">
+    <div class="container-sm" id="buttons1">
       <button type="button" class="btn btn-outline-secondary" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPause"></fa-icon>
       </button>
       <button type="button" class="btn btn-outline-success" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPlay"></fa-icon>
@@ -12,51 +13,104 @@
       </button>
     </div>
 
-    <h4>Mèsures du gouvernement</h4>
-    <nav  class="nav nav-pills" >
-      <div class="btn-group" ngbDropdown role="group" >
-        <!-- Select category -->
-        <button id="btnLabel" disabled=true  type="button"   class="btn btn-outline-secondary" >Confinement : </button>
-        <button id="choix" class="btn btn-outline-secondary" ngbDropdownToggle>{{selectedConfinement}}</button>
-        <div id="drop" class="dropdown-menu" ngbDropdownMenu>
-          <button id="confs" ngbDropdownItem *ngFor="let category of tabConfinement" (click)="onChangeCategory(category)">{{category}}</button>
-        </div>
-      </div>
-    </nav>
-
-    <div class="input-group mb-3" style=" margin-top: 3%" >
-      <div class="input-group-text">
-          <input  type="checkbox" (click)=onChangeBorder()>
-          <span style=" padding: 0%">Fermeture des frontières</span>
-      </div>
-          <div class="input-group-text">
-          <input  type="checkbox" (click)=onChangeShops()>
-          <span style=" padding: 0%">Fermeture des commerces</span>
-      </div>
-      <div class="input-group-text">
-        <input  type="checkbox" (click)=onChangeHosp()>
-        <span style=" padding: 0%">Répartition des hospitalisés</span>
-      </div>
-    </div>
 
 
-    <div class="container">
-      <span>Port du masque</span>
-      <div id="masque" class="btn-group btn-group" role="group" >
-        <button id='0' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(0)">0-30</button>
-        <button id='1' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(1)">31-60</button>
-        <button id='2' type="button" class="btn btn-secondary"style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask(2)">60+</button>
-      </div>
-      <h4>Population</h4>
-      <span>Respect du confinement</span>
-      <mat-slider
-        thumbLabel
-        [displayWith]="onChangeConfinement"
-        step="5" tickInterval="20"
-        min="0"
-        max="100"></mat-slider>
 
-  </div>
+
+
+    <ngb-accordion id="accordion" (panelChange)="beforeChange($event)">
+      <ngb-panel id="preventchange-1" title="Mesures du gouvernement" style="padding: 0%">
+        <ng-template ngbPanelHeader  >
+          <div class="d-flex align-items-center justify-content-between" style="color: black">
+            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0" style="padding: 0 " >Mesures du gouvernement</button>
+            <p *ngIf="false" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent >
+
+          <div class="container-sm"  >
+
+            <div class="container-sm">
+              <span>Confinement</span>
+              <div id="confinement" class="btn-group btn-group" role="group" >
+                <button id='c0' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeConfinement('c'+0)">0-15</button>
+                <button id='c1' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeConfinement('c'+1)">16-29</button>
+                <button id='c2' type="button" class="btn btn-secondary"style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeConfinement('c'+2)">30-49</button>
+                <button id='c3' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeConfinement('c'+3)">50-69</button>
+                <button id='c4' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeConfinement('c'+4)">70+</button>
+
+              </div>
+            </div>
+
+            <!--<nav  class="nav nav-pills"
+              <div class="btn-group" ngbDropdown role="group" >
+
+                <button id="btnLabel" disabled=true  type="button"   class="btn btn-outline-secondary" >Confinement : </button>
+                <button id="choix" class="btn btn-outline-secondary" ngbDropdownToggle>{{selectedConfinement}}</button>
+                <div id="drop" class="dropdown-menu" ngbDropdownMenu>
+                  <button id="confs" ngbDropdownItem *ngFor="let category of tabConfinement" (click)="onChangeCategory(category)">{{category}}</button>
+                </div>
+              </div>
+            </nav>
+
+            !-->
+            <div class="input-group mb-3"  >
+              <div class="input-group-text">
+                <input  type="checkbox" (click)=onChangeBorder()>
+                <span style=" padding: 0%">Fermeture des frontières</span>
+              </div>
+              <div class="input-group-text">
+                <input  type="checkbox" (click)=onChangeShops()>
+                <span style=" padding: 0%">Fermeture des commerces</span>
+              </div>
+              <div class="input-group-text">
+                <input  type="checkbox" (click)=onChangeHosp()>
+                <span style=" padding: 0%">Répartition des hospitalisés</span>
+              </div>
+            </div>
+
+            <div class="container-sm">
+              <span>Port du masque</span>
+              <div id="masque" class="btn-group btn-group" role="group" >
+                <button id='m0' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask('m'+0)">0-15</button>
+                <button id='m1' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask('m'+1)">16-29</button>
+                <button id='m2' type="button" class="btn btn-secondary"style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask('m'+2)">30-49</button>
+                <button id='m3' type="button" class="btn btn-secondary" style=" box-shadow: unset; background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask('m'+3)">50-69</button>
+                <button id='m4' type="button" class="btn btn-secondary" style=" box-shadow: unset ;background-color:#CFCDCC; padding: 0%;font-size: 85%" (click)="onChangeMask('m'+4)">70+</button>
+
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="preventchange-2" title="Population">
+        <ng-template ngbPanelHeader >
+          <div class="d-flex align-items-center justify-content-between" >
+            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0" style="padding: 0">Comportements</button>
+            <p *ngIf="false" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <div class="container-sm" >
+            <span>Respect du confinement</span>
+            <mat-slider
+              thumbLabel
+              [displayWith]="onChangeRespectConfinement"
+              step="5" tickInterval="20"
+              min="0"
+              max="100"></mat-slider>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="preventchange-3" title="Autres" style="padding: 0%">
+        <ng-template ngbPanelHeader  >
+          <div class="d-flex align-items-center justify-content-between" style="color: black">
+            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0" style="padding: 0 " >Autres</button>
+            <p *ngIf="false" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
 
 
 
