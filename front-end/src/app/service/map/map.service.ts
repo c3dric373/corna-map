@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,44 @@ export class MapService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getMap(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday?paramName=france' );
+  getInfosFrance(date: NgbDate): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosFrance?date=2020-04-20' );
   }
 
-  getMapRegion(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday?paramName=region' );
+  getMapRegion(date): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-20' );
   }
 
-  getMapDept(): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'testday?paramName=dept' );
+  getMapDept(date: NgbDate): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20' );
+  }
+
+  getInfosRegion(date: NgbDate, name: string): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-20&name=' + name );
+  }
+
+  getInfosDept(date: NgbDate, name: string): Observable<any>{
+    const stringDate = this.dateToString(date);
+    return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-20&name=' + name );
+  }
+
+  dateToString(date: NgbDate): string {
+    let dateString = '' + date.year;
+    if (date.month < 10 ){
+      dateString = dateString + '-0' + date.month;
+    } else {
+      dateString = dateString + '-' + date.month;
+    }
+    if (date.day < 10 ){
+      dateString = dateString + '-0' + date.day;
+    } else {
+      dateString = dateString + '-' + date.day;
+    }
+    return dateString;
   }
 
 }

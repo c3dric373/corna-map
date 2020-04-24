@@ -15,6 +15,7 @@ import { MapContentComponent } from './map-content/map-content.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
 import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSliderModule} from '@angular/material/slider';
 
@@ -37,10 +38,12 @@ import {MatSliderModule} from '@angular/material/slider';
     FontAwesomeModule,
     NgbDropdownModule,
     NgbModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatSliderModule,
     MatSliderModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [ HttpClientModule]
 })
 export class AppModule { }

@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import model.data.DayData;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class containing all the data of the model. Given a Day we have the data
@@ -13,21 +13,12 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class ProjectDataImpl {
+public class ProjectDataImpl implements ProjectData {
 
   /**
-   * List which contains the data about corona for each county in france.
+   * This map will store for each region or county the data for each date.
+   * The first key is the region, the second one the date.
    */
-  private List<DayData> county = new ArrayList<>();
-
-  /**
-   * List which contains the data about corona for each region in france.
-   */
-  private List<DayData> region = new ArrayList<>();
-
-  /**
-   * Data about corona for france.
-   */
-  private List<DayData> france = new ArrayList<>();
+  private Map<String, Map<String, DayData>> locations = new HashMap<>();
 
 }
