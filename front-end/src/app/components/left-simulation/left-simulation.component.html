@@ -109,6 +109,12 @@
             <p *ngIf="false" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
           </div>
         </ng-template>
+        <ng-template ngbPanelContent>
+          <div class="container">
+            click on : {{locationName}} isRegion : {{isRegion}}
+            date : {{actualdate.day}}/{{actualdate.month}}/{{actualdate.year}}
+          </div>
+        </ng-template>
       </ngb-panel>
     </ngb-accordion>
 

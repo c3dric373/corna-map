@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { faStop } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
-import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -12,9 +12,14 @@ import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./left-simulation.component.css']
 })
 export class LeftSimulationComponent implements OnInit {
+  @Input() locationName: string;
+  @Input() isRegion: boolean;
+  @Input() actualdate: NgbDate;
 
+  constructor(calendar: NgbCalendar) {
+    this.actualdate = calendar.getToday();
+  }
 
-  constructor() { }
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
@@ -41,6 +46,7 @@ export class LeftSimulationComponent implements OnInit {
       this.play = false;
       this.pause = false;
       this.stop = true;
+      this.onChangeTime(0);
   }
 
 
@@ -98,6 +104,18 @@ onChangeRespectConfinement(value: number) {
 
   public beforeChange($event: NgbPanelChangeEvent) {
 
+
+  }
+
+  onChangeTime(value: number) {
+      while (true){
+        if (value >= 1000) {
+          return Math.round(value / 1000) + 'k';
+        }
+        value++;
+        return (value );
+        console.log('time' + value );
+      }
 
   }
 
