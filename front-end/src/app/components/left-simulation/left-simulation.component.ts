@@ -3,7 +3,8 @@ import { faStop } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
 import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-
+import {SimulationService} from '../../service/simulation/simulation.service';
+import {MapService} from '../../service/map/map.service';
 
 
 @Component({
@@ -16,45 +17,110 @@ export class LeftSimulationComponent implements OnInit {
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
 
-  constructor(calendar: NgbCalendar) {
+  constructor(private simulationService: SimulationService, calendar: NgbCalendar) {
     this.actualdate = calendar.getToday();
   }
 
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
-  public play;
-  public pause;
-  public stop;
-  public selectedConfinement: string;
-  public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
+  // public selectedConfinement: string;
+  // public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
   public borders;
   public shops;
   public hosp;
-  public mask = [false, false, false, false, false];
-  public conf = [false, false, false, false, false];
+  public mask ;
+  public conf ;
   public respectConfinement;
   public timer;
+  public resetSim;
 
     ngOnInit(): void {
-      this.selectedConfinement = this.tabConfinement[0];
+      // this.selectedConfinement = this.tabConfinement[0];
       this.borders = false;
       this.shops = false;
       this.hosp = false;
       this.respectConfinement = 50;
+      this.mask = [false, false, false, false, false];
+      this.conf = [false, false, false, false, false];
       this.timer = 0;
-      this.play = false;
-      this.pause = false;
-      this.stop = true;
+      this.resetSim = false;
       this.onChangeTime(0);
   }
 
+  sendParams(){
+      console.log('sendParams');
+      this.simulationService.sendParams([this.resetSim, this.locationName,
+        this.simulationService.dateToString(this.actualdate), this.conf, this.borders,
+        this.shops, this.hosp , this.mask, this.respectConfinement]);
+      return [this.resetSim, this.locationName, this.simulationService.dateToString(this.actualdate),
+        this.conf, this.borders, this.shops, this.hosp , this.mask,
+        this.respectConfinement];
+  }
 
+  onChangeSim(int) {
+      switch (int) {
+        case 0 :
+          console.log('appui sur pause');
+          document.getElementById('pause').setAttribute('disabled', 'disabled');
+          document.getElementById('play').removeAttribute('disabled');
+          document.getElementById('stop').removeAttribute('disabled');
+          document.getElementById('accordion').style.display = 'block';
+          break;
+        case 1 :
+          console.log('appui sur play');
+          document.getElementById('accordion').style.display = 'none';
+          document.getElementById('play').setAttribute('disabled', 'disabled');
+          console.log(this.sendParams());
+          if (this.locationName === undefined) {
+            console.log('appel getInfosFrance');
+            /*this.simulationService.getInfosFrance(this.actualdate).subscribe(
+              data => {
+                console.log(data);
+                // this.deptList = data;
+                // this.initializeMapDept();
+              }
+            );*/
+          } else if (!this.isRegion){
+            console.log('appel getInfosDept');
+           /* this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
+              data => {
+                console.log(data);
+                // this.deptList = data;
+                // this.initializeMapDept();
+              }
+            );*/
+          }else{
+            console.log('appel getInfosRegion');
+           /* this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
+              data => {
+                console.log(data);
+                // this.deptList = data;
+                // this.initializeMapDept();
+              }
+            );*/
+          }
+          break;
+        case 2 :
+          console.log('appui sur stop');
+          document.getElementById('stop').setAttribute('disabled', 'disabled');
+          document.getElementById('play').removeAttribute('disabled');
+          document.getElementById('pause').removeAttribute('disabled');
+          document.getElementById('accordion').style.display = 'block';
+          this.resetSim = true;
+          console.log(this.sendParams());
+          this.ngOnInit();
+          break;
+        default:
+          break;
+      }
 
-onChangeCategory(category) {
+  }
+
+/*onChangeCategory(category) {
     this.selectedConfinement = category;
     console.log('confinement : ' + this.selectedConfinement);
-  }
+  }*/
 
 onChangeBorder() {
       this.borders = !this.borders;
