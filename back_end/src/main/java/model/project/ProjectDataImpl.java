@@ -21,6 +21,11 @@ public class ProjectDataImpl implements ProjectData {
    */
   private Map<String, Map<String, DayData>> locations = new HashMap<>();
 
+  /**
+   * Getter.
+   *
+   * @return the map storing all the relevant data.
+   */
   @Override
   public Map<String, Map<String, DayData>> getLocations() {
     return locations;
