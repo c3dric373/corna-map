@@ -60,6 +60,7 @@ public class DataScrapperImpl implements DataScrapper {
     final int dateCsvIndex = 0;
     final int typeIndex = 1;
     final int minusDays = 3;
+    final int totalCasesIndex = 4;
     final String pathToData = System.getProperty("user.dir")
       + "/src/main"
       + "/resources"
@@ -76,7 +77,7 @@ public class DataScrapperImpl implements DataScrapper {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
       LocalDate date = LocalDate.parse(row[dateCsvIndex]);
       LocalDate today = LocalDate.now().minusDays(minusDays);
-      if ((row[typeIndex].equals("pays") || row[typeIndex].equals(
+      if ((row[typeIndex].equals("pays") && !row[totalCasesIndex].equals("") || row[typeIndex].equals(
         "departement") || row[typeIndex].equals("region"))) {
         extraction(projectDataWrapper, row);
       }
