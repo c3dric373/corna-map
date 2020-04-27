@@ -106,7 +106,7 @@ public class DataScrapperImpl implements DataScrapper {
     final int hospitalizedIndex = 11;
     final int recoveredCasesIndex = 12;
     final int totalTestsIndex = 13;
-    final int maxLength = 6;
+    final int maxLength = 12;
     for (int i = 0; i < row.length; i++) {
       if (row[i].equals("")) {
         row[i] = "0";
