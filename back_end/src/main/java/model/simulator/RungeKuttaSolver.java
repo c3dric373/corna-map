@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-
 public class RungeKuttaSolver implements DifferentialSolver {
     protected int order;
     protected int nbIterations;

@@ -40,6 +40,7 @@ public class T_Y {
         return y.size();
     }
 
+    // TODO : tej ces trucs en même temps que le vieux RK4
     List<Double> rungeKuttaKi(final Function<T_Y, Double> function, final double delta) {
         final double alphak2k3 = 0.5;
         final double alphak4 = 1.;
