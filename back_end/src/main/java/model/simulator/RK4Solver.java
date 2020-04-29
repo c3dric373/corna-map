@@ -6,7 +6,7 @@ import java.util.List;
 public class RK4Solver extends RungeKuttaSolver {
     /**
      * Creates a differential solver for the RK4 method.
-     * The RK4 method is a Runge-Kutta method with the following Butcher Tableau
+     * The RK4 method is a Runge-Kutta method with the following Butcher tableau
      *
      *  0  |  0   0   0   0
      * 1/2 | 1/2  0   0   0
@@ -23,10 +23,10 @@ public class RK4Solver extends RungeKuttaSolver {
         List<Double> a1 = new ArrayList<>(order);
         List<Double> a2 = new ArrayList<>(order);
         List<Double> a3 = new ArrayList<>(order);
-        a0.add(0.);   a0.add(0.);   a0.add(0.);  a0.add(0.);
-        a1.add(0.5);  a1.add(0.);   a1.add(0.);  a1.add(0.);
-        a2.add(0.);   a2.add(0.5);  a2.add(0.);  a2.add(0.);
-        a3.add(0.);   a3.add(0.);   a3.add(1.);  a3.add(0.);
+        a0.add(0.);  a0.add(0.);  a0.add(0.);  a0.add(0.);
+        a1.add(.5);  a1.add(0.);  a1.add(0.);  a1.add(0.);
+        a2.add(0.);  a2.add(.5);  a2.add(0.);  a2.add(0.);
+        a3.add(0.);  a3.add(0.);  a3.add(1.);  a3.add(0.);
         a.add(a0);
         a.add(a1);
         a.add(a2);
