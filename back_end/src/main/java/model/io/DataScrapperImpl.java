@@ -77,6 +77,10 @@ public class DataScrapperImpl implements DataScrapper {
       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
       LocalDate date = LocalDate.parse(row[dateCsvIndex]);
       LocalDate today = LocalDate.now().minusDays(minusDays);
+      // Sometimes there are rows with the date only, we ignore them
+      if ((row.length ==1)) {
+        continue;
+      }
       if ((row[typeIndex].equals("pays") && !row[totalCasesIndex].equals("") || row[typeIndex].equals(
         "departement") || row[typeIndex].equals("region"))) {
         extraction(projectDataWrapper, row);
