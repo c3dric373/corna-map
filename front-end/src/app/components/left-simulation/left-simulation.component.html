@@ -5,11 +5,11 @@
     <h2>France</h2>
 
     <div class="container-sm" id="buttons1">
-      <button type="button" class="btn btn-outline-secondary" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPause"></fa-icon>
+      <button type="button" id="pause" class="btn btn-outline-secondary" style="margin-right: 5%;border-radius: 50%" (click)="onChangeSim(0)">  <fa-icon [icon]="faPause"></fa-icon>
       </button>
-      <button type="button" class="btn btn-outline-success" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faPlay"></fa-icon>
+      <button type="button" id="play" class="btn btn-outline-success" style="margin-right: 5%;border-radius: 50%" (click)="onChangeSim(1)">  <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button type="button" class="btn btn-outline-danger" style="margin-right: 5%;border-radius: 50%">  <fa-icon [icon]="faStop"></fa-icon>
+      <button type="button" id="stop" class="btn btn-outline-danger" style="margin-right: 5%;border-radius: 50%" (click)="onChangeSim(2)">  <fa-icon [icon]="faStop"></fa-icon>
       </button>
     </div>
 
@@ -18,7 +18,7 @@
 
 
 
-    <ngb-accordion id="accordion" (panelChange)="beforeChange($event)">
+    <ngb-accordion id="accordion" (panelChange)="beforeChange($event)" >
       <ngb-panel id="preventchange-1" title="Mesures du gouvernement" style="padding: 0%">
         <ng-template ngbPanelHeader  >
           <div class="d-flex align-items-center justify-content-between" style="color: black">
@@ -107,6 +107,12 @@
           <div class="d-flex align-items-center justify-content-between" style="color: black">
             <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0" style="padding: 0 " >Autres</button>
             <p *ngIf="false" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <div class="container">
+            click on : {{locationName}} isRegion : {{isRegion}}
+            date : {{actualdate.day}}/{{actualdate.month}}/{{actualdate.year}}
           </div>
         </ng-template>
       </ngb-panel>

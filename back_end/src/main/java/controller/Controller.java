@@ -107,11 +107,11 @@ public class Controller {
    * @return the requested data in a json format.
    */
   @RequestMapping(value = {"/map/infosDept"}, method =
-          RequestMethod.GET,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+    RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
   String infosDept(@RequestParam("date") final String date,
-                     @RequestParam(value = "name",
-                             required = false) final String name) {
+                   @RequestParam(value = "name",
+                     required = false) final String name) {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
 
@@ -137,6 +137,55 @@ public class Controller {
     Validate.notEmpty(location, "location empty");
     Gson gson = new Gson();
     return gson.toJson(wrapper.historyLocalisation(location));
+  }
+
+  /**
+   * Get all the data about a location.
+   *
+   * @param date The location from which the data is requested.
+   * @return the requested data in a json format.
+   */
+  @RequestMapping(value = {"/simulation/infosFrance"}, method =
+    RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  String simulationFrance(@RequestParam("date") final String date) {
+    Validate.notNull(date, "location null");
+    Gson gson = new Gson();
+    return gson.toJson(wrapper.infosFrance("2020-04-04"));
+  }
+
+  @RequestMapping(value = {"simulation/infosRegion"}, method =
+    RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  String infosRegionSimulation(@RequestParam("date") final String date,
+                               @RequestParam(value = "name",
+                                 required = false) final String name) {
+    Validate.notNull(date, "date is null");
+    Validate.notEmpty(date, "date empty");
+
+    Gson gson = new Gson();
+    if (name == null) {
+      return gson.toJson(wrapper.infosRegion("2020-04-04"));
+    } else {
+      return gson.toJson(wrapper.infosLocalisation(name, "2020-04-04"));
+    }
+  }
+
+  @RequestMapping(value = {"simulation/infosDept"}, method =
+    RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  String infosDeptSimulation(@RequestParam("date") final String date,
+                             @RequestParam(value = "name",
+                               required = false) final String name) {
+    Validate.notNull(date, "date is null");
+    Validate.notEmpty(date, "date empty");
+
+    Gson gson = new Gson();
+    if (name == null) {
+      return gson.toJson(wrapper.infosRegion("2020-04-04"));
+    } else {
+      return gson.toJson(wrapper.infosLocalisation(name, "2020-04-04"));
+    }
   }
 
 }
