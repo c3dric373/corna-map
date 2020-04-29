@@ -24,7 +24,7 @@ export class MapService {
 
   getMapDept(date: NgbDate): Observable<any>{
     const stringDate = this.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-27' );
+    return this.httpClient.get(this.API_URL + 'map/infosDept?date=' + stringDate );
   }
 
   getInfosRegion(date: NgbDate, name: string): Observable<any>{

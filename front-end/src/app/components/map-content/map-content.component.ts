@@ -343,6 +343,14 @@ export class MapContentComponent implements OnInit {
   onDateSelect(date){
     this.date = date;
     this.emitDate.emit(this.date);
+    // Color map
+    if (this.isRegion) {
+      this.removeRegListener();
+      this.getRegInfos();
+    } else {
+      this.removeDeptListener();
+      this.getDeptInfos();
+    }
   }
 
   onClickExtend(): void {
