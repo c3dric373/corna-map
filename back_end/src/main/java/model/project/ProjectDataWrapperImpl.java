@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import lombok.Getter;
 import model.data.DayData;
 import model.io.DataScrapperImpl;
+import model.service.DayDataService;
 import model.simulator.SIRSimulator;
 import model.simulator.Simulator;
 
@@ -122,9 +123,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public DayData simulateFrance(final String date) {
-    final double dead = getDead(FRA);
-    final double recovered = getRecovered(FRA);
-    final double susceptible = getSusceptible(FRA);
+    final DayData latestData = getLatestData(FRA);
+    final double dead = DayDataService.getDeathRate(FRA, latestData);
+    final double recovered = DayDataService.getRecoveryRate(FRA, latestData);
+    final double susceptible = DayDataService.getSusceptible(FRA, latestData);
     final double infectious = 1 - susceptible;
     System.out.println("Dead: " + dead);
     System.out.println("recovered: " + recovered);
@@ -133,7 +135,17 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     SIRSimulator simulator = new SIRSimulator(susceptible, infectious,
       recovered,
       dead);
+    final double totalDeaths = getLatestData(FRA).getTotalDeaths();
+    final double totalCases = getLatestData(FRA).getTotalCases();
+    final double lethality = totalDeaths / totalCases;
+
+    System.out.println("==================");
+    System.out.println(totalDeaths);
+    System.out.println(totalCases);
+    System.out.println("Lethality: " + lethality);
+    simulator.setMu(lethality);
     simulator.step();
+
     final double deadNew = Iterables.getLast(simulator.getDead());
     final double recoveredNew = Iterables.getLast(simulator.getRecovered());
     final double susceptibleNew = Iterables.getLast(simulator.getSusceptible());
@@ -163,27 +175,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return franceMap.get(latestDate.get());
   }
 
-  private double getSusceptible(final String location) {
-    final DayData latestData = getLatestData(location);
-    final int infectedPersons = latestData.getTotalCases()
-      - latestData.getRecoveredCases() - latestData.getTotalDeaths();
-    return infectedPersons / POPULATION_FRA;
-  }
-
-  private double getRecovered(final String location) {
-    final DayData latestData = getLatestData(location);
-    final double latestDataRecoveredCases = latestData.getRecoveredCases();
-    final double latestDataTotalCases = latestData.getTotalCases();
-    return latestDataRecoveredCases / latestDataTotalCases;
-  }
-
-  private double getDead(final String location) {
-    final DayData latestData = getLatestData(location);
-    final int latestDead = latestData.getTotalDeaths();
-    return latestDead / POPULATION_FRA;
-  }
-
   /**
+   * ,
+   * final DayData latestData
    * Simple class to compare to string dates.
    */
   private static class DateComparator implements Comparator<String> {
