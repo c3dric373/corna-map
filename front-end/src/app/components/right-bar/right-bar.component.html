@@ -3,7 +3,22 @@
 
     <h4 id="titre">Graphiques</h4>
 
-            click on : {{locationName}} date : {{actualdate.day}}/{{actualdate.month}}/{{actualdate.year}}
+    <ngb-accordion id="accordion" (panelChange)="beforeChange($event)" >
+      <ngb-panel id="preventchange-1" title="Mesures du gouvernement" style="padding: 0%">
+        <ng-template ngbPanelHeader  >
+          <div class="d-flex align-items-center justify-content-between" style="color: black">
+            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0" style="padding: 0 " >Mesures du gouvernement</button>
+            <p *ngIf="false" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+          </div>
+        </ng-template>
+        <ng-template ngbPanelContent >
+          click on : {{locationName}} date : {{actualdate.day}}/{{actualdate.month}}/{{actualdate.year}}
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+
+
+
       <span id="1"></span>
 
     <div class="container-sm" id="charts"></div>
