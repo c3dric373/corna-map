@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
 /**
  * The Runge-Kutta method is an improvement of the Euler method to solve
  * differential equations.
@@ -38,27 +36,29 @@ import java.util.stream.Collectors;
  *
  * k_ij = f_i(t_n + c_j h, y_n + h (a_j1 ki1 + ... + a_j(j-1) k_ij-1))
  */
+@Getter
+@Setter
 public class RungeKuttaSolver implements DifferentialSolver {
     /**
      * The order of the RK method, named s in the description above.
      */
-    protected int order;
+    private int order;
     /**
      * The number of iterations we want to make.
      */
-    protected int n;
+    private int n;
     /**
      * the a_ij of the Butcher tableau.
      */
-    protected List<List<Double>> a;
+    private List<List<Double>> a;
     /**
      * the b_i of the Butcher tableau.
      */
-    protected List<Double> b;
+    private List<Double> b;
     /**
      * the c_i of the Butcher tableau.
      */
-    protected List<Double> c;
+    private List<Double> c;
 
     /**
      * Computes y(t_0 + 1) where y is the solution of the Cauchy problem y'(t) =
@@ -159,7 +159,7 @@ public class RungeKuttaSolver implements DifferentialSolver {
      * f_i(t_n + c_j h, y_n + h (a_j1 k1 + ... + a_j(j-1) k_ij-1)) next.
      *
      * @param ki the values we already computed (from 0 to j - 1).
-     * @param j the component we are interested in.
+     * @param j  the component we are interested in.
      * @param ty the representation of tn and yn.
      *
      * @return the representation of y_n + h (a_j1 ki1 + ... + a_j(j-1) k_ij-1)

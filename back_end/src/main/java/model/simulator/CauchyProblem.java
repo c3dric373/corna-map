@@ -40,9 +40,10 @@ public class CauchyProblem {
 
     /**
      * Syntaxic sugar for new TY(cauchyProblem.getT0(), cauchyProblem.getY0()).
+     *
      * @return the initial condition of the Cauchy problem.
      */
-    public TY getInitialCondition(){
+    public TY getInitialCondition() {
         return new TY(t0, y0);
     }
 
