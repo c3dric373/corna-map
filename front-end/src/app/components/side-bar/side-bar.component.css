@@ -2,20 +2,61 @@
   min-width: 20vw;
   max-width: 20vw;
   height:100%;
-  background: #7386D5;
-  color: #fff;
+  background: #f2f2f2ff;
+  color: black;
   transition: all 0.3s;
+  display: grid;
+  font-family : Bahnschrift;
+
 }
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #6d7fcc;
+  background: #f2f2f2ff;
 }
 
-#Guéris{
-  background-color: #86eee0;
+#titre{
+  color: black;
+  font-size: 180%;
+  text-align:center;
 }
 
+.container{
+  display: block;
+  margin-top: 15%;
+  height:12%;
+  color: whitesmoke;
+}
+
+.row{
+
+  width:75%;
+  height:100%;
+  margin-left: 10%;
+  margin-bottom: 8%;
+  font-size: 110%;
+  display: grid;
+  text-align: center;
+  padding-top: 5%;
+
+}
+
+#CasConfirmes{
+  background-color: #ffd966ff;
+}
+
+#Guris{
+  background-color: #6ca644ff;
+}
+
+#Hospitalisations{
+  background-color: #fd9d3dff;
+}
+
+#Deces{
+  background-color: #a50026ff;
+
+}
 
 
 

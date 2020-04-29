@@ -3,7 +3,6 @@ package model;
 import model.simulator.CauchyProblem;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
@@ -14,14 +13,13 @@ import java.util.function.Function;
 @ComponentScan("controller")
 public class Application {
 
-    /**
-     * Start spring application.
-     *
-     * @param args command line args, not used.
-     */
-    public static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+  /**
+   * Start spring application.
+   *
+   * @param args command line args, not used.
+   */
+  public static void main(final String[] args) {
+    SpringApplication.run(Application.class, args);
 
 
 /*

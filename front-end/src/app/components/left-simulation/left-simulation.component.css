@@ -1,0 +1,156 @@
+#sidebar {
+  min-width: 20vw;
+  max-width: 20vw;
+  height:100%;
+  background: #7386D5;
+  transition: all 0.3s;
+  display: grid;
+  font-family : Bahnschrift;
+
+}
+
+#sidebar .sidebar-header {
+  padding: 5%;
+  background: #f2f2f2ff;
+  overflow:visible;
+
+}
+
+ng-template{
+  padding: 0!important;
+}
+
+#buttons1{
+  margin-top: 8%;
+  margin-left: 15% !important;
+  margin-bottom: 10% !important;
+  width:100%;
+  height: 5%;
+
+}
+
+#drop{
+  background: #f2f2f2ff;
+  border-radius: 5%;
+  font-size: 90%;
+}
+
+
+
+#btnLabel{
+  width:10%;
+  color : black!important;
+  border-radius: 0%;
+  padding-right: 1% !important;
+  padding-left: 0% !important;
+  padding-bottom: 0% !important;
+  margin-right: 0% !important;
+  margin-left: 0% !important;
+  border: inherit;
+  font-size: 90%;
+
+
+}
+
+#btnLabel:hover{
+  cursor: unset;
+  color : black!important;
+}
+
+h2{
+  color: black;
+  margin: 0%;
+  padding: 0%;
+  font-size: x-large;
+}
+
+h4{
+  color: black;
+  margin: 0%;
+  padding-bottom: 3%;
+  font-size: large;
+}
+
+
+#choix{
+  background: #fff;
+  background-color: #fff;
+  border-radius: 0%;
+  padding-left: 1% !important;
+  padding-bottom: 0% !important;
+  margin-left: 0% !important;
+  border-right: #f2f2f2ff;
+  border-top: #f2f2f2ff;
+  border-left: #f2f2f2ff;
+  font-size: 90%;
+  width: 33%;
+
+}
+
+
+#choix:focus{
+  box-shadow: unset;
+  transform: unset;
+}
+
+.btn-group{
+  width: 100%;
+  padding: 0% !important;
+  margin: 0!important;
+}
+
+#masque{
+
+  padding-bottom: 6% !important;
+  padding-top: 6% !important;
+}
+
+.input-group-text{
+  background: #fff;
+  border-color: #fff;
+  padding-top: 1%;
+  padding-right: 1%;
+  padding-left: 0%;
+  padding-bottom: 0%;
+  font-size: 95%;
+}
+
+
+
+.container-sm{
+  margin-bottom: 5% !important;
+  padding: 0% !important;
+  margin-left : 0% !important;
+  margin-top : 1% !important;
+  height: 1%;
+}
+
+#ex1Slider .slider-selection {
+  background: #BABABA;
+}
+
+mat-slider {
+  width: 100%;
+}
+
+.btn-link:focus{
+  text-decoration: none!important;
+  box-shadow: none;
+}
+
+.btn-link:hover{
+  text-decoration: none!important;
+  box-shadow: none;
+}
+
+.btn-link{
+  color: black;
+  padding: 0!important;
+  margin: 0!important;
+  width: 100%;
+}
+
+
+
+
+

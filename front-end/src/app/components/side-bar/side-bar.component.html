@@ -1,19 +1,23 @@
 <nav id="sidebar">
-  <div class="sidebar-header">
-    <h4>France</h4>
+  <div class="sidebar-header shadow-lg rounded">
 
+    <h4 id="titre">France</h4>
     <div class="container">
-      <div class="row" id="Cas confirmés">
-          Cas confirmés
+      <div class="row shadow-lg rounded" id="CasConfirmes" >
+         Cas confirmés
+        <span id="nbCC">{{donnees.totalCases}}</span>
       </div>
-      <div class="row" id="Guéris">
+      <div class="row shadow-lg rounded" id="Guris">
           Guéris
+        <span id="nbG">{{donnees.recoveredCases}}</span>
       </div>
-      <div class="row" id="Hospitalisations">
+      <div class="row shadow-lg rounded" id="Hospitalisations">
         Hospitalisations
+        <span id="nbH">{{donnees.hospitalized}}</span>
       </div>
-      <div class="row" id="Décès">
+      <div class="row shadow-lg rounded" id="Deces">
         Décès
+        <span id="nbD">{{donnees.totalDeaths}}</span>
       </div>
       </div>
     </div>

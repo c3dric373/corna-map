@@ -5,27 +5,46 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './../app-routing/app-routing.module';
 
 import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
-import { MenuComponent } from './menu/menu.component';
+import { MapMenuComponent } from './map-menu/map-menu.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { RightBarComponent } from './right-bar/right-bar.component';
-
+import { SimulationComponent } from './simulation/simulation.component';
+import { LeftSimulationComponent } from './left-simulation/left-simulation.component';
+import { MapContentComponent } from './map-content/map-content.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
+import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSliderModule} from '@angular/material/slider';
+import {NgbAccordionModule, NgbAccordion,NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent,
-    MenuComponent,
+    MapMenuComponent,
     NavBarComponent,
     SideBarComponent,
     RightBarComponent,
+    SimulationComponent,
+    LeftSimulationComponent,
+    MapContentComponent,
+    LoadingSpinComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    FontAwesomeModule,
+    NgbDropdownModule,
+    NgbModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatSliderModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [ HttpClientModule]
 })
 export class AppModule { }

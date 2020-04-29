@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RightBarComponent } from './right-bar.component';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('RightBarComponent', () => {
   let component: RightBarComponent;
@@ -8,7 +9,8 @@ describe('RightBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RightBarComponent ]
+      declarations: [ RightBarComponent ],
+      imports: [HttpClientModule]
     })
     .compileComponents();
   }));
