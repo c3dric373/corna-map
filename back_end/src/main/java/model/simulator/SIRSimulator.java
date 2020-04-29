@@ -14,8 +14,8 @@ public class SIRSimulator implements Simulator {
   private List<Double> recovered;
   private List<Double> dead;
 
-  private Double beta = 0.3;
-  private Double lambda = 0.04;
+  private Double beta = 0.01;
+  private Double lambda = 0.1;
   private Double mu = 0.07;
 
   private CauchyProblem model;

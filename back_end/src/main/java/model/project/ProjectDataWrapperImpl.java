@@ -156,10 +156,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     dayData.setTotalCases((int) (POPULATION_FRA - (susceptibleNew * POPULATION_FRA)));
     System.out.println("------------------");
 
-    System.out.println("deadNew: " + deadNew);
-    System.out.println("recoveredNew: " + recoveredNew);
+    System.out.println("deadNew: " + deadNew * POPULATION_FRA);
+    System.out.println("recoveredNew: " + recovered * POPULATION_FRA);
     System.out.println("susceptibleNew: " + susceptibleNew);
     System.out.println("infectiousNew: " + infectiousNew);
+    System.out.println("TOTALCASES: " + (POPULATION_FRA - (susceptibleNew * POPULATION_FRA)));
     return dayData;
   }
 
@@ -191,7 +192,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   public static void main(String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
-    wrapper.getCurrentAllDataFrance();
+    DataScrapperImpl scrapper = new DataScrapperImpl();
+    scrapper.extract(wrapper);
     DayData dayData = wrapper.simulateFrance("2020-04-28");
     int i = 0;
   }

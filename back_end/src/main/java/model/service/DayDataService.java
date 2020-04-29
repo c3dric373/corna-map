@@ -11,9 +11,8 @@ public class DayDataService {
 
   public static double getSusceptible(final String location,
                                       final DayData latestData) {
-    final int infectedPersons = latestData.getTotalCases()
-      - latestData.getRecoveredCases() - latestData.getTotalDeaths();
-    return infectedPersons / POPULATION_FRA;
+    final int totalCases = latestData.getTotalCases();
+    return (POPULATION_FRA - totalCases) / POPULATION_FRA;
   }
 
   public static double getRecoveryRate(final String location,
