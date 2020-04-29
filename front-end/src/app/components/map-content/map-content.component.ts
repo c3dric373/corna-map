@@ -1,7 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
+import {SimulationService} from '../../service/simulation/simulation.service';
 
 @Component({
   selector: 'app-map-content',
@@ -35,6 +36,9 @@ export class MapContentComponent implements OnInit {
   public date: NgbDate;
   model: NgbDateStruct;
 
+  // Input
+  @Input() SelectedMenu;
+
   //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
@@ -42,9 +46,9 @@ export class MapContentComponent implements OnInit {
   @Output() isOnlyMap = new EventEmitter<boolean>();
   @Output() emitDate = new EventEmitter<NgbDate>();
 
-  constructor(private mapService: MapService, calendar: NgbCalendar) {
-    this.date = calendar.getToday();
-    this.model = calendar.getToday();
+  constructor(private mapService: MapService, private simulation: SimulationService, calendar: NgbCalendar) {
+    this.date = calendar.getPrev(calendar.getToday());
+    this.model = calendar.getPrev(calendar.getToday());
     this.mousOverReg = new Object();
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
@@ -86,21 +90,39 @@ export class MapContentComponent implements OnInit {
   }
 
   getRegInfos() {
-    this.mapService.getMapRegion(this.date).subscribe(
-      data => {
-        this.reglist = data;
-        this.initializeMapReg();
-      }
-    );
+    if (this.SelectedMenu === 'map') {
+      this.mapService.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+        }
+      );
+    } else {
+      this.simulation.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+        }
+      );
+    }
   }
 
   getDeptInfos() {
-    this.mapService.getMapDept(this.date).subscribe(
-      data => {
-        this.deptList = data;
-        this.initializeMapDept();
-      }
-    );
+    if (this.SelectedMenu === 'map') {
+      this.mapService.getMapDept(this.date).subscribe(
+        data => {
+          this.deptList = data;
+          this.initializeMapDept();
+        }
+      );
+    } else {
+      this.simulation.getMapDept(this.date).subscribe(
+        data => {
+          this.deptList = data;
+          this.initializeMapDept();
+        }
+      );
+    }
   }
 
   initializeMapDept() {
@@ -321,6 +343,14 @@ export class MapContentComponent implements OnInit {
   onDateSelect(date){
     this.date = date;
     this.emitDate.emit(this.date);
+    // Color map
+    if (this.isRegion) {
+      this.removeRegListener();
+      this.getRegInfos();
+    } else {
+      this.removeDeptListener();
+      this.getDeptInfos();
+    }
   }
 
   onClickExtend(): void {

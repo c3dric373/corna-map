@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {InfosFrance} from '../../model/infosFrance';
@@ -8,16 +8,20 @@ import {InfosFrance} from '../../model/infosFrance';
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.css']
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent implements OnInit, OnChanges {
   public donnees: InfosFrance;
   @Input() date: NgbDate;
 
   constructor(private mapService: MapService, calendar: NgbCalendar) {
-    this.date = calendar.getToday();
+    this.date =  calendar.getPrev(calendar.getToday());
   }
 
   ngOnInit(): void {
     this.donnees = new InfosFrance();
+    this.getInfosFrance();
+  }
+
+  ngOnChanges(composant: SimpleChanges ){
     this.getInfosFrance();
   }
 

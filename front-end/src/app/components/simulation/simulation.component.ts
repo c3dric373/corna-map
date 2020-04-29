@@ -13,6 +13,7 @@ export class SimulationComponent implements OnInit {
   public loading: boolean;
   public isOnlyMap = false;
   public date: NgbDate;
+  public type = 'simulation';
 
   constructor() {}
 
