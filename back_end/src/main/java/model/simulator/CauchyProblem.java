@@ -69,11 +69,11 @@ public class CauchyProblem {
          * Sets the time t_0 for the initial condition of the Cauchy Problem (by
          * default, t_0 = 0).
          *
-         * @param t, the new t_0
+         * @param t the new t_0
          *
          * @return the builder, in order to chain the calls
          */
-        public Builder setInitialTime(final Double t) {
+        public Builder setInitialTime(final double t) {
             t0 = t;
             return this;
         }
@@ -81,17 +81,18 @@ public class CauchyProblem {
         /**
          * Adds an unknown y_i to the differential equation.
          *
-         * @param y_0i, the initial condition of the unknown y_i(t_0) = y_0i
-         * @param f_i,  the function that defines the derivative of the unknown
-         *              y_i'(t) = f_i(t, y(t))
+         * @param y0i the initial condition of the unknown y_i(t_0) = y_0i
+         * @param fi  the function that defines the derivative of the unknown
+         *            y_i'(t) = f_i(t, y(t))
          *
          * @return the builder, in order to chain the calls
          */
-        public Builder addParameter(final Double y_0i, final Function<TY, Double> f_i) {
-            Validate.notNull(y_0i, "initialCondition null");
-            Validate.notNull(f_i, "derivative null");
-            f.add(f_i);
-            y0.add(y_0i);
+        public Builder addParameter(final Double y0i,
+                                    final Function<TY, Double> fi) {
+            Validate.notNull(y0i, "initialCondition null");
+            Validate.notNull(fi, "derivative null");
+            f.add(fi);
+            y0.add(y0i);
             return this;
         }
 
