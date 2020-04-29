@@ -16,7 +16,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingSpinComponent } from './loading-spin/loading-spin.component';
 import {NgbDropdownModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule} from '@angular/forms';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSliderModule} from '@angular/material/slider';
+import {NgbAccordionModule, NgbAccordion,NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,9 @@ import {FormsModule} from '@angular/forms';
     NgbDropdownModule,
     NgbModule,
     FormsModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatSliderModule,
   ],
   bootstrap: [AppComponent],
   providers: [ HttpClientModule]

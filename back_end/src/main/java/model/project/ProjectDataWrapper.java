@@ -29,8 +29,8 @@ public interface ProjectDataWrapper {
    * @param date     the date.
    * @param dayData  the data.
    */
-  void addLocation(String location,  String date,
-                    DayData dayData);
+  void addLocation(String location, String date,
+                   DayData dayData);
 
   /**
    * Query to get information about france at a given date.
@@ -53,7 +53,7 @@ public interface ProjectDataWrapper {
    * @param date the specific date.
    * @return the queried data.
    */
-  DayData infosLocalisation(String name,  String date);
+  DayData infosLocalisation(String name, String date);
 
   /**
    * Returns the data about all regions on a specific date.
@@ -78,4 +78,12 @@ public interface ProjectDataWrapper {
    * @param key key to add.
    */
   void addKey(String key);
+
+  /**
+   * Simulates the propagation of the COVID-19 until a given date.
+   *
+   * @param date the date for which we should simulate.
+   * @return the {@link DayData} containing the simulated info.
+   */
+  DayData simulateFrance(String date);
 }

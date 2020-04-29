@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-simulation',
@@ -7,11 +8,36 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./simulation.component.css']
 })
 export class SimulationComponent implements OnInit {
-  faCoffee = faCoffee;
+  public location: string;
+  public isRegion: boolean;
+  public loading: boolean;
+  public isOnlyMap = false;
+  public date: NgbDate;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
+    this.loading = true;
+  }
+
+  clickOnLocation(location: string) {
+    this.location = location;
+  }
+
+  setIsRegion(isRegion: boolean) {
+    this.isRegion = isRegion;
+  }
+
+  setLoading(loading: boolean) {
+    this.loading = loading;
+  }
+
+  setOnlyMap(isMap: boolean) {
+    this.isOnlyMap = isMap;
+  }
+
+  setDate(actualDate: NgbDate) {
+    this.date = actualDate;
   }
 
 }

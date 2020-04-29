@@ -1,6 +1,7 @@
 package model.data;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
  * france or france itself.
  */
 @Getter
+@Setter
 public class DayData {
 
   /**
