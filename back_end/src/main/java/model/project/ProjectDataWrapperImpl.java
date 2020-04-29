@@ -25,29 +25,26 @@ import java.util.stream.Collectors;
 public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
+   * Id for france to access data.
+   */
+  private static final String FRA = "FRA";
+  /**
+   * Population of France.
+   */
+  private static final double POPULATION_FRA = 67000000.0;
+  /**
+   * Comparator used to compare dates as string.
+   */
+  private final DateComparator dateComparator = new DateComparator();
+  /**
    * The {@link ProjectData} this wrapper manages.
    */
   private ProjectData projectData = new ProjectDataImpl();
-
   /**
    * The {@link model.simulator.Simulator} to simulate the propagation of the
    * COVID-19.
    */
   private Simulator simulator = new SIRSimulator();
-  /**
-   * Id for france to access data.
-   */
-  private static final String FRA = "FRA";
-
-  /**
-   * Population of France.
-   */
-  private static final double POPULATION_FRA = 67000000.0;
-
-  /**
-   * Comparator used to compare dates as string.
-   */
-  private final DateComparator dateComparator = new DateComparator();
 
   @Override
   public void getCurrentAllDataFrance() throws IOException {
@@ -124,25 +121,32 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public DayData simulateFrance(final String date) {
     final DayData latestData = getLatestData(FRA);
+    final LocalDate nextDayDate = latestData.getDate().plusDays(1);
+    if (!LocalDate.parse(date).equals(nextDayDate)) {
+      throw new IllegalStateException("Wrong Date!");
+    }
     final double dead = DayDataService.getDeathRate(FRA, latestData);
     final double recovered = DayDataService.getRecoveryRate(FRA, latestData);
     final double susceptible = DayDataService.getSusceptible(FRA, latestData);
     final double infectious = 1 - susceptible;
+    /*
     System.out.println("Dead: " + dead);
     System.out.println("recovered: " + recovered);
     System.out.println("susceptible: " + susceptible);
     System.out.println("infectious: " + infectious);
+     */
     SIRSimulator simulator = new SIRSimulator(susceptible, infectious,
       recovered,
       dead);
     final double totalDeaths = getLatestData(FRA).getTotalDeaths();
     final double totalCases = getLatestData(FRA).getTotalCases();
     final double lethality = totalDeaths / totalCases;
-
+    /*
     System.out.println("==================");
     System.out.println(totalDeaths);
     System.out.println(totalCases);
     System.out.println("Lethality: " + lethality);
+    */
     simulator.setMu(lethality);
     simulator.step();
 
@@ -154,16 +158,26 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
     dayData.setRecoveredCases((int) (recovered * POPULATION_FRA));
     dayData.setTotalCases((int) (POPULATION_FRA - (susceptibleNew * POPULATION_FRA)));
+    dayData.setDate(LocalDate.parse(date).plusDays(1));
+    /*
     System.out.println("------------------");
-
     System.out.println("deadNew: " + deadNew * POPULATION_FRA);
     System.out.println("recoveredNew: " + recovered * POPULATION_FRA);
     System.out.println("susceptibleNew: " + susceptibleNew);
     System.out.println("infectiousNew: " + infectiousNew);
-    System.out.println("TOTALCASES: " + (POPULATION_FRA - (susceptibleNew * POPULATION_FRA)));
+    System.out.println("totalCases: " + (POPULATION_FRA - (susceptibleNew *
+    POPULATION_FRA)));
+     */
+    addLocation(FRA, LocalDate.parse(date).plusDays(1).toString(), dayData);
     return dayData;
   }
 
+  /**
+   * Get's the latest available data (covid-19 stats) for a specific location.
+   *
+   * @param location The location for which we want the data.
+   * @return the data.
+   */
   private DayData getLatestData(final String location) {
     final Map<String, Map<String, DayData>> localisations =
       projectData.getLocations();
@@ -177,15 +191,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   /**
-   * ,
-   * final DayData latestData
    * Simple class to compare to string dates.
    */
   private static class DateComparator implements Comparator<String> {
     @Override
     public int compare(final String s, final String t1) {
-      LocalDate date1 = LocalDate.parse(s);
-      LocalDate date2 = LocalDate.parse(t1);
+      final LocalDate date1 = LocalDate.parse(s);
+      final LocalDate date2 = LocalDate.parse(t1);
       return date1.compareTo(date2);
     }
   }
@@ -195,8 +207,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     DataScrapperImpl scrapper = new DataScrapperImpl();
     scrapper.extract(wrapper);
     DayData dayData = wrapper.simulateFrance("2020-04-28");
-    int i = 0;
+    wrapper.simulateFrance("2020-04-29");
   }
+
 }
 
 
