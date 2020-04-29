@@ -125,9 +125,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     if (!LocalDate.parse(date).equals(nextDayDate)) {
       throw new IllegalStateException("Wrong Date!");
     }
-    final double dead = DayDataService.getDeathRate(FRA, latestData);
-    final double recovered = DayDataService.getRecoveryRate(FRA, latestData);
-    final double susceptible = DayDataService.getSusceptible(FRA, latestData);
+    final double dead = DayDataService.getDeathRate(latestData);
+    final double recovered = DayDataService.getRecoveryRate(latestData);
+    final double susceptible = DayDataService.getSusceptible(latestData);
     final double infectious = 1 - susceptible;
     /*
     System.out.println("Dead: " + dead);

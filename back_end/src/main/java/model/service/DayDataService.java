@@ -9,22 +9,41 @@ public class DayDataService {
    */
   final private static double POPULATION_FRA = 67000000.0;
 
-  public static double getSusceptible(final String location,
-                                      final DayData latestData) {
-    final int totalCases = latestData.getTotalCases();
+  /**
+   * Computes the percentage of people susceptible of catching the coronavirus
+   * given on stats of specific day.
+   *
+   * @param dayData Data of specific day.
+   * @return percentage of susceptible people.
+   */
+  public static double getSusceptible(final DayData dayData) {
+    final int totalCases = dayData.getTotalCases();
     return (POPULATION_FRA - totalCases) / POPULATION_FRA;
   }
 
-  public static double getRecoveryRate(final String location,
-                                       final DayData latestData) {
-    final double latestDataRecoveredCases = latestData.getRecoveredCases();
-    final double latestDataTotalCases = latestData.getTotalCases();
+  /**
+   * Computes the percentage of recovered people from coronavirus
+   * given on stats of specific day.
+   *
+   * @param dayData Data of specific day.
+   * @return percentage of recovered people.
+   */
+  public static double getRecoveryRate(final DayData dayData) {
+    final double latestDataRecoveredCases = dayData.getRecoveredCases();
+    final double latestDataTotalCases = dayData.getTotalCases();
     return latestDataRecoveredCases / latestDataTotalCases;
   }
 
-  public static double getDeathRate(final String location,
-                                    final DayData latestData) {
-    final int latestDead = latestData.getTotalDeaths();
+  /**
+   * Computes the current deathRate of the coronavirus
+   * given on stats of specific day.
+   *
+   * @param dayData Data of specific day.
+   * @return deathRate.
+   */
+  public static double getDeathRate(
+    final DayData dayData) {
+    final int latestDead = dayData.getTotalDeaths();
     return latestDead / POPULATION_FRA;
   }
 
