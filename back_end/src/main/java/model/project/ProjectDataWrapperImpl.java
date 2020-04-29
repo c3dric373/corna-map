@@ -6,7 +6,6 @@ import model.data.DayData;
 import model.io.DataScrapperImpl;
 import model.service.DayDataService;
 import model.simulator.SIRSimulator;
-import model.simulator.Simulator;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -40,11 +39,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * The {@link ProjectData} this wrapper manages.
    */
   private ProjectData projectData = new ProjectDataImpl();
-  /**
-   * The {@link model.simulator.Simulator} to simulate the propagation of the
-   * COVID-19.
-   */
-  private Simulator simulator = new SIRSimulator();
 
   @Override
   public void getCurrentAllDataFrance() throws IOException {
@@ -135,7 +129,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println("susceptible: " + susceptible);
     System.out.println("infectious: " + infectious);
      */
-    SIRSimulator simulator = new SIRSimulator(susceptible, infectious,
+    final SIRSimulator sirSimulator = new SIRSimulator(susceptible, infectious,
       recovered,
       dead);
     final double totalDeaths = getLatestData(FRA).getTotalDeaths();
@@ -147,17 +141,20 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println(totalCases);
     System.out.println("Lethality: " + lethality);
     */
-    simulator.setMu(lethality);
-    simulator.step();
+    sirSimulator.setMu(lethality);
+    sirSimulator.step();
 
-    final double deadNew = Iterables.getLast(simulator.getDead());
-    final double recoveredNew = Iterables.getLast(simulator.getRecovered());
-    final double susceptibleNew = Iterables.getLast(simulator.getSusceptible());
-    final double infectiousNew = Iterables.getLast(simulator.getInfectious());
+    final double deadNew = Iterables.getLast(sirSimulator.getDead());
+    final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
+    final double susceptibleNew =
+      Iterables.getLast(sirSimulator.getSusceptible());
+    final double infectiousNew =
+      Iterables.getLast(sirSimulator.getInfectious());
     final DayData dayData = new DayData();
     dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
     dayData.setRecoveredCases((int) (recovered * POPULATION_FRA));
-    dayData.setTotalCases((int) (POPULATION_FRA - (susceptibleNew * POPULATION_FRA)));
+    dayData.setTotalCases((int) (POPULATION_FRA -
+      (susceptibleNew * POPULATION_FRA)));
     dayData.setDate(LocalDate.parse(date).plusDays(1));
     /*
     System.out.println("------------------");
@@ -202,6 +199,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
+  /*
   public static void main(String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
@@ -209,6 +207,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     DayData dayData = wrapper.simulateFrance("2020-04-28");
     wrapper.simulateFrance("2020-04-29");
   }
+   */
 
 }
 

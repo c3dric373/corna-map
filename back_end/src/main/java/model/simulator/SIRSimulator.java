@@ -114,4 +114,5 @@ public class SIRSimulator implements Simulator {
         T -> mu * T.getYi(1))
       .build();
   }
+
 }

@@ -81,6 +81,9 @@ public interface ProjectDataWrapper {
 
   /**
    * Simulates the propagation of the COVID-19 until a given date.
+   *
+   * @param date the date for which we should simulate.
+   * @return the {@link DayData} containing the simulated info.
    */
   DayData simulateFrance(String date);
 }
