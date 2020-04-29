@@ -151,7 +151,7 @@ public class Controller {
   String simulationFrance(@RequestParam("date") final String date) {
     Validate.notNull(date, "location null");
     Gson gson = new Gson();
-    return gson.toJson(wrapper.simulateFrance("2020-04-04"));
+    return gson.toJson(wrapper.simulateFrance(date));
   }
 
   @RequestMapping(value = {"simulation/infosRegion"}, method =

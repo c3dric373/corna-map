@@ -7,7 +7,7 @@ public class DayDataService {
   /**
    * French population size.
    */
-  private final static double POPULATION_FRA = 67000000.0;
+  private static final double POPULATION_FRA = 67000000.0;
 
   /**
    * Computes the percentage of people susceptible of catching the coronavirus

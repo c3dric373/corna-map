@@ -153,9 +153,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final DayData dayData = new DayData();
     dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
     dayData.setRecoveredCases((int) (recovered * POPULATION_FRA));
-    dayData.setTotalCases((int) (POPULATION_FRA -
-      (susceptibleNew * POPULATION_FRA)));
-    dayData.setDate(LocalDate.parse(date).plusDays(1));
+    dayData.setTotalCases((int) (POPULATION_FRA
+      - (susceptibleNew * POPULATION_FRA)));
+    dayData.setDate(LocalDate.parse(date));
     /*
     System.out.println("------------------");
     System.out.println("deadNew: " + deadNew * POPULATION_FRA);
