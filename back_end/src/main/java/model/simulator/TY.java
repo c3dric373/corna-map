@@ -25,11 +25,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TY {
+    /**
+     * t, the time (by default set to 0)
+     */
     private double t = 0;
+    /**
+     * y, a vector of R^n (by default an empty array)
+     */
     private List<Double> y = new ArrayList<>();
 
     /**
-     * syntaxic sugar for getY().add(value)
+     * Syntaxic sugar for getY().add(value)
      * @param value the value to add
      */
     void add(final Double value) {
@@ -37,7 +43,7 @@ public class TY {
     }
 
     /**
-     * syntaxic sugar for getY().get(i)
+     * Syntaxic sugar for getY().get(i)
      * @param i the index to get
      * @return y.get(i)
      */
@@ -46,7 +52,7 @@ public class TY {
     }
 
     /**
-     * syntaxic sugar for getY().size()
+     * Syntaxic sugar for getY().size()
      * @return y.size()
      */
     public int size() {
