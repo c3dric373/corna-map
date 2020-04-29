@@ -24,12 +24,12 @@
   font-size: 150%;
 }
 
-#click{
+#charts{
   font-size: xx-small;
   max-width: 30vw !important;
   overflow: paged-x-controls;
 }
 
-.container {
+.container-sm {
   color : black;
 }

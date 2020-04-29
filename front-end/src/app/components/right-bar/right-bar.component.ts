@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import * as Highcharts from 'highcharts';
-import {NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {MapService} from '../../service/map/map.service';
 
 @Component({
   selector: 'app-right-bar',
@@ -11,6 +12,11 @@ export class RightBarComponent implements OnInit {
   @Input() locationName: string;
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
+
+  // Json of the region
+  private reglist;
+  // Json of the Dept
+  private deptList;
 
   public options: any = {
     Chart: {
@@ -47,12 +53,42 @@ export class RightBarComponent implements OnInit {
     ]
   };
 
-  constructor(calendar: NgbCalendar) {
+  constructor(private mapService: MapService, calendar: NgbCalendar)  {
     this.actualdate = calendar.getToday();
   }
 
   ngOnInit() {
-    Highcharts.chart('click', this.options);
+    Highcharts.chart('charts', this.options);
   }
+
+  public beforeChange($event: NgbPanelChangeEvent) {
+
+    if (this.isRegion){
+      this.getRegInfos();
+      console.log(this.reglist);
+    }else{
+      this.getDeptInfos();
+      console.log(this.deptList);
+    }
+
+  }
+
+  getRegInfos() {
+    this.mapService.getMapRegion(this.actualdate).subscribe(
+      data => {
+        this.reglist = data;
+      }
+    );
+  }
+
+  getDeptInfos() {
+    this.mapService.getMapDept(this.actualdate).subscribe(
+      data => {
+        this.deptList = data;
+      }
+    );
+  }
+
+
 
 }
