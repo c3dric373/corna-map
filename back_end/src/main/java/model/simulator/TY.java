@@ -9,16 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * We will have to solve differential equations systems of order n
+ * We will have to solve differential equations systems of order p
  * <p>
- * y'(t) = f(t, y(t)) = (f_1(t, y(t)), f_2(t, y(t)), ... , f_n(t, y(t)))
+ * y'(t) = f(t, y(t)) = (f_1(t, y(t)), f_2(t, y(t)), ... , f_p(t, y(t)))
  * <p>
- * where y(t) is a vector of R^n, y'(t) its derivative and f = (f_1, ... , f_n)
- * is a map from R^n+1 to R^n.
+ * where y(t) is a vector of R^p, y'(t) its derivative and f = (f_1, ... , f_p)
+ * is a map from R^p+1 to R^p.
  * <p>
  * To this end, we will use the java class Function that allows to create
- * functions with one parameter using lambdas Hence we need a class to implement
- * this parameter (t, y(t)).
+ * functions with one parameter using lambdas. Hence we need a class to
+ * implement this parameter (t, y(t)).
+ * But in fact this class will also be used for other purpose in the
+ * numerical differential equation solvers.
  */
 @Getter
 @Setter

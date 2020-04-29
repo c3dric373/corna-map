@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * A Cauchy problem of order n is a differential equations systems of order n
+ * A Cauchy problem of order p is a differential equations systems of order p
  * <p>
- * y'(t) = f(t, y(t)) = (f_1(t, y(t)), f_2(t, y(t)), ... , f_n(t, y(t)))
+ * y'(t) = f(t, y(t)) = (f_1(t, y(t)), f_2(t, y(t)), ... , f_p(t, y(t)))
  * <p>
- * where y(t) is a vector of R^n, y'(t) its derivative, f a map from R^n+1 to
- * R^n and the f_i are maps from R^n+1 to R together with an initial condition
+ * where y(t) is a vector of R^p, y'(t) its derivative, f a map from R^p+1 to
+ * R^p and the f_i are maps from R^p+1 to R together with an initial condition
  * <p>
- * y(t_0) = y_0 = (y_01, y_02, ... , y_0n)
+ * y(t_0) = y_0 = (y_01, y_02, ... , y_0p)
  * <p>
  * The Cauchy-Lipschitz theorem (that you may know as Picard-Lindelöf theorem)
  * states that there is a unique y that fits to such a problem, and we will
@@ -38,6 +38,13 @@ public class CauchyProblem {
      */
     private List<Double> y0;
 
+    /**
+     * Syntaxic sugar for new TY(cauchyProblem.getT0(), cauchyProblem.getY0()).
+     * @return the initial condition of the Cauchy problem.
+     */
+    public TY getInitialCondition(){
+        return new TY(t0, y0);
+    }
 
     /**
      * This is builder class that will be used to create a Cauchy problem.
