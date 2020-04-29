@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
+import {SimulationService} from '../../service/simulation/simulation.service';
 
 @Component({
   selector: 'app-map-content',
@@ -45,9 +46,9 @@ export class MapContentComponent implements OnInit {
   @Output() isOnlyMap = new EventEmitter<boolean>();
   @Output() emitDate = new EventEmitter<NgbDate>();
 
-  constructor(private mapService: MapService, calendar: NgbCalendar) {
-    this.date = calendar.getToday();
-    this.model = calendar.getToday();
+  constructor(private mapService: MapService, private simulation: SimulationService, calendar: NgbCalendar) {
+    this.date = calendar.getPrev(calendar.getToday());
+    this.model = calendar.getPrev(calendar.getToday());
     this.mousOverReg = new Object();
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
@@ -97,7 +98,12 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.loading.emit(false);
+      this.simulation.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+        }
+      );
     }
   }
 
@@ -110,7 +116,12 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.loading.emit(false);
+      this.simulation.getMapDept(this.date).subscribe(
+        data => {
+          this.deptList = data;
+          this.initializeMapDept();
+        }
+      );
     }
   }
 
