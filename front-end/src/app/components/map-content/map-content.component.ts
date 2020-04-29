@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
@@ -34,6 +34,9 @@ export class MapContentComponent implements OnInit {
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
+
+  // Input
+  @Input() SelectedMenu;
 
   //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
@@ -86,21 +89,29 @@ export class MapContentComponent implements OnInit {
   }
 
   getRegInfos() {
-    this.mapService.getMapRegion(this.date).subscribe(
-      data => {
-        this.reglist = data;
-        this.initializeMapReg();
-      }
-    );
+    if (this.SelectedMenu === 'map') {
+      this.mapService.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+        }
+      );
+    } else {
+      this.loading.emit(false);
+    }
   }
 
   getDeptInfos() {
-    this.mapService.getMapDept(this.date).subscribe(
-      data => {
-        this.deptList = data;
-        this.initializeMapDept();
-      }
-    );
+    if (this.SelectedMenu === 'map') {
+      this.mapService.getMapDept(this.date).subscribe(
+        data => {
+          this.deptList = data;
+          this.initializeMapDept();
+        }
+      );
+    } else {
+      this.loading.emit(false);
+    }
   }
 
   initializeMapDept() {
