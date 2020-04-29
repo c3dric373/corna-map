@@ -17,14 +17,6 @@ public class RungeKuttaSolver implements DifferentialSolver {
     protected List<List<Double>> a;
     protected List<Double> b;
     protected List<Double> c;
-//    private List<Double> k;
-
-//    public RungeKuttaSolver(int nbIteration, List<List<Double>> a, List<Double> b, List<Double> c){
-//        this.nbIteration = nbIteration;
-//        this.a = a;
-//        this.b = b;
-//        this.c = c;
-//    }
 
     public List<Double> next(final CauchyProblem cauchyProblem, final int nbIterations) {
         Validate.notNull(cauchyProblem);
@@ -60,7 +52,7 @@ public class RungeKuttaSolver implements DifferentialSolver {
     }
 
     private List<Double> makeK(final T_Y t_y, final Function<T_Y, Double> f_i) {
-        List<Double> k = new ArrayList<Double>(order);
+        List<Double> k = new ArrayList<>(order);
         double h = 1. / nbIterations;
         T_Y tmp = new T_Y();
         for (int i = 0; i < order; ++i) {

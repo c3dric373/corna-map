@@ -19,7 +19,7 @@ public class SIRSimulator implements Simulator {
     private Double mu = 0.07;
 
     private CauchyProblem model;
-    private DifferentialSolver solver = new OldRK4Solver();
+    private DifferentialSolver solver = new RK4Solver();
     private int nbIterations = 500;
 
     public SIRSimulator(double iSuceptible, double iInfectious, double iRecovered, double iDead){
@@ -53,37 +53,5 @@ public class SIRSimulator implements Simulator {
                 .addParameter(nextValues.get(2), T -> lambda * T.getY_i(1))
                 .addParameter(nextValues.get(3), T -> mu * T.getY_i(1))
                 .build();
-    }
-
-    public static void main(String[] args){
-        SIRSimulator SIRS = new SIRSimulator(0.9, 0.1, 0., 0.);
-        long start = System.nanoTime();
-        for(int i = 0; i < 28; ++i){
-            SIRS.step();
-        }
-        long end = System.nanoTime();
-
-        System.out.println((end - start) * 0.000001);
-
-        for(double param : SIRS.getSusceptible()){
-            System.out.print(param);
-            System.out.print(", ");
-        }
-        System.out.println();
-        for(double param : SIRS.getInfectious()){
-            System.out.print(param);
-            System.out.print(" ");
-        }
-        System.out.println();
-        for(double param : SIRS.getRecovered()){
-            System.out.print(param);
-            System.out.print(" ");
-        }
-        System.out.println();
-        for(double param : SIRS.getDead()){
-            System.out.print(param);
-            System.out.print(" ");
-        }
-        System.out.println();
     }
 }
