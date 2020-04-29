@@ -156,18 +156,7 @@
       <artifactId>guava</artifactId>
       <version>29.0-jre</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.10</version>
-      <scope>provided</scope>
-    </dependency>
-        <dependency>
-            <groupId>fr.insa.lyon.h4222</groupId>
-            <artifactId>covid-map</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -175,6 +164,5 @@
         </dependency>
     </dependencies>
 
-  </dependencies>
 
 </project>
