@@ -1,13 +1,8 @@
 package model;
 
-import model.simulator.CauchyProblem;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-
-import java.util.List;
-import java.util.function.Function;
-
 
 @SpringBootApplication
 @ComponentScan("controller")

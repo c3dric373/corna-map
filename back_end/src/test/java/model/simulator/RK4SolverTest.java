@@ -41,7 +41,7 @@ public class RK4SolverTest {
                 .addParameter(5., T -> 0.)
                 .addParameter(6., T -> 0.)
                 .build();
-        OldRK4Solver subject = new OldRK4Solver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(4.);
@@ -63,7 +63,7 @@ public class RK4SolverTest {
         CauchyProblem cauchyProblem = CauchyProblem.builder()
                 .addParameter(4., T -> 2.)
                 .build();
-        OldRK4Solver subject = new OldRK4Solver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(6.);
@@ -91,7 +91,7 @@ public class RK4SolverTest {
                 .addParameter(-20., T -> -21.)
                 .addParameter(24., T -> 5.)
                 .build();
-        OldRK4Solver subject = new OldRK4Solver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 10;
         List<Double> expected = new ArrayList<>(1);
         expected.add(-4.);
@@ -117,9 +117,9 @@ public class RK4SolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getY_i(0))
+                .addParameter(1., T -> T.getYi(0))
                 .build();
-        OldRK4Solver subject = new OldRK4Solver();
+        RK4Solver subject = new RK4Solver();
         int nbIterations = 100;
         List<Double> expected = new ArrayList<>(1);
         expected.add(2.7182818284590);
