@@ -19,18 +19,18 @@ export class SimulationService {
 
   getInfosFrance(date: NgbDate): Observable<any>{
     const stringDate = this.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'simulation/infosFrance?date=' + date );
+    return this.httpClient.get(this.API_URL + 'simulation/infosFrance?date=2020-04-20'  );
   }
 
   getInfosRegion(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'simulation/infosRegion?date=' + date + '&name=' + name );
+    return this.httpClient.get(this.API_URL + 'simulation/infosRegion?date=2020-04-20' + '&name=' + name );
     // si le nom est null, retourner les données de toutes les régions
   }
 
   getInfosDept(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'simulation/infosDept?date=' + date + '&name=' + name );
+    return this.httpClient.get(this.API_URL + 'simulation/infosDept?date=2020-04-20' + '&name=' + name );
     // si le nom est null, retourner les données de tout les départements
   }
 

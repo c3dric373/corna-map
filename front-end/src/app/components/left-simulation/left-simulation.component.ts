@@ -74,31 +74,31 @@ export class LeftSimulationComponent implements OnInit {
           console.log(this.sendParams());
           if (this.locationName === undefined) {
             console.log('appel getInfosFrance');
-            /*this.simulationService.getInfosFrance(this.actualdate).subscribe(
+            this.simulationService.getInfosFrance(this.actualdate).subscribe(
               data => {
                 console.log(data);
-                // this.deptList = data;
-                // this.initializeMapDept();
+                 // this.deptList = data;
+                 // this.initializeMapDept();
               }
-            );*/
+            );
           } else if (!this.isRegion){
             console.log('appel getInfosDept');
-           /* this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
+            this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
               data => {
                 console.log(data);
                 // this.deptList = data;
                 // this.initializeMapDept();
               }
-            );*/
+            );
           }else{
             console.log('appel getInfosRegion');
-           /* this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
+            this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
               data => {
                 console.log(data);
                 // this.deptList = data;
                 // this.initializeMapDept();
               }
-            );*/
+            );
           }
           break;
         case 2 :
