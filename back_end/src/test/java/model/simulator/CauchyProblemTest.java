@@ -22,9 +22,9 @@ public class CauchyProblemTest {
         // Act
         CauchyProblem CP = CauchyProblem.builder()
                 .addParameter(0.9, null)
-                .addParameter(0.1, T -> beta * T.getY_i(0) * T.getY_i(1) - lambda * T.getY_i(1) - mu * T.getY_i(1))
-                .addParameter(0., T -> lambda * T.getY_i(1))
-                .addParameter(0., T -> mu * T.getY_i(1))
+                .addParameter(0.1, T -> beta * T.getYi(0) * T.getYi(1) - lambda * T.getYi(1) - mu * T.getYi(1))
+                .addParameter(0., T -> lambda * T.getYi(1))
+                .addParameter(0., T -> mu * T.getYi(1))
                 .build();
 
 
