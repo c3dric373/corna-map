@@ -42,23 +42,23 @@ public class RungeKuttaSolver implements DifferentialSolver {
     /**
      * The order of the RK method, named s in the description above.
      */
-    private int order;
+    protected int order;
     /**
      * The number of iterations we want to make.
      */
-    private int n;
+    protected int n;
     /**
      * the a_ij of the Butcher tableau.
      */
-    private List<List<Double>> a;
+    protected List<List<Double>> a;
     /**
      * the b_i of the Butcher tableau.
      */
-    private List<Double> b;
+    protected List<Double> b;
     /**
      * the c_i of the Butcher tableau.
      */
-    private List<Double> c;
+    protected List<Double> c;
 
     /**
      * Computes y(t_0 + 1) where y is the solution of the Cauchy problem y'(t) =
