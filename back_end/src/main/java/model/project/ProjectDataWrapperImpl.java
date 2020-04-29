@@ -126,6 +126,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double recovered = getRecovered(FRA);
     final double susceptible = getSusceptible(FRA);
     final double infectious = 1 - susceptible;
+    System.out.println("Dead: " + dead);
+    System.out.println("recovered: " + recovered);
+    System.out.println("susceptible: " + susceptible);
+    System.out.println("infectious: " + infectious);
     SIRSimulator simulator = new SIRSimulator(susceptible, infectious,
       recovered,
       dead);
@@ -138,6 +142,12 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
     dayData.setRecoveredCases((int) (recovered * POPULATION_FRA));
     dayData.setTotalCases((int) (POPULATION_FRA - (susceptibleNew * POPULATION_FRA)));
+    System.out.println("------------------");
+
+    System.out.println("deadNew: " + deadNew);
+    System.out.println("recoveredNew: " + recoveredNew);
+    System.out.println("susceptibleNew: " + susceptibleNew);
+    System.out.println("infectiousNew: " + infectiousNew);
     return dayData;
   }
 
@@ -185,6 +195,12 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
+  public static void main(String[] args) throws IOException {
+    ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
+    wrapper.getCurrentAllDataFrance();
+    DayData dayData = wrapper.simulateFrance("2020-04-28");
+    int i = 0;
+  }
 }
 
 
