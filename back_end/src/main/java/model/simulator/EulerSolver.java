@@ -9,12 +9,12 @@ public class EulerSolver implements DifferentialSolver {
     /**
      * Given a Cauchy problem with an initial time t_0, this function calculates
      * y(t_0 + 1) where y is the solution of the Cauchy problem, using the Euler
-     * method
+     * method.
      *
-     * @param cauchyProblem, the Cauchy problem we want to solve
-     * @param nbIterations,  the precision we want to have, we will compute all
-     *                       the y(t_0 + k h) for all k between 1 and
-     *                       nbIteration and h = 1 / nbIteration
+     * @param cauchyProblem the Cauchy problem we want to solve
+     * @param nbIterations  the precision we want to have, we will compute all
+     *                      the y(t_0 + k h) for all k between 1 and nbIteration
+     *                      and h = 1 / nbIteration
      *
      * @return the result y(t_0 + 1), approximated by the Euler method
      */
@@ -33,12 +33,12 @@ public class EulerSolver implements DifferentialSolver {
     }
 
     /**
-     * updates t and y(t) making one iteration of the Euler method t becomes
-     * t + h and y(t) becomes y(t + h)
+     * Updates t and y(t) making one iteration of the Euler method t becomes
+     * t + h and y(t) becomes y(t + h).
      *
-     * @param f,  the derivatives of the differential system
-     * @param ty, t and y(t)
-     * @param h,  the step size
+     * @param f  the derivatives of the differential system
+     * @param ty t and y(t)
+     * @param h  the step size
      *
      * @return t + h and y(t + h), approximated by the Euler method
      */
