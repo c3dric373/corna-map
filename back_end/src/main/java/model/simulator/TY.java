@@ -36,6 +36,7 @@ public class TY {
 
     /**
      * Syntaxic sugar for getY().add(value).
+     *
      * @param value the value to add
      */
     void add(final Double value) {
@@ -44,7 +45,9 @@ public class TY {
 
     /**
      * Syntaxic sugar for getY().get(i).
+     *
      * @param i the index to get
+     *
      * @return y.get(i)
      */
     Double getYi(final int i) {
@@ -53,6 +56,7 @@ public class TY {
 
     /**
      * Syntaxic sugar for getY().size().
+     *
      * @return y.size()
      */
     public int size() {

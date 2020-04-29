@@ -20,7 +20,7 @@ public class RungeKuttaSolver implements DifferentialSolver {
 
     public List<Double> next(final CauchyProblem cauchyProblem, final int nbIterations) {
         Validate.notNull(cauchyProblem);
-        TY ty = new TY(cauchyProblem.getT_0(), cauchyProblem.getY_0());
+        TY ty = new TY(cauchyProblem.getT0(), cauchyProblem.getY0());
         final List<Function<TY, Double>> f = cauchyProblem.getF();
         this.nbIterations = nbIterations;
 
