@@ -121,14 +121,14 @@ export class RightBarComponent implements OnInit, OnChanges{
   setAllDataFromFrance(list) {
     for (const index in list){
       const element = list[index];
-      const elementData = new Object();
+      const elementData = {date: null , hospitalized: null, totalDeaths: null, recoveredCases: null, totalCases: null };
       const dateStruct = element.date;
       const currentDate = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day - 1);
-      elementData['date'] = currentDate.toDateString();
-      elementData['hospitalized'] = element.hospitalized;
-      elementData['totalDeaths'] = element.totalDeaths;
-      elementData['recoveredCases'] = element.recoveredCases;
-      elementData['totalCases'] = element.totalCases;
+      elementData.date = currentDate.toDateString();
+      elementData.hospitalized = element.hospitalized;
+      elementData.totalDeaths = element.totalDeaths;
+      elementData.recoveredCases = element.recoveredCases;
+      elementData.totalCases = element.totalCases;
       this.allData.push(elementData);
     }
     this.sortData(this.allData);
@@ -139,7 +139,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   // Sort data by date
   sortData(list) {
     list.sort((a, b) => {
-      return <any> new Date(a.date) - <any> new Date(b.date);
+      return (new Date(a.date) as any) - (new Date(b.date) as any);
     });
   }
 
