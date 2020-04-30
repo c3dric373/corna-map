@@ -127,7 +127,7 @@ export class MapContentComponent implements OnInit {
 
   initializeMapDept() {
     for (const index in this.deptList) {
-      const depName = this.deptList[index].nom;
+      const depName = this.deptList[index].name;
       const nbHospitalized = this.getNbCas(index,  this.deptList);
       const color = this.assignColor(nbHospitalized, this.deptList);
 
@@ -169,7 +169,7 @@ export class MapContentComponent implements OnInit {
 
   initializeMapReg() {
     for (const index in this.reglist) {
-      const RegName = this.reglist[index].nom;
+      const RegName = this.reglist[index].name;
       const nbHospitalized = this.getNbCas(index,  this.reglist);
       const color = this.assignColor(nbHospitalized, this.reglist);
 
