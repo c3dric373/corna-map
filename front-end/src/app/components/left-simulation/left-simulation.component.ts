@@ -17,8 +17,14 @@ export class LeftSimulationComponent implements OnInit {
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
 
-  constructor(private simulationService: SimulationService, calendar: NgbCalendar) {
+  // essai
+  public essaiDate: NgbDate;
+  public endDate: NgbDate;
+
+  constructor(private simulationService: SimulationService, private calendar: NgbCalendar) {
     this.actualdate = calendar.getToday();
+    this.essaiDate = calendar.getToday();
+    this.endDate = new NgbDate(2020, 5, 31);
   }
 
   faStop = faStop;
@@ -72,6 +78,10 @@ export class LeftSimulationComponent implements OnInit {
           document.getElementById('accordion').style.display = 'none';
           document.getElementById('play').setAttribute('disabled', 'disabled');
           console.log(this.sendParams());
+
+          // essai
+          this.startTimer(this.essaiDate, this.endDate);
+
           if (this.locationName === undefined) {
             console.log('appel getInfosFrance');
             this.simulationService.getInfosFrance(this.actualdate).subscribe(
@@ -183,6 +193,19 @@ onChangeRespectConfinement(value: number) {
         console.log('time' + value );
       }
 
+  }
+
+  startTimer(startDate: NgbDate, endDate: NgbDate) {
+    let currentDate = startDate;
+    let currentTime = new Date();
+    while (currentDate.before(endDate)) {
+      const time = new Date();
+      if ((time.getTime() - currentTime.getTime()) > 2000) {
+        currentDate = this.calendar.getNext(currentDate, 'd', 1);
+        console.log(currentDate);
+        currentTime = time;
+      }
+    }
   }
 
 }
