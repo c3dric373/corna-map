@@ -63,7 +63,10 @@ export class RightBarComponent implements OnInit, OnChanges{
   };
 
   constructor(private mapService: MapService, private historiqueService: HistoriqueService, calendar: NgbCalendar)  {
-    this.actualdate = calendar.getPrev(calendar.getToday());
+    // Today's date
+    this.actualdate = calendar.getToday();
+    // set date to 2 days before today
+    this.actualdate.day = this.actualdate.day - 2;
   }
 
   ngOnInit() {
