@@ -115,14 +115,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public DayData simulateFrance(final String date) {
     final DayData latestData = getLatestData(FRA);
-    LocalDate nextDayDate = latestData.getDate();
+    LocalDate latestDate = latestData.getDate();
     DayData dayData = new DayData();
-    while (!LocalDate.parse(date).equals(nextDayDate)) {
+    while (!LocalDate.parse(date).equals(latestDate)) {
       final double dead = DayDataService.getDeathRate(latestData);
       final double recovered = DayDataService.getRecoveryRate(latestData);
       final double susceptible = DayDataService.getSusceptible(latestData);
       final double infectious = 1 - susceptible;
-
       System.out.println("Dead: " + dead);
       System.out.println("recovered: " + recovered);
       System.out.println("susceptible: " + susceptible);
@@ -132,9 +131,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
         recovered,
         dead);
       dayData = simulateDay(latestData, sirSimulator);
-      dayData.setDate(LocalDate.parse(date));
-      addLocation(FRA, LocalDate.parse(date).plusDays(1).toString(), dayData);
-      nextDayDate = nextDayDate.plusDays(1);
+      dayData.setDate(latestDate.plusDays(1));
+      addLocation(FRA, latestDate.plusDays(1).toString(), dayData);
+      latestDate = latestDate.plusDays(1);
+      System.out.println("updated date0" + latestDate);
     }
 
     return dayData;
@@ -215,8 +215,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
     scrapper.extract(wrapper);
-    DayData dayData = wrapper.simulateFrance("2020-04-28");
-    wrapper.simulateFrance("2020-04-29");
+    DayData dayData = wrapper.simulateFrance("2020-04-29");
+    wrapper.simulateFrance("2020-04-30");
   }
 
 }
