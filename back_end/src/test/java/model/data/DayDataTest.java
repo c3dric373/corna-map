@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestDayData {
+public class DayDataTest {
 
   private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
   private final static LocalDate DATE = LocalDate.ofEpochDay(4);

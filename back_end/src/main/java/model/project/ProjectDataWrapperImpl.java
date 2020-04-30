@@ -181,7 +181,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final Map<String, DayData> franceMap = localisations.get(FRA);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
-    if (latestDate.isEmpty()) {
+    if (!latestDate.isPresent()) {
       throw new IllegalStateException("No max date in map");
     }
     return franceMap.get(latestDate.get());

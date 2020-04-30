@@ -73,6 +73,12 @@ public class DayData {
   private TypeLocalisation type;
 
   /**
+   * Empty Constructor.
+   */
+  public DayData() {
+  }
+
+  /**
    * Constructor. All the number arguments are the numbers of people in a
    * given category related to the covid-19.
    *
