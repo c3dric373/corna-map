@@ -12,6 +12,7 @@ export class MapMenuComponent implements OnInit {
   public loading: boolean;
   public isOnlyMap = false;
   public date: NgbDate;
+  public type = 'map';
 
   constructor() {}
 
