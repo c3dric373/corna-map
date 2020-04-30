@@ -17,6 +17,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   private reglist;
   // Json of the Dept
   private deptList;
+  private allData = [];
   private casConf = [];
   private gueris = [];
   private hospi = [];
@@ -66,7 +67,6 @@ export class RightBarComponent implements OnInit, OnChanges{
   }
 
   ngOnInit() {
-    Highcharts.chart('charts', this.options);
     this.getHFrance();
   }
 
@@ -94,7 +94,6 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
       data => {
         this.reglist = data;
-        console.log(this.reglist);
       }
     );
   }
@@ -103,7 +102,6 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
       data => {
         this.deptList = data;
-        console.log(this.deptList);
       }
     );
   }
@@ -112,18 +110,48 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.historiqueService.getHistoriqueFrance().subscribe(
       data => {
         this.histFr = data;
-        console.log(this.histFr);
-        for (const i in this.histFr){
-          console.log(this.histFr[i]);
-          this.casConf.push(this.histFr[i].totalCases);
-          this.dates.push(this.histFr[i].date.month);
-          //this.histFr[i].date.
-
-        }
-        Highcharts.chart('charts', this.options);
+        this.setAllDataFromFrance(this.histFr);
       }
     );
+  }
 
+  // Get Data from list and put it in this.allData
+  // Order this.allData by Date
+  // set Graph
+  setAllDataFromFrance(list) {
+    for (const index in list){
+      const element = list[index];
+      const elementData = {date: null , hospitalized: null, totalDeaths: null, recoveredCases: null, totalCases: null };
+      const dateStruct = element.date;
+      const currentDate = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day - 1);
+      elementData.date = currentDate.toDateString();
+      elementData.hospitalized = element.hospitalized;
+      elementData.totalDeaths = element.totalDeaths;
+      elementData.recoveredCases = element.recoveredCases;
+      elementData.totalCases = element.totalCases;
+      this.allData.push(elementData);
+    }
+    this.sortData(this.allData);
+    this.setGraph(this.allData);
+    Highcharts.chart('charts', this.options);
+  }
+
+  // Sort data by date
+  sortData(list) {
+    list.sort((a, b) => {
+      return (new Date(a.date) as any) - (new Date(b.date) as any);
+    });
+  }
+
+  // Set the table to construct the graph
+  setGraph(list) {
+    for (const index in list) {
+      this.dates.push(list[index].date);
+      this.casConf.push(list[index].totalCases);
+      this.hospi.push(list[index].hospitalized);
+      this.deces.push(list[index].totalDeaths);
+      this.gueris.push(list[index].recoveredCases);
+    }
   }
 
 
