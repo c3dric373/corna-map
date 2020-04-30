@@ -115,57 +115,69 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public DayData simulateFrance(final String date) {
     final DayData latestData = getLatestData(FRA);
-    final LocalDate nextDayDate = latestData.getDate().plusDays(1);
-    if (!LocalDate.parse(date).equals(nextDayDate)) {
-      throw new IllegalStateException("Wrong Date!");
-    }
-    final double dead = DayDataService.getDeathRate(latestData);
-    final double recovered = DayDataService.getRecoveryRate(latestData);
-    final double susceptible = DayDataService.getSusceptible(latestData);
-    final double infectious = 1 - susceptible;
-    /*
-    System.out.println("Dead: " + dead);
-    System.out.println("recovered: " + recovered);
-    System.out.println("susceptible: " + susceptible);
-    System.out.println("infectious: " + infectious);
-     */
-    final SIRSimulator sirSimulator = new SIRSimulator(susceptible, infectious,
-      recovered,
-      dead);
-    final double totalDeaths = latestData.getTotalDeaths();
-    final double totalCases = latestData.getTotalCases();
-    final double lethality = totalDeaths / totalCases;
-    /*
-    System.out.println("==================");
-    System.out.println(totalDeaths);
-    System.out.println(totalCases);
-    System.out.println("Lethality: " + lethality);
-    */
-    sirSimulator.setMu(lethality);
-    sirSimulator.step();
+    LocalDate nextDayDate = latestData.getDate();
+    DayData dayData = new DayData();
+    while (!LocalDate.parse(date).equals(nextDayDate)) {
+      final double dead = DayDataService.getDeathRate(latestData);
+      final double recovered = DayDataService.getRecoveryRate(latestData);
+      final double susceptible = DayDataService.getSusceptible(latestData);
+      final double infectious = 1 - susceptible;
 
-    final double deadNew = Iterables.getLast(sirSimulator.getDead());
-    final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
+      System.out.println("Dead: " + dead);
+      System.out.println("recovered: " + recovered);
+      System.out.println("susceptible: " + susceptible);
+      System.out.println("infectious: " + infectious);
+      final SIRSimulator sirSimulator = new SIRSimulator(susceptible,
+        infectious,
+        recovered,
+        dead);
+      dayData = simulateDay(latestData, sirSimulator);
+      dayData.setDate(LocalDate.parse(date));
+      addLocation(FRA, LocalDate.parse(date).plusDays(1).toString(), dayData);
+      nextDayDate = nextDayDate.plusDays(1);
+    }
+
+    return dayData;
+  }
+
+  /**
+   * Simulates a the spread of COVID-19 for one day, according to a given
+   * simulator.
+   *
+   * @param startState The data on the situation form which the simulated day
+   *                   should start.
+   * @param simulator  the given simulator.
+   * @return the simulated data.
+   */
+  private DayData simulateDay(final DayData startState,
+                              final SIRSimulator simulator) {
+    // Compute Start State
+    final double totalDeaths = startState.getTotalDeaths();
+    final double totalCases = startState.getTotalCases();
+    final double lethality = totalDeaths / totalCases;
+    simulator.setMu(lethality);
+    // Simulate a day
+    simulator.step();
+    final double deadNew = Iterables.getLast(simulator.getDead());
+    final double recoveredNew = Iterables.getLast(simulator.getRecovered());
     final double susceptibleNew =
-      Iterables.getLast(sirSimulator.getSusceptible());
+      Iterables.getLast(simulator.getSusceptible());
     final double infectiousNew =
-      Iterables.getLast(sirSimulator.getInfectious());
+      Iterables.getLast(simulator.getInfectious());
+    // Create Object which encapsulates the simulated data
     final DayData dayData = new DayData();
     dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
-    dayData.setRecoveredCases((int) (recovered * POPULATION_FRA));
+    dayData.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
     dayData.setTotalCases((int) (POPULATION_FRA
       - (susceptibleNew * POPULATION_FRA)));
-    dayData.setDate(LocalDate.parse(date));
-    /*
+
     System.out.println("------------------");
     System.out.println("deadNew: " + deadNew * POPULATION_FRA);
-    System.out.println("recoveredNew: " + recovered * POPULATION_FRA);
+    System.out.println("recoveredNew: " + recoveredNew * POPULATION_FRA);
     System.out.println("susceptibleNew: " + susceptibleNew);
     System.out.println("infectiousNew: " + infectiousNew);
     System.out.println("totalCases: " + (POPULATION_FRA - (susceptibleNew *
-    POPULATION_FRA)));
-     */
-    addLocation(FRA, LocalDate.parse(date).plusDays(1).toString(), dayData);
+      POPULATION_FRA)));
     return dayData;
   }
 
@@ -199,7 +211,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
-  /*
   public static void main(String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
@@ -207,7 +218,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     DayData dayData = wrapper.simulateFrance("2020-04-28");
     wrapper.simulateFrance("2020-04-29");
   }
-   */
 
 }
 

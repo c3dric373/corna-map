@@ -1,5 +1,6 @@
 package model.io;
 
+import lombok.Setter;
 import model.data.DayData;
 import model.data.TypeLocalisation;
 import model.project.ProjectDataWrapper;
@@ -26,7 +27,8 @@ public class DataScrapperImpl implements DataScrapper {
     /**
      * Path where the data will be stored.
      */
-    private static final String PATH_TO_DATA = System.getProperty("user.dir")
+    @Setter
+    private String pathToData = System.getProperty("user.dir")
             + "/src/main"
             + "/resources"
             + "/output.csv";
@@ -44,7 +46,7 @@ public class DataScrapperImpl implements DataScrapper {
 
         //We create a csv file from the string object then we read and parse the
         // csv file to fill the DayData Array
-        File file = new File(PATH_TO_DATA);
+        File file = new File(pathToData);
         try {
             FileWriter csvOutput = new FileWriter(file);
             csvOutput.write(output);
