@@ -1,6 +1,7 @@
 package model.service;
 
 import model.data.DayData;
+import org.apache.commons.lang.Validate;
 
 public class DayDataService {
 
@@ -17,6 +18,7 @@ public class DayDataService {
    * @return percentage of susceptible people.
    */
   public static double getSusceptible(final DayData dayData) {
+    Validate.notNull(dayData, "dayData null");
     final int totalCases = dayData.getTotalCases();
     return (POPULATION_FRA - totalCases) / POPULATION_FRA;
   }
@@ -29,6 +31,7 @@ public class DayDataService {
    * @return percentage of recovered people.
    */
   public static double getRecoveryRate(final DayData dayData) {
+    Validate.notNull(dayData, "dayData null");
     final double latestDataRecoveredCases = dayData.getRecoveredCases();
     final double latestDataTotalCases = dayData.getTotalCases();
     return latestDataRecoveredCases / latestDataTotalCases;
@@ -43,6 +46,7 @@ public class DayDataService {
    */
   public static double getDeathRate(
     final DayData dayData) {
+    Validate.notNull(dayData, "dayData null");
     final int latestDead = dayData.getTotalDeaths();
     return latestDead / POPULATION_FRA;
   }

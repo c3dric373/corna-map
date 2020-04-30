@@ -132,8 +132,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final SIRSimulator sirSimulator = new SIRSimulator(susceptible, infectious,
       recovered,
       dead);
-    final double totalDeaths = getLatestData(FRA).getTotalDeaths();
-    final double totalCases = getLatestData(FRA).getTotalCases();
+    final double totalDeaths = latestData.getTotalDeaths();
+    final double totalCases = latestData.getTotalCases();
     final double lethality = totalDeaths / totalCases;
     /*
     System.out.println("==================");
@@ -181,7 +181,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final Map<String, DayData> franceMap = localisations.get(FRA);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
-    if (latestDate.isEmpty()) {
+    if (!latestDate.isPresent()) {
       throw new IllegalStateException("No max date in map");
     }
     return franceMap.get(latestDate.get());

@@ -1,5 +1,6 @@
 package model.data;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.Validate;
@@ -13,12 +14,8 @@ import java.time.LocalDate;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 public class DayData {
-  /**
-   * Default constructor of DayData class.
-   */
-  public DayData() {
-  }
 
   /**
    * wip.
@@ -27,7 +24,7 @@ public class DayData {
   /**
    * wip.
    */
-  private String nom;
+  private String name;
   /**
    * wip.
    */
@@ -76,6 +73,12 @@ public class DayData {
    * wip.
    */
   private TypeLocalisation type;
+
+  /**
+   * Empty Constructor.
+   */
+  public DayData() {
+  }
 
   /**
    * Constructor. All the number arguments are the numbers of people in a
@@ -136,7 +139,7 @@ public class DayData {
     Validate.isTrue(totalTestsNew >= 0,
       "totalTestsNew negative");
     this.id = idNew;
-    this.nom = nomNew;
+    this.name = nomNew;
     this.criticalCases = criticalCasesNew;
     this.hospitalized = hospitalizedNew;
     this.totalCases = totalCasesNew;
