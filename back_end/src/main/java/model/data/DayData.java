@@ -1,5 +1,6 @@
 package model.data;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.Validate;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 public class DayData {
 
   /**

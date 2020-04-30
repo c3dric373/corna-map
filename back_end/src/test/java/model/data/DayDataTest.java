@@ -1,5 +1,6 @@
 package model.data;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -39,6 +40,26 @@ public class DayDataTest {
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
+  }
+
+  @Test
+  public void testEmptyCTOR_validCall_correctDayData() {
+    // Arrange
+    final int intInitValue = 0;
+    final DayData expectedDayData = new DayData(TYPE, DATE,
+      ID, NAME, intInitValue, intInitValue, intInitValue,
+      intInitValue, intInitValue, intInitValue, intInitValue, intInitValue,
+      intInitValue, intInitValue);
+    expectedDayData.setType(null);
+    expectedDayData.setDate(null);
+    expectedDayData.setId(null);
+    expectedDayData.setName(null);
+    // Act
+    final DayData dayData = new DayData();
+
+    // Assert
+    assertEquals("DayData not equal", dayData, expectedDayData);
+
   }
 
   @Test
@@ -461,5 +482,14 @@ public class DayDataTest {
     assertEquals("Incorrect TotalTests!", result, TOTAL_TEST);
   }
 
+  @Test
+  public void testEqualsAndHashCode_allCases_noErrors() {
 
+    // Arrange
+
+    // Act
+    EqualsVerifier.forClass(DayData.class);
+
+    // Assert
+  }
 }
