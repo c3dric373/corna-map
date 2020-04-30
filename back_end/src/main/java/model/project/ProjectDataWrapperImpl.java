@@ -132,8 +132,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final SIRSimulator sirSimulator = new SIRSimulator(susceptible, infectious,
       recovered,
       dead);
-    final double totalDeaths = getLatestData(FRA).getTotalDeaths();
-    final double totalCases = getLatestData(FRA).getTotalCases();
+    final double totalDeaths = latestData.getTotalDeaths();
+    final double totalCases = latestData.getTotalCases();
     final double lethality = totalDeaths / totalCases;
     /*
     System.out.println("==================");
