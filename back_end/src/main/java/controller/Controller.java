@@ -101,7 +101,7 @@ public class Controller {
     if (name == null) {
       return gson.toJson(wrapper.infosRegion(date));
     } else {
-      return gson.toJson(wrapper.infosLocalisation(name, date));
+      return gson.toJson(wrapper.infosLocation(name, date));
     }
   }
 
@@ -136,7 +136,7 @@ public class Controller {
     if (name == null) {
       return gson.toJson(wrapper.infosDept(date));
     } else {
-      return gson.toJson(wrapper.infosLocalisation(name, date));
+      return gson.toJson(wrapper.infosLocation(name, date));
     }
   }
 
@@ -159,7 +159,7 @@ public class Controller {
       wrapper.getCurrentAllDataFrance();
       projectState = State.MAP;
     }
-    return gson.toJson(wrapper.historyLocalisation(location));
+    return gson.toJson(wrapper.historyLocation(location));
   }
 
   /**
@@ -191,7 +191,7 @@ public class Controller {
     if (name == null) {
       return gson.toJson(wrapper.infosRegion("2020-04-04"));
     } else {
-      return gson.toJson(wrapper.infosLocalisation(name, "2020-04-04"));
+      return gson.toJson(wrapper.infosLocation(name, "2020-04-04"));
     }
   }
 
@@ -208,7 +208,7 @@ public class Controller {
     if (name == null) {
       return gson.toJson(wrapper.infosRegion("2020-04-04"));
     } else {
-      return gson.toJson(wrapper.infosLocalisation(name, "2020-04-04"));
+      return gson.toJson(wrapper.infosLocation(name, "2020-04-04"));
     }
   }
 
