@@ -58,7 +58,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
     final String dateBeforeLatest = "2020-04-26";
     final DayData expectedDayData =
-      subject.getProjectData().getLocations().get(FRA).get(dateBeforeLatest);
+      subject.getProject().getLocations().get(FRA).get(dateBeforeLatest);
 
     // Act
     final DayData result = subject.simulateFrance(dateBeforeLatest);
