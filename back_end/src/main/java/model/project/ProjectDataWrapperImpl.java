@@ -63,15 +63,15 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public List<DayData> historyLocalisation(final String name) {
-    final Map<String, Map<String, DayData>> localisations =
+  public List<DayData> historyLocation(final String name) {
+    final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> tmp = localisations.get(name);
+    final Map<String, DayData> tmp = locations.get(name);
     return new ArrayList<>(tmp.values());
   }
 
   @Override
-  public DayData infosLocalisation(final String name, final String date) {
+  public DayData infosLocation(final String name, final String date) {
     final Map<String, Map<String, DayData>> localisations =
       project.getLocations();
     final Map<String, DayData> tmp = localisations.get(name);
