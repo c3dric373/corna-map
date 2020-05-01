@@ -16,8 +16,6 @@ import {DateServiceService} from '../../service/Date/date-service.service';
 export class LeftSimulationComponent implements OnInit {
   @Input() locationName: string;
   @Input() isRegion: boolean;
-  @Input() actualdate: NgbDate;
-
 
   // Icons
   faStop = faStop;
@@ -41,10 +39,9 @@ export class LeftSimulationComponent implements OnInit {
   public endDate: NgbDate;
   // Interval
   interval;
-  public chosenInterval = 5;
+  public chosenInterval = 1;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
-    this.actualdate = calendar.getToday();
     this.simulDate = calendar.getToday();
     this.endDate = new NgbDate(2020, 5, 31);
   }
@@ -69,14 +66,13 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   sendParams(){
-      console.log('sendParams');
-
-      this.simulationService.sendParams([this.resetSim, this.locationName,
-        this.dateService.dateToString(this.actualdate), this.conf, this.borders,
-        this.shops, this.hosp , this.mask, this.respectConfinement]);
-      return [this.resetSim, this.locationName, this.dateService.dateToString(this.actualdate),
-        this.conf, this.borders, this.shops, this.hosp , this.mask,
-        this.respectConfinement];
+    console.log('sendParams');
+    this.simulationService.sendParams([this.resetSim, this.locationName,
+      this.dateService.dateToString(this.simulDate), this.conf, this.borders,
+      this.shops, this.hosp , this.mask, this.respectConfinement]);
+    return [this.resetSim, this.locationName, this.dateService.dateToString(this.simulDate),
+      this.conf, this.borders, this.shops, this.hosp , this.mask,
+      this.respectConfinement];
   }
 
   onStart() {
@@ -88,35 +84,6 @@ export class LeftSimulationComponent implements OnInit {
     console.log(this.sendParams());
 
     this.startTimer(this.simulDate, this.endDate);
-
-    if (this.locationName === undefined) {
-      console.log('appel getInfosFrance');
-      this.simulationService.getInfosFrance(this.actualdate).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    } else if (!this.isRegion){
-      console.log('appel getInfosDept');
-      this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    }else{
-      console.log('appel getInfosRegion');
-      this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    }
   }
 
   onPause() {
@@ -137,10 +104,36 @@ export class LeftSimulationComponent implements OnInit {
     this.initializeParams();
   }
 
-  /*onChangeCategory(category) {
-      this.selectedConfinement = category;
-      console.log('confinement : ' + this.selectedConfinement);
-    }*/
+  getInformations() {
+    if (this.locationName === undefined) {
+      console.log('appel getInfosFrance');
+      this.simulationService.getInfosFrance(this.simulDate).subscribe(
+        data => {
+          console.log(data);
+          // this.deptList = data;
+          // this.initializeMapDept();
+        }
+      );
+    } else if (!this.isRegion){
+      console.log('appel getInfosDept');
+      this.simulationService.getInfosDept(this.simulDate, this.locationName).subscribe(
+        data => {
+          console.log(data);
+          // this.deptList = data;
+          // this.initializeMapDept();
+        }
+      );
+    }else{
+      console.log('appel getInfosRegion');
+      this.simulationService.getInfosRegion(this.simulDate, this.locationName).subscribe(
+        data => {
+          console.log(data);
+          // this.deptList = data;
+          // this.initializeMapDept();
+        }
+      );
+    }
+  }
 
   onChangeBorder() {
         this.borders = !this.borders;
@@ -179,14 +172,14 @@ export class LeftSimulationComponent implements OnInit {
   }
 
 
-onChangeRespectConfinement(value: number) {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-    this.respectConfinement = value;
-    console.log('respectConfinement' + this.respectConfinement + '%');
-    return (value + '%');
-  }
+  onChangeRespectConfinement(value: number) {
+      if (value >= 1000) {
+        return Math.round(value / 1000) + 'k';
+      }
+      this.respectConfinement = value;
+      console.log('respectConfinement' + this.respectConfinement + '%');
+      return (value + '%');
+   }
 
   onChangeEcoulement(value: number) {
     if (value >= 1000) {
@@ -198,31 +191,31 @@ onChangeRespectConfinement(value: number) {
   }
 
   public beforeChange($event: NgbPanelChangeEvent) {
-
-
   }
 
   onChangeTime(value: number) {
-      while (true){
-        if (value >= 1000) {
-          return Math.round(value / 1000) + 'k';
-        }
-        value++;
-        console.log('time' + value );
-        return (value );
+    while (true){
+      if (value >= 1000) {
+        return Math.round(value / 1000) + 'k';
       }
-
+      value++;
+      console.log('time' + value );
+      return (value );
+    }
   }
 
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
     this.interval = setInterval(() => {
-      if (currentDate.before(endDate) && !this.resetSim && !this.pause) {
-        currentDate = this.calendar.getNext(currentDate, 'd', 1);
-        this.simulDate = currentDate;
-      } else {
-        clearInterval(this.interval);
-        this.onstop();
+      if (!this.isPause) {
+        if (currentDate.before(endDate)) {
+          this.getInformations();
+          currentDate = this.calendar.getNext(currentDate, 'd', 1);
+          this.simulDate = currentDate;
+        } else {
+          clearInterval(this.interval);
+          this.onstop();
+        }
       }
     }, (this.chosenInterval * 1000));
   }
