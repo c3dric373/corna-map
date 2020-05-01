@@ -20,6 +20,7 @@ export class LeftSimulationComponent implements OnInit {
   // essai
   public essaiDate: NgbDate;
   public endDate: NgbDate;
+  public chosenInterval = 5;
   interval;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar) {
@@ -31,6 +32,7 @@ export class LeftSimulationComponent implements OnInit {
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
+
   // public selectedConfinement: string;
   // public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
   public borders;
@@ -41,6 +43,7 @@ export class LeftSimulationComponent implements OnInit {
   public respectConfinement;
   public timer;
   public resetSim;
+  public pause = false;
 
     ngOnInit(): void {
       // this.selectedConfinement = this.tabConfinement[0];
@@ -52,14 +55,17 @@ export class LeftSimulationComponent implements OnInit {
       this.conf = [false, false, false, false, false];
       this.timer = 0;
       this.resetSim = false;
+      this.pause = true;
       this.onChangeTime(0);
   }
 
   sendParams(){
       console.log('sendParams');
+
       this.simulationService.sendParams([this.resetSim, this.locationName,
         this.simulationService.dateToString(this.actualdate), this.conf, this.borders,
         this.shops, this.hosp , this.mask, this.respectConfinement]);
+
       return [this.resetSim, this.locationName, this.simulationService.dateToString(this.actualdate),
         this.conf, this.borders, this.shops, this.hosp , this.mask,
         this.respectConfinement];
@@ -69,6 +75,8 @@ export class LeftSimulationComponent implements OnInit {
       switch (int) {
         case 0 :
           console.log('appui sur pause');
+          this.pause = true;
+          this.startTimer(this.essaiDate, this.endDate);
           document.getElementById('pause').setAttribute('disabled', 'disabled');
           document.getElementById('play').removeAttribute('disabled');
           document.getElementById('stop').removeAttribute('disabled');
@@ -76,8 +84,11 @@ export class LeftSimulationComponent implements OnInit {
           break;
         case 1 :
           console.log('appui sur play');
+          this.pause = false;
           document.getElementById('accordion').style.display = 'none';
           document.getElementById('play').setAttribute('disabled', 'disabled');
+          document.getElementById('pause').removeAttribute('disabled');
+          document.getElementById('stop').removeAttribute('disabled');
           console.log(this.sendParams());
 
           // essai
@@ -114,12 +125,14 @@ export class LeftSimulationComponent implements OnInit {
           break;
         case 2 :
           console.log('appui sur stop');
+          this.pause = false;
+          this.resetSim = true;
           document.getElementById('stop').setAttribute('disabled', 'disabled');
           document.getElementById('play').removeAttribute('disabled');
           document.getElementById('pause').removeAttribute('disabled');
           document.getElementById('accordion').style.display = 'block';
-          this.resetSim = true;
           console.log(this.sendParams());
+          this.essaiDate = this.actualdate;
           this.ngOnInit();
           break;
         default:
@@ -179,6 +192,15 @@ onChangeRespectConfinement(value: number) {
     return (value + '%');
   }
 
+  onChangeEcoulement(value: number) {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
+    this.chosenInterval = value;
+    console.log('temps change tout le' + value + 'secondes');
+    return (value + 's');
+  }
+
   public beforeChange($event: NgbPanelChangeEvent) {
 
 
@@ -199,13 +221,13 @@ onChangeRespectConfinement(value: number) {
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
     this.interval = setInterval(() => {
-      if (currentDate.before(endDate)) {
+      if (currentDate.before(endDate) && !this.resetSim && !this.pause) {
         currentDate = this.calendar.getNext(currentDate, 'd', 1);
         this.essaiDate = currentDate;
       } else {
         clearInterval(this.interval);
       }
-    }, 1000);
+    }, (this.chosenInterval * 1000));
   }
 
 }
