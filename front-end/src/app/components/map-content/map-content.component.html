@@ -13,7 +13,7 @@
       </div>
       <!-- Select Date -->
       <div class="btn-group" ngbDropdown role="group">
-        <button class="btn btn-outline-secondary" ngbDropdownToggle>{{date.day}}/{{date.month}}/{{date.year}}
+        <button class="btn btn-outline-secondary" ngbDropdownToggle>{{dateService.formatDateToFr(date)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>

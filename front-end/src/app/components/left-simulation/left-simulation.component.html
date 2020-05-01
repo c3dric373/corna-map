@@ -2,14 +2,14 @@
   <div class="sidebar-header">
 
 
-    <h2>France on {{essaiDate.day}}/{{essaiDate.month}}/{{essaiDate.year}}</h2>
+    <h2>France on {{dateService.formatDateToFr(simulDate)}}</h2>
 
     <div class="container-sm" id="buttons1">
-      <button type="button" id="pause" class="btn btn-outline-secondary" style="margin-right: 5%;border-radius: 50%" (click)="onChangeSim(0)">  <fa-icon [icon]="faPause"></fa-icon>
+      <button type="button" id="pause" class="btn btn-outline-secondary setSimul" [disabled]="isPause" (click)="onPause()">  <fa-icon [icon]="faPause"></fa-icon>
       </button>
-      <button type="button" id="play" class="btn btn-outline-success" style="margin-right: 5%;border-radius: 50%" (click)="onChangeSim(1)">  <fa-icon [icon]="faPlay"></fa-icon>
+      <button type="button" id="play" class="btn btn-outline-success setSimul" [disabled]="isStart" (click)="onStart()">  <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button type="button" id="stop" class="btn btn-outline-danger" style="margin-right: 5%;border-radius: 50%" (click)="onChangeSim(2)">  <fa-icon [icon]="faStop"></fa-icon>
+      <button type="button" id="stop" class="btn btn-outline-danger setSimul" [disabled]="isStop" (click)="onstop()">  <fa-icon [icon]="faStop"></fa-icon>
       </button>
     </div>
 
@@ -105,10 +105,15 @@
           </div>
         </ng-template>
         <ng-template ngbPanelContent>
-          <div class="container">
-            click on : {{locationName}} isRegion : {{isRegion}}
-            date : {{actualdate.day}}/{{actualdate.month}}/{{actualdate.year}}
-          </div>
+            <div class="container-sm" >
+              <span>Ecoulement des jours</span>
+              <mat-slider
+                thumbLabel
+                [displayWith]="onChangeEcoulement"
+                step="5" tickInterval="5"
+                min="5"
+                max="60"></mat-slider>
+            </div>
         </ng-template>
       </ngb-panel>
     </ngb-accordion>
