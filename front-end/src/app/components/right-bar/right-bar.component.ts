@@ -55,7 +55,9 @@ export class RightBarComponent implements OnInit, OnChanges{
       }
     },
     yAxis: {
-      tickInterval: 10,
+      tickInterval: 500,
+      ceiling : 8000,
+      floor : -5500
     },
     series: [{
       name: 'Cas confirmés',
@@ -152,8 +154,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   getHFrance(){
     this.historiqueService.getHistoriqueFrance().subscribe(
       data => {
-        this.histFr = data;
-        this.setAllDataFromFrance(this.histFr);
+        // this.histFr = data;
+        this.setAllDataFromFrance(data);
       }
     );
   }
@@ -162,7 +164,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   // Order this.allData by Date
   // set Graph
   setAllDataFromFrance(list) {
-    this.dates.splice(0, this.casConf.length);
+    this.allData.splice(0, this.allData.length);
     for (const index in list){
       const element = list[index];
       const elementData = {date: null , hospitalized: null, totalDeaths: null, recoveredCases: null, totalCases: null };
@@ -193,6 +195,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.hospi.splice(0, this.hospi.length);
     this.gueris.splice(0, this.gueris.length);
     this.deces.splice(0, this.deces.length);
+    this.dates.splice(0, this.dates.length);
     for (const index in list) {
       if (parseInt(index, 10) !== 0 ){
         this.dates.push(list[index].date);
