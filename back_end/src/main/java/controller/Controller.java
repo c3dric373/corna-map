@@ -22,6 +22,11 @@ public class Controller {
   private ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
 
   /**
+   * Project state.
+   */
+  private State projectState = State.MAP;
+
+  /**
    * Constructor. We get all the data from the web when the constructor is
    * built. Such that the data will already by available to the user when he
    * will access it.
@@ -50,13 +55,17 @@ public class Controller {
    *
    * @param date The date of which we want the information.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = "/map/infosFrance", method = RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String index(@RequestParam("date") final String date) {
+  String index(@RequestParam("date") final String date) throws IOException {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-
+    if (projectState == State.SIMULATION) {
+      wrapper.getCurrentAllDataFrance();
+      projectState = State.MAP;
+    }
     Gson gson = new Gson();
     return gson.toJson(wrapper.infosFrance(date));
   }
@@ -74,16 +83,20 @@ public class Controller {
    * @param date the date at which we want the data.
    * @param name Name of region if it's specified.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = {"/map/infosRegion"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
   String infosRegion(@RequestParam("date") final String date,
                      @RequestParam(value = "name",
-                       required = false) final String name) {
+                       required = false) final String name) throws IOException {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-
+    if (projectState == State.SIMULATION) {
+      wrapper.getCurrentAllDataFrance();
+      projectState = State.MAP;
+    }
     Gson gson = new Gson();
     if (name == null) {
       return gson.toJson(wrapper.infosRegion(date));
@@ -105,16 +118,20 @@ public class Controller {
    * @param date the date at which we want the data.
    * @param name Name of departement if it's specified.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = {"/map/infosDept"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
   String infosDept(@RequestParam("date") final String date,
                    @RequestParam(value = "name",
-                     required = false) final String name) {
+                     required = false) final String name) throws IOException {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-
+    if (projectState == State.SIMULATION) {
+      wrapper.getCurrentAllDataFrance();
+      projectState = State.MAP;
+    }
     Gson gson = new Gson();
     if (name == null) {
       return gson.toJson(wrapper.infosDept(date));
@@ -128,14 +145,20 @@ public class Controller {
    *
    * @param location The location from which the data is requested.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = {"/historique"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String history(@RequestParam("location") final String location) {
+  String history(@RequestParam("location") final String location)
+    throws IOException {
     Validate.notNull(location, "location null");
     Validate.notEmpty(location, "location empty");
     Gson gson = new Gson();
+    if (projectState == State.SIMULATION) {
+      wrapper.getCurrentAllDataFrance();
+      projectState = State.MAP;
+    }
     return gson.toJson(wrapper.historyLocalisation(location));
   }
 
@@ -150,6 +173,7 @@ public class Controller {
     produces = MediaType.APPLICATION_JSON_VALUE)
   String simulationFrance(@RequestParam("date") final String date) {
     Validate.notNull(date, "location null");
+    projectState = State.MAP;
     Gson gson = new Gson();
     return gson.toJson(wrapper.simulateFrance(date));
   }
@@ -158,11 +182,11 @@ public class Controller {
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
   String simulationRegion(@RequestParam("date") final String date,
-                               @RequestParam(value = "name",
-                                 required = false) final String name) {
+                          @RequestParam(value = "name",
+                            required = false) final String name) {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-
+    projectState = State.MAP;
     Gson gson = new Gson();
     if (name == null) {
       return gson.toJson(wrapper.infosRegion("2020-04-04"));
@@ -175,11 +199,11 @@ public class Controller {
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
   String simulationDept(@RequestParam("date") final String date,
-                             @RequestParam(value = "name",
-                               required = false) final String name) {
+                        @RequestParam(value = "name",
+                          required = false) final String name) {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-
+    projectState = State.MAP;
     Gson gson = new Gson();
     if (name == null) {
       return gson.toJson(wrapper.infosRegion("2020-04-04"));

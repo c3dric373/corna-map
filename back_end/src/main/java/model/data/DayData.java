@@ -3,6 +3,7 @@ package model.data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang.Validate;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 public class DayData {
 
   /**
