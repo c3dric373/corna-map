@@ -16,7 +16,7 @@ export class SideBarComponent implements OnInit, OnChanges {
     // set today's date
     this.date = calendar.getToday();
     // set date to 2 days before today
-    this.date.day = this.date.day - 2;
+    this.date = calendar.getPrev(this.date, 'd', 2);
   }
 
   ngOnInit(): void {

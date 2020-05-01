@@ -51,8 +51,10 @@ export class MapContentComponent implements OnInit {
     this.date = calendar.getToday();
     this.model = calendar.getToday();
     // set date to 2 days before today
-    this.date.day = this.date.day - 2;
-    this.model.day = this.model.day - 2;
+    this.date = calendar.getPrev(this.date, 'd', 2);
+    if (this.model instanceof NgbDate) {
+      this.model = calendar.getPrev(this.model, 'd', 2);
+    }
     // Initialise tables
     this.mousOverReg = new Object();
     this.mousOverDept = new Object();

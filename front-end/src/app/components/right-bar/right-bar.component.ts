@@ -66,7 +66,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     // Today's date
     this.actualdate = calendar.getToday();
     // set date to 2 days before today
-    this.actualdate.day = this.actualdate.day - 2;
+    this.actualdate = calendar.getPrev(this.actualdate, 'd', 2);
   }
 
   ngOnInit() {
