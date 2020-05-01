@@ -29,6 +29,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   // Json of France
   private histFr;
 
+  public differences = [];
+
   public showLocation = false;
 
   private dates = [];
@@ -36,8 +38,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   public options: any = {
     Chart: {
       type: 'area',
-      height: 100,
-      width: 100
+      height: 10,
+      width: 10
     },
     title: {
       text: 'Evolution'
@@ -52,18 +54,21 @@ export class RightBarComponent implements OnInit, OnChanges{
         enabled: false
       }
     },
+    yAxis: {
+      tickInterval: 10,
+    },
     series: [{
       name: 'Cas confirmés',
       data: this.casConf
+    }, {
+      name: 'Décès',
+      data: this.deces
     }, {
       name: 'Guéris',
       data: this.gueris
     }, {
       name: 'Hospitalisés',
       data: this.hospi
-    }, {
-      name: 'Décès',
-      data: this.deces
     }
     ]
   };
@@ -189,13 +194,22 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.gueris.splice(0, this.gueris.length);
     this.deces.splice(0, this.deces.length);
     for (const index in list) {
-      this.dates.push(list[index].date);
-      this.casConf.push(list[index].totalCases);
-      this.hospi.push(list[index].hospitalized);
-      this.deces.push(list[index].totalDeaths);
-      this.gueris.push(list[index].recoveredCases);
+      if (parseInt(index, 10) !== 0 ){
+        this.dates.push(list[index].date);
+        this.casConf.push((list[index].totalCases) - (list[parseInt(index, 10) - 1].totalCases));
+        this.hospi.push((list[index].hospitalized) - (list[parseInt(index, 10) - 1].hospitalized));
+        this.deces.push((list[index].totalDeaths) - (list[parseInt(index, 10) - 1].totalDeaths));
+        this.gueris.push((list[index].recoveredCases) - (list[parseInt(index, 10) - 1].recoveredCases));
+      }
+      // this.casConf.push(list[index].totalCases);
+      // this.hospi.push(list[index].hospitalized);
+      // this.deces.push(list[index].totalDeaths);
+      // this.gueris.push(list[index].recoveredCases);
+
     }
   }
+
+
 
 
 }
