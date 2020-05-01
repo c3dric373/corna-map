@@ -196,8 +196,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println("recoveredNew: " + recoveredNew * POPULATION_FRA);
     System.out.println("susceptibleNew: " + susceptibleNew);
     System.out.println("infectiousNew: " + infectiousNew);
-    System.out.println("totalCases: " + (POPULATION_FRA - (susceptibleNew *
-      POPULATION_FRA)));
+    System.out.println("totalCases: " + (POPULATION_FRA - (susceptibleNew
+      * POPULATION_FRA)));
     return dayData;
   }
 
@@ -231,7 +231,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(final String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
     scrapper.extract(wrapper);

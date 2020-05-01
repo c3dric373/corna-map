@@ -29,6 +29,8 @@ public interface DataScrapper {
 
   /**
    * Sets the path to where the data should be stored.
+   *
+   * @param path the actual path where the data will be stored.
    */
   void setPathToData(String path);
 }
