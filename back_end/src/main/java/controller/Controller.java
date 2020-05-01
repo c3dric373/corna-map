@@ -1,7 +1,6 @@
 package controller;
 
 import com.google.gson.Gson;
-import model.data.State;
 import model.project.ProjectDataWrapper;
 import model.project.ProjectDataWrapperImpl;
 import org.apache.commons.lang.Validate;
