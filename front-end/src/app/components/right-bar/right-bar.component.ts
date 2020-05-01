@@ -29,6 +29,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   // Json of France
   private histFr;
 
+  private chosenLocation;
+
   public differences = [];
 
   public showLocation = false;
@@ -85,7 +87,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   ngOnInit() {
     this.getHFrance();
     this.showLocation = false;
-    this.locationName = 'France';
+    this.chosenLocation = 'France';
   }
 
   ngOnChanges(composant: SimpleChanges ){
@@ -113,7 +115,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
       data => {
         this.reglist = data;
-        this.locationName = data.name;
+        this.chosenLocation = data.name;
         console.log(data);
 
         this.totGueris = data.recoveredCases;
@@ -135,7 +137,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
       data => {
         this.deptList = data;
-        this.locationName = data.name;
+        this.chosenLocation = data.name;
         console.log(data);
 
         this.totGueris = data.recoveredCases;
