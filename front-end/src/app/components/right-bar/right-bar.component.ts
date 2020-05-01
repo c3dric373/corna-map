@@ -89,7 +89,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   }
 
   ngOnChanges(composant: SimpleChanges ){
-    if (this.locationName !== 'France') {
+    if (this.locationName && this.locationName !== 'France') {
       if (this.isRegion) {
         this.getRegInfos();
       } else {
@@ -113,7 +113,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
       data => {
         this.reglist = data;
-        this.locationName = data.nom;
+        this.locationName = data.name;
         console.log(data);
 
         this.totGueris = data.recoveredCases;
@@ -135,7 +135,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
       data => {
         this.deptList = data;
-        this.locationName = data.nom;
+        this.locationName = data.name;
         console.log(data);
 
         this.totGueris = data.recoveredCases;

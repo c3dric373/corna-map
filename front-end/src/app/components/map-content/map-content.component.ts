@@ -3,6 +3,7 @@ import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
 import {SimulationService} from '../../service/simulation/simulation.service';
+import {DateServiceService} from '../../service/Date/date-service.service';
 
 @Component({
   selector: 'app-map-content',
@@ -46,7 +47,8 @@ export class MapContentComponent implements OnInit {
   @Output() isOnlyMap = new EventEmitter<boolean>();
   @Output() emitDate = new EventEmitter<NgbDate>();
 
-  constructor(private mapService: MapService, private simulation: SimulationService, calendar: NgbCalendar) {
+  constructor(private mapService: MapService, private simulation: SimulationService,
+              public dateService: DateServiceService, calendar: NgbCalendar) {
     // get today's date
     this.date = calendar.getToday();
     this.model = calendar.getToday();
