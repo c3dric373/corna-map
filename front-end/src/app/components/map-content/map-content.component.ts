@@ -1,7 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
+import {SimulationService} from '../../service/simulation/simulation.service';
 
 @Component({
   selector: 'app-map-content',
@@ -35,6 +36,9 @@ export class MapContentComponent implements OnInit {
   public date: NgbDate;
   model: NgbDateStruct;
 
+  // Input
+  @Input() SelectedMenu;
+
   //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
   @Output() boolIsRegion = new EventEmitter<boolean>();
@@ -42,9 +46,16 @@ export class MapContentComponent implements OnInit {
   @Output() isOnlyMap = new EventEmitter<boolean>();
   @Output() emitDate = new EventEmitter<NgbDate>();
 
-  constructor(private mapService: MapService, calendar: NgbCalendar) {
+  constructor(private mapService: MapService, private simulation: SimulationService, calendar: NgbCalendar) {
+    // get today's date
     this.date = calendar.getToday();
     this.model = calendar.getToday();
+    // set date to 2 days before today
+    this.date = calendar.getPrev(this.date, 'd', 2);
+    if (this.model instanceof NgbDate) {
+      this.model = calendar.getPrev(this.model, 'd', 2);
+    }
+    // Initialise tables
     this.mousOverReg = new Object();
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
@@ -86,28 +97,46 @@ export class MapContentComponent implements OnInit {
   }
 
   getRegInfos() {
-    this.mapService.getMapRegion(this.date).subscribe(
-      data => {
-        this.reglist = data;
-        this.initializeMapReg();
-      }
-    );
+    if (this.SelectedMenu === 'map') {
+      this.mapService.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+        }
+      );
+    } else {
+      this.simulation.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+        }
+      );
+    }
   }
 
   getDeptInfos() {
-    this.mapService.getMapDept(this.date).subscribe(
-      data => {
-        this.deptList = data;
-        this.initializeMapDept();
-      }
-    );
+    if (this.SelectedMenu === 'map') {
+      this.mapService.getMapDept(this.date).subscribe(
+        data => {
+          this.deptList = data;
+          this.initializeMapDept();
+        }
+      );
+    } else {
+      this.simulation.getMapDept(this.date).subscribe(
+        data => {
+          this.deptList = data;
+          this.initializeMapDept();
+        }
+      );
+    }
   }
 
   initializeMapDept() {
     for (const index in this.deptList) {
-      const depName = this.deptList[index].nom;
-      const nbHospitalized = this.getNbCas(index,  this.deptList);
-      const color = this.assignColor(nbHospitalized, this.deptList);
+      const depName = this.deptList[index].name;
+      const nbCase = this.getNbCas(index,  this.deptList);
+      const color = this.assignColor(nbCase, this.deptList);
 
       // Get the elements starting with <path
       const pathElements = document.getElementsByTagName('path');
@@ -147,9 +176,9 @@ export class MapContentComponent implements OnInit {
 
   initializeMapReg() {
     for (const index in this.reglist) {
-      const RegName = this.reglist[index].nom;
-      const nbHospitalized = this.getNbCas(index,  this.reglist);
-      const color = this.assignColor(nbHospitalized, this.reglist);
+      const RegName = this.reglist[index].name;
+      const nbCase = this.getNbCas(index,  this.reglist);
+      const color = this.assignColor(nbCase, this.reglist);
 
       // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
@@ -239,13 +268,17 @@ export class MapContentComponent implements OnInit {
   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
-    const coeff = (nb - min) / (max - min);
+    let coeff = (nb - min) / (max - min);
     const colorTab = [];
-    for (let i = 0; i < this.rgbRed.length; i++ ) {
+    let color;
+    if ( min === max) {
+      coeff = 0;
+    }
+    for (let i = 0; i < this.rgbRed.length; i++) {
       const value = this.rgbYellow[i] * (1 - coeff) + this.rgbRed[i] * coeff;
       colorTab.push(value);
     }
-    const color = 'rgb(' + colorTab[0] + ', ' +  colorTab[1] + ', ' + colorTab[2] + ')';
+    color = 'rgb(' + colorTab[0] + ', ' + colorTab[1] + ', ' + colorTab[2] + ')';
     return color;
   }
 
@@ -321,6 +354,14 @@ export class MapContentComponent implements OnInit {
   onDateSelect(date){
     this.date = date;
     this.emitDate.emit(this.date);
+    // Color map
+    if (this.isRegion) {
+      this.removeRegListener();
+      this.getRegInfos();
+    } else {
+      this.removeDeptListener();
+      this.getDeptInfos();
+    }
   }
 
   onClickExtend(): void {

@@ -117,7 +117,7 @@ public class EulerSolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getY_i(0))
+                .addParameter(1., T -> T.getYi(0))
                 .build();
         EulerSolver subject = new EulerSolver();
         int nbIterations = 1;
@@ -139,7 +139,7 @@ public class EulerSolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getY_i(0))
+                .addParameter(1., T -> T.getYi(0))
                 .build();
         EulerSolver subject = new EulerSolver();
         int nbIterations = 2;
@@ -161,7 +161,7 @@ public class EulerSolverTest {
 
         // Arrange
         CauchyProblem cauchyProblem = CauchyProblem.builder()
-                .addParameter(1., T -> T.getY_i(0))
+                .addParameter(1., T -> T.getYi(0))
                 .build();
         EulerSolver subject = new EulerSolver();
         int nbIterations = 100;

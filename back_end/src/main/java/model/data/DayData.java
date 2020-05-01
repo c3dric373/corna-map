@@ -1,6 +1,8 @@
 package model.data;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 
 import java.time.LocalDate;
@@ -11,12 +13,9 @@ import java.time.LocalDate;
  * france or france itself.
  */
 @Getter
+@Setter
+@EqualsAndHashCode
 public class DayData {
-  /**
-   * Default constructor of DayData class.
-   */
-  public DayData() {
-  }
 
   /**
    * wip.
@@ -25,47 +24,47 @@ public class DayData {
   /**
    * wip.
    */
-  private String nom;
+  private String name;
   /**
    * wip.
    */
-  private Integer criticalCases;
+  private int criticalCases;
   /**
    * wip.
    */
-  private Integer hospitalized;
+  private int hospitalized;
   /**
    * wip.
    */
-  private Integer totalCases;
+  private int totalCases;
   /**
    * wip.
    */
-  private Integer ephadCases;
+  private int ephadCases;
   /**
    * wip.
    */
-  private Integer ephadConfirmedCases;
+  private int ephadConfirmedCases;
   /**
    * wip.
    */
-  private Integer ephadPossibleCases;
+  private int ephadPossibleCases;
   /**
    * wip.
    */
-  private Integer totalDeaths;
+  private int totalDeaths;
   /**
    * wip.
    */
-  private Integer totalEphadDeaths;
+  private int totalEphadDeaths;
   /**
    * wip.
    */
-  private Integer recoveredCases;
+  private int recoveredCases;
   /**
    * wip.
    */
-  private Integer totalTests;
+  private int totalTests;
   /**
    * wip.
    */
@@ -74,6 +73,12 @@ public class DayData {
    * wip.
    */
   private TypeLocalisation type;
+
+  /**
+   * Empty Constructor.
+   */
+  public DayData() {
+  }
 
   /**
    * Constructor. All the number arguments are the numbers of people in a
@@ -134,7 +139,7 @@ public class DayData {
     Validate.isTrue(totalTestsNew >= 0,
       "totalTestsNew negative");
     this.id = idNew;
-    this.nom = nomNew;
+    this.name = nomNew;
     this.criticalCases = criticalCasesNew;
     this.hospitalized = hospitalizedNew;
     this.totalCases = totalCasesNew;

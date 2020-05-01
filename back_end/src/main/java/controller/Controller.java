@@ -151,13 +151,13 @@ public class Controller {
   String simulationFrance(@RequestParam("date") final String date) {
     Validate.notNull(date, "location null");
     Gson gson = new Gson();
-    return gson.toJson(wrapper.infosFrance("2020-04-04"));
+    return gson.toJson(wrapper.simulateFrance(date));
   }
 
   @RequestMapping(value = {"simulation/infosRegion"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String infosRegionSimulation(@RequestParam("date") final String date,
+  String simulationRegion(@RequestParam("date") final String date,
                                @RequestParam(value = "name",
                                  required = false) final String name) {
     Validate.notNull(date, "date is null");
@@ -174,7 +174,7 @@ public class Controller {
   @RequestMapping(value = {"simulation/infosDept"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String infosDeptSimulation(@RequestParam("date") final String date,
+  String simulationDept(@RequestParam("date") final String date,
                              @RequestParam(value = "name",
                                required = false) final String name) {
     Validate.notNull(date, "date is null");
