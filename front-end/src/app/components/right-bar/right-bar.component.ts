@@ -157,6 +157,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   // Order this.allData by Date
   // set Graph
   setAllDataFromFrance(list) {
+    this.dates.splice(0, this.casConf.length);
     for (const index in list){
       const element = list[index];
       const elementData = {date: null , hospitalized: null, totalDeaths: null, recoveredCases: null, totalCases: null };
@@ -183,6 +184,10 @@ export class RightBarComponent implements OnInit, OnChanges{
 
   // Set the table to construct the graph
   setGraph(list) {
+    this.casConf.splice(0, this.casConf.length);
+    this.hospi.splice(0, this.hospi.length);
+    this.gueris.splice(0, this.gueris.length);
+    this.deces.splice(0, this.deces.length);
     for (const index in list) {
       this.dates.push(list[index].date);
       this.casConf.push(list[index].totalCases);

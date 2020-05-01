@@ -2,9 +2,9 @@
   <div class="sidebar-header">
 
     <h4 id="titre">{{locationName}}</h4>
+    <a (click)=ngOnInit() [hidden]=!showLocation>Revenir à la France</a>
     <div class="container" [hidden]=!showLocation>
       <table class="table" >
-        <caption>List of users</caption>
         <thead>
         <tr>
           <th scope="col">Guéris</th>
