@@ -94,8 +94,10 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.locationName && this.locationName !== 'France') {
       if (this.isRegion) {
         this.getRegInfos();
+        this.getHRegion();
       } else {
         this.getDeptInfos();
+        this.getHDept();
       }
       this.showLocation = true;
     }
@@ -157,6 +159,26 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.historiqueService.getHistoriqueFrance().subscribe(
       data => {
         // this.histFr = data;
+        this.setAllDataFromFrance(data);
+      }
+    );
+  }
+
+  getHRegion(){
+    this.historiqueService.getHistoriqueRegion(this.locationName).subscribe(
+      data => {
+        // this.histFr = data;
+        // console.log(data);
+        this.setAllDataFromFrance(data);
+      }
+    );
+  }
+
+  getHDept(){
+    this.historiqueService.getHistoriqueDept(this.locationName).subscribe(
+      data => {
+        // this.histFr = data;
+        // console.log(data);
         this.setAllDataFromFrance(data);
       }
     );
