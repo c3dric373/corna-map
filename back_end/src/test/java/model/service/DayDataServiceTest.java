@@ -2,6 +2,8 @@ package model.service;
 
 import model.data.DayData;
 import model.data.TypeLocalisation;
+import model.project.ProjectDataWrapper;
+import model.project.ProjectDataWrapperImpl;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -35,6 +37,8 @@ public class DayDataServiceTest {
   private static final double DEATH_RATE = TOTAL_DEATHS / POPULATION_FRA;
   private static final double RECOVERY_RATE =
     RECOVERD_CASES / (double) TOTAL_CASE;
+  private static ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
+
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -53,7 +57,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("dayData null");
 
     // Act
-    //DayDataService.getDeathRate(null);
+    DayDataService.getDeathRate(null, wrapper, ID);
 
     // Assert -> via annotation
   }
@@ -65,7 +69,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("dayData null");
 
     // Act
-   // DayDataService.getRecoveryRate(null,);
+    DayDataService.getRecoveryRate(null, wrapper, ID);
 
     // Assert -> via annotation
   }
@@ -102,7 +106,7 @@ public class DayDataServiceTest {
     //final double result = DayDataService.getDeathRate(subject);
 
     // Assert -> via annotation
-  //  Assert.assertEquals("wrong deathRate", DEATH_RATE, result, 0);
+    //  Assert.assertEquals("wrong deathRate", DEATH_RATE, result, 0);
   }
 
   @Test
@@ -113,6 +117,6 @@ public class DayDataServiceTest {
     //final double result = DayDataService.getRecoveryRate(subject);
 
     // Assert -> via annotation
-   // Assert.assertEquals("wrong recoveryRate", RECOVERY_RATE, result, 0);
+    // Assert.assertEquals("wrong recoveryRate", RECOVERY_RATE, result, 0);
   }
 }
