@@ -79,15 +79,15 @@ public class SIRSimulator implements Simulator {
 
     model = CauchyProblem.builder()
       .addParameter(iSuceptible,
-        T -> -beta * T.getYi(0) * T.getYi(1))
+        ty -> -beta * ty.getYi(0) * ty.getYi(1))
       .addParameter(iInfectious,
-        T -> beta * T.getYi(0) * T.getYi(1)
-          - lambda * T.getYi(1)
-          - mu * T.getYi(1))
+        ty -> beta * ty.getYi(0) * ty.getYi(1)
+          - lambda * ty.getYi(1)
+          - mu * ty.getYi(1))
       .addParameter(iRecovered,
-        T -> lambda * T.getYi(1))
+        ty -> lambda * ty.getYi(1))
       .addParameter(iDead,
-        T -> mu * T.getYi(1))
+        ty -> mu * ty.getYi(1))
       .build();
   }
 
@@ -103,15 +103,15 @@ public class SIRSimulator implements Simulator {
 
     model = CauchyProblem.builder()
       .addParameter(nextValues.get(0),
-        T -> -beta * T.getYi(0) * T.getYi(1))
+        ty -> -beta * ty.getYi(0) * ty.getYi(1))
       .addParameter(nextValues.get(1),
-        T -> beta * T.getYi(0) * T.getYi(1)
-          - lambda * T.getYi(1)
-          - mu * T.getYi(1))
+        ty -> beta * ty.getYi(0) * ty.getYi(1)
+          - lambda * ty.getYi(1)
+          - mu * ty.getYi(1))
       .addParameter(nextValues.get(2),
-        T -> lambda * T.getYi(1))
+        ty -> lambda * ty.getYi(1))
       .addParameter(nextValues.get(3),
-        T -> mu * T.getYi(1))
+        ty -> mu * ty.getYi(1))
       .build();
   }
 
