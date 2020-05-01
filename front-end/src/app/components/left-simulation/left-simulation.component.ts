@@ -20,6 +20,7 @@ export class LeftSimulationComponent implements OnInit {
   // essai
   public essaiDate: NgbDate;
   public endDate: NgbDate;
+  interval;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar) {
     this.actualdate = calendar.getToday();
@@ -189,23 +190,22 @@ onChangeRespectConfinement(value: number) {
           return Math.round(value / 1000) + 'k';
         }
         value++;
-        return (value );
         console.log('time' + value );
+        return (value );
       }
 
   }
 
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
-    let currentTime = new Date();
-    while (currentDate.before(endDate)) {
-      const time = new Date();
-      if ((time.getTime() - currentTime.getTime()) > 2000) {
+    this.interval = setInterval(() => {
+      if (currentDate.before(endDate)) {
         currentDate = this.calendar.getNext(currentDate, 'd', 1);
-        console.log(currentDate);
-        currentTime = time;
+        this.essaiDate = currentDate;
+      } else {
+        clearInterval(this.interval);
       }
-    }
+    }, 1000);
   }
 
 }
