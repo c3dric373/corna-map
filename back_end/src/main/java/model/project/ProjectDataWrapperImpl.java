@@ -229,17 +229,18 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       return date1.compareTo(date2);
     }
   }
-
-  /*
+/*
   public static void main(final String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
     scrapper.extract(wrapper);
     DayData dayData = wrapper.simulateFrance("2020-04-30");
     System.out.println("=============");
-    wrapper.simulateFrance("2020-05-01");
+    wrapper.simulateFrance("2020-05-06");
+    //wrapper.simulateFrance("2020-05-01");
   }
-*/
+  */
+
 }
 
 

@@ -12,7 +12,6 @@ import java.util.Map;
  * about county's, region's and france itself.
  */
 @Getter
-@Setter
 public class ProjectDataImpl implements ProjectData {
 
   /**
