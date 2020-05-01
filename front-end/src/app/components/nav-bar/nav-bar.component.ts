@@ -9,10 +9,10 @@ export class NavBarComponent implements OnInit {
 
   constructor() { }
 
-  act = false;
+  act = true;
 
   ngOnInit(): void {
-    
+
   }
 
   changeAct(){

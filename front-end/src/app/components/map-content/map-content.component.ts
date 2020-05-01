@@ -47,8 +47,15 @@ export class MapContentComponent implements OnInit {
   @Output() emitDate = new EventEmitter<NgbDate>();
 
   constructor(private mapService: MapService, private simulation: SimulationService, calendar: NgbCalendar) {
-    this.date = calendar.getPrev(calendar.getToday());
-    this.model = calendar.getPrev(calendar.getToday());
+    // get today's date
+    this.date = calendar.getToday();
+    this.model = calendar.getToday();
+    // set date to 2 days before today
+    this.date = calendar.getPrev(this.date, 'd', 2);
+    if (this.model instanceof NgbDate) {
+      this.model = calendar.getPrev(this.model, 'd', 2);
+    }
+    // Initialise tables
     this.mousOverReg = new Object();
     this.mousOverDept = new Object();
     this.mousLeaveDept = new Object();
@@ -127,9 +134,9 @@ export class MapContentComponent implements OnInit {
 
   initializeMapDept() {
     for (const index in this.deptList) {
-      const depName = this.deptList[index].nom;
-      const nbHospitalized = this.getNbCas(index,  this.deptList);
-      const color = this.assignColor(nbHospitalized, this.deptList);
+      const depName = this.deptList[index].name;
+      const nbCase = this.getNbCas(index,  this.deptList);
+      const color = this.assignColor(nbCase, this.deptList);
 
       // Get the elements starting with <path
       const pathElements = document.getElementsByTagName('path');
@@ -169,9 +176,9 @@ export class MapContentComponent implements OnInit {
 
   initializeMapReg() {
     for (const index in this.reglist) {
-      const RegName = this.reglist[index].nom;
-      const nbHospitalized = this.getNbCas(index,  this.reglist);
-      const color = this.assignColor(nbHospitalized, this.reglist);
+      const RegName = this.reglist[index].name;
+      const nbCase = this.getNbCas(index,  this.reglist);
+      const color = this.assignColor(nbCase, this.reglist);
 
       // Get the elements of regions
       const pathElements = document.getElementsByClassName('region');
@@ -261,13 +268,17 @@ export class MapContentComponent implements OnInit {
   assignColor(nb, list): string{
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
-    const coeff = (nb - min) / (max - min);
+    let coeff = (nb - min) / (max - min);
     const colorTab = [];
-    for (let i = 0; i < this.rgbRed.length; i++ ) {
+    let color;
+    if ( min === max) {
+      coeff = 0;
+    }
+    for (let i = 0; i < this.rgbRed.length; i++) {
       const value = this.rgbYellow[i] * (1 - coeff) + this.rgbRed[i] * coeff;
       colorTab.push(value);
     }
-    const color = 'rgb(' + colorTab[0] + ', ' +  colorTab[1] + ', ' + colorTab[2] + ')';
+    color = 'rgb(' + colorTab[0] + ', ' + colorTab[1] + ', ' + colorTab[2] + ')';
     return color;
   }
 

@@ -13,7 +13,10 @@ export class SideBarComponent implements OnInit, OnChanges {
   @Input() date: NgbDate;
 
   constructor(private mapService: MapService, calendar: NgbCalendar) {
-    this.date =  calendar.getPrev(calendar.getToday());
+    // set today's date
+    this.date = calendar.getToday();
+    // set date to 2 days before today
+    this.date = calendar.getPrev(this.date, 'd', 2);
   }
 
   ngOnInit(): void {
