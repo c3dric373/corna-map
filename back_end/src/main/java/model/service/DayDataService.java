@@ -43,7 +43,9 @@ public class DayDataService {
                                        final String location
   ) {
     Validate.notNull(dayData, "dayData null");
-    Validate.notNull(wrapper, " wrapper null");
+    Validate.notNull(wrapper, "wrapper null");
+    Validate.notNull(location, "location null");
+    Validate.notEmpty(location, "location empty");
     Map<String, Map<String, DayData>> map =
       wrapper.getProject().getLocations();
     final String dayBefore = dayData.getDate().minusDays(1).toString();
@@ -53,27 +55,6 @@ public class DayDataService {
       dayBeforeData.getTotalCases()
         - dayBeforeData.getRecoveredCases() - dayBeforeData.getTotalDeaths();
     return recoveredInADay / (double) infectedDayBefore;
-  }
-
-  /**
-   * Calculates the newly infected people from one DayData to another.
-   * *
-   *
-   * @param dayData       the first dayData.
-   * @param dayBeforeData the second dayData.
-   * @return the number of people infected in a day
-   */
-  private int getInfectedInADay(final DayData dayData,
-                                final DayData dayBeforeData) {
-    Validate.notNull(dayBeforeData, "dayBeforeData is null");
-    Validate.notNull(dayData, "dayData is null");
-    final int infectedDayBefore =
-      dayBeforeData.getTotalCases()
-        - dayBeforeData.getRecoveredCases() - dayBeforeData.getTotalDeaths();
-    final int infectedDay =
-      dayData.getTotalCases()
-        - dayData.getRecoveredCases() - dayData.getTotalDeaths();
-    return infectedDay - infectedDayBefore;
   }
 
   /**
@@ -87,6 +68,7 @@ public class DayDataService {
                                         final DayData dayBeforeData) {
     Validate.notNull(dayBeforeData, "dayBeforeData is null");
     Validate.notNull(dayData, "dayData is null");
+
     final int dayBeforeRecovered = dayBeforeData.getRecoveredCases();
     final int recovered = dayData.getRecoveredCases();
     System.out.println(recovered);
@@ -107,9 +89,11 @@ public class DayDataService {
   public static double getDeathRate(
     final DayData dayData,
     final ProjectDataWrapper wrapper,
-    final String location
-  ) {
+    final String location) {
     Validate.notNull(dayData, "dayData null");
+    Validate.notNull(wrapper, "wrapper null");
+    Validate.notNull(location, "location null");
+    Validate.notEmpty(location, "location empty");
     Map<String, Map<String, DayData>> map =
       wrapper.getProject().getLocations();
     final String dayBefore = dayData.getDate().minusDays(1).toString();
