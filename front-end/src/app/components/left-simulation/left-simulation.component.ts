@@ -39,7 +39,7 @@ export class LeftSimulationComponent implements OnInit {
   public endDate: NgbDate;
   // Interval
   interval;
-  public chosenInterval = 1;
+  public chosenInterval = 2;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
     this.simulDate = calendar.getToday();
@@ -55,6 +55,7 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   initializeParams() {
+    // Params to send
     this.borders = false;
     this.shops = false;
     this.hosp = false;
@@ -63,6 +64,8 @@ export class LeftSimulationComponent implements OnInit {
     this.conf = [false, false, false, false, false];
     this.timer = 0;
     this.resetSim = false;
+
+    this.simulDate = this.calendar.getToday();
   }
 
   sendParams(){
@@ -82,7 +85,6 @@ export class LeftSimulationComponent implements OnInit {
     this.isStart = true;
     this.isStop = false;
     console.log(this.sendParams());
-
     this.startTimer(this.simulDate, this.endDate);
   }
 
@@ -151,15 +153,15 @@ export class LeftSimulationComponent implements OnInit {
     }
 
   onChangeMask(int) {
-      this.mask[int] = !this.mask[int];
-      if (this.mask[int] === true){
+    this.mask[int] = !this.mask[int];
+    if (this.mask[int] === true){
 
-        document.getElementById(int).style.backgroundColor = '#B1AEAA';
-      }else{
-        document.getElementById(int).style.backgroundColor = '#CFCDCC';
-      }
-      console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
+      document.getElementById(int).style.backgroundColor = '#B1AEAA';
+    }else{
+      document.getElementById(int).style.backgroundColor = '#CFCDCC';
     }
+    console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
+  }
 
   onChangeConfinement(int) {
     this.conf[int] = !this.conf[int];
@@ -171,14 +173,13 @@ export class LeftSimulationComponent implements OnInit {
     console.log('Confinement catégorie :' + int + ' : ' + this.conf[int]);
   }
 
-
   onChangeRespectConfinement(value: number) {
-      if (value >= 1000) {
-        return Math.round(value / 1000) + 'k';
-      }
-      this.respectConfinement = value;
-      console.log('respectConfinement' + this.respectConfinement + '%');
-      return (value + '%');
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
+    this.respectConfinement = value;
+    console.log('respectConfinement' + this.respectConfinement + '%');
+    return (value + '%');
    }
 
   onChangeEcoulement(value: number) {
@@ -186,7 +187,7 @@ export class LeftSimulationComponent implements OnInit {
       return Math.round(value / 1000) + 'k';
     }
     this.chosenInterval = value;
-    console.log('temps change tout le' + value + 'secondes');
+    console.log('temps change tout le' + this.chosenInterval + 'secondes');
     return (value + 's');
   }
 
@@ -207,15 +208,15 @@ export class LeftSimulationComponent implements OnInit {
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
     this.interval = setInterval(() => {
-      if (!this.isPause) {
-        if (currentDate.before(endDate)) {
-          this.getInformations();
-          currentDate = this.calendar.getNext(currentDate, 'd', 1);
-          this.simulDate = currentDate;
-        } else {
-          clearInterval(this.interval);
-          this.onstop();
-        }
+      if (currentDate.before(endDate) && !this.isPause) {
+        this.getInformations();
+        this.simulDate = currentDate;
+        currentDate = this.calendar.getNext(currentDate, 'd', 1);
+      } else if (this.isStop) {
+        clearInterval(this.interval);
+        this.onstop();
+      } else {
+        clearInterval(this.interval);
       }
     }, (this.chosenInterval * 1000));
   }
