@@ -5,6 +5,7 @@ import { faPause } from '@fortawesome/free-solid-svg-icons';
 import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {SimulationService} from '../../service/simulation/simulation.service';
 import {MapService} from '../../service/map/map.service';
+import {DateServiceService} from '../../service/Date/date-service.service';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class LeftSimulationComponent implements OnInit {
   public endDate: NgbDate;
   interval;
 
-  constructor(private simulationService: SimulationService, private calendar: NgbCalendar) {
+  constructor(private simulationService: SimulationService, private calendar: NgbCalendar, private dateService: DateServiceService) {
     this.actualdate = calendar.getToday();
     this.essaiDate = calendar.getToday();
     this.endDate = new NgbDate(2020, 5, 31);
@@ -58,9 +59,9 @@ export class LeftSimulationComponent implements OnInit {
   sendParams(){
       console.log('sendParams');
       this.simulationService.sendParams([this.resetSim, this.locationName,
-        this.simulationService.dateToString(this.actualdate), this.conf, this.borders,
+        this.dateService.dateToString(this.actualdate), this.conf, this.borders,
         this.shops, this.hosp , this.mask, this.respectConfinement]);
-      return [this.resetSim, this.locationName, this.simulationService.dateToString(this.actualdate),
+      return [this.resetSim, this.locationName, this.dateService.dateToString(this.actualdate),
         this.conf, this.borders, this.shops, this.hosp , this.mask,
         this.respectConfinement];
   }
