@@ -30,7 +30,12 @@ public class DayDataService {
    * Computes the percentage of recovered people from coronavirus
    * given on stats of specific day.
    *
-   * @param dayData Data of specific day.
+   * @param dayData  Data of specific day.
+   * @param wrapper  the {@link ProjectDataWrapper} needed
+   *                 to access previous
+   *                 days.
+   * @param location location for which we should calculate
+   *                 the rate.
    * @return percentage of recovered people.
    */
   public static double getRecoveryRate(final DayData dayData,
@@ -51,7 +56,12 @@ public class DayDataService {
   }
 
   /**
-   * Calculates the newly infected people from one daydata to another.
+   * Calculates the newly infected people from one DayData to another.
+   * *
+   *
+   * @param dayData       the first dayData.
+   * @param dayBeforeData the second dayData.
+   * @return the number of people infected in a day
    */
   private int getInfectedInADay(final DayData dayData,
                                 final DayData dayBeforeData) {
@@ -67,7 +77,11 @@ public class DayDataService {
   }
 
   /**
-   * Calculates the newly infected people from one daydata to another.
+   * Calculates the newly infected people from one dayData to another.
+   *
+   * @param dayData       the first dayData.
+   * @param dayBeforeData the second dayData.
+   * @return the number of people recovered in a day.
    */
   private static int getRecoveredInADay(final DayData dayData,
                                         final DayData dayBeforeData) {
@@ -84,7 +98,10 @@ public class DayDataService {
    * Computes the current deathRate of the coronavirus
    * given on stats of specific day.
    *
-   * @param dayData Data of specific day.
+   * @param dayData  Data of specific day.
+   * @param wrapper  the {@link ProjectDataWrapper} needed to access previous
+   *                 days.
+   * @param location location for which we should calculate the rate.
    * @return deathRate.
    */
   public static double getDeathRate(
@@ -106,6 +123,13 @@ public class DayDataService {
     return deadInADay / (double) infectedDayBefore;
   }
 
+  /**
+   * Compute number of people dead in day (difference between 2 day data).
+   *
+   * @param dayData       the first dayData.
+   * @param dayBeforeData the second dayData.
+   * @return the number of people dead in a day.
+   */
   private static int getDeadInADay(final DayData dayData,
                                    final DayData dayBeforeData) {
     Validate.notNull(dayBeforeData, "dayBeforeData is null");

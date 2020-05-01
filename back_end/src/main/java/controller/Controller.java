@@ -55,6 +55,7 @@ public class Controller {
    *
    * @param date The date of which we want the information.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = "/map/infosFrance", method = RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,6 +83,7 @@ public class Controller {
    * @param date the date at which we want the data.
    * @param name Name of region if it's specified.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = {"/map/infosRegion"}, method =
     RequestMethod.GET,
@@ -116,6 +118,7 @@ public class Controller {
    * @param date the date at which we want the data.
    * @param name Name of departement if it's specified.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = {"/map/infosDept"}, method =
     RequestMethod.GET,
@@ -142,11 +145,13 @@ public class Controller {
    *
    * @param location The location from which the data is requested.
    * @return the requested data in a json format.
+   * @throws IOException read error while getting data
    */
   @RequestMapping(value = {"/historique"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
-  String history(@RequestParam("location") final String location) throws IOException {
+  String history(@RequestParam("location") final String location)
+    throws IOException {
     Validate.notNull(location, "location null");
     Validate.notEmpty(location, "location empty");
     Gson gson = new Gson();

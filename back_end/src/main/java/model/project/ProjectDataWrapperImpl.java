@@ -191,7 +191,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     // Create Object which encapsulates the simulated data
     final DayData dayData = new DayData();
     dayData.setTotalDeaths((int) (totalDeaths + deadNew * infectedPeople));
-    dayData.setRecoveredCases((int) (recovered + recoveredNew * infectedPeople));
+    dayData.setRecoveredCases((int) (recovered
+      + recoveredNew * infectedPeople));
     System.out.println("recovered " + dayData.getRecoveredCases());
     dayData.setTotalCases((int) (POPULATION_FRA
       - (susceptibleNew * POPULATION_FRA)));
@@ -229,6 +230,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
+  /*
   public static void main(final String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
@@ -237,7 +239,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println("=============");
     wrapper.simulateFrance("2020-05-01");
   }
-
+*/
 }
 
 
