@@ -33,3 +33,11 @@
 .container-sm {
   color : black;
 }
+
+table{
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+  text-align: center;
+
+}

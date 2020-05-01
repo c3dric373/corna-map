@@ -14,7 +14,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() actualdate: NgbDate;
 
   // Json of the region
-  private reglist;
+  private reglist = [];
   // Json of the Dept
   private deptList;
   private allData = [];
@@ -22,16 +22,24 @@ export class RightBarComponent implements OnInit, OnChanges{
   private gueris = [];
   private hospi = [];
   private deces = [];
+  public totCasConf: string ;
+  public totGueris ;
+  public totHospi ;
+  public totDeces ;
   // Json of France
   private histFr;
+
+  public differences = [];
+
+  public showLocation = false;
 
   private dates = [];
 
   public options: any = {
     Chart: {
       type: 'area',
-      height: 100,
-      width: 100
+      height: 10,
+      width: 10
     },
     title: {
       text: 'Evolution'
@@ -46,18 +54,23 @@ export class RightBarComponent implements OnInit, OnChanges{
         enabled: false
       }
     },
+    yAxis: {
+      tickInterval: 500,
+      ceiling : 8000,
+      floor : -5500
+    },
     series: [{
       name: 'Cas confirmés',
       data: this.casConf
+    }, {
+      name: 'Décès',
+      data: this.deces
     }, {
       name: 'Guéris',
       data: this.gueris
     }, {
       name: 'Hospitalisés',
       data: this.hospi
-    }, {
-      name: 'Décès',
-      data: this.deces
     }
     ]
   };
@@ -71,15 +84,18 @@ export class RightBarComponent implements OnInit, OnChanges{
 
   ngOnInit() {
     this.getHFrance();
+    this.showLocation = false;
+    this.locationName = 'France';
   }
 
   ngOnChanges(composant: SimpleChanges ){
-    if (this.locationName) {
-      if (composant.isRegion) {
+    if (this.locationName !== 'France') {
+      if (this.isRegion) {
         this.getRegInfos();
       } else {
         this.getDeptInfos();
       }
+      this.showLocation = true;
     }
   }
 
@@ -97,14 +113,40 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
       data => {
         this.reglist = data;
+        this.locationName = data.nom;
+        console.log(data);
+
+        this.totGueris = data.recoveredCases;
+        this.totHospi = data.hospitalized;
+        this.totDeces = data.totalDeaths;
+        if (data.totalCases === 0){
+          this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+            parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+        }else{
+          this.totCasConf = data.totalCases;
+        }
+
       }
     );
+
   }
 
   getDeptInfos() {
     this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
       data => {
         this.deptList = data;
+        this.locationName = data.nom;
+        console.log(data);
+
+        this.totGueris = data.recoveredCases;
+        this.totHospi = data.hospitalized;
+        this.totDeces = data.totalDeaths;
+        if (data.totalCases === 0){
+          this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+            parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+        }else{
+          this.totCasConf = data.totalCases;
+        }
       }
     );
   }
@@ -112,8 +154,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   getHFrance(){
     this.historiqueService.getHistoriqueFrance().subscribe(
       data => {
-        this.histFr = data;
-        this.setAllDataFromFrance(this.histFr);
+        // this.histFr = data;
+        this.setAllDataFromFrance(data);
       }
     );
   }
@@ -122,6 +164,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   // Order this.allData by Date
   // set Graph
   setAllDataFromFrance(list) {
+    this.allData.splice(0, this.allData.length);
     for (const index in list){
       const element = list[index];
       const elementData = {date: null , hospitalized: null, totalDeaths: null, recoveredCases: null, totalCases: null };
@@ -148,14 +191,28 @@ export class RightBarComponent implements OnInit, OnChanges{
 
   // Set the table to construct the graph
   setGraph(list) {
+    this.casConf.splice(0, this.casConf.length);
+    this.hospi.splice(0, this.hospi.length);
+    this.gueris.splice(0, this.gueris.length);
+    this.deces.splice(0, this.deces.length);
+    this.dates.splice(0, this.dates.length);
     for (const index in list) {
-      this.dates.push(list[index].date);
-      this.casConf.push(list[index].totalCases);
-      this.hospi.push(list[index].hospitalized);
-      this.deces.push(list[index].totalDeaths);
-      this.gueris.push(list[index].recoveredCases);
+      if (parseInt(index, 10) !== 0 ){
+        this.dates.push(list[index].date);
+        this.casConf.push((list[index].totalCases) - (list[parseInt(index, 10) - 1].totalCases));
+        this.hospi.push((list[index].hospitalized) - (list[parseInt(index, 10) - 1].hospitalized));
+        this.deces.push((list[index].totalDeaths) - (list[parseInt(index, 10) - 1].totalDeaths));
+        this.gueris.push((list[index].recoveredCases) - (list[parseInt(index, 10) - 1].recoveredCases));
+      }
+      // this.casConf.push(list[index].totalCases);
+      // this.hospi.push(list[index].hospitalized);
+      // this.deces.push(list[index].totalDeaths);
+      // this.gueris.push(list[index].recoveredCases);
+
     }
   }
+
+
 
 
 }
