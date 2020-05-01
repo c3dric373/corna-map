@@ -39,6 +39,7 @@ export class MapContentComponent implements OnInit {
 
   // Input
   @Input() SelectedMenu;
+  @Input() actualDate;
 
   //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
@@ -52,8 +53,10 @@ export class MapContentComponent implements OnInit {
     // get today's date
     this.date = calendar.getToday();
     this.model = calendar.getToday();
+    this.actualDate = calendar.getToday();
     // set date to 2 days before today
     this.date = calendar.getPrev(this.date, 'd', 2);
+    this.actualDate = calendar.getPrev(this.actualDate, 'd', 2);
     if (this.model instanceof NgbDate) {
       this.model = calendar.getPrev(this.model, 'd', 2);
     }
@@ -125,7 +128,7 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.simulation.getMapDept(this.date).subscribe(
+      this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();

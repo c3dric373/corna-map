@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { faStop } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +16,7 @@ import {DateServiceService} from '../../service/Date/date-service.service';
 export class LeftSimulationComponent implements OnInit {
   @Input() locationName: string;
   @Input() isRegion: boolean;
+  @Output() sendDate = new EventEmitter<NgbDate>();
 
   // Icons
   faStop = faStop;
@@ -47,11 +48,11 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sendDate.emit(this.simulDate);
     this.isStart = false;
     this.isPause = false;
     this.isStop = false;
     this.initializeParams();
-    this.onChangeTime(0);
   }
 
   initializeParams() {
@@ -194,27 +195,20 @@ export class LeftSimulationComponent implements OnInit {
   public beforeChange($event: NgbPanelChangeEvent) {
   }
 
-  onChangeTime(value: number) {
-    while (true){
-      if (value >= 1000) {
-        return Math.round(value / 1000) + 'k';
-      }
-      value++;
-      console.log('time' + value );
-      return (value );
-    }
-  }
-
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
     this.interval = setInterval(() => {
-      if (currentDate.before(endDate) && !this.isPause) {
-        this.getInformations();
-        this.simulDate = currentDate;
-        currentDate = this.calendar.getNext(currentDate, 'd', 1);
-      } else if (this.isStop) {
-        clearInterval(this.interval);
-        this.onstop();
+      if (!this.isPause) {
+        if (currentDate.before(endDate)) {
+          this.getInformations();
+          this.simulDate = currentDate;
+          // Send Date to component
+          this.sendDate.emit(this.simulDate);
+          currentDate = this.calendar.getNext(currentDate, 'd', 1);
+        } else {
+          clearInterval(this.interval);
+          this.onstop();
+        }
       } else {
         clearInterval(this.interval);
       }

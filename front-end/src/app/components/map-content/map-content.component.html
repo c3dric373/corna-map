@@ -12,7 +12,7 @@
         </div>
       </div>
       <!-- Select Date -->
-      <div class="btn-group" ngbDropdown role="group">
+      <div class="btn-group" *ngIf="SelectedMenu == 'map'" ngbDropdown role="group">
         <button class="btn btn-outline-secondary" ngbDropdownToggle>{{dateService.formatDateToFr(date)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
