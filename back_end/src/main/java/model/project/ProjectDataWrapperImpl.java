@@ -116,6 +116,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   public DayData simulateFrance(final String date) {
     final DayData latestData = getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
+    // We need to check if the date is in the future or the past
+    // if it's in the past we only return the data of the asked day and delete
+    // the days coming after
+    if (latestDate.isAfter(LocalDate.parse(date))) {
+      truncateData(date);
+      return getLatestData(FRA);
+    }
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
       final double dead = DayDataService.getDeathRate(latestData);
@@ -138,6 +145,19 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
 
     return dayData;
+  }
+
+  /**
+   * Deletes all the entries after a specific date.
+   *
+   * @param date the specific date.
+   */
+  private void truncateData(final String date) {
+    final Map<String, Map<String, DayData>> localisations =
+      projectData.getLocations();
+    final Map<String, DayData> dataFrance = localisations.get(FRA);
+    dataFrance.keySet().removeIf(key
+      -> LocalDate.parse(key).isAfter(LocalDate.parse(date)));
   }
 
   /**
