@@ -18,7 +18,7 @@ export class LeftSimulationComponent implements OnInit {
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
 
-  public chosenInterval = 5;
+
   // Icons
   faStop = faStop;
   faPlay = faPlay;
@@ -39,7 +39,9 @@ export class LeftSimulationComponent implements OnInit {
   // Deals with time
   public simulDate: NgbDate;
   public endDate: NgbDate;
+  // Interval
   interval;
+  public chosenInterval = 5;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
     this.actualdate = calendar.getToday();
