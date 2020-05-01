@@ -18,6 +18,7 @@ export class LeftSimulationComponent implements OnInit {
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
 
+  public chosenInterval = 5;
   // Icons
   faStop = faStop;
   faPlay = faPlay;
@@ -67,6 +68,7 @@ export class LeftSimulationComponent implements OnInit {
 
   sendParams(){
       console.log('sendParams');
+
       this.simulationService.sendParams([this.resetSim, this.locationName,
         this.dateService.dateToString(this.actualdate), this.conf, this.borders,
         this.shops, this.hosp , this.mask, this.respectConfinement]);
@@ -184,6 +186,15 @@ onChangeRespectConfinement(value: number) {
     return (value + '%');
   }
 
+  onChangeEcoulement(value: number) {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
+    this.chosenInterval = value;
+    console.log('temps change tout le' + value + 'secondes');
+    return (value + 's');
+  }
+
   public beforeChange($event: NgbPanelChangeEvent) {
 
 
@@ -204,14 +215,14 @@ onChangeRespectConfinement(value: number) {
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
     this.interval = setInterval(() => {
-      if (currentDate.before(endDate)) {
+      if (currentDate.before(endDate) && !this.resetSim && !this.pause) {
         currentDate = this.calendar.getNext(currentDate, 'd', 1);
         this.simulDate = currentDate;
       } else {
         clearInterval(this.interval);
         this.onstop();
       }
-    }, 1000);
+    }, (this.chosenInterval * 1000));
   }
 
 }

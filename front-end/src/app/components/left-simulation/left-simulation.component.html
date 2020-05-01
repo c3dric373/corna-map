@@ -105,10 +105,15 @@
           </div>
         </ng-template>
         <ng-template ngbPanelContent>
-          <div class="container">
-            click on : {{locationName}} isRegion : {{isRegion}}
-            date : {{actualdate.day}}/{{actualdate.month}}/{{actualdate.year}}
-          </div>
+            <div class="container-sm" >
+              <span>Ecoulement des jours</span>
+              <mat-slider
+                thumbLabel
+                [displayWith]="onChangeEcoulement"
+                step="5" tickInterval="5"
+                min="5"
+                max="60"></mat-slider>
+            </div>
         </ng-template>
       </ngb-panel>
     </ngb-accordion>

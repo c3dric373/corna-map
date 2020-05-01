@@ -86,4 +86,11 @@ public interface ProjectDataWrapper {
    * @return the {@link DayData} containing the simulated info.
    */
   DayData simulateFrance(String date);
+
+  /**
+   * Return data of project.
+   *
+   * @return the project.
+   */
+  ProjectData getProject();
 }

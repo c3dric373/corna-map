@@ -23,8 +23,14 @@ public interface DataScrapper {
    * downloaded previously.
    *
    * @param projectDataWrapper the wrapper to which the data should be added.
-  * @throws IOException Read error.
+   * @throws IOException Read error.
    */
   void extract(ProjectDataWrapper projectDataWrapper) throws IOException;
 
+  /**
+   * Sets the path to where the data should be stored.
+   *
+   * @param path the actual path where the data will be stored.
+   */
+  void setPathToData(String path);
 }
