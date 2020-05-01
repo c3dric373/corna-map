@@ -24,6 +24,7 @@ export class LeftSimulationComponent implements OnInit {
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
+
   // public selectedConfinement: string;
   // public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
   public borders;
@@ -50,9 +51,11 @@ export class LeftSimulationComponent implements OnInit {
 
   sendParams(){
       console.log('sendParams');
+
       this.simulationService.sendParams([this.resetSim, this.locationName,
         this.simulationService.dateToString(this.actualdate), this.conf, this.borders,
         this.shops, this.hosp , this.mask, this.respectConfinement]);
+
       return [this.resetSim, this.locationName, this.simulationService.dateToString(this.actualdate),
         this.conf, this.borders, this.shops, this.hosp , this.mask,
         this.respectConfinement];

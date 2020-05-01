@@ -14,15 +14,21 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() actualdate: NgbDate;
 
   // Json of the region
-  private reglist;
+  private reglist = [];
   // Json of the Dept
   private deptList;
   private casConf = [];
   private gueris = [];
   private hospi = [];
   private deces = [];
+  public totCasConf: string ;
+  public totGueris ;
+  public totHospi ;
+  public totDeces ;
   // Json of France
   private histFr;
+
+  public showLocation = false;
 
   private dates = [];
 
@@ -68,15 +74,18 @@ export class RightBarComponent implements OnInit, OnChanges{
   ngOnInit() {
     Highcharts.chart('charts', this.options);
     this.getHFrance();
+    this.showLocation = false;
+    this.locationName = 'France';
   }
 
   ngOnChanges(composant: SimpleChanges ){
-    if (this.locationName) {
-      if (composant.isRegion) {
+    if (this.locationName !== 'France') {
+      if (this.isRegion) {
         this.getRegInfos();
       } else {
         this.getDeptInfos();
       }
+      this.showLocation = true;
     }
   }
 
@@ -94,16 +103,40 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
       data => {
         this.reglist = data;
-        console.log(this.reglist);
+        this.locationName = data.nom;
+        console.log(data);
+
+        this.totGueris = data.recoveredCases;
+        this.totHospi = data.hospitalized;
+        this.totDeces = data.totalDeaths;
+        if (data.totalCases === 0){
+          this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+            parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+        }else{
+          this.totCasConf = data.totalCases;
+        }
+
       }
     );
+
   }
 
   getDeptInfos() {
     this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
       data => {
         this.deptList = data;
-        console.log(this.deptList);
+        this.locationName = data.nom;
+        console.log(data);
+
+        this.totGueris = data.recoveredCases;
+        this.totHospi = data.hospitalized;
+        this.totDeces = data.totalDeaths;
+        if (data.totalCases === 0){
+          this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+            parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+        }else{
+          this.totCasConf = data.totalCases;
+        }
       }
     );
   }
@@ -117,7 +150,7 @@ export class RightBarComponent implements OnInit, OnChanges{
           console.log(this.histFr[i]);
           this.casConf.push(this.histFr[i].totalCases);
           this.dates.push(this.histFr[i].date.month);
-          //this.histFr[i].date.
+          // this.histFr[i].date.
 
         }
         Highcharts.chart('charts', this.options);
