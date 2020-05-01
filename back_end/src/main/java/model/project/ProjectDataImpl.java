@@ -1,7 +1,6 @@
 package model.project;
 
 import lombok.Getter;
-import lombok.Setter;
 import model.data.DayData;
 
 import java.util.HashMap;
