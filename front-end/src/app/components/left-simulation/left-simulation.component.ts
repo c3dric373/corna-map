@@ -18,22 +18,11 @@ export class LeftSimulationComponent implements OnInit {
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
 
-  // essai
-  public essaiDate: NgbDate;
-  public endDate: NgbDate;
-  interval;
-
-  constructor(private simulationService: SimulationService, private calendar: NgbCalendar, private dateService: DateServiceService) {
-    this.actualdate = calendar.getToday();
-    this.essaiDate = calendar.getToday();
-    this.endDate = new NgbDate(2020, 5, 31);
-  }
-
+  // Icons
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
-  // public selectedConfinement: string;
-  // public tabConfinement = ['Aucun', 'Pour tous', '+60 ans' ];
+  // Params
   public borders;
   public shops;
   public hosp;
@@ -42,18 +31,38 @@ export class LeftSimulationComponent implements OnInit {
   public respectConfinement;
   public timer;
   public resetSim;
+  // simulStatus
+  public isStart: boolean;
+  public isPause: boolean;
+  public isStop: boolean;
+  // Deals with time
+  public simulDate: NgbDate;
+  public endDate: NgbDate;
+  interval;
 
-    ngOnInit(): void {
-      // this.selectedConfinement = this.tabConfinement[0];
-      this.borders = false;
-      this.shops = false;
-      this.hosp = false;
-      this.respectConfinement = 50;
-      this.mask = [false, false, false, false, false];
-      this.conf = [false, false, false, false, false];
-      this.timer = 0;
-      this.resetSim = false;
-      this.onChangeTime(0);
+  constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
+    this.actualdate = calendar.getToday();
+    this.simulDate = calendar.getToday();
+    this.endDate = new NgbDate(2020, 5, 31);
+  }
+
+  ngOnInit(): void {
+    this.isStart = false;
+    this.isPause = false;
+    this.isStop = false;
+    this.initializeParams();
+    this.onChangeTime(0);
+  }
+
+  initializeParams() {
+    this.borders = false;
+    this.shops = false;
+    this.hosp = false;
+    this.respectConfinement = 50;
+    this.mask = [false, false, false, false, false];
+    this.conf = [false, false, false, false, false];
+    this.timer = 0;
+    this.resetSim = false;
   }
 
   sendParams(){
@@ -66,99 +75,94 @@ export class LeftSimulationComponent implements OnInit {
         this.respectConfinement];
   }
 
-  onChangeSim(int) {
-      switch (int) {
-        case 0 :
-          console.log('appui sur pause');
-          document.getElementById('pause').setAttribute('disabled', 'disabled');
-          document.getElementById('play').removeAttribute('disabled');
-          document.getElementById('stop').removeAttribute('disabled');
-          document.getElementById('accordion').style.display = 'block';
-          break;
-        case 1 :
-          console.log('appui sur play');
-          document.getElementById('accordion').style.display = 'none';
-          document.getElementById('play').setAttribute('disabled', 'disabled');
-          console.log(this.sendParams());
+  onStart() {
+    console.log('appui sur play');
+    document.getElementById('accordion').style.display = 'none';
+    this.isPause = false;
+    this.isStart = true;
+    this.isStop = false;
+    console.log(this.sendParams());
 
-          // essai
-          this.startTimer(this.essaiDate, this.endDate);
+    this.startTimer(this.simulDate, this.endDate);
 
-          if (this.locationName === undefined) {
-            console.log('appel getInfosFrance');
-            this.simulationService.getInfosFrance(this.actualdate).subscribe(
-              data => {
-                console.log(data);
-                 // this.deptList = data;
-                 // this.initializeMapDept();
-              }
-            );
-          } else if (!this.isRegion){
-            console.log('appel getInfosDept');
-            this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
-              data => {
-                console.log(data);
-                // this.deptList = data;
-                // this.initializeMapDept();
-              }
-            );
-          }else{
-            console.log('appel getInfosRegion');
-            this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
-              data => {
-                console.log(data);
-                // this.deptList = data;
-                // this.initializeMapDept();
-              }
-            );
-          }
-          break;
-        case 2 :
-          console.log('appui sur stop');
-          document.getElementById('stop').setAttribute('disabled', 'disabled');
-          document.getElementById('play').removeAttribute('disabled');
-          document.getElementById('pause').removeAttribute('disabled');
-          document.getElementById('accordion').style.display = 'block';
-          this.resetSim = true;
-          console.log(this.sendParams());
-          this.ngOnInit();
-          break;
-        default:
-          break;
-      }
-
-  }
-
-/*onChangeCategory(category) {
-    this.selectedConfinement = category;
-    console.log('confinement : ' + this.selectedConfinement);
-  }*/
-
-onChangeBorder() {
-      this.borders = !this.borders;
-      console.log('frontières fermées :' + this.borders);
-  }
-
-onChangeShops() {
-    this.shops = !this.shops;
-    console.log('Commerces fermés :' + this.shops);
-  }
-
-onChangeHosp() {
-    this.hosp = !this.hosp;
-    console.log('Répartition hospitalisés :' + this.hosp);
-  }
-
-onChangeMask(int) {
-    this.mask[int] = !this.mask[int];
-    if (this.mask[int] === true){
-
-      document.getElementById(int).style.backgroundColor = '#B1AEAA';
+    if (this.locationName === undefined) {
+      console.log('appel getInfosFrance');
+      this.simulationService.getInfosFrance(this.actualdate).subscribe(
+        data => {
+          console.log(data);
+          // this.deptList = data;
+          // this.initializeMapDept();
+        }
+      );
+    } else if (!this.isRegion){
+      console.log('appel getInfosDept');
+      this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
+        data => {
+          console.log(data);
+          // this.deptList = data;
+          // this.initializeMapDept();
+        }
+      );
     }else{
-      document.getElementById(int).style.backgroundColor = '#CFCDCC';
+      console.log('appel getInfosRegion');
+      this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
+        data => {
+          console.log(data);
+          // this.deptList = data;
+          // this.initializeMapDept();
+        }
+      );
     }
-    console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
   }
+
+  onPause() {
+    console.log('appui sur pause');
+    this.isPause = true;
+    this.isStart = false;
+    this.isStop = false;
+    document.getElementById('accordion').style.display = 'block';
+  }
+
+  onstop() {
+    console.log('appui sur stop');
+    this.isPause = true;
+    this.isStart = false;
+    this.isStop = true;
+    document.getElementById('accordion').style.display = 'block';
+    this.resetSim = true;
+    this.initializeParams();
+  }
+
+  /*onChangeCategory(category) {
+      this.selectedConfinement = category;
+      console.log('confinement : ' + this.selectedConfinement);
+    }*/
+
+  onChangeBorder() {
+        this.borders = !this.borders;
+        console.log('frontières fermées :' + this.borders);
+    }
+
+  onChangeShops() {
+      this.shops = !this.shops;
+      console.log('Commerces fermés :' + this.shops);
+    }
+
+  onChangeHosp() {
+      this.hosp = !this.hosp;
+      console.log('Répartition hospitalisés :' + this.hosp);
+    }
+
+  onChangeMask(int) {
+      this.mask[int] = !this.mask[int];
+      if (this.mask[int] === true){
+
+        document.getElementById(int).style.backgroundColor = '#B1AEAA';
+      }else{
+        document.getElementById(int).style.backgroundColor = '#CFCDCC';
+      }
+      console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
+    }
 
   onChangeConfinement(int) {
     this.conf[int] = !this.conf[int];
@@ -202,9 +206,10 @@ onChangeRespectConfinement(value: number) {
     this.interval = setInterval(() => {
       if (currentDate.before(endDate)) {
         currentDate = this.calendar.getNext(currentDate, 'd', 1);
-        this.essaiDate = currentDate;
+        this.simulDate = currentDate;
       } else {
         clearInterval(this.interval);
+        this.onstop();
       }
     }, 1000);
   }
