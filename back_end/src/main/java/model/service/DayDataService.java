@@ -43,7 +43,9 @@ public class DayDataService {
                                        final String location
   ) {
     Validate.notNull(dayData, "dayData null");
-    Validate.notNull(wrapper, " wrapper null");
+    Validate.notNull(wrapper, "wrapper null");
+    Validate.notNull(location, "location null");
+    Validate.notEmpty(location, "location empty");
     Map<String, Map<String, DayData>> map =
       wrapper.getProject().getLocations();
     final String dayBefore = dayData.getDate().minusDays(1).toString();
@@ -87,6 +89,7 @@ public class DayDataService {
                                         final DayData dayBeforeData) {
     Validate.notNull(dayBeforeData, "dayBeforeData is null");
     Validate.notNull(dayData, "dayData is null");
+
     final int dayBeforeRecovered = dayBeforeData.getRecoveredCases();
     final int recovered = dayData.getRecoveredCases();
     System.out.println(recovered);
@@ -107,9 +110,11 @@ public class DayDataService {
   public static double getDeathRate(
     final DayData dayData,
     final ProjectDataWrapper wrapper,
-    final String location
-  ) {
+    final String location) {
     Validate.notNull(dayData, "dayData null");
+    Validate.notNull(wrapper, "wrapper null");
+    Validate.notNull(location, "location null");
+    Validate.notEmpty(location, "location empty");
     Map<String, Map<String, DayData>> map =
       wrapper.getProject().getLocations();
     final String dayBefore = dayData.getDate().minusDays(1).toString();
