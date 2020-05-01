@@ -58,27 +58,6 @@ public class DayDataService {
   }
 
   /**
-   * Calculates the newly infected people from one DayData to another.
-   * *
-   *
-   * @param dayData       the first dayData.
-   * @param dayBeforeData the second dayData.
-   * @return the number of people infected in a day
-   */
-  private int getInfectedInADay(final DayData dayData,
-                                final DayData dayBeforeData) {
-    Validate.notNull(dayBeforeData, "dayBeforeData is null");
-    Validate.notNull(dayData, "dayData is null");
-    final int infectedDayBefore =
-      dayBeforeData.getTotalCases()
-        - dayBeforeData.getRecoveredCases() - dayBeforeData.getTotalDeaths();
-    final int infectedDay =
-      dayData.getTotalCases()
-        - dayData.getRecoveredCases() - dayData.getTotalDeaths();
-    return infectedDay - infectedDayBefore;
-  }
-
-  /**
    * Calculates the newly infected people from one dayData to another.
    *
    * @param dayData       the first dayData.

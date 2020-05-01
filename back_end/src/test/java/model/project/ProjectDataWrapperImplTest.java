@@ -5,7 +5,7 @@ import model.data.TypeLocalisation;
 import model.io.DataScrapper;
 import model.io.DataScrapperImpl;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProjectDataWrapperImplTest {
 
@@ -67,8 +65,8 @@ public class ProjectDataWrapperImplTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  @BeforeClass
-  public static void setUp() throws IOException {
+  @Before
+  public void setUp() throws IOException {
     scrapper.setPathToData(PATH_TO_DATA);
     scrapper.extract(subject);
     dayData = new DayData(TYPE, LocalDate.parse(DATE1), DEP_44, NAME,
@@ -210,6 +208,17 @@ public class ProjectDataWrapperImplTest {
     Assert.assertEquals("wrong dayData", expected, result);
   }
 
+  @Test
+  public void testGetLatestData_validCallFranceLocation_correctResult() {
+    // Arrange
+    final List<DayData> expected = new ArrayList<>(2);
+    expected.add(dayData);
+    expected.add(dayData6);
+    // Act
+    final List<DayData> result = wrapper.infosDept(DATE1);
 
+    // Assert
+    Assert.assertEquals("wrong dayData", expected, result);
+  }
 
 }

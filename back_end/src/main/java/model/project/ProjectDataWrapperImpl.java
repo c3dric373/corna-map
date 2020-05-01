@@ -209,7 +209,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private DayData getLatestData(final String location) {
     final Map<String, Map<String, DayData>> localisations =
       project.getLocations();
-    final Map<String, DayData> franceMap = localisations.get(FRA);
+    final Map<String, DayData> franceMap = localisations.get(location);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
     if (!latestDate.isPresent()) {
