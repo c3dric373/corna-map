@@ -30,7 +30,6 @@ export class LeftSimulationComponent implements OnInit {
   public mask ;
   public conf ;
   public respectConfinement;
-  public timer;
   public resetSim;
   // simulStatus
   public isStart: boolean;
@@ -42,6 +41,8 @@ export class LeftSimulationComponent implements OnInit {
   // Interval
   interval;
   public chosenInterval = 2;
+  // display accordion
+  displayAccordion: string;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
     this.endDate = new NgbDate(2020, 5, 31);
@@ -63,29 +64,28 @@ export class LeftSimulationComponent implements OnInit {
     this.respectConfinement = 50;
     this.mask = [false, false, false, false, false];
     this.conf = [false, false, false, false, false];
-    this.timer = 0;
     this.resetSim = false;
 
     this.simulDate = new NgbDate(2020, 3, 18);
     this.sendDate.emit(this.simulDate);
+
+    this.displayAccordion = 'block';
   }
 
   sendParams(){
     console.log('sendParams');
-    this.simulationService.sendParams([this.resetSim, this.locationName,
-      this.dateService.dateToString(this.simulDate), this.conf, this.borders,
-      this.shops, this.hosp , this.mask, this.respectConfinement]);
-    return [this.resetSim, this.locationName, this.dateService.dateToString(this.simulDate),
-      this.conf, this.borders, this.shops, this.hosp , this.mask,
-      this.respectConfinement];
+    this.simulationService.sendParams([this.resetSim, this.dateService.dateToString(this.simulDate),
+      this.conf, this.borders, this.shops, this.hosp , this.mask, this.respectConfinement]);
+    return [this.resetSim, this.dateService.dateToString(this.simulDate),
+      this.conf, this.borders, this.shops, this.hosp , this.mask, this.respectConfinement];
   }
 
   onStart() {
     console.log('appui sur play');
-    document.getElementById('accordion').style.display = 'none';
     this.isPause = false;
     this.isStart = true;
     this.isStop = false;
+    this.displayAccordion = 'none';
     this.sendSimulStatus.emit(this.isStart);
     console.log(this.sendParams());
     this.startTimer(this.simulDate, this.endDate);
@@ -96,8 +96,8 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = false;
+    this.displayAccordion = 'block';
     this.sendSimulStatus.emit(this.isStart);
-    document.getElementById('accordion').style.display = 'block';
   }
 
   onstop() {
@@ -105,41 +105,10 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = true;
+    this.displayAccordion = 'block';
     this.sendSimulStatus.emit(this.isStart);
-    document.getElementById('accordion').style.display = 'block';
     this.resetSim = true;
     this.initializeParams();
-  }
-
-  getInformations() {
-    if (this.locationName === undefined) {
-      console.log('appel getInfosFrance');
-      this.simulationService.getInfosFrance(this.simulDate).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    } else if (!this.isRegion){
-      console.log('appel getInfosDept');
-      this.simulationService.getInfosDept(this.simulDate, this.locationName).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    }else{
-      console.log('appel getInfosRegion');
-      this.simulationService.getInfosRegion(this.simulDate, this.locationName).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    }
   }
 
   onChangeBorder() {
@@ -159,23 +128,12 @@ export class LeftSimulationComponent implements OnInit {
 
   onChangeMask(int) {
     this.mask[int] = !this.mask[int];
-    if (this.mask[int] === true){
-
-      document.getElementById(int).style.backgroundColor = '#B1AEAA';
-    }else{
-      document.getElementById(int).style.backgroundColor = '#CFCDCC';
-    }
-    console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
+    console.log('Masque catégorie : m' + int + ' : ' + this.mask[int]);
   }
 
   onChangeConfinement(int) {
     this.conf[int] = !this.conf[int];
-    if (this.conf[int] === true){
-      document.getElementById(int).style.backgroundColor = '#B1AEAA';
-    }else{
-      document.getElementById(int).style.backgroundColor = '#CFCDCC';
-    }
-    console.log('Confinement catégorie :' + int + ' : ' + this.conf[int]);
+    console.log('Confinement catégorie : c' + int + ' : ' + this.conf[int]);
   }
 
   onChangeRespectConfinement(value: number) {
@@ -204,7 +162,6 @@ export class LeftSimulationComponent implements OnInit {
     this.interval = setInterval(() => {
       if (!this.isPause) {
         if (currentDate.before(endDate)) {
-          this.getInformations();
           this.simulDate = currentDate;
           // Send Date to component
           this.sendDate.emit(this.simulDate);

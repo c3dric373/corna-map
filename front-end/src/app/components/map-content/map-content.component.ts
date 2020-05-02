@@ -79,7 +79,6 @@ export class MapContentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isSimulationStarted) {
-      console.log('change start');
       if (this.isRegion) {
         this.removeRegListener();
         this.getRegInfos();
