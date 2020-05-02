@@ -13,7 +13,7 @@ export class SimulationService {
 
   constructor(private httpClient: HttpClient, private dateService: DateServiceService) { }
 
-  sendParams(params: any): Observable<any>{
+  startSimul(params: any): Observable<any>{
     // params = params.toJson();
    return this.httpClient.post(this.API_URL, params);
   }

@@ -24,6 +24,9 @@ export class LeftSimulationComponent implements OnInit {
   faPlay = faPlay;
   faPause = faPause;
   calendarIcon = faCalendarAlt;
+  // Calendar
+  startDateCalendarVisible: boolean;
+  endDateCalendarVisible: boolean;
   // Params
   public allParams: SimulParams;
   // simulStatus
@@ -46,6 +49,8 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.startDateCalendarVisible = false;
+    this.endDateCalendarVisible = false;
     this.isStart = false;
     this.sendSimulStatus.emit(this.isStart);
     this.isPause = false;
@@ -55,17 +60,15 @@ export class LeftSimulationComponent implements OnInit {
 
   initializeParams() {
     this.allParams = new SimulParams();
-
     this.simulDate = this.startDate;
     this.sendDate.emit(this.simulDate);
-
     this.displayAccordion = 'block';
   }
 
-  sendParams(){
+  startSimul(){
     console.log('sendParams');
-    this.simulationService.sendParams(this.allParams);
-    return this.allParams;
+    this.simulationService.startSimul(this.allParams);
+    console.log(this.allParams);
   }
 
   onStart() {
@@ -75,7 +78,7 @@ export class LeftSimulationComponent implements OnInit {
     this.isStop = false;
     this.displayAccordion = 'none';
     this.sendSimulStatus.emit(this.isStart);
-    console.log(this.sendParams());
+    this.startSimul();
     this.startTimer(this.simulDate, this.endDate);
   }
 

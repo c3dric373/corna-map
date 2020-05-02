@@ -2,7 +2,7 @@
   <div class="sidebar-header">
 
 
-    <h2>Simulation on {{dateService.formatDateToFr(simulDate)}}</h2>
+    <h2>Simulation du {{dateService.formatDateToFr(simulDate)}}</h2>
 
     <div class="container-sm" id="buttons1">
       <button type="button" id="pause" class="btn btn-outline-secondary setSimul" [disabled]="isPause" (click)="onPause()">
@@ -17,28 +17,30 @@
     </div>
 
     <div *ngIf="!isStart">
-      <div class="flex-md-wrap">
-        <!-- Select strat Date -->
+      <div class="date">
+        <!-- Select start Date -->
         Start Date :
-        <div class="btn-group" ngbDropdown role="group">
-          <button class="btn btn-outline-secondary" ngbDropdownToggle>{{dateService.formatDateToFr(startDate)}}
-            <fa-icon [icon]="calendarIcon"></fa-icon>
-          </button>
-          <div class="dropdown-menu" ngbDropdownMenu>
-            <ngb-datepicker ngbDropdownItem [(ngModel)]="startDate" (dateSelect)="onStartDateSelect($event)"></ngb-datepicker>
-          </div>
+        <button class="btn btn-outline-secondary" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
+          {{dateService.formatDateToFr(startDate)}}
+          <fa-icon [icon]="calendarIcon"></fa-icon>
+        </button>
+        <div class="input-group">
+          <ngb-datepicker (select)="startDateCalendarVisible=!startDateCalendarVisible" [class.d-none]="!startDateCalendarVisible"
+                          [startDate]="startDate" [(ngModel)]="startDate" (dateSelect)="onStartDateSelect($event)">
+          </ngb-datepicker>
         </div>
       </div>
-      <div class="flex-md-wrap">
+      <div class="date">
         End Date :
         <!-- Select finish Date -->
-        <div class="btn-group" ngbDropdown role="group">
-          <button class="btn btn-outline-secondary" ngbDropdownToggle>{{dateService.formatDateToFr(endDate)}}
-            <fa-icon [icon]="calendarIcon"></fa-icon>
-          </button>
-          <div class="dropdown-menu" ngbDropdownMenu>
-            <ngb-datepicker ngbDropdownItem [(ngModel)]="endDate" ></ngb-datepicker>
-          </div>
+        <button class="btn btn-outline-secondary" (click)="endDateCalendarVisible = !endDateCalendarVisible" type="button">
+          {{dateService.formatDateToFr(endDate)}}
+          <fa-icon [icon]="calendarIcon"></fa-icon>
+        </button>
+        <div class="input-group">
+          <ngb-datepicker (select)="endDateCalendarVisible=!endDateCalendarVisible" [class.d-none]="!endDateCalendarVisible"
+                          [startDate]="endDate" [minDate]="startDate"  [(ngModel)]="endDate" >
+          </ngb-datepicker>
         </div>
       </div>
     </div>
