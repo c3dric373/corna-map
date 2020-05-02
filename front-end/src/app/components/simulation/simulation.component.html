@@ -1,13 +1,13 @@
 <div class="wrapper">
 
 
-  <app-left-simulation  *ngIf="!loading" [locationName] = "location"
-                       [isRegion]="isRegion" >
+  <app-left-simulation  *ngIf="!loading" [locationName] = "location" (sendSimulStatus)="setSimulState($event)"
+                       [isRegion]="isRegion" (sendDate)="setDate($event)" >
   </app-left-simulation>
 
-  <app-map-content [hidden]="loading" [SelectedMenu]="type"
+  <app-map-content [hidden]="loading" [SelectedMenu]="type" [actualDate]="date" [isSimulationStarted]="isSimulStarted"
                    (chosenLocation)="clickOnLocation($event)" (boolIsRegion)="setIsRegion($event)"
-                   (loading)="setLoading($event)" (isOnlyMap)="setOnlyMap($event)" (emitDate)="setDate($event)">
+                   (loading)="setLoading($event)" (isOnlyMap)="setOnlyMap($event)">
   </app-map-content>
 
   <!-- Sidebar  -->

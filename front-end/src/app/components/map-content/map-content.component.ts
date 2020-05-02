@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +10,7 @@ import {DateServiceService} from '../../service/Date/date-service.service';
   templateUrl: './map-content.component.html',
   styleUrls: ['./map-content.component.css']
 })
-export class MapContentComponent implements OnInit {
+export class MapContentComponent implements OnInit, OnChanges {
   // Icon
   calendarIcon = faCalendarAlt;
   expand = faExpandAlt;
@@ -38,7 +38,9 @@ export class MapContentComponent implements OnInit {
   model: NgbDateStruct;
 
   // Input
-  @Input() SelectedMenu;
+  @Input() SelectedMenu: string;
+  @Input() actualDate: NgbDate;
+  @Input() isSimulationStarted: boolean;
 
   //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
@@ -75,8 +77,20 @@ export class MapContentComponent implements OnInit {
     this.emitDate.emit(this.date);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isSimulationStarted) {
+      if (this.isRegion) {
+        this.removeRegListener();
+        this.getRegInfos();
+      } else {
+        this.removeDeptListener();
+        this.getDeptInfos();
+      }
+    }
+  }
+
   dispReg(): void {
-    if(!this.isRegion) {
+    if (!this.isRegion) {
       this.isRegion = true;
       this.boolIsRegion.emit(true);
       this.removeDeptListener();
@@ -85,7 +99,7 @@ export class MapContentComponent implements OnInit {
   }
 
   dispDept(): void {
-    if(this.isRegion) {
+    if (this.isRegion) {
       this.isRegion = false;
       this.boolIsRegion.emit(false);
       this.removeRegListener();
@@ -107,7 +121,7 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.simulation.getMapRegion(this.date).subscribe(
+      this.simulation.getMapRegion(this.actualDate).subscribe(
         data => {
           this.reglist = data;
           this.initializeMapReg();
@@ -125,7 +139,7 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.simulation.getMapDept(this.date).subscribe(
+      this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();
