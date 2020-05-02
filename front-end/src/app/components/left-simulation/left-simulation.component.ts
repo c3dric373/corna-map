@@ -1,10 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { faStop } from '@fortawesome/free-solid-svg-icons';
+import {faCalendarAlt, faStop} from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
 import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {SimulationService} from '../../service/simulation/simulation.service';
-import {MapService} from '../../service/map/map.service';
 import {DateServiceService} from '../../service/Date/date-service.service';
 import {SimulParams} from '../../model/SimulParams';
 
@@ -24,6 +23,7 @@ export class LeftSimulationComponent implements OnInit {
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
+  calendarIcon = faCalendarAlt;
   // Params
   public allParams: SimulParams;
   // simulStatus
@@ -31,6 +31,7 @@ export class LeftSimulationComponent implements OnInit {
   public isPause: boolean;
   public isStop: boolean;
   // Deals with time
+  public startDate: NgbDate;
   public simulDate: NgbDate;
   public endDate: NgbDate;
   // Interval
@@ -40,7 +41,8 @@ export class LeftSimulationComponent implements OnInit {
   displayAccordion: string;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
-    this.endDate = new NgbDate(2020, 5, 31);
+    this.startDate = new NgbDate(2020, 3, 18);
+    this.endDate = new NgbDate(2020, 4, 30);
   }
 
   ngOnInit(): void {
@@ -54,7 +56,7 @@ export class LeftSimulationComponent implements OnInit {
   initializeParams() {
     this.allParams = new SimulParams();
 
-    this.simulDate = new NgbDate(2020, 3, 18);
+    this.simulDate = this.startDate;
     this.sendDate.emit(this.simulDate);
 
     this.displayAccordion = 'block';
@@ -125,6 +127,10 @@ export class LeftSimulationComponent implements OnInit {
     console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.conf[category]);
   }
 
+  onStartDateSelect(date: NgbDate) {
+    this.simulDate = date;
+  }
+
   startTimer(startDate: NgbDate, endDate: NgbDate) {
     let currentDate = startDate;
     this.interval = setInterval(() => {
@@ -143,5 +149,4 @@ export class LeftSimulationComponent implements OnInit {
       }
     }, (this.chosenInterval * 1000));
   }
-
 }
