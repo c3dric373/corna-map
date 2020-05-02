@@ -6,6 +6,7 @@ import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootst
 import {SimulationService} from '../../service/simulation/simulation.service';
 import {MapService} from '../../service/map/map.service';
 import {DateServiceService} from '../../service/Date/date-service.service';
+import {SimulParams} from '../../model/SimulParams';
 
 
 @Component({
@@ -24,13 +25,8 @@ export class LeftSimulationComponent implements OnInit {
   faPlay = faPlay;
   faPause = faPause;
   // Params
-  public borders;
-  public shops;
-  public hosp;
-  public mask ;
-  public conf ;
+  public allParams: SimulParams;
   public respectConfinement;
-  public resetSim;
   // simulStatus
   public isStart: boolean;
   public isPause: boolean;
@@ -57,14 +53,7 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   initializeParams() {
-    // Params to send
-    this.borders = false;
-    this.shops = false;
-    this.hosp = false;
-    this.respectConfinement = 50;
-    this.mask = [false, false, false, false, false];
-    this.conf = [false, false, false, false, false];
-    this.resetSim = false;
+    this.allParams = new SimulParams();
 
     this.simulDate = new NgbDate(2020, 3, 18);
     this.sendDate.emit(this.simulDate);
@@ -74,10 +63,8 @@ export class LeftSimulationComponent implements OnInit {
 
   sendParams(){
     console.log('sendParams');
-    this.simulationService.sendParams([this.resetSim, this.dateService.dateToString(this.simulDate),
-      this.conf, this.borders, this.shops, this.hosp , this.mask, this.respectConfinement]);
-    return [this.resetSim, this.dateService.dateToString(this.simulDate),
-      this.conf, this.borders, this.shops, this.hosp , this.mask, this.respectConfinement];
+    this.simulationService.sendParams(this.allParams);
+    return this.allParams;
   }
 
   onStart() {
@@ -106,34 +93,37 @@ export class LeftSimulationComponent implements OnInit {
     this.isStart = false;
     this.isStop = true;
     this.displayAccordion = 'block';
+    // Send simulation state
     this.sendSimulStatus.emit(this.isStart);
-    this.resetSim = true;
+    // set reset param
+    this.allParams.reset = true;
+    // reset params
     this.initializeParams();
   }
 
   onChangeBorder() {
-        this.borders = !this.borders;
-        console.log('frontières fermées :' + this.borders);
+        this.allParams.borders = !this.allParams.borders;
+        console.log('frontières fermées :' + this.allParams.borders);
     }
 
   onChangeShops() {
-      this.shops = !this.shops;
-      console.log('Commerces fermés :' + this.shops);
+      this.allParams.shops = !this.allParams.shops;
+      console.log('Commerces fermés :' + this.allParams.shops);
     }
 
   onChangeHosp() {
-      this.hosp = !this.hosp;
-      console.log('Répartition hospitalisés :' + this.hosp);
+      this.allParams.hosp = !this.allParams.hosp;
+      console.log('Répartition hospitalisés :' + this.allParams.hosp);
     }
 
-  onChangeMask(int) {
-    this.mask[int] = !this.mask[int];
-    console.log('Masque catégorie : m' + int + ' : ' + this.mask[int]);
+  onChangeMask(category: string) {
+    this.allParams.mask[category] = !this.allParams.mask[category];
+    console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.mask[category]);
   }
 
-  onChangeConfinement(int) {
-    this.conf[int] = !this.conf[int];
-    console.log('Confinement catégorie : c' + int + ' : ' + this.conf[int]);
+  onChangeConfinement(category: string) {
+    this.allParams.conf[category] = !this.allParams.conf[category];
+    console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.conf[category]);
   }
 
   onChangeRespectConfinement(value: number) {
@@ -141,7 +131,7 @@ export class LeftSimulationComponent implements OnInit {
       return Math.round(value / 1000) + 'k';
     }
     this.respectConfinement = value;
-    console.log('respectConfinement' + this.respectConfinement + '%');
+    console.log('respectConfinement' + value + '%');
     return (value + '%');
    }
 
@@ -152,9 +142,6 @@ export class LeftSimulationComponent implements OnInit {
     this.chosenInterval = value;
     console.log('temps change tout le' + this.chosenInterval + 'secondes');
     return (value + 's');
-  }
-
-  public beforeChange($event: NgbPanelChangeEvent) {
   }
 
   startTimer(startDate: NgbDate, endDate: NgbDate) {

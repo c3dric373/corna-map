@@ -17,7 +17,7 @@
     </div>
 
 
-    <ngb-accordion id="accordion" [style]="{'display' : displayAccordion}" (panelChange)="beforeChange($event)" >
+    <ngb-accordion id="accordion" [style]="{'display' : displayAccordion}">
       <ngb-panel id="preventchange-1" title="Mesures du gouvernement">
         <ng-template ngbPanelHeader  >
           <div class="d-flex align-items-center justify-content-between">
@@ -33,11 +33,11 @@
             <div class="container-sm">
               <span>Confinement</span>
               <div id="confinement" class="btn-group btn-group" role="group" >
-                <button id='c0' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : conf[0]}" (click)="onChangeConfinement(0)">0-15</button>
-                <button id='c1' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : conf[1]}" (click)="onChangeConfinement(1)">16-29</button>
-                <button id='c2' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : conf[2]}" (click)="onChangeConfinement(2)">30-49</button>
-                <button id='c3' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : conf[3]}" (click)="onChangeConfinement(3)">50-69</button>
-                <button id='c4' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : conf[4]}" (click)="onChangeConfinement(4)">70+</button>
+                <button id='c0' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c0_15}" (click)="onChangeConfinement('c0_15')">0-15</button>
+                <button id='c1' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c16_19}" (click)="onChangeConfinement('c16_19')">16-29</button>
+                <button id='c2' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c30_49}" (click)="onChangeConfinement('c30_49')">30-49</button>
+                <button id='c3' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c50_69}" (click)="onChangeConfinement('c50_69')">50-69</button>
+                <button id='c4' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c70}" (click)="onChangeConfinement('c70')">70+</button>
               </div>
             </div>
 
@@ -59,11 +59,11 @@
             <div class="container-sm">
               <span>Port du masque</span>
               <div id="masque" class="btn-group btn-group" role="group" >
-                <button id='m0' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : mask[0]}" (click)="onChangeMask(0)">0-15</button>
-                <button id='m1' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : mask[1]}" (click)="onChangeMask(1)">16-29</button>
-                <button id='m2' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : mask[2]}" (click)="onChangeMask(2)">30-49</button>
-                <button id='m3' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : mask[3]}" (click)="onChangeMask(3)">50-69</button>
-                <button id='m4' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : mask[4]}" (click)="onChangeMask(4)">70+</button>
+                <button id='m0' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : allParams.mask.m0_15}" (click)="onChangeMask('m0_15')">0-15</button>
+                <button id='m1' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : allParams.mask.m16_19}" (click)="onChangeMask('m16_19')">16-29</button>
+                <button id='m2' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : allParams.mask.m30_49}" (click)="onChangeMask('m30_49')">30-49</button>
+                <button id='m3' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : allParams.mask.m50_69}" (click)="onChangeMask('m50_69')">50-69</button>
+                <button id='m4' type="button" class="btn btn-secondary mask" [ngClass]="{'active' : allParams.mask.m70}" (click)="onChangeMask('m70')">70+</button>
 
               </div>
             </div>
