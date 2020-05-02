@@ -17,6 +17,7 @@ export class LeftSimulationComponent implements OnInit {
   @Input() locationName: string;
   @Input() isRegion: boolean;
   @Output() sendDate = new EventEmitter<NgbDate>();
+  @Output() sendSimulStatus = new EventEmitter<boolean>();
 
   // Icons
   faStop = faStop;
@@ -43,13 +44,12 @@ export class LeftSimulationComponent implements OnInit {
   public chosenInterval = 2;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
-    this.simulDate = calendar.getToday();
     this.endDate = new NgbDate(2020, 5, 31);
   }
 
   ngOnInit(): void {
-    this.sendDate.emit(this.simulDate);
     this.isStart = false;
+    this.sendSimulStatus.emit(this.isStart);
     this.isPause = false;
     this.isStop = false;
     this.initializeParams();
@@ -66,7 +66,8 @@ export class LeftSimulationComponent implements OnInit {
     this.timer = 0;
     this.resetSim = false;
 
-    this.simulDate = this.calendar.getToday();
+    this.simulDate = new NgbDate(2020, 3, 18);
+    this.sendDate.emit(this.simulDate);
   }
 
   sendParams(){
@@ -85,6 +86,7 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = false;
     this.isStart = true;
     this.isStop = false;
+    this.sendSimulStatus.emit(this.isStart);
     console.log(this.sendParams());
     this.startTimer(this.simulDate, this.endDate);
   }
@@ -94,6 +96,7 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = false;
+    this.sendSimulStatus.emit(this.isStart);
     document.getElementById('accordion').style.display = 'block';
   }
 
@@ -102,6 +105,7 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = true;
+    this.sendSimulStatus.emit(this.isStart);
     document.getElementById('accordion').style.display = 'block';
     this.resetSim = true;
     this.initializeParams();
