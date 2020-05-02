@@ -81,7 +81,7 @@
             <span>Respect du confinement</span>
             <mat-slider
               thumbLabel
-              [displayWith]="onChangeRespectConfinement"
+              [(ngModel)]="allParams.respectConfinement"
               step="5" tickInterval="20"
               min="0"
               max="100"></mat-slider>
@@ -91,7 +91,7 @@
       <ngb-panel id="preventchange-3" title="Autres">
         <ng-template ngbPanelHeader  >
           <div class="d-flex align-items-center justify-content-between">
-            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">Autres</button>
+            <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">Ecoulement du temps de la simulation</button>
           </div>
         </ng-template>
         <ng-template ngbPanelContent>
@@ -99,7 +99,7 @@
               <span>Ecoulement des jours</span>
               <mat-slider
                 thumbLabel
-                [displayWith]="onChangeEcoulement"
+                [(ngModel)]="chosenInterval"
                 step="1" tickInterval="1"
                 min="1"
                 max="15"></mat-slider>

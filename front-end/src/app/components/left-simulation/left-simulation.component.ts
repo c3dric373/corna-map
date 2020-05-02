@@ -26,7 +26,6 @@ export class LeftSimulationComponent implements OnInit {
   faPause = faPause;
   // Params
   public allParams: SimulParams;
-  public respectConfinement;
   // simulStatus
   public isStart: boolean;
   public isPause: boolean;
@@ -124,24 +123,6 @@ export class LeftSimulationComponent implements OnInit {
   onChangeConfinement(category: string) {
     this.allParams.conf[category] = !this.allParams.conf[category];
     console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.conf[category]);
-  }
-
-  onChangeRespectConfinement(value: number) {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-    this.respectConfinement = value;
-    console.log('respectConfinement' + value + '%');
-    return (value + '%');
-   }
-
-  onChangeEcoulement(value: number) {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-    this.chosenInterval = value;
-    console.log('temps change tout le' + this.chosenInterval + 'secondes');
-    return (value + 's');
   }
 
   startTimer(startDate: NgbDate, endDate: NgbDate) {
