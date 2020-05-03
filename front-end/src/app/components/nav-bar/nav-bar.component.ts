@@ -17,6 +17,5 @@ export class NavBarComponent implements OnInit {
 
   changeAct(){
     this.act = !this.act;
-    console.log('clickkkkkk');
   }
 }
