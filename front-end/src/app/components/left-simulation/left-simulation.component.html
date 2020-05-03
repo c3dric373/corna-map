@@ -21,12 +21,12 @@
         <!-- Select start Date -->
         Start Date :
         <button class="btn btn-outline-secondary" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
-          {{dateService.formatDateToFr(startDate)}}
+          {{dateService.formatDateToFr(allParams.startDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
         <div class="input-group">
           <ngb-datepicker (select)="startDateCalendarVisible=!startDateCalendarVisible" [class.d-none]="!startDateCalendarVisible"
-                          [startDate]="startDate" [(ngModel)]="startDate" (dateSelect)="onStartDateSelect($event)">
+                          [startDate]="allParams.startDate" [(ngModel)]="allParams.startDate" (dateSelect)="onStartDateSelect($event)">
           </ngb-datepicker>
         </div>
       </div>
@@ -34,12 +34,12 @@
         End Date :
         <!-- Select finish Date -->
         <button class="btn btn-outline-secondary" (click)="endDateCalendarVisible = !endDateCalendarVisible" type="button">
-          {{dateService.formatDateToFr(endDate)}}
+          {{dateService.formatDateToFr(allParams.endDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
         <div class="input-group">
           <ngb-datepicker (select)="endDateCalendarVisible=!endDateCalendarVisible" [class.d-none]="!endDateCalendarVisible"
-                          [startDate]="endDate" [minDate]="startDate"  [(ngModel)]="endDate" >
+                          [startDate]="allParams.endDate" [minDate]="allParams.startDate"  [(ngModel)]="allParams.endDate" >
           </ngb-datepicker>
         </div>
       </div>

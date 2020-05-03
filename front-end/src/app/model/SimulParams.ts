@@ -1,3 +1,5 @@
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+
 export class SimulParams {
   reset: boolean;
   borders: boolean;
@@ -6,6 +8,8 @@ export class SimulParams {
   respectConfinement: number;
   mask: MaskCategory;
   conf: ConfCategory;
+  startDate: NgbDate;
+  endDate: NgbDate;
 
   constructor() {
     this.reset = false;
