@@ -36,6 +36,8 @@ export class MapContentComponent implements OnInit, OnChanges {
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
+  public todaysDate: NgbDate;
+  public oldestDate: NgbDate;
 
   // Input
   @Input() SelectedMenu: string;
@@ -51,9 +53,11 @@ export class MapContentComponent implements OnInit, OnChanges {
 
   constructor(private mapService: MapService, private simulation: SimulationService,
               public dateService: DateServiceService, calendar: NgbCalendar) {
+    this.oldestDate = new NgbDate(2020, 3, 10);
     // get today's date
     this.date = calendar.getToday();
     this.model = calendar.getToday();
+    this.todaysDate = calendar.getPrev(calendar.getToday(), 'd', 2);
     // set date to 2 days before today
     this.date = calendar.getPrev(this.date, 'd', 2);
     if (this.model instanceof NgbDate) {

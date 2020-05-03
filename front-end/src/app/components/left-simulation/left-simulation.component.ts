@@ -24,16 +24,18 @@ export class LeftSimulationComponent implements OnInit {
   faPlay = faPlay;
   faPause = faPause;
   calendarIcon = faCalendarAlt;
+  // Calendar
+  startDateCalendarVisible: boolean;
+  endDateCalendarVisible: boolean;
   // Params
   public allParams: SimulParams;
   // simulStatus
   public isStart: boolean;
   public isPause: boolean;
   public isStop: boolean;
+  public simulationIsCompute: boolean;
   // Deals with time
-  public startDate: NgbDate;
   public simulDate: NgbDate;
-  public endDate: NgbDate;
   // Interval
   interval;
   public chosenInterval = 2;
@@ -41,11 +43,12 @@ export class LeftSimulationComponent implements OnInit {
   displayAccordion: string;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
-    this.startDate = new NgbDate(2020, 3, 18);
-    this.endDate = new NgbDate(2020, 4, 30);
   }
 
   ngOnInit(): void {
+    this.simulationIsCompute = false;
+    this.startDateCalendarVisible = false;
+    this.endDateCalendarVisible = false;
     this.isStart = false;
     this.sendSimulStatus.emit(this.isStart);
     this.isPause = false;
@@ -55,28 +58,30 @@ export class LeftSimulationComponent implements OnInit {
 
   initializeParams() {
     this.allParams = new SimulParams();
-
-    this.simulDate = this.startDate;
+    this.allParams.startDate = new NgbDate(2020, 3, 18);
+    this.allParams.endDate = new NgbDate(2020, 4, 30);
+    this.simulDate = this.allParams.startDate;
     this.sendDate.emit(this.simulDate);
-
     this.displayAccordion = 'block';
   }
 
-  sendParams(){
+  startSimul(): boolean {
     console.log('sendParams');
-    this.simulationService.sendParams(this.allParams);
-    return this.allParams;
+    const isCompute = this.simulationService.startSimul(this.allParams);
+    console.log(this.allParams);
+    return isCompute;
   }
 
   onStart() {
     console.log('appui sur play');
+    this.simulationIsCompute = false;
     this.isPause = false;
     this.isStart = true;
     this.isStop = false;
     this.displayAccordion = 'none';
     this.sendSimulStatus.emit(this.isStart);
-    console.log(this.sendParams());
-    this.startTimer(this.simulDate, this.endDate);
+    this.simulationIsCompute = this.startSimul();
+    this.startTimer(this.simulDate, this.allParams.endDate);
   }
 
   onPause() {
@@ -96,10 +101,10 @@ export class LeftSimulationComponent implements OnInit {
     this.displayAccordion = 'block';
     // Send simulation state
     this.sendSimulStatus.emit(this.isStart);
-    // set reset param
-    this.allParams.reset = true;
     // reset params
     this.initializeParams();
+    // set reset param
+    this.allParams.reset = true;
   }
 
   onChangeBorder() {

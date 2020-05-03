@@ -212,4 +212,12 @@ public class Controller {
     }
   }
 
+  @RequestMapping(value = {"simulation/start"}, method =
+          RequestMethod.POST,
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  String initializeSimulation(@RequestBody final String content) {
+    Gson gson = new Gson();
+    System.out.println(content);
+    return gson.toJson("bien reçu chef !");
+  }
 }
