@@ -192,10 +192,11 @@ public class Controller {
       throw new IllegalStateException("Not in Simulation State");
     }
     Gson gson = new Gson();
+    wrapper.simulateFrance(date);
     if (name == null) {
-      return gson.toJson(wrapper.simulateFrance("2020-04-04"));
+      return gson.toJson(wrapper.infosRegion(date));
     } else {
-      return gson.toJson(wrapper.infosLocation(name, "2020-04-04"));
+      return gson.toJson(wrapper.infosLocation(name, date));
     }
   }
 
@@ -211,10 +212,11 @@ public class Controller {
       throw new IllegalStateException("Not in Simulation State");
     }
     Gson gson = new Gson();
+    wrapper.simulateFrance(date);
     if (name == null) {
-      return gson.toJson(wrapper.infosRegion("2020-04-04"));
+      return gson.toJson(wrapper.infosDept(date));
     } else {
-      return gson.toJson(wrapper.infosLocation(name, "2020-04-04"));
+      return gson.toJson(wrapper.infosLocation(name, date));
     }
   }
 

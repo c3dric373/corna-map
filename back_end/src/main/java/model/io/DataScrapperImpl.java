@@ -4,6 +4,7 @@ import lombok.Setter;
 import model.data.DayData;
 import model.data.TypeLocalisation;
 import model.project.ProjectDataWrapper;
+import model.service.DayDataService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -142,7 +143,9 @@ public class DataScrapperImpl implements DataScrapper {
         Integer.parseInt(row[hospitalizedIndex]),
         Integer.parseInt(row[recoveredCasesIndex]),
         Integer.parseInt(row[totalTestsIndex]));
-
+    if (dayData.getTotalCases() == 0) {
+      dayData.setTotalCases(DayDataService.computeTotalCases(dayData));
+    }
     rawData.addKey(row[idIndex]);
     rawData.addLocation(row[idIndex], row[dateCsvIndex], dayData);
   }
