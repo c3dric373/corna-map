@@ -141,7 +141,6 @@ public class SJYHRSimulator implements Simulator {
     private final int nbIterations;
 
     /**
-     * Constructor
      * @param initS list of size n, initial rates of susceptible.
      * @param initJ list of size n, initial rante of light infected.
      * @param initY list of size n, initial rante of heavy infected.
