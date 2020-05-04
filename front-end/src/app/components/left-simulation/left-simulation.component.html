@@ -21,12 +21,12 @@
         <!-- Select start Date -->
         Start Date :
         <button class="btn btn-outline-secondary" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
-          {{dateService.formatDateToFr(allParams.startDate)}}
+          {{dateService.formatDateToFr(startDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
         <div class="input-group">
           <ngb-datepicker (select)="startDateCalendarVisible=!startDateCalendarVisible" [class.d-none]="!startDateCalendarVisible"
-                          [startDate]="allParams.startDate" [(ngModel)]="allParams.startDate" (dateSelect)="onStartDateSelect($event)">
+                          [startDate]="startDate" [(ngModel)]="startDate" (dateSelect)="onStartDateSelect($event)">
           </ngb-datepicker>
         </div>
       </div>
@@ -34,12 +34,12 @@
         End Date :
         <!-- Select finish Date -->
         <button class="btn btn-outline-secondary" (click)="endDateCalendarVisible = !endDateCalendarVisible" type="button">
-          {{dateService.formatDateToFr(allParams.endDate)}}
+          {{dateService.formatDateToFr(endDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
         <div class="input-group">
           <ngb-datepicker (select)="endDateCalendarVisible=!endDateCalendarVisible" [class.d-none]="!endDateCalendarVisible"
-                          [startDate]="allParams.endDate" [minDate]="allParams.startDate"  [(ngModel)]="allParams.endDate" >
+                          [startDate]="endDate" [minDate]="startDate"  [(ngModel)]="endDate" >
           </ngb-datepicker>
         </div>
       </div>
@@ -66,21 +66,6 @@
                 <button id='c2' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c30_49}" (click)="onChangeConfinement('c30_49')">30-49</button>
                 <button id='c3' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c50_69}" (click)="onChangeConfinement('c50_69')">50-69</button>
                 <button id='c4' type="button" class="btn btn-secondary confinement" [ngClass]="{'active' : allParams.conf.c70}" (click)="onChangeConfinement('c70')">70+</button>
-              </div>
-            </div>
-
-            <div class="input-group mb-3"  >
-              <div class="input-group-text">
-                <input  type="checkbox" (click)=onChangeBorder()>
-                <span> Fermeture des frontières</span>
-              </div>
-              <div class="input-group-text">
-                <input  type="checkbox" (click)=onChangeShops()>
-                <span> Fermeture des commerces</span>
-              </div>
-              <div class="input-group-text">
-                <input  type="checkbox" (click)=onChangeHosp()>
-                <span> Répartition des hospitalisés</span>
               </div>
             </div>
 

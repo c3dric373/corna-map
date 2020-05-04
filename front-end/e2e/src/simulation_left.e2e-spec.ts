@@ -81,11 +81,6 @@ describe('test header', () => {
     const confinementTab = cardBody.element(by.id('confinement'));
     const confinementButtons = confinementTab.all(by.tagName('button'));
     expect(confinementButtons.count()).toEqual(5);
-    const inputGroup = cardBody.element(by.className('input-group'));
-    const spanList = inputGroup.all(by.tagName('span'));
-    expect(spanList.get(0).getText()).toEqual('Fermeture des frontières' );
-    expect(spanList.get(1).getText()).toEqual('Fermeture des commerces' );
-    expect(spanList.get(2).getText()).toEqual('Répartition des hospitalisés' );
     const maskTab = cardBody.element(by.id('masque'));
     const maskButtons = maskTab.all(by.tagName('button'));
     expect(maskButtons.count()).toEqual(5);
