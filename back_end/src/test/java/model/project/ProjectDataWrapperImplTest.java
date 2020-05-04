@@ -139,7 +139,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
 
     // Act
-    final DayData result = wrapper.simulateFrance(DATE1);
+    final DayData result = wrapper.infosFrance(DATE1);
 
     // Assert
     Assert.assertEquals("wrong dayData", dayData2, result);
