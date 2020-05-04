@@ -64,38 +64,32 @@ public class SJYHRSimulator implements Simulator {
          * @param theta heavy infection rate.
          * @param mu hospitalized death rate.
          */
-        AgeCategory(List<Double> initialState, int i,
-                    double lambda, double theta, double mu) {
+        AgeCategory(final List<Double> initialState, final int i,
+                    final double lambda, final double theta, final double mu) {
             int nbParam = 4 + h + u;
-            List<Double> si = new ArrayList<>();
+            si = new ArrayList<>();
             si.add(initialState.get(i * nbParam));
-            setSi(si);
 
-            List<Double> ji = new ArrayList<>();
+            ji = new ArrayList<>();
             ji.add(initialState.get(i * nbParam + 1));
-            setJi(ji);
 
-            List<List<Double>> yi = new ArrayList<>(h);
+            yi = new ArrayList<>(h);
             for (int j = 0; j < h; ++j) {
                 yi.add(new ArrayList<>());
                 yi.get(j).add(initialState.get(i * nbParam + 2 + j));
             }
-            setYi(yi);
 
-            List<List<Double>> hi = new ArrayList<>(u);
+            hi = new ArrayList<>(u);
             for (int j = 0; j < u; ++j) {
                 hi.add(new ArrayList<>());
                 hi.get(j).add(initialState.get(i * nbParam + 2 + h + j));
             }
-            setHi(hi);
 
-            List<Double> ri = new ArrayList<>();
+            ri = new ArrayList<>();
             ri.add(initialState.get(i * nbParam + 2 + h + u));
-            setRi(ri);
 
-            List<Double> di = new ArrayList<>();
+            di = new ArrayList<>();
             di.add(initialState.get(i * nbParam + 2 + h + u + 1));
-            setDi(di);
 
             lambdai = lambda;
             thetai = theta;
