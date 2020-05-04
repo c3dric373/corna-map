@@ -12,10 +12,6 @@ export class SimulParams {
   endDate: NgbDate;
 
   constructor() {
-    this.reset = false;
-    this.borders = false;
-    this.shops = false;
-    this.hosp = false;
     this.respectConfinement = 50;
     this.mask = new MaskCategory();
     this.conf = new ConfCategory();
