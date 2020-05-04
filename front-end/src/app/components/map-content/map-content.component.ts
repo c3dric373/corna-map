@@ -130,7 +130,6 @@ export class MapContentComponent implements OnInit, OnChanges {
         data => {
           this.reglist = data;
           this.initializeMapReg();
-          console.log(data);
         }
       );
     }
@@ -366,10 +365,10 @@ export class MapContentComponent implements OnInit, OnChanges {
     this.selectedCategory = category;
     if (this.isRegion) {
       this.removeRegListener();
-      this.initializeMapReg();
+      this.getRegInfos();
     } else {
       this.removeDeptListener();
-      this.initializeMapDept();
+      this.getDeptInfos();
     }
   }
 
