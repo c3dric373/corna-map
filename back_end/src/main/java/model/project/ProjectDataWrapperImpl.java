@@ -126,8 +126,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public DayData simulateFrance(final String date) {
     DayData latestData = getLatestData(FRA);
-    System.out.println(latestData);
     LocalDate latestDate = latestData.getDate();
+    Map<String, Double> locationPercentages =
+      DayDataService.getLocationPercentages(this.project.getLocations(),
+        latestDate.toString());
     // We need to check if the date is in the future or the past
     // if it's in the past we only return the data of the asked day and delete
     // the days coming after
@@ -142,9 +144,27 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
       // Add the new data to the model and increase the date which we are
       // iterating on.
-      dayData.setDate(latestDate.plusDays(1));
-      addLocation(FRA, latestDate.plusDays(1).toString(), dayData);
-      latestDate = latestDate.plusDays(1);
+      LocalDate newDate = latestDate.plusDays(1);
+      dayData.setDate(newDate);
+      addLocation(FRA, newDate.toString(), dayData);
+      for (Map.Entry<String, Double> entry : locationPercentages.entrySet()) {
+        final String id = entry.getKey();
+        final double percentage = entry.getValue();
+        DayData dayDataLocation = new DayData();
+        final int deathsLocation =
+          (int) ((double) dayData.getTotalDeaths() * percentage);
+        final int totalCasesLocation =
+          (int) ((double) dayData.getTotalCases() * percentage);
+        final int recoveredLocation =
+          (int) ((double) dayData.getRecoveredCases() * percentage);
+        dayDataLocation.setId(id);
+        dayDataLocation.setTotalDeaths(deathsLocation);
+        dayDataLocation.setTotalCases(totalCasesLocation);
+        dayDataLocation.setRecoveredCases(recoveredLocation);
+        dayDataLocation.setDate(newDate);
+        addLocation(id, newDate.toString(), dayDataLocation);
+      }
+      latestDate = newDate;
       latestData = dayData;
     }
 
