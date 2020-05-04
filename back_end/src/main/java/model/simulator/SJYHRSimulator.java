@@ -101,15 +101,15 @@ public class SJYHRSimulator implements Simulator {
     /**
      * Number of age categories.
      */
-    final private int n;
+    private final int n;
     /**
      * Max time before going to hospital.
      */
-    final private int h;
+    private final int h;
     /**
      * Max time before leaving hospital.
      */
-    final private int u;
+    private final int u;
     /**
      * Light infection recovery rate.
      */
@@ -128,17 +128,17 @@ public class SJYHRSimulator implements Simulator {
      */
     private List<AgeCategory> ageCategories;
     /**
-     * The differential equations that describes the model
+     * The differential equations that describes the model.
      */
     private CauchyProblem model;
     /**
-     * The solver method
+     * The solver method.
      */
-    final private DifferentialSolver solver;
+    private final DifferentialSolver solver;
     /**
-     * The precision for the solver
+     * The precision for the solver.
      */
-    final private int nbIterations;
+    private final int nbIterations;
 
     /**
      * Constructor
@@ -146,9 +146,9 @@ public class SJYHRSimulator implements Simulator {
      * @param initJ list of size n, initial rante of light infected.
      * @param initY list of size n, initial rante of heavy infected.
      */
-    public SJYHRSimulator(List<Double> initS,
-                          List<Double> initJ,
-                          List<Double> initY) {
+    public SJYHRSimulator(final List<Double> initS,
+                          final List<Double> initJ,
+                          final List<Double> initY) {
         n = 5;
         h = 7;
         u = 30;
@@ -360,7 +360,7 @@ public class SJYHRSimulator implements Simulator {
      * going to hospital.
      */
     private double heavyInfectedToHospitalized(final List<Double> state,
-                                               int i) {
+                                               final int i) {
         double res = 0.;
         int nbParam = 4 + h + u;
         for (int j = 0; j < u; ++j) {
@@ -375,7 +375,8 @@ public class SJYHRSimulator implements Simulator {
      * @return the part of the derivative related with people leaving the
      * hospital alive.
      */
-    private double hospitalizedToRecovered(final List<Double> state, int i) {
+    private double hospitalizedToRecovered(final List<Double> state,
+                                           final int i) {
         double res = 0.;
         int nbParam = 4 + h + u;
         double mu = ageCategories.get(i).getMui();
@@ -391,7 +392,8 @@ public class SJYHRSimulator implements Simulator {
      * @return the part of the derivative related with people leaving the
      * hospital dead.
      */
-    private double hospitalizedToDead(final List<Double> state, int i) {
+    private double hospitalizedToDead(final List<Double> state,
+                                      final int i) {
         double res = 0.;
         int nbParam = 4 + h + u;
         double mu = ageCategories.get(i).getMui();
