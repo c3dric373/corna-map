@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -14,8 +14,12 @@ export class SimulationComponent implements OnInit {
   public isOnlyMap = false;
   public date: NgbDate;
   public type = 'simulation';
+  public isSimulStarted: boolean;
 
-  constructor() {}
+  constructor(private calendar: NgbCalendar) {
+    this.date =  new NgbDate(2020, 3, 18);
+    this.isSimulStarted = false;
+  }
 
   ngOnInit(): void {
     this.loading = true;
@@ -39,6 +43,10 @@ export class SimulationComponent implements OnInit {
 
   setDate(actualDate: NgbDate) {
     this.date = actualDate;
+  }
+
+  setSimulState(isStarted: boolean) {
+    this.isSimulStarted = isStarted;
   }
 
 }

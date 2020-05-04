@@ -1,15 +1,16 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MapService} from '../../service/map/map.service';
 import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
 import {SimulationService} from '../../service/simulation/simulation.service';
+import {DateServiceService} from '../../service/Date/date-service.service';
 
 @Component({
   selector: 'app-map-content',
   templateUrl: './map-content.component.html',
   styleUrls: ['./map-content.component.css']
 })
-export class MapContentComponent implements OnInit {
+export class MapContentComponent implements OnInit, OnChanges {
   // Icon
   calendarIcon = faCalendarAlt;
   expand = faExpandAlt;
@@ -35,9 +36,14 @@ export class MapContentComponent implements OnInit {
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
+  public todaysDate: NgbDate;
+  public oldestDate: NgbDate;
+  test=false;
 
   // Input
-  @Input() SelectedMenu;
+  @Input() SelectedMenu: string;
+  @Input() actualDate: NgbDate;
+  @Input() isSimulationStarted: boolean;
 
   //  Output attributes used in map-menu
   @Output() chosenLocation = new EventEmitter<string>();
@@ -46,13 +52,18 @@ export class MapContentComponent implements OnInit {
   @Output() isOnlyMap = new EventEmitter<boolean>();
   @Output() emitDate = new EventEmitter<NgbDate>();
 
-  constructor(private mapService: MapService, private simulation: SimulationService, calendar: NgbCalendar) {
+  constructor(private mapService: MapService, private simulation: SimulationService,
+              public dateService: DateServiceService, calendar: NgbCalendar) {
+    this.oldestDate = new NgbDate(2020, 3, 10);
     // get today's date
     this.date = calendar.getToday();
     this.model = calendar.getToday();
+    this.todaysDate = calendar.getPrev(calendar.getToday(), 'd', 2);
     // set date to 2 days before today
-    this.date.day = this.date.day - 2;
-    this.model.day = this.model.day - 2;
+    this.date = calendar.getPrev(this.date, 'd', 2);
+    if (this.model instanceof NgbDate) {
+      this.model = calendar.getPrev(this.model, 'd', 2);
+    }
     // Initialise tables
     this.mousOverReg = new Object();
     this.mousOverDept = new Object();
@@ -71,8 +82,20 @@ export class MapContentComponent implements OnInit {
     this.emitDate.emit(this.date);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isSimulationStarted) {
+      if (this.isRegion) {
+        this.removeRegListener();
+        this.getRegInfos();
+      } else {
+        this.removeDeptListener();
+        this.getDeptInfos();
+      }
+    }
+  }
+
   dispReg(): void {
-    if(!this.isRegion) {
+    if (!this.isRegion) {
       this.isRegion = true;
       this.boolIsRegion.emit(true);
       this.removeDeptListener();
@@ -81,7 +104,7 @@ export class MapContentComponent implements OnInit {
   }
 
   dispDept(): void {
-    if(this.isRegion) {
+    if (this.isRegion) {
       this.isRegion = false;
       this.boolIsRegion.emit(false);
       this.removeRegListener();
@@ -103,7 +126,7 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.simulation.getMapRegion(this.date).subscribe(
+      this.simulation.getMapRegion(this.actualDate).subscribe(
         data => {
           this.reglist = data;
           this.initializeMapReg();
@@ -121,7 +144,7 @@ export class MapContentComponent implements OnInit {
         }
       );
     } else {
-      this.simulation.getMapDept(this.date).subscribe(
+      this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();
