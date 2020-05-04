@@ -93,4 +93,10 @@ public interface ProjectDataWrapper {
    * @return the project.
    */
   ProjectData getProject();
+
+  /**
+   * Notifies the model that the view is in Simulation mode.
+   */
+  void startSimulation();
+
 }

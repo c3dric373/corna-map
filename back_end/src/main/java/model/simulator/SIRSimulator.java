@@ -92,6 +92,12 @@ public class SIRSimulator implements Simulator {
   }
 
   /**
+   * Empty Constructor.
+   */
+  public SIRSimulator() {
+  }
+
+  /**
    * La classe est encore en chantier.
    */
   public void step() {
