@@ -212,9 +212,9 @@ public class Controller {
     }
     Gson gson = new Gson();
     if (name == null) {
-      return gson.toJson(wrapper.infosRegion("2020-04-04"));
+      return gson.toJson(wrapper.infosRegion(date));
     } else {
-      return gson.toJson(wrapper.infosLocation(name, "2020-04-04"));
+      return gson.toJson(wrapper.infosLocation(name, date));
     }
   }
 

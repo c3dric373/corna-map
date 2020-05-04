@@ -4,6 +4,7 @@ import model.data.DayData;
 import model.project.ProjectDataWrapper;
 import org.apache.commons.lang.Validate;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class DayDataService {
@@ -12,6 +13,11 @@ public class DayDataService {
    * French population size.
    */
   private static final double POPULATION_FRA = 67000000.0;
+
+  /**
+   * Id for France.
+   */
+  private static final String FRA = "FRA";
 
   /**
    * Computes the percentage of people susceptible of catching the coronavirus
@@ -121,6 +127,29 @@ public class DayDataService {
     final int dayBeforeDead = dayBeforeData.getTotalDeaths();
     final int dead = dayData.getTotalDeaths();
     return dead - dayBeforeDead;
+  }
+
+  /**
+   * Computes for each region how much cases it has in relation to the whole
+   * country.
+   *
+   * @param locations data.
+   * @return a map containing for each key (region) the percentage of cases
+   * of the whole country/
+   */
+  public static Map<String, Double> getLocationPercentages(Map<String,
+    Map<String,
+      DayData>> locations, String date) {
+    final int totalCasesFrance = locations.get(FRA).get(date).getTotalCases();
+    Map<String, Double> resultMap = new HashMap<>();
+    for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
+      String id = entry.getKey();
+      Map<String, DayData> mapId = entry.getValue();
+      final int totalCasesId = mapId.get(date).getTotalCases();
+      final double percentage = (double) totalCasesId / totalCasesFrance;
+      resultMap.put(id, percentage);
+    }
+    return resultMap;
   }
 
 }
