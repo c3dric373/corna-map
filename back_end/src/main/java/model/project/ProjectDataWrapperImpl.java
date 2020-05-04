@@ -41,11 +41,21 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Getter
   private ProjectData project = new ProjectDataImpl();
 
+  /**
+   * Simulator used to simulate COVID-19.
+   */
+  private SIRSimulator simulator = new SIRSimulator();
+
   @Override
   public void getCurrentAllDataFrance() throws IOException {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
     dataScrapper.getCurrentDataFromWeb();
     dataScrapper.extract(this);
+  }
+
+  @Override
+  public void startSimulation() {
+    setSimulator();
   }
 
   @Override
@@ -127,19 +137,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
-      final double deathRate = DayDataService.getDeathRate(latestData, this,
-        FRA);
-      final double recoveryRate = DayDataService.getRecoveryRate(latestData,
-        this, FRA);
-      final double susceptible = DayDataService.getSusceptible(latestData);
-      final double infectious = 1 - susceptible;
-      System.out.println("DeathRate: " + deathRate);
-      System.out.println("Number dead: " + latestData.getTotalDeaths());
+      // Simulate a day
+      dayData = simulateDay(latestData, simulator);
 
-      final SIRSimulator sirSimulator = new SIRSimulator(susceptible,
-        infectious, recoveryRate, deathRate);
-      dayData = simulateDay(latestData, sirSimulator);
-      System.out.println(dayData);
+      // Add the new data to the model and increase the date which we are
+      // iterating on.
       dayData.setDate(latestDate.plusDays(1));
       addLocation(FRA, latestDate.plusDays(1).toString(), dayData);
       latestDate = latestDate.plusDays(1);
@@ -147,6 +149,21 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
 
     return dayData;
+  }
+
+  /**
+   * Sets the parameter on the simulator with the latest data.
+   */
+  private void setSimulator() {
+    DayData latestData = getLatestData(FRA);
+    final double deathRate = DayDataService.getDeathRate(latestData,
+      this, FRA);
+    final double recoveryRate = DayDataService.getRecoveryRate(latestData,
+      this, FRA);
+    final double susceptible = DayDataService.getSusceptible(latestData);
+    final double infectious = 1 - susceptible;
+    simulator = new SIRSimulator(susceptible,
+      infectious, recoveryRate, deathRate);
   }
 
   /**
@@ -166,27 +183,24 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * simulator.
    *
-   * @param startState The data on the situation form which the simulated day
-   *                   should start.
-   * @param simulator  the given simulator.
+   * @param startState   The data on the situation form which the simulated day
+   *                     should start.
+   * @param sirSimulator the given simulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
-                              final SIRSimulator simulator) {
+                              final SIRSimulator sirSimulator) {
     // Compute Start State
     final double totalDeaths = startState.getTotalDeaths();
-    final double totalCases = startState.getTotalCases();
-    final double lethality = totalDeaths / totalCases;
     final double recovered = startState.getRecoveredCases();
-    simulator.setMu(lethality);
     // Simulate a day
-    simulator.step();
-    final double deadNew = Iterables.getLast(simulator.getDead());
-    final double recoveredNew = Iterables.getLast(simulator.getRecovered());
+    sirSimulator.step();
+    final double deadNew = Iterables.getLast(sirSimulator.getDead());
+    final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
     final double susceptibleNew =
-      Iterables.getLast(simulator.getSusceptible());
+      Iterables.getLast(sirSimulator.getSusceptible());
     final double infectiousNew =
-      Iterables.getLast(simulator.getInfectious());
+      Iterables.getLast(sirSimulator.getInfectious());
     final double infectedPeople = POPULATION_FRA * infectiousNew;
     // Create Object which encapsulates the simulated data
     final DayData dayData = new DayData();
@@ -196,12 +210,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println("recovered " + dayData.getRecoveredCases());
     dayData.setTotalCases((int) (POPULATION_FRA
       - (susceptibleNew * POPULATION_FRA)));
-
     return dayData;
   }
 
   /**
-   * Get's the latest available data (covid-19 stats) for a specific location.
+   * Get's the latest available data (Covid-19 stats) for a specific location.
    *
    * @param location The location for which we want the data.
    * @return the data.

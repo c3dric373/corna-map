@@ -173,7 +173,9 @@ public class Controller {
     produces = MediaType.APPLICATION_JSON_VALUE)
   String simulationFrance(@RequestParam("date") final String date) {
     Validate.notNull(date, "location null");
-    projectState = State.MAP;
+    if (projectState != State.SIMULATION) {
+      throw new IllegalStateException("Not in Simulation State");
+    }
     Gson gson = new Gson();
     return gson.toJson(wrapper.simulateFrance(date));
   }
@@ -186,10 +188,12 @@ public class Controller {
                             required = false) final String name) {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-    projectState = State.MAP;
+    if (projectState != State.SIMULATION) {
+      throw new IllegalStateException("Not in Simulation State");
+    }
     Gson gson = new Gson();
     if (name == null) {
-      return gson.toJson(wrapper.infosRegion("2020-04-04"));
+      return gson.toJson(wrapper.simulateFrance("2020-04-04"));
     } else {
       return gson.toJson(wrapper.infosLocation(name, "2020-04-04"));
     }
@@ -203,7 +207,9 @@ public class Controller {
                           required = false) final String name) {
     Validate.notNull(date, "date is null");
     Validate.notEmpty(date, "date empty");
-    projectState = State.MAP;
+    if (projectState != State.SIMULATION) {
+      throw new IllegalStateException("Not in Simulation State");
+    }
     Gson gson = new Gson();
     if (name == null) {
       return gson.toJson(wrapper.infosRegion("2020-04-04"));
@@ -213,11 +219,23 @@ public class Controller {
   }
 
   @RequestMapping(value = {"simulation/start"}, method =
-          RequestMethod.POST,
-          produces = MediaType.APPLICATION_JSON_VALUE)
+    RequestMethod.POST,
+    produces = MediaType.APPLICATION_JSON_VALUE)
   String initializeSimulation(@RequestBody final String content) {
     Gson gson = new Gson();
+    projectState = State.SIMULATION;
     System.out.println(content);
-    return gson.toJson("bien reçu chef !");
+    wrapper.startSimulation();
+    return gson.toJson("bien reçu chef!");
+  }
+
+  @RequestMapping(value = {"simulation/start"}, method =
+    RequestMethod.GET,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+  String initializeSimulationGet() {
+    projectState = State.SIMULATION;
+    Gson gson = new Gson();
+    wrapper.startSimulation();
+    return gson.toJson("bien reçu chef!");
   }
 }

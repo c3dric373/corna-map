@@ -1,12 +1,12 @@
 #sidebar {
   min-width: 20vw;
   max-width: 20vw;
-  height:100%;
   background: #7386D5;
   transition: all 0.3s;
   display: grid;
   font-family : Bahnschrift;
-
+  height: 85vh;
+  overflow: auto;
 }
 
 #sidebar .sidebar-header {
@@ -32,33 +32,6 @@ ng-template{
   border-radius: 50%;
 }
 
-#drop{
-  background: #f2f2f2ff;
-  border-radius: 5%;
-  font-size: 90%;
-}
-
-
-
-#btnLabel{
-  width:10%;
-  color : black!important;
-  border-radius: 0%;
-  padding-right: 1% !important;
-  padding-left: 0% !important;
-  padding-bottom: 0% !important;
-  margin-right: 0% !important;
-  margin-left: 0% !important;
-  border: inherit;
-  font-size: 90%;
-
-
-}
-
-#btnLabel:hover{
-  cursor: unset;
-  color : black!important;
-}
 
 h2{
   color: black;
@@ -75,28 +48,6 @@ h4{
   font-size: large;
 }
 
-
-#choix{
-  background: #fff;
-  background-color: #fff;
-  border-radius: 0%;
-  padding-left: 1% !important;
-  padding-bottom: 0% !important;
-  margin-left: 0% !important;
-  border-right: #f2f2f2ff;
-  border-top: #f2f2f2ff;
-  border-left: #f2f2f2ff;
-  font-size: 90%;
-  width: 33%;
-
-}
-
-
-#choix:focus{
-  box-shadow: unset;
-  transform: unset;
-}
-
 .btn-group{
   width: 100%;
   padding: 0% !important;
@@ -108,18 +59,6 @@ h4{
   padding-bottom: 6% !important;
   padding-top: 6% !important;
 }
-
-.input-group-text{
-  background: #fff;
-  border-color: #fff;
-  padding-top: 1%;
-  padding-right: 1%;
-  padding-left: 0%;
-  padding-bottom: 0%;
-  font-size: 95%;
-}
-
-
 
 .container-sm{
   margin-bottom: 5% !important;
@@ -173,3 +112,23 @@ mat-slider {
   margin-bottom: 3vh;
 }
 
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #cdc9c9;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}

@@ -36,6 +36,8 @@ export class LeftSimulationComponent implements OnInit {
   public simulationIsCompute: boolean;
   // Deals with time
   public simulDate: NgbDate;
+  public startDate: NgbDate;
+  public endDate: NgbDate;
   // Interval
   interval;
   public chosenInterval = 2;
@@ -58,9 +60,9 @@ export class LeftSimulationComponent implements OnInit {
 
   initializeParams() {
     this.allParams = new SimulParams();
-    this.allParams.startDate = new NgbDate(2020, 3, 18);
-    this.allParams.endDate = new NgbDate(2020, 4, 30);
-    this.simulDate = this.allParams.startDate;
+    this.startDate = new NgbDate(2020, 3, 18);
+    this.endDate = new NgbDate(2020, 4, 30);
+    this.simulDate = this.startDate;
     this.sendDate.emit(this.simulDate);
     this.displayAccordion = 'block';
   }
@@ -81,7 +83,7 @@ export class LeftSimulationComponent implements OnInit {
     this.displayAccordion = 'none';
     this.sendSimulStatus.emit(this.isStart);
     this.simulationIsCompute = this.startSimul();
-    this.startTimer(this.simulDate, this.allParams.endDate);
+    this.startTimer(this.simulDate, this.endDate);
   }
 
   onPause() {
@@ -91,8 +93,6 @@ export class LeftSimulationComponent implements OnInit {
     this.isStop = false;
     this.displayAccordion = 'block';
     this.sendSimulStatus.emit(this.isStart);
-    // set reset param
-    this.allParams.reset = false;
   }
 
   onstop() {
@@ -105,24 +105,7 @@ export class LeftSimulationComponent implements OnInit {
     this.sendSimulStatus.emit(this.isStart);
     // reset params
     this.initializeParams();
-    // set reset param
-    this.allParams.reset = true;
   }
-
-  onChangeBorder() {
-        this.allParams.borders = !this.allParams.borders;
-        console.log('frontières fermées :' + this.allParams.borders);
-    }
-
-  onChangeShops() {
-      this.allParams.shops = !this.allParams.shops;
-      console.log('Commerces fermés :' + this.allParams.shops);
-    }
-
-  onChangeHosp() {
-      this.allParams.hosp = !this.allParams.hosp;
-      console.log('Répartition hospitalisés :' + this.allParams.hosp);
-    }
 
   onChangeMask(category: string) {
     this.allParams.mask[category] = !this.allParams.mask[category];
