@@ -118,33 +118,34 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getRegInfos() {
-    if (this.SelectedMenu === 'map') {
-      this.mapService.getMapRegion(this.date).subscribe(
-        data => {
-          this.reglist = data;
-          this.initializeMapReg();
-        }
-      );
-    } else {
+    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
       this.simulation.getMapRegion(this.actualDate).subscribe(
         data => {
           this.reglist = data;
           this.initializeMapReg();
         }
       );
+    } else {
+      this.mapService.getMapRegion(this.date).subscribe(
+        data => {
+          this.reglist = data;
+          this.initializeMapReg();
+          console.log(data);
+        }
+      );
     }
   }
 
   getDeptInfos() {
-    if (this.SelectedMenu === 'map') {
-      this.mapService.getMapDept(this.date).subscribe(
+    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+      this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();
         }
       );
     } else {
-      this.simulation.getMapDept(this.actualDate).subscribe(
+      this.mapService.getMapDept(this.date).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();
