@@ -134,12 +134,13 @@ public class DayDataService {
    * country.
    *
    * @param locations data.
+   * @param date      the for which we want to get the percentages.
    * @return a map containing for each key (region) the percentage of cases
    * of the whole country/
    */
-  public static Map<String, Double> getLocationPercentages(Map<String,
+  public static Map<String, Double> getLocationPercentages(final Map<String,
     Map<String,
-      DayData>> locations, String date) {
+      DayData>> locations, final String date) {
     final int totalCasesFrance = locations.get(FRA).get(date).getTotalCases();
     Map<String, Double> resultMap = new HashMap<>();
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
@@ -164,7 +165,7 @@ public class DayDataService {
    *                total cases
    * @return the total cases for the {@link DayData}
    */
-  private static int computeTotalCases(DayData dayData) {
+  public static int computeTotalCases(final DayData dayData) {
     return dayData.getRecoveredCases() + dayData.getHospitalized()
       + dayData.getCriticalCases() + dayData.getEphadConfirmedCases()
       + dayData.getTotalDeaths() + dayData.getTotalEphadDeaths();
