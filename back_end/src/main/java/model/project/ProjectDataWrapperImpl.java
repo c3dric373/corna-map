@@ -54,7 +54,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void startSimulation(){
+  public void startSimulation() {
     setSimulator();
   }
 
@@ -183,9 +183,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * simulator.
    *
-   * @param startState The data on the situation form which the simulated day
-   *                   should start.
-   * @param sirSimulator  the given simulator.
+   * @param startState   The data on the situation form which the simulated day
+   *                     should start.
+   * @param sirSimulator the given simulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
