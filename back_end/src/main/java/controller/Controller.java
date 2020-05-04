@@ -223,6 +223,7 @@ public class Controller {
     produces = MediaType.APPLICATION_JSON_VALUE)
   String initializeSimulation(@RequestBody final String content) {
     Gson gson = new Gson();
+    projectState = State.SIMULATION;
     System.out.println(content);
     wrapper.startSimulation();
     return gson.toJson("bien reçu chef!");
