@@ -134,6 +134,19 @@ public class DayDataServiceTest {
   }
 
   @Test
+  public void testComputeTotalCases_validCall_correctResult() {
+    // Arrange
+    final int expected = EPHAD_CONFIRMED_CASES + TOTAL_DEATHS
+      + TOTAL_EPHAD_DEATHS + CRITICAL_CASES + HOSPITALIZED + RECOVERD_CASES;
+
+    // Act
+    final int result = DayDataService.computeTotalCases(dayData);
+
+    // Assert
+    Assert.assertEquals("wrong computation of total cases", expected, result);
+  }
+
+  @Test
   public void testGetLocationPercentages_validCall_correctResult() {
     // Arrange 
     Map<String, Double> expectedMap = new HashMap<>();
@@ -184,6 +197,75 @@ public class DayDataServiceTest {
 
     // Act
     DayDataService.getDeathRate(null, wrapper, DEP_44);
+
+    // Assert -> via annotation
+  }
+
+  @Test
+  public void
+  testComputeTotalCases_dayDataNull_throwsIllegalArgumentException() {
+    // Arrange
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("dayData null");
+
+    // Act
+    DayDataService.computeTotalCases(null);
+
+    // Assert -> via annotation
+  }
+
+  @Test
+  public void
+  testGetLocationsPercentage_locationsNull_throwsIllegalArgumentException() {
+    // Arrange
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("locations null");
+
+    // Act
+    DayDataService.getLocationPercentages(null, DATE1);
+
+    // Assert -> via annotation
+  }
+
+  @Test
+  public void
+  testGetLocationsPercentage_locationsEmpty_throwsIllegalArgumentException() {
+    // Arrange
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("locations empty");
+    final Map<String, Map<String, DayData>> emptyMap = new HashMap<>();
+
+    // Act
+    DayDataService.getLocationPercentages(emptyMap, DATE1);
+
+    // Assert -> via annotation
+  }
+
+  @Test
+  public void
+  testGetLocationsPercentage_dateEmpty_throwsIllegalArgumentException() {
+    // Arrange
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("date empty");
+    final Map<String, Map<String, DayData>> map =
+      wrapper.getProject().getLocations();
+
+    // Act
+    DayDataService.getLocationPercentages(map, EMPTY_STRING);
+
+    // Assert -> via annotation
+  }
+
+  @Test
+  public void
+  testGetLocationsPercentage_dayDataNull_throwsIllegalArgumentException() {
+    // Arrange
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("date null");
+    final Map<String, Map<String, DayData>> map =
+      wrapper.getProject().getLocations();
+    // Act
+    DayDataService.getLocationPercentages(map, null);
 
     // Assert -> via annotation
   }

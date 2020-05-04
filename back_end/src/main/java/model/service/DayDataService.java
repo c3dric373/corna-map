@@ -141,6 +141,11 @@ public class DayDataService {
   public static Map<String, Double> getLocationPercentages(final Map<String,
     Map<String,
       DayData>> locations, final String date) {
+    Validate.notNull(locations,"locations null");
+    Validate.notEmpty(locations,"locations empty");
+    Validate.notNull(date,"date null");
+    Validate.notEmpty(date,"date empty");
+
     final int totalCasesFrance = locations.get(FRA).get(date).getTotalCases();
     Map<String, Double> resultMap = new HashMap<>();
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
@@ -166,6 +171,7 @@ public class DayDataService {
    * @return the total cases for the {@link DayData}
    */
   public static int computeTotalCases(final DayData dayData) {
+    Validate.notNull(dayData,"dayData null");
     return dayData.getRecoveredCases() + dayData.getHospitalized()
       + dayData.getCriticalCases() + dayData.getEphadConfirmedCases()
       + dayData.getTotalDeaths() + dayData.getTotalEphadDeaths();
