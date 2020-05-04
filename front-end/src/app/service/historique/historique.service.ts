@@ -15,11 +15,11 @@ export class HistoriqueService {
   }
 
   getHistoriqueRegion(name): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'historique?location=region&name=' + name );
+    return this.httpClient.get(this.API_URL + 'historique?location=' + name );
   }
 
   getHistoriqueDept(name): Observable<any>{
-    return this.httpClient.get(this.API_URL + 'historique?location=dept&name=' + name );
+    return this.httpClient.get(this.API_URL + 'historique?location=' + name );
   }
 
 }

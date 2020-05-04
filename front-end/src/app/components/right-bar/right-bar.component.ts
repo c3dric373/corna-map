@@ -3,6 +3,8 @@ import * as Highcharts from 'highcharts';
 import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {MapService} from '../../service/map/map.service';
 import {HistoriqueService} from '../../service/historique/historique.service';
+import {SimulationService} from '../../service/simulation/simulation.service';
+
 @Component({
   selector: 'app-right-bar',
   templateUrl: './right-bar.component.html',
@@ -12,6 +14,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() locationName: string;
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
+  @Input() SelectedMenu;
 
   // Json of the region
   private reglist = [];
@@ -28,6 +31,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   public totDeces ;
   // Json of France
   private histFr;
+
+  public chosenLocation;
 
   public differences = [];
 
@@ -75,7 +80,8 @@ export class RightBarComponent implements OnInit, OnChanges{
     ]
   };
 
-  constructor(private mapService: MapService, private historiqueService: HistoriqueService, calendar: NgbCalendar)  {
+  constructor(private simulationService: SimulationService, private mapService: MapService,
+              private historiqueService: HistoriqueService, calendar: NgbCalendar)  {
     // Today's date
     this.actualdate = calendar.getToday();
     // set date to 2 days before today
@@ -85,15 +91,17 @@ export class RightBarComponent implements OnInit, OnChanges{
   ngOnInit() {
     this.getHFrance();
     this.showLocation = false;
-    this.locationName = 'France';
+    this.chosenLocation = 'France';
   }
 
   ngOnChanges(composant: SimpleChanges ){
     if (this.locationName && this.locationName !== 'France') {
       if (this.isRegion) {
         this.getRegInfos();
+        this.getHRegion();
       } else {
         this.getDeptInfos();
+        this.getHDept();
       }
       this.showLocation = true;
     }
@@ -110,54 +118,97 @@ export class RightBarComponent implements OnInit, OnChanges{
   }
 
   getRegInfos() {
-    this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
-      data => {
-        this.reglist = data;
-        this.locationName = data.name;
-        console.log(data);
+    if (this.SelectedMenu === 'map'){
+      this.mapService.getInfosRegion(this.actualdate, this.locationName).subscribe(
+        data => {
+          this.reglist = data;
+          this.chosenLocation = data.name;
+          console.log(data);
+          this.totGueris = data.recoveredCases;
+          this.totHospi = data.hospitalized;
+          this.totDeces = data.totalDeaths;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
 
-        this.totGueris = data.recoveredCases;
-        this.totHospi = data.hospitalized;
-        this.totDeces = data.totalDeaths;
-        if (data.totalCases === 0){
-          this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
-            parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
-        }else{
-          this.totCasConf = data.totalCases;
         }
+      );
+    }else{
 
-      }
-    );
 
+    }
   }
 
   getDeptInfos() {
-    this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
-      data => {
-        this.deptList = data;
-        this.locationName = data.name;
-        console.log(data);
-
-        this.totGueris = data.recoveredCases;
-        this.totHospi = data.hospitalized;
-        this.totDeces = data.totalDeaths;
-        if (data.totalCases === 0){
-          this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
-            parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
-        }else{
-          this.totCasConf = data.totalCases;
+    if (this.SelectedMenu === 'map'){
+      this.mapService.getInfosDept(this.actualdate, this.locationName).subscribe(
+        data => {
+          this.deptList = data;
+          this.chosenLocation = data.name;
+          console.log(data);
+          this.totGueris = data.recoveredCases;
+          this.totHospi = data.hospitalized;
+          this.totDeces = data.totalDeaths;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
         }
-      }
-    );
+      );
+    }else{}
   }
 
   getHFrance(){
-    this.historiqueService.getHistoriqueFrance().subscribe(
-      data => {
-        // this.histFr = data;
-        this.setAllDataFromFrance(data);
-      }
-    );
+    if (this.SelectedMenu === 'map'){
+      this.historiqueService.getHistoriqueFrance().subscribe(
+        data => {
+          // this.histFr = data;
+          this.setAllDataFromFrance(data);
+        }
+      );
+    }else{
+      console.log(this.actualdate);
+      this.simulationService.getInfosFrance(this.actualdate).subscribe(
+        data => {
+          // this.histFr = data;
+          console.log(data);
+          this.totDeces = data.totalDeaths;
+          this.totHospi = data.hospitalized;
+          this.showLocation = true;
+          // this.setAllDataFromFrance(data);
+        }
+      );
+
+    }
+  }
+
+  getHRegion(){
+    if (this.SelectedMenu === 'map'){
+      this.historiqueService.getHistoriqueRegion(this.locationName).subscribe(
+        data => {
+          // this.histFr = data;
+          // console.log(data);
+          this.setAllDataFromFrance(data);
+        }
+      );
+    }else{}
+  }
+
+  getHDept(){
+    if (this.SelectedMenu === 'map'){
+      this.historiqueService.getHistoriqueDept(this.locationName).subscribe(
+        data => {
+          // this.histFr = data;
+          // console.log(data);
+          this.setAllDataFromFrance(data);
+        }
+      );
+    }else{}
   }
 
   // Get Data from list and put it in this.allData
