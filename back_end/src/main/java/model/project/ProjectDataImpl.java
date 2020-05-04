@@ -1,7 +1,6 @@
 package model.project;
 
 import lombok.Getter;
-import lombok.Setter;
 import model.data.DayData;
 
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.Map;
  * about county's, region's and france itself.
  */
 @Getter
-@Setter
 public class ProjectDataImpl implements ProjectData {
 
   /**

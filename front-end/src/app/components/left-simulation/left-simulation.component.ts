@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { faStop } from '@fortawesome/free-solid-svg-icons';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {faCalendarAlt, faStop} from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faPause } from '@fortawesome/free-solid-svg-icons';
 import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {SimulationService} from '../../service/simulation/simulation.service';
-import {MapService} from '../../service/map/map.service';
 import {DateServiceService} from '../../service/Date/date-service.service';
+import {SimulParams} from '../../model/SimulParams';
 
 
 @Component({
@@ -16,74 +16,72 @@ import {DateServiceService} from '../../service/Date/date-service.service';
 export class LeftSimulationComponent implements OnInit {
   @Input() locationName: string;
   @Input() isRegion: boolean;
+  @Output() sendDate = new EventEmitter<NgbDate>();
+  @Output() sendSimulStatus = new EventEmitter<boolean>();
 
   // Icons
   faStop = faStop;
   faPlay = faPlay;
   faPause = faPause;
+  calendarIcon = faCalendarAlt;
+  // Calendar
+  startDateCalendarVisible: boolean;
+  endDateCalendarVisible: boolean;
   // Params
-  public borders;
-  public shops;
-  public hosp;
-  public mask ;
-  public conf ;
-  public respectConfinement;
-  public timer;
-  public resetSim;
+  public allParams: SimulParams;
   // simulStatus
   public isStart: boolean;
   public isPause: boolean;
   public isStop: boolean;
+  public simulationIsCompute: boolean;
   // Deals with time
   public simulDate: NgbDate;
-  public endDate: NgbDate;
   // Interval
   interval;
-  public chosenInterval = 1;
+  public chosenInterval = 2;
+  // display accordion
+  displayAccordion: string;
 
   constructor(private simulationService: SimulationService, private calendar: NgbCalendar, public dateService: DateServiceService) {
-    this.simulDate = calendar.getToday();
-    this.endDate = new NgbDate(2020, 5, 31);
   }
 
   ngOnInit(): void {
+    this.simulationIsCompute = false;
+    this.startDateCalendarVisible = false;
+    this.endDateCalendarVisible = false;
     this.isStart = false;
+    this.sendSimulStatus.emit(this.isStart);
     this.isPause = false;
     this.isStop = false;
     this.initializeParams();
-    this.onChangeTime(0);
   }
 
   initializeParams() {
-    this.borders = false;
-    this.shops = false;
-    this.hosp = false;
-    this.respectConfinement = 50;
-    this.mask = [false, false, false, false, false];
-    this.conf = [false, false, false, false, false];
-    this.timer = 0;
-    this.resetSim = false;
+    this.allParams = new SimulParams();
+    this.allParams.startDate = new NgbDate(2020, 3, 18);
+    this.allParams.endDate = new NgbDate(2020, 4, 30);
+    this.simulDate = this.allParams.startDate;
+    this.sendDate.emit(this.simulDate);
+    this.displayAccordion = 'block';
   }
 
-  sendParams(){
+  startSimul(): boolean {
     console.log('sendParams');
-    this.simulationService.sendParams([this.resetSim, this.locationName,
-      this.dateService.dateToString(this.simulDate), this.conf, this.borders,
-      this.shops, this.hosp , this.mask, this.respectConfinement]);
-    return [this.resetSim, this.locationName, this.dateService.dateToString(this.simulDate),
-      this.conf, this.borders, this.shops, this.hosp , this.mask,
-      this.respectConfinement];
+    const isCompute = this.simulationService.startSimul(this.allParams);
+    console.log(this.allParams);
+    return isCompute;
   }
 
   onStart() {
     console.log('appui sur play');
-    document.getElementById('accordion').style.display = 'none';
+    this.simulationIsCompute = false;
     this.isPause = false;
     this.isStart = true;
     this.isStop = false;
-    console.log(this.sendParams());
-
-    this.startTimer(this.simulDate, this.endDate);
+    this.displayAccordion = 'none';
+    this.sendSimulStatus.emit(this.isStart);
+    this.simulationIsCompute = this.startSimul();
+    this.startTimer(this.simulDate, this.allParams.endDate);
   }
 
   onPause() {
@@ -91,7 +89,10 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = false;
-    document.getElementById('accordion').style.display = 'block';
+    this.displayAccordion = 'block';
+    this.sendSimulStatus.emit(this.isStart);
+    // set reset param
+    this.allParams.reset = false;
   }
 
   onstop() {
@@ -99,109 +100,42 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = true;
-    document.getElementById('accordion').style.display = 'block';
-    this.resetSim = true;
+    this.displayAccordion = 'block';
+    // Send simulation state
+    this.sendSimulStatus.emit(this.isStart);
+    // reset params
     this.initializeParams();
-  }
-
-  getInformations() {
-    if (this.locationName === undefined) {
-      console.log('appel getInfosFrance');
-      this.simulationService.getInfosFrance(this.simulDate).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    } else if (!this.isRegion){
-      console.log('appel getInfosDept');
-      this.simulationService.getInfosDept(this.simulDate, this.locationName).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    }else{
-      console.log('appel getInfosRegion');
-      this.simulationService.getInfosRegion(this.simulDate, this.locationName).subscribe(
-        data => {
-          console.log(data);
-          // this.deptList = data;
-          // this.initializeMapDept();
-        }
-      );
-    }
+    // set reset param
+    this.allParams.reset = true;
   }
 
   onChangeBorder() {
-        this.borders = !this.borders;
-        console.log('frontières fermées :' + this.borders);
+        this.allParams.borders = !this.allParams.borders;
+        console.log('frontières fermées :' + this.allParams.borders);
     }
 
   onChangeShops() {
-      this.shops = !this.shops;
-      console.log('Commerces fermés :' + this.shops);
+      this.allParams.shops = !this.allParams.shops;
+      console.log('Commerces fermés :' + this.allParams.shops);
     }
 
   onChangeHosp() {
-      this.hosp = !this.hosp;
-      console.log('Répartition hospitalisés :' + this.hosp);
+      this.allParams.hosp = !this.allParams.hosp;
+      console.log('Répartition hospitalisés :' + this.allParams.hosp);
     }
 
-  onChangeMask(int) {
-      this.mask[int] = !this.mask[int];
-      if (this.mask[int] === true){
-
-        document.getElementById(int).style.backgroundColor = '#B1AEAA';
-      }else{
-        document.getElementById(int).style.backgroundColor = '#CFCDCC';
-      }
-      console.log('Masque catégorie :' + int + ' : ' + this.mask[int]);
-    }
-
-  onChangeConfinement(int) {
-    this.conf[int] = !this.conf[int];
-    if (this.conf[int] === true){
-      document.getElementById(int).style.backgroundColor = '#B1AEAA';
-    }else{
-      document.getElementById(int).style.backgroundColor = '#CFCDCC';
-    }
-    console.log('Confinement catégorie :' + int + ' : ' + this.conf[int]);
+  onChangeMask(category: string) {
+    this.allParams.mask[category] = !this.allParams.mask[category];
+    console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.mask[category]);
   }
 
-
-  onChangeRespectConfinement(value: number) {
-      if (value >= 1000) {
-        return Math.round(value / 1000) + 'k';
-      }
-      this.respectConfinement = value;
-      console.log('respectConfinement' + this.respectConfinement + '%');
-      return (value + '%');
-   }
-
-  onChangeEcoulement(value: number) {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-    this.chosenInterval = value;
-    console.log('temps change tout le' + value + 'secondes');
-    return (value + 's');
+  onChangeConfinement(category: string) {
+    this.allParams.conf[category] = !this.allParams.conf[category];
+    console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.conf[category]);
   }
 
-  public beforeChange($event: NgbPanelChangeEvent) {
-  }
-
-  onChangeTime(value: number) {
-    while (true){
-      if (value >= 1000) {
-        return Math.round(value / 1000) + 'k';
-      }
-      value++;
-      console.log('time' + value );
-      return (value );
-    }
+  onStartDateSelect(date: NgbDate) {
+    this.simulDate = date;
   }
 
   startTimer(startDate: NgbDate, endDate: NgbDate) {
@@ -209,15 +143,17 @@ export class LeftSimulationComponent implements OnInit {
     this.interval = setInterval(() => {
       if (!this.isPause) {
         if (currentDate.before(endDate)) {
-          this.getInformations();
-          currentDate = this.calendar.getNext(currentDate, 'd', 1);
           this.simulDate = currentDate;
+          // Send Date to component
+          this.sendDate.emit(this.simulDate);
+          currentDate = this.calendar.getNext(currentDate, 'd', 1);
         } else {
           clearInterval(this.interval);
           this.onstop();
         }
+      } else {
+        clearInterval(this.interval);
       }
     }, (this.chosenInterval * 1000));
   }
-
 }

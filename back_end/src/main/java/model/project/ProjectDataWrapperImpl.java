@@ -63,15 +63,15 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public List<DayData> historyLocalisation(final String name) {
-    final Map<String, Map<String, DayData>> localisations =
+  public List<DayData> historyLocation(final String name) {
+    final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> tmp = localisations.get(name);
+    final Map<String, DayData> tmp = locations.get(name);
     return new ArrayList<>(tmp.values());
   }
 
   @Override
-  public DayData infosLocalisation(final String name, final String date) {
+  public DayData infosLocation(final String name, final String date) {
     final Map<String, Map<String, DayData>> localisations =
       project.getLocations();
     final Map<String, DayData> tmp = localisations.get(name);
@@ -209,7 +209,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private DayData getLatestData(final String location) {
     final Map<String, Map<String, DayData>> localisations =
       project.getLocations();
-    final Map<String, DayData> franceMap = localisations.get(FRA);
+    final Map<String, DayData> franceMap = localisations.get(location);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
     if (!latestDate.isPresent()) {
@@ -229,17 +229,18 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       return date1.compareTo(date2);
     }
   }
-
-  /*
+/*
   public static void main(final String[] args) throws IOException {
     ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
     DataScrapperImpl scrapper = new DataScrapperImpl();
     scrapper.extract(wrapper);
     DayData dayData = wrapper.simulateFrance("2020-04-30");
     System.out.println("=============");
-    wrapper.simulateFrance("2020-05-01");
+    wrapper.simulateFrance("2020-05-06");
+    //wrapper.simulateFrance("2020-05-01");
   }
-*/
+  */
+
 }
 
 
