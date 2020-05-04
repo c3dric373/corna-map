@@ -48,13 +48,13 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.simulationIsCompute = false;
     this.startDateCalendarVisible = false;
     this.endDateCalendarVisible = false;
     this.isStart = false;
-    this.sendSimulStatus.emit(this.isStart);
     this.isPause = false;
     this.isStop = false;
+    this.allParams = new SimulParams();
+    this.simulationIsCompute = this.startSimul();
     this.initializeParams();
   }
 
@@ -81,9 +81,9 @@ export class LeftSimulationComponent implements OnInit {
     this.isStart = true;
     this.isStop = false;
     this.displayAccordion = 'none';
-    this.sendSimulStatus.emit(this.isStart);
     this.simulationIsCompute = this.startSimul();
     this.startTimer(this.simulDate, this.endDate);
+    this.sendSimulStatus.emit(this.simulationIsCompute);
   }
 
   onPause() {
