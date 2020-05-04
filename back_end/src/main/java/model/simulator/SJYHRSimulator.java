@@ -6,24 +6,66 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Simulator.
+ */
 public class SJYHRSimulator implements Simulator {
 
+    /**
+     * People will be divided in five age category, each with its own
+     * characteristics.
+     */
     @Getter
     @Setter
     private class AgeCategory {
-        List<Double> si; // susceptible
-        List<Double> ji; // light infected
-        List<List<Double>> yi; // heavy infected
-        List<List<Double>> hi; // hospitalized
-        List<Double> ri; // recovered
-        List<Double> di; // dead
+        /**
+         * Susceptible.
+         */
+        List<Double> si;
+        /**
+         * Light infected.
+         */
+        List<Double> ji;
+        /**
+         * Heavy infected.
+         */
+        List<List<Double>> yi;
+        /**
+         * Hospitalized.
+         */
+        List<List<Double>> hi;
+        /**
+         * Recovered.
+         */
+        List<Double> ri;
+        /**
+         * Dead.
+         */
+        List<Double> di;
 
-        double lambdai; // light infection rate
-        double thetai; // heavy infection rate
-        double mui; // hospitalized death rate
+        /**
+         * Light infection rate.
+         */
+        double lambdai;
+        /**
+         * Heavy infection rate.
+         */
+        double thetai;
+        /**
+         * Hospitalized death rate.
+         */
+        double mui;
 
+        /**
+         * Constructor of the i-th age category.
+         * @param initialState initial rates of every person category.
+         * @param i index of the age category.
+         * @param lambda light infection rate.
+         * @param theta heavy infection rate.
+         * @param mu hospitalized death rate.
+         */
         AgeCategory(List<Double> initialState, int i,
-                    double lambda, double theta, double mu){
+                    double lambda, double theta, double mu) {
             int nbParam = 4 + h + u;
             List<Double> si = new ArrayList<>();
             si.add(initialState.get(i * nbParam));
@@ -34,14 +76,14 @@ public class SJYHRSimulator implements Simulator {
             setJi(ji);
 
             List<List<Double>> yi = new ArrayList<>(h);
-            for(int j = 0; j < h; ++j){
+            for (int j = 0; j < h; ++j) {
                 yi.add(new ArrayList<>());
                 yi.get(j).add(initialState.get(i * nbParam + 2 + j));
             }
             setYi(yi);
 
             List<List<Double>> hi = new ArrayList<>(u);
-            for(int j = 0; j < u; ++j){
+            for (int j = 0; j < u; ++j) {
                 hi.add(new ArrayList<>());
                 hi.get(j).add(initialState.get(i * nbParam + 2 + h + j));
             }
@@ -62,21 +104,57 @@ public class SJYHRSimulator implements Simulator {
     }
 
     // parameters common to all age categories
-    final private int n; // number of age category
-    final private int h; // max time before going to hospital
-    final private int u; // max time before leaving hospital
-    double gamma; // light infection recovery rate
-    List<Double> eta; // hospitalization rate for the heavily infected
-    List<Double> nu; // hospitalized recovery rate
+    /**
+     * Number of age categories.
+     */
+    final private int n;
+    /**
+     * Max time before going to hospital.
+     */
+    final private int h;
+    /**
+     * Max time before leaving hospital.
+     */
+    final private int u;
+    /**
+     * Light infection recovery rate.
+     */
+    double gamma;
+    /**
+     * Hospitalization rate for the heavily infected.
+     */
+    List<Double> eta;
+    /**
+     * Hospitalized recovery rate.
+     */
+    List<Double> nu;
 
+    /**
+     * The n age categories.
+     */
     private List<AgeCategory> ageCategories;
+    /**
+     * The differential equations that describes the model
+     */
     private CauchyProblem model;
+    /**
+     * The solver method
+     */
     final private DifferentialSolver solver;
+    /**
+     * The precision for the solver
+     */
     final private int nbIterations;
 
+    /**
+     * Constructor
+     * @param initS list of size n, initial rates of susceptible.
+     * @param initJ list of size n, initial rante of light infected.
+     * @param initY list of size n, initial rante of heavy infected.
+     */
     public SJYHRSimulator(List<Double> initS,
                           List<Double> initJ,
-                          List<Double> initY){
+                          List<Double> initY) {
         n = 5;
         h = 7;
         u = 30;
@@ -123,11 +201,11 @@ public class SJYHRSimulator implements Simulator {
 
         int nbParam = 4 + h + u;
         List<Double> initialState = new ArrayList<>(5 * nbParam);
-        for(int i = 0; i < 5; ++i){
+        for (int i = 0; i < 5; ++i) {
             initialState.add(initS.get(i));
             initialState.add(initJ.get(i));
             initialState.add(initY.get(i));
-            for(int j = 0; j < nbParam - 3; ++j){
+            for (int j = 0; j < nbParam - 3; ++j) {
                 initialState.add(0.);
             }
         }
@@ -149,21 +227,24 @@ public class SJYHRSimulator implements Simulator {
         nbIterations = 50;
     }
 
+    /**
+     * Update the values for the next day.
+     */
     @Override
     public void step() {
         List<Double> nextValues = solver.next(model, nbIterations);
 
         int nbParam = 4 + h + u;
-        for(int i = 0; i < n; ++i){
+        for (int i = 0; i < n; ++i) {
             ageCategories.get(i).getSi()
                     .add(nextValues.get(i * nbParam));
             ageCategories.get(i).getJi()
                     .add(nextValues.get(i * nbParam + 1));
-            for(int j = 0; j < h; ++j){
+            for (int j = 0; j < h; ++j) {
                 ageCategories.get(i).getYi().get(j)
                         .add(nextValues.get(i * nbParam + 2 + j));
             }
-            for(int j = 0; j < u; ++j){
+            for (int j = 0; j < u; ++j) {
                 ageCategories.get(i).getHi().get(j)
                         .add(nextValues.get(i * nbParam + 2 + h + j));
             }
@@ -176,6 +257,12 @@ public class SJYHRSimulator implements Simulator {
         model = makeModel(nextValues);
     }
 
+    /**
+     * Makes the model according to the initial condition.
+     * @param state the initial conditions.
+     * @return the differential equation system, together with the initial
+     * condition
+     */
     private CauchyProblem makeModel(final List<Double> state) {
         int nbParam = 4 + h + u;
         CauchyProblem.Builder builder = new CauchyProblem.Builder();
@@ -256,6 +343,10 @@ public class SJYHRSimulator implements Simulator {
         return builder.build();
     }
 
+    /**
+     * @param state the state of the system.
+     * @return the total amount of infected people.
+     */
     private double totalInfected(final List<Double> state) {
         double res = 0.;
         int nbParam = 4 + h + u;
@@ -268,6 +359,12 @@ public class SJYHRSimulator implements Simulator {
         return res;
     }
 
+    /**
+     * @param state the state of the system.
+     * @param i the age category index.
+     * @return the part of the derivative related with the heavily infected
+     * going to hospital.
+     */
     private double heavyInfectedToHospitalized(final List<Double> state,
                                                int i) {
         double res = 0.;
@@ -278,6 +375,12 @@ public class SJYHRSimulator implements Simulator {
         return res;
     }
 
+    /**
+     * @param state the state of the system.
+     * @param i the age category index.
+     * @return the part of the derivative related with people leaving the
+     * hospital alive.
+     */
     private double hospitalizedToRecovered(final List<Double> state, int i) {
         double res = 0.;
         int nbParam = 4 + h + u;
@@ -288,6 +391,12 @@ public class SJYHRSimulator implements Simulator {
         return res;
     }
 
+    /**
+     * @param state the state of the system.
+     * @param i the age category index.
+     * @return the part of the derivative related with people leaving the
+     * hospital dead.
+     */
     private double hospitalizedToDead(final List<Double> state, int i) {
         double res = 0.;
         int nbParam = 4 + h + u;
