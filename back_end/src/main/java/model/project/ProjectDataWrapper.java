@@ -44,7 +44,7 @@ public interface ProjectDataWrapper {
    * @param name id of the Location of which the data is queried.
    * @return the queried data.
    */
-  List<DayData> historyLocalisation(String name);
+  List<DayData> historyLocation(String name);
 
   /**
    * Returns the data for a specific location on a specific date.
@@ -53,7 +53,7 @@ public interface ProjectDataWrapper {
    * @param date the specific date.
    * @return the queried data.
    */
-  DayData infosLocalisation(String name, String date);
+  DayData infosLocation(String name, String date);
 
   /**
    * Returns the data about all regions on a specific date.
@@ -86,4 +86,17 @@ public interface ProjectDataWrapper {
    * @return the {@link DayData} containing the simulated info.
    */
   DayData simulateFrance(String date);
+
+  /**
+   * Return data of project.
+   *
+   * @return the project.
+   */
+  ProjectData getProject();
+
+  /**
+   * Notifies the model that the view is in Simulation mode.
+   */
+  void startSimulation();
+
 }
