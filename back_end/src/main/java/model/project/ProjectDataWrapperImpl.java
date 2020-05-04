@@ -126,10 +126,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public DayData simulateFrance(final String date) {
     DayData latestData = getLatestData(FRA);
-    System.out.println(latestData);
     LocalDate latestDate = latestData.getDate();
     Map<String, Double> locationPercentages =
-      DayDataService.getLocationPercentages(this.project.getLocations(), date);
+      DayDataService.getLocationPercentages(this.project.getLocations(),
+        latestDate.toString());
     // We need to check if the date is in the future or the past
     // if it's in the past we only return the data of the asked day and delete
     // the days coming after
@@ -162,7 +162,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
         dayDataLocation.setTotalCases(totalCasesLocation);
         dayDataLocation.setRecoveredCases(recoveredLocation);
         dayDataLocation.setDate(newDate);
-        addLocation(id,newDate.toString(),dayDataLocation);
+        addLocation(id, newDate.toString(), dayDataLocation);
       }
       latestDate = newDate;
       latestData = dayData;

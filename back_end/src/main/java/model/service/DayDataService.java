@@ -145,11 +145,29 @@ public class DayDataService {
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
       String id = entry.getKey();
       Map<String, DayData> mapId = entry.getValue();
-      final int totalCasesId = mapId.get(date).getTotalCases();
+      DayData dayDataLocation = mapId.get(date);
+      int totalCasesId = dayDataLocation.getTotalCases();
+      if (totalCasesId == 0) {
+        totalCasesId = computeTotalCases(dayDataLocation);
+      }
       final double percentage = (double) totalCasesId / totalCasesFrance;
       resultMap.put(id, percentage);
     }
     return resultMap;
+  }
+
+  /**
+   * In our dayData sometimes the field total Cases is empty so we have to
+   * built it on our own.
+   *
+   * @param dayData The {@link DayData} for which we want to compute the
+   *                total cases
+   * @return the total cases for the {@link DayData}
+   */
+  private static int computeTotalCases(DayData dayData) {
+    return dayData.getRecoveredCases() + dayData.getHospitalized()
+      + dayData.getCriticalCases() + dayData.getEphadConfirmedCases()
+      + dayData.getTotalDeaths() + dayData.getTotalEphadDeaths();
   }
 
 }
