@@ -38,6 +38,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   model: NgbDateStruct;
   public todaysDate: NgbDate;
   public oldestDate: NgbDate;
+  test=false;
 
   // Input
   @Input() SelectedMenu: string;

@@ -91,6 +91,8 @@ export class LeftSimulationComponent implements OnInit {
     this.isStop = false;
     this.displayAccordion = 'block';
     this.sendSimulStatus.emit(this.isStart);
+    // set reset param
+    this.allParams.reset = false;
   }
 
   onstop() {
