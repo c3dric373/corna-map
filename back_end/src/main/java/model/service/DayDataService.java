@@ -26,7 +26,7 @@ public class DayDataService {
    * @param dayData Data of specific day.
    * @return percentage of susceptible people.
    */
-  public static double getSusceptible(final DayData dayData) {
+  public static double getSusceptibleSIR(final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
     final int totalCases = dayData.getTotalCases();
     return (POPULATION_FRA - totalCases) / POPULATION_FRA;
@@ -44,9 +44,9 @@ public class DayDataService {
    *                 the rate.
    * @return percentage of recovered people.
    */
-  public static double getRecoveryRate(final DayData dayData,
-                                       final ProjectDataWrapper wrapper,
-                                       final String location
+  public static double getRecoveryRateSIR(final DayData dayData,
+                                          final ProjectDataWrapper wrapper,
+                                          final String location
   ) {
     Validate.notNull(dayData, "dayData null");
     Validate.notNull(wrapper, "wrapper null");
@@ -92,7 +92,7 @@ public class DayDataService {
    * @param location location for which we should calculate the rate.
    * @return deathRate.
    */
-  public static double getDeathRate(
+  public static double getDeathRateSIR(
     final DayData dayData,
     final ProjectDataWrapper wrapper,
     final String location) {
@@ -152,7 +152,7 @@ public class DayDataService {
       String id = entry.getKey();
       Map<String, DayData> mapId = entry.getValue();
       DayData dayDataLocation = mapId.get(date);
-      if(dayDataLocation == null){
+      if (dayDataLocation == null) {
         int i = 0;
       }
       int totalCasesId = dayDataLocation.getTotalCases();

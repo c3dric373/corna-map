@@ -147,7 +147,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
       dayData = simulateDay(latestData, simulator);
-
       // Add the new data to the model and increase the date which we are
       // iterating on.
       LocalDate newDate = latestDate.plusDays(1);
@@ -183,11 +182,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private void setSimulator() {
     DayData latestData = getLatestData(FRA);
-    final double deathRate = DayDataService.getDeathRate(latestData,
+    final double deathRate = DayDataService.getDeathRateSIR(latestData,
       this, FRA);
-    final double recoveryRate = DayDataService.getRecoveryRate(latestData,
+    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
       this, FRA);
-    final double susceptible = DayDataService.getSusceptible(latestData);
+    final double susceptible = DayDataService.getSusceptibleSIR(latestData);
     final double infectious = 1 - susceptible;
     simulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
