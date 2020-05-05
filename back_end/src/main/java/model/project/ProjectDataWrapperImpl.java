@@ -46,6 +46,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private SIRSimulator simulator = new SIRSimulator();
 
+  /**
+   * Dictionnary mapping id to name for regions and departments.
+   */
+  private Map<String, String> idToName = new HashMap<>();
+
   @Override
   public void getCurrentAllDataFrance() throws IOException {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
@@ -62,6 +67,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   public void addLocation(final String location, final String date,
                           final DayData dayData) {
     project.getLocations().get(location).put(date, dayData);
+    idToName.put(dayData.getId(), dayData.getName());
   }
 
   @Override
@@ -118,9 +124,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public void addKey(final String key) {
-    final Map<String, Map<String, DayData>> localisations =
+    final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    localisations.computeIfAbsent(key, k -> new HashMap<>());
+    locations.computeIfAbsent(key, k -> new HashMap<>());
   }
 
   @Override
@@ -158,6 +164,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
         final int recoveredLocation =
           (int) ((double) dayData.getRecoveredCases() * percentage);
         dayDataLocation.setId(id);
+        dayDataLocation.setName(idToName.get(id));
         dayDataLocation.setTotalDeaths(deathsLocation);
         dayDataLocation.setTotalCases(totalCasesLocation);
         dayDataLocation.setRecoveredCases(recoveredLocation);

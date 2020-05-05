@@ -118,15 +118,15 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getRegInfos() {
-    if (this.SelectedMenu === 'map') {
-      this.mapService.getMapRegion(this.date).subscribe(
+    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+      this.simulation.getMapRegion(this.actualDate).subscribe(
         data => {
           this.reglist = data;
           this.initializeMapReg();
         }
       );
     } else {
-      this.simulation.getMapRegion(this.actualDate).subscribe(
+      this.mapService.getMapRegion(this.date).subscribe(
         data => {
           this.reglist = data;
           this.initializeMapReg();
@@ -136,15 +136,15 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getDeptInfos() {
-    if (this.SelectedMenu === 'map') {
-      this.mapService.getMapDept(this.date).subscribe(
+    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+      this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();
         }
       );
     } else {
-      this.simulation.getMapDept(this.actualDate).subscribe(
+      this.mapService.getMapDept(this.date).subscribe(
         data => {
           this.deptList = data;
           this.initializeMapDept();
@@ -365,10 +365,10 @@ export class MapContentComponent implements OnInit, OnChanges {
     this.selectedCategory = category;
     if (this.isRegion) {
       this.removeRegListener();
-      this.initializeMapReg();
+      this.getRegInfos();
     } else {
       this.removeDeptListener();
-      this.initializeMapDept();
+      this.getDeptInfos();
     }
   }
 
