@@ -37,7 +37,7 @@ export class SimulationService {
   getInfosFrance(date: NgbDate): Observable<any>{
     const stringDate = this.dateService.dateToString(date);
     console.log(stringDate);
-    return this.httpClient.get(this.API_URL + 'map/infosFrance?date=' + stringDate  );
+    return this.httpClient.get(this.API_URL + 'simulation/infosFrance?date=' + stringDate  );
   }
 
   getInfosRegion(date: NgbDate, name: string): Observable<any>{

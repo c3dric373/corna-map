@@ -15,6 +15,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
   @Input() SelectedMenu;
+  @Input() isSimulationStarted : boolean;
 
   // Json of the region
   private reglist = [];
@@ -37,6 +38,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   public differences = [];
 
   public showLocation = false;
+  public showLink = false;
 
   private dates = [];
 
@@ -91,11 +93,19 @@ export class RightBarComponent implements OnInit, OnChanges{
   ngOnInit() {
     this.getHFrance();
     this.showLocation = false;
+    this.showLink = false;
     this.chosenLocation = 'France';
+    // this.isSimulationStarted = false;
   }
 
   ngOnChanges(composant: SimpleChanges ){
-    if (this.locationName && this.locationName !== 'France') {
+    console.log('simu start : ' + this.isSimulationStarted);
+    console.log('location : ' + this.chosenLocation);
+
+    if (this.isSimulationStarted && this.chosenLocation === 'France'){
+      this.getHFrance();
+    }
+    if (this.locationName &&  this.chosenLocation !== 'France') {// click sur region ou dpt
       if (this.isRegion) {
         this.getRegInfos();
         this.getHRegion();
@@ -104,7 +114,11 @@ export class RightBarComponent implements OnInit, OnChanges{
         this.getHDept();
       }
       this.showLocation = true;
+      this.showLink = true;
+    }else{                    // france
+      this.showLink = false;
     }
+
   }
 
   public beforeChange($event: NgbPanelChangeEvent) {
@@ -177,9 +191,16 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           // this.histFr = data;
           console.log(data);
+          this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
           this.totHospi = data.hospitalized;
           this.showLocation = true;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
           // this.setAllDataFromFrance(data);
         }
       );
