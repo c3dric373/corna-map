@@ -139,7 +139,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     // We need to check if the date is in the future or the past
     // if it's in the past we only return the data of the asked day and delete
     // the days coming after
-    if (latestDate.isAfter(LocalDate.parse(date))) {
+    if (latestDate.isAfter(LocalDate.parse(date))
+      || latestDate.equals(LocalDate.parse(date))) {
       truncateData(date);
       return getLatestData(FRA);
     }
@@ -147,7 +148,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
       dayData = simulateDay(latestData, simulator);
-
       // Add the new data to the model and increase the date which we are
       // iterating on.
       LocalDate newDate = latestDate.plusDays(1);
@@ -183,11 +183,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private void setSimulator() {
     DayData latestData = getLatestData(FRA);
-    final double deathRate = DayDataService.getDeathRate(latestData,
+    final double deathRate = DayDataService.getDeathRateSIR(latestData,
       this, FRA);
-    final double recoveryRate = DayDataService.getRecoveryRate(latestData,
+    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
       this, FRA);
-    final double susceptible = DayDataService.getSusceptible(latestData);
+    final double susceptible = DayDataService.getSusceptibleSIR(latestData);
+    final List<Double> susceptibleComplex =
+      DayDataService.getSusceptibleSJYHR(latestData);
     final double infectious = 1 - susceptible;
     simulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
@@ -199,11 +201,15 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param date the specific date.
    */
   private void truncateData(final String date) {
-    final Map<String, Map<String, DayData>> localisations =
+    final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> dataFrance = localisations.get(FRA);
-    dataFrance.keySet().removeIf(key
-      -> LocalDate.parse(key).isAfter(LocalDate.parse(date)));
+    final Map<String, DayData> dataFrance = locations.get(FRA);
+    for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
+      final String id = entry.getKey();
+      final Map<String, DayData> mapId = entry.getValue();
+      mapId.keySet().removeIf(key
+        -> LocalDate.parse(key).isAfter(LocalDate.parse(date)));
+    }
   }
 
   /**
@@ -252,7 +258,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final Map<String, DayData> franceMap = localisations.get(location);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
-    if (!latestDate.isPresent()) {
+    if (latestDate.isEmpty()) {
       throw new IllegalStateException("No max date in map");
     }
     return franceMap.get(latestDate.get());

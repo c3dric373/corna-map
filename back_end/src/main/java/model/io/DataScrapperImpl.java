@@ -47,7 +47,7 @@ public class DataScrapperImpl implements DataScrapper {
 
     //We create a csv file from the string object then we read and parse the
     // csv file to fill the DayData Array
-    File file = new File(pathToData);
+    final File file = new File(pathToData);
     try {
       FileWriter csvOutput = new FileWriter(file);
       csvOutput.write(output);
