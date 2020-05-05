@@ -139,7 +139,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     // We need to check if the date is in the future or the past
     // if it's in the past we only return the data of the asked day and delete
     // the days coming after
-    if (latestDate.isAfter(LocalDate.parse(date)) || latestDate.equals(LocalDate.parse(date))) {
+    if (latestDate.isAfter(LocalDate.parse(date))
+      || latestDate.equals(LocalDate.parse(date))) {
       truncateData(date);
       return getLatestData(FRA);
     }
