@@ -185,7 +185,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.reglist = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -203,7 +202,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.reglist = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -227,7 +225,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.deptList = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -244,7 +241,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.deptList = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -268,10 +264,10 @@ export class RightBarComponent implements OnInit, OnChanges{
         }
       );
     }else{
-      console.log(this.actualdate);
       this.simulationService.getInfosFrance(this.actualdate).subscribe(
         data => {
           // this.histFr = data;
+          console.log('fra data :');
           console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
