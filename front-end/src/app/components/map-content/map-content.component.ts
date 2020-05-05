@@ -4,6 +4,7 @@ import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
 import {SimulationService} from '../../service/simulation/simulation.service';
 import {DateServiceService} from '../../service/Date/date-service.service';
+import {SimulParams} from '../../model/SimulParams';
 
 @Component({
   selector: 'app-map-content',
@@ -73,6 +74,8 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    // Autorise simulation
+    this.simulation.startSimul(new SimulParams());
     this.isOnlyMap.emit(false);
     this.loading.emit(true);
     this.isRegion = true;
@@ -118,7 +121,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getRegInfos() {
-    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+    if (this.SelectedMenu === 'simulation') {
       this.simulation.getMapRegion(this.actualDate).subscribe(
         data => {
           this.reglist = data;
@@ -136,7 +139,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getDeptInfos() {
-    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+    if (this.SelectedMenu === 'simulation') {
       this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
