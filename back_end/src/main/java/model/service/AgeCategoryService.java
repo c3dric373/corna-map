@@ -38,8 +38,14 @@ public class AgeCategoryService {
    */
   public static final double FR_POP_75_INF = 0.093;
 
+  /**
+   * Map to facilitate working with the above fields.
+   */
   public Map<Integer, Double> indexToPopPercentage = new HashMap<>();
 
+  /**
+   * Empty Constructor.
+   */
   public AgeCategoryService() {
     indexToPopPercentage.put(0, FR_POP_0_14);
     indexToPopPercentage.put(1, FR_POP_15_44);
@@ -48,6 +54,12 @@ public class AgeCategoryService {
     indexToPopPercentage.put(4, FR_POP_75_INF);
   }
 
+  /**
+   * Computes percentage of dead people in complete Population.
+   *
+   * @param ageCategories List of data of all ageCategories.
+   * @return the percentage of dead people from covid-19.
+   */
   public double getDead(final List<SJYHRSimulator.AgeCategory> ageCategories) {
     int i = 0;
     double sum = 0;
@@ -58,7 +70,14 @@ public class AgeCategoryService {
     return sum;
   }
 
-  public double getRecovered(final List<SJYHRSimulator.AgeCategory> ageCategories) {
+  /**
+   * Computes percentage of recovered people in complete Population.
+   *
+   * @param ageCategories List of data of all ageCategories.
+   * @return the percentage of recovered people from covid-19.
+   */
+  public double getRecovered(final List<SJYHRSimulator.AgeCategory>
+                               ageCategories) {
     int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
@@ -68,7 +87,14 @@ public class AgeCategoryService {
     return sum;
   }
 
-  public double getHospitalized(final List<SJYHRSimulator.AgeCategory> ageCategories) {
+  /**
+   * Computes percentage of hospitalized people in complete Population.
+   *
+   * @param ageCategories List of data of all ageCategories.
+   * @return the percentage of hospitalized people from covid-19.
+   */
+  public double getHospitalized(final List<SJYHRSimulator.AgeCategory>
+                                  ageCategories) {
     int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
@@ -78,7 +104,14 @@ public class AgeCategoryService {
     return sum;
   }
 
-  public double getHeavyInfected(final List<SJYHRSimulator.AgeCategory> ageCategories) {
+  /**
+   * Computes percentage of heavy infected people in complete Population.
+   *
+   * @param ageCategories List of data of all ageCategories.
+   * @return the percentage of heavy infected people from covid-19.
+   */
+  public double getHeavyInfected(final List<SJYHRSimulator.AgeCategory>
+                                   ageCategories) {
     int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
@@ -88,7 +121,14 @@ public class AgeCategoryService {
     return sum;
   }
 
-  public double getLightInfected(final List<SJYHRSimulator.AgeCategory> ageCategories) {
+  /**
+   * Computes percentage of light infected people in complete Population.
+   *
+   * @param ageCategories List of data of all ageCategories.
+   * @return the percentage of light infected  people from covid-19.
+   */
+  public double getLightInfected(final List<SJYHRSimulator.AgeCategory>
+                                   ageCategories) {
     int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
@@ -98,18 +138,38 @@ public class AgeCategoryService {
     return sum;
   }
 
+  /**
+   * Computes percentage of dead people in on age category.
+   *
+   * @param ageCategory specific ageCategories.
+   * @return the percentage of dead people from covid-19 in on age category.
+   */
   private double getDead(final SJYHRSimulator.AgeCategory ageCategory
   ) {
     List<Double> dead = ageCategory.getDi();
     return Iterators.getLast(dead.iterator());
   }
 
+  /**
+   * Computes percentage of recovered people in on age category.
+   *
+   * @param ageCategory specific ageCategories.
+   * @return the percentage of recovered people from covid-19 in on age
+   * category.
+   */
   private double getRecovered(final SJYHRSimulator.AgeCategory ageCategory
   ) {
     List<Double> recovered = ageCategory.getRi();
     return Iterators.getLast(recovered.iterator());
   }
 
+  /**
+   * Computes percentage of hospitalized people in on age category.
+   *
+   * @param ageCategory specific ageCategories.
+   * @return the percentage of hospitalized people from covid-19 in on age
+   * category.
+   */
   private double getHospitalized(final SJYHRSimulator.AgeCategory ageCategory
   ) {
     List<List<Double>> hospitalized = ageCategory.getHi();
@@ -120,6 +180,13 @@ public class AgeCategoryService {
     return sum;
   }
 
+  /**
+   * Computes percentage of light infected people in on age category.
+   *
+   * @param ageCategory specific ageCategories.
+   * @return the percentage of light infected people from covid-19 in on age
+   * category.
+   */
   private double getLightInfected(final SJYHRSimulator.AgeCategory ageCategory
   ) {
     List<List<Double>> lightInfected = ageCategory.getJi();
@@ -130,6 +197,13 @@ public class AgeCategoryService {
     return sum;
   }
 
+  /**
+   * Computes percentage of heavy infected people in on age category.
+   *
+   * @param ageCategory specific ageCategories.
+   * @return the percentage of heavy infected people from covid-19 in on age
+   * category.
+   */
   private double getHeavyInfected(final SJYHRSimulator.AgeCategory ageCategory
   ) {
     List<List<Double>> heavyInfected = ageCategory.getYi();

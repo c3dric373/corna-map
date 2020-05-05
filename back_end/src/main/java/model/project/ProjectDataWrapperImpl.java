@@ -41,9 +41,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Getter
   private ProjectData project = new ProjectDataImpl();
 
-  /**
-   * Simulator used to simulate COVID-19.
-   */
   // private SIRSimulator simulator = new SIRSimulator();
 
   /**
@@ -234,23 +231,23 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Simulates a the spread of COVID-19 for one day, according to a given
-   * simulator.
+   * sjyhrSimulator.
    *
    * @param startState The data on the situation form which the simulated day
    *                   should start.
-   * @param simulator  the given simulator.
+   * @param sjyhrSimulator  the given sjyhrSimulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
-                              final SJYHRSimulator simulator) {
+                              final SJYHRSimulator sjyhrSimulator) {
     // Compute Start State
     final double totalDeaths = startState.getTotalDeaths();
     final double recovered = startState.getRecoveredCases();
     // Simulate a day
-    simulator.step();
+    sjyhrSimulator.step();
     final DayData result = new DayData();
     final List<SJYHRSimulator.AgeCategory> ageCategories =
-      simulator.getAgeCategories();
+      sjyhrSimulator.getAgeCategories();
     final double deadNew = ageCategoryService.getDead(ageCategories);
     final double lightInfected =
       ageCategoryService.getLightInfected(ageCategories);
