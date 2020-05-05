@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Controller of the spring boot application.
@@ -25,6 +27,11 @@ public class Controller {
    * Project state.
    */
   private State projectState = State.MAP;
+
+  /**
+   * Lock for concurrent access.
+   */
+  private Lock lock = new ReentrantLock();
 
   /**
    * Constructor. We get all the data from the web when the constructor is
@@ -91,17 +98,22 @@ public class Controller {
   String infosRegion(@RequestParam("date") final String date,
                      @RequestParam(value = "name",
                        required = false) final String name) throws IOException {
-    Validate.notNull(date, "date is null");
-    Validate.notEmpty(date, "date empty");
-    if (projectState == State.SIMULATION) {
-      wrapper.getCurrentAllDataFrance();
-      projectState = State.MAP;
-    }
-    Gson gson = new Gson();
-    if (name == null) {
-      return gson.toJson(wrapper.infosRegion(date));
-    } else {
-      return gson.toJson(wrapper.infosLocation(name, date));
+    lock.lock();
+    try {
+      Validate.notNull(date, "date is null");
+      Validate.notEmpty(date, "date empty");
+      if (projectState == State.SIMULATION) {
+        wrapper.getCurrentAllDataFrance();
+        projectState = State.MAP;
+      }
+      Gson gson = new Gson();
+      if (name == null) {
+        return gson.toJson(wrapper.infosRegion(date));
+      } else {
+        return gson.toJson(wrapper.infosLocation(name, date));
+      }
+    } finally {
+      lock.unlock();
     }
   }
 
@@ -126,17 +138,22 @@ public class Controller {
   String infosDept(@RequestParam("date") final String date,
                    @RequestParam(value = "name",
                      required = false) final String name) throws IOException {
-    Validate.notNull(date, "date is null");
-    Validate.notEmpty(date, "date empty");
-    if (projectState == State.SIMULATION) {
-      wrapper.getCurrentAllDataFrance();
-      projectState = State.MAP;
-    }
-    Gson gson = new Gson();
-    if (name == null) {
-      return gson.toJson(wrapper.infosDept(date));
-    } else {
-      return gson.toJson(wrapper.infosLocation(name, date));
+    lock.lock();
+    try {
+      Validate.notNull(date, "date is null");
+      Validate.notEmpty(date, "date empty");
+      if (projectState == State.SIMULATION) {
+        wrapper.getCurrentAllDataFrance();
+        projectState = State.MAP;
+      }
+      Gson gson = new Gson();
+      if (name == null) {
+        return gson.toJson(wrapper.infosDept(date));
+      } else {
+        return gson.toJson(wrapper.infosLocation(name, date));
+      }
+    } finally {
+      lock.unlock();
     }
   }
 
@@ -152,14 +169,20 @@ public class Controller {
     produces = MediaType.APPLICATION_JSON_VALUE)
   String history(@RequestParam("location") final String location)
     throws IOException {
-    Validate.notNull(location, "location null");
-    Validate.notEmpty(location, "location empty");
-    Gson gson = new Gson();
-    if (projectState == State.SIMULATION) {
-      wrapper.getCurrentAllDataFrance();
-      projectState = State.MAP;
+    lock.lock();
+    try {
+      Validate.notNull(location, "location null");
+      Validate.notEmpty(location, "location empty");
+      Gson gson = new Gson();
+      if (projectState == State.SIMULATION) {
+        wrapper.getCurrentAllDataFrance();
+        projectState = State.MAP;
+      }
+      return gson.toJson(wrapper.historyLocation(location));
+
+    } finally {
+      lock.unlock();
     }
-    return gson.toJson(wrapper.historyLocation(location));
   }
 
   /**
@@ -176,8 +199,14 @@ public class Controller {
     if (projectState != State.SIMULATION) {
       throw new IllegalStateException("Not in Simulation State");
     }
-    Gson gson = new Gson();
-    return gson.toJson(wrapper.simulateFrance(date));
+    lock.lock();
+    try {
+      Gson gson = new Gson();
+      return gson.toJson(wrapper.simulateFrance(date));
+
+    } finally {
+      lock.unlock();
+    }
   }
 
   @RequestMapping(value = {"simulation/infosRegion"}, method =
@@ -191,12 +220,17 @@ public class Controller {
     if (projectState != State.SIMULATION) {
       throw new IllegalStateException("Not in Simulation State");
     }
-    Gson gson = new Gson();
-    wrapper.simulateFrance(date);
-    if (name == null) {
-      return gson.toJson(wrapper.infosRegion(date));
-    } else {
-      return gson.toJson(wrapper.infosLocation(name, date));
+    lock.lock();
+    try {
+      Gson gson = new Gson();
+      wrapper.simulateFrance(date);
+      if (name == null) {
+        return gson.toJson(wrapper.infosRegion(date));
+      } else {
+        return gson.toJson(wrapper.infosLocation(name, date));
+      }
+    } finally {
+      lock.unlock();
     }
   }
 
@@ -211,13 +245,20 @@ public class Controller {
     if (projectState != State.SIMULATION) {
       throw new IllegalStateException("Not in Simulation State");
     }
-    Gson gson = new Gson();
-    wrapper.simulateFrance(date);
-    if (name == null) {
-      return gson.toJson(wrapper.infosDept(date));
-    } else {
-      return gson.toJson(wrapper.infosLocation(name, date));
+
+    lock.lock();
+    try {
+      Gson gson = new Gson();
+      wrapper.simulateFrance(date);
+      if (name == null) {
+        return gson.toJson(wrapper.infosDept(date));
+      } else {
+        return gson.toJson(wrapper.infosLocation(name, date));
+      }
+    } finally {
+      lock.unlock();
     }
+
   }
 
   @RequestMapping(value = {"simulation/start"}, method =
@@ -225,19 +266,29 @@ public class Controller {
     produces = MediaType.APPLICATION_JSON_VALUE)
   String initializeSimulation(@RequestBody final String content) {
     Gson gson = new Gson();
-    projectState = State.SIMULATION;
-    System.out.println(content);
-    wrapper.startSimulation();
-    return gson.toJson("bien reçu chef!");
+    lock.lock();
+    try {
+      projectState = State.SIMULATION;
+      System.out.println(content);
+      wrapper.startSimulation();
+      return gson.toJson("bien reçu chef!");
+    } finally {
+      lock.unlock();
+    }
   }
 
   @RequestMapping(value = {"simulation/start"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
   String initializeSimulationGet() {
-    projectState = State.SIMULATION;
-    Gson gson = new Gson();
-    wrapper.startSimulation();
-    return gson.toJson("bien reçu chef!");
+    lock.lock();
+    try {
+      projectState = State.SIMULATION;
+      Gson gson = new Gson();
+      wrapper.startSimulation();
+      return gson.toJson("bien reçu chef!");
+    } finally {
+      lock.unlock();
+    }
   }
 }
