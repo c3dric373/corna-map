@@ -180,6 +180,24 @@ public class ProjectDataWrapperImplTest {
   }
 
   @Test
+  public void testSimulateFrance_simHistorySameDayTwice_totalCasesNotZero()
+    throws IOException {
+    // Arrange
+    String datePast = "2020-03-19";
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(datePast);
+    final DayData dayDataResult = wrapper.simulateFrance(datePast);
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataResult.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
   public void testSimulateFrance_simHistoryBeforeFuture_totalCasesNonZero() throws IOException {
     // Arrange
     LocalDate datePast = LocalDate.now().minusDays(10);
