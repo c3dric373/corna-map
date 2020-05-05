@@ -52,8 +52,10 @@ public class ProjectDataWrapperImplTest {
 
   private static ProjectDataWrapperImpl subject =
     new ProjectDataWrapperImpl();
-  private static ProjectDataWrapperImpl wrapper =
+  private static ProjectDataWrapperImpl customWrapper =
     new ProjectDataWrapperImpl();
+
+  private static ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
 
   private static final String PATH_TO_DATA = System.getProperty("user.dir")
     + "/src/test"
@@ -105,18 +107,18 @@ public class ProjectDataWrapperImplTest {
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
       TOTAL_TEST);
-    wrapper.addKey(DEP_44);
-    wrapper.addKey(DEP_45);
-    wrapper.addKey(FRA);
-    wrapper.addKey(REG_12);
-    wrapper.addKey(REG_11);
-    wrapper.addLocation(DEP_44, DATE1, dayData);
-    wrapper.addLocation(DEP_45, DATE1, dayData6);
-    wrapper.addLocation(DEP_44, DATE2, dayData1);
-    wrapper.addLocation(FRA, DATE1, dayData2);
-    wrapper.addLocation(FRA, DATE2, dayData3);
-    wrapper.addLocation(REG_11, DATE1, dayData4);
-    wrapper.addLocation(REG_12, DATE1, dayData5);
+    customWrapper.addKey(DEP_44);
+    customWrapper.addKey(DEP_45);
+    customWrapper.addKey(FRA);
+    customWrapper.addKey(REG_12);
+    customWrapper.addKey(REG_11);
+    customWrapper.addLocation(DEP_44, DATE1, dayData);
+    customWrapper.addLocation(DEP_45, DATE1, dayData6);
+    customWrapper.addLocation(DEP_44, DATE2, dayData1);
+    customWrapper.addLocation(FRA, DATE1, dayData2);
+    customWrapper.addLocation(FRA, DATE2, dayData3);
+    customWrapper.addLocation(REG_11, DATE1, dayData4);
+    customWrapper.addLocation(REG_12, DATE1, dayData5);
   }
 
   @Test
@@ -139,10 +141,66 @@ public class ProjectDataWrapperImplTest {
     // Arrange
 
     // Act
-    final DayData result = wrapper.infosFrance(DATE1);
+    final DayData result = customWrapper.infosFrance(DATE1);
 
     // Assert
     Assert.assertEquals("wrong dayData", dayData2, result);
+  }
+
+  @Test
+  public void testSimulateFrance_sim5daysInFuture_totalCasesNonZero() throws IOException {
+    // Arrange
+    LocalDate dateIn5Days = LocalDate.now().plusDays(5);
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    System.out.println(dateIn5Days);
+    final DayData dayData =
+      wrapper.simulateFrance(dateIn5Days.toString());
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayData.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simHistory_correctDayData() throws IOException {
+    // Arrange
+    LocalDate datePast = LocalDate.now().minusDays(10);
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    final DayData expected =
+      wrapper.getProject().getLocations().get(FRA).get(datePast.toString());
+
+    // Act
+    final DayData result =  wrapper.simulateFrance(datePast.toString());;
+
+    // Assert
+    System.out.println(expected);
+    System.out.println(result);
+    Assert.assertEquals("wrong DayData", expected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simHistoryBeforeFuture_totalCasesNonZero() throws IOException {
+    // Arrange
+    LocalDate datePast = LocalDate.now().minusDays(10);
+    LocalDate dateFuture = LocalDate.now().plusDays(5);
+
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(datePast.toString());
+    final DayData dayData =
+      wrapper.simulateFrance(dateFuture.toString());
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayData.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
   }
 
   @Test
@@ -152,7 +210,7 @@ public class ProjectDataWrapperImplTest {
     expected.add(dayData3);
     expected.add(dayData2);
     // Act
-    final List<DayData> result = wrapper.historyLocation(FRA);
+    final List<DayData> result = customWrapper.historyLocation(FRA);
 
     // Assert
     Assert.assertEquals("wrong dayData", expected, result);
@@ -165,7 +223,7 @@ public class ProjectDataWrapperImplTest {
     expected.add(dayData1);
     expected.add(dayData);
     // Act
-    final List<DayData> result = wrapper.historyLocation(DEP_44);
+    final List<DayData> result = customWrapper.historyLocation(DEP_44);
 
     // Assert
     Assert.assertEquals("wrong dayData", expected, result);
@@ -176,7 +234,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
 
     // Act
-    final DayData result = wrapper.infosLocation(DEP_44, DATE1);
+    final DayData result = customWrapper.infosLocation(DEP_44, DATE1);
 
     // Assert
     Assert.assertEquals("wrong dayData", dayData, result);
@@ -189,7 +247,7 @@ public class ProjectDataWrapperImplTest {
     expected.add(dayData5);
     expected.add(dayData4);
     // Act
-    final List<DayData> result = wrapper.infosRegion(DATE1);
+    final List<DayData> result = customWrapper.infosRegion(DATE1);
 
     // Assert
     Assert.assertEquals("wrong dayData", expected, result);
@@ -202,7 +260,7 @@ public class ProjectDataWrapperImplTest {
     expected.add(dayData);
     expected.add(dayData6);
     // Act
-    final List<DayData> result = wrapper.infosDept(DATE1);
+    final List<DayData> result = customWrapper.infosDept(DATE1);
 
     // Assert
     Assert.assertEquals("wrong dayData", expected, result);
@@ -215,7 +273,7 @@ public class ProjectDataWrapperImplTest {
     expected.add(dayData);
     expected.add(dayData6);
     // Act
-    final List<DayData> result = wrapper.infosDept(DATE1);
+    final List<DayData> result = customWrapper.infosDept(DATE1);
 
     // Assert
     Assert.assertEquals("wrong dayData", expected, result);

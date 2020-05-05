@@ -152,7 +152,11 @@ public class DayDataService {
       String id = entry.getKey();
       Map<String, DayData> mapId = entry.getValue();
       DayData dayDataLocation = mapId.get(date);
+      if(dayDataLocation == null){
+        int i = 0;
+      }
       int totalCasesId = dayDataLocation.getTotalCases();
+
       if (totalCasesId == 0) {
         totalCasesId = computeTotalCases(dayDataLocation);
       }
