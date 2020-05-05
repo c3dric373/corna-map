@@ -112,7 +112,7 @@ public class SJYHRSimulator implements Simulator {
      */
     private final int u;
     /**
-     * Number of parameters;
+     * Number of parameters.
      */
     private final int nbParam;
     /**
@@ -454,7 +454,9 @@ public class SJYHRSimulator implements Simulator {
         double res = 0.;
         double mu = ageCategories.get(i).getMui();
         for (int j = 0; j < u; ++j) {
-            res += nu.get(j) * state.get(i * nbParam + 1 + g + h + j) * (1. - mu);
+            res += nu.get(j)
+                    * state.get(i * nbParam + 1 + g + h + j)
+                    * (1. - mu);
         }
         return res;
     }
