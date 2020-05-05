@@ -203,7 +203,6 @@ public class Controller {
     try {
       Gson gson = new Gson();
       return gson.toJson(wrapper.simulateFrance(date));
-
     } finally {
       lock.unlock();
     }
