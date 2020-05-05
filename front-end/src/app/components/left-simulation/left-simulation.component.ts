@@ -139,4 +139,16 @@ export class LeftSimulationComponent implements OnInit {
       }
     }, (this.chosenInterval * 1000));
   }
+
+  displayPercentage(int: number): string{
+    const value = int + '%';
+    return value;
+  }
+
+  displayTime(int: number): string{
+    const value = int + 's';
+    return value;
+  }
+
 }
+

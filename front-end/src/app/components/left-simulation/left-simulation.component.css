@@ -24,7 +24,8 @@ ng-template{
   margin-top: 8%;
   text-align: center;
   width:100%;
-  height: 5%;
+  height: 8vh;
+  margin-bottom: 15vh;
 }
 
 .setSimul {
