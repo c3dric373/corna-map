@@ -18,6 +18,7 @@ export class MapMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.location = 'France';
   }
 
   clickOnLocation(location: string) {

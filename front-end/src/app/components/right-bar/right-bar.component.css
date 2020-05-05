@@ -7,6 +7,7 @@
   transition: all 0.3s;
   display: grid;
   font-family : Bahnschrift;
+  overflow: auto;
 }
 
 #sidebar.active {
@@ -16,6 +17,7 @@
 #sidebar .sidebar-header {
   padding: 20px;
   background: #f2f2f2ff;
+  overflow:visible;
 }
 
 #titre{
@@ -27,7 +29,6 @@
 #charts{
   font-size: xx-small;
   max-width: 30vw !important;
-  overflow: paged-x-controls;
 }
 
 .container-sm {
@@ -40,4 +41,30 @@ table{
   justify-self: center;
   text-align: center;
 
+}
+
+th{
+  font-size: small;
+}
+
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #cdc9c9;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
 }
