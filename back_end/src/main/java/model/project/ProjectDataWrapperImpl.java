@@ -187,6 +187,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
       this, FRA);
     final double susceptible = DayDataService.getSusceptibleSIR(latestData);
+    final List<Double> susceptibleComplex =
+      DayDataService.getSusceptibleSJYHR(latestData);
     final double infectious = 1 - susceptible;
     simulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
@@ -251,7 +253,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final Map<String, DayData> franceMap = localisations.get(location);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
-    if (!latestDate.isPresent()) {
+    if (latestDate.isEmpty()) {
       throw new IllegalStateException("No max date in map");
     }
     return franceMap.get(latestDate.get());

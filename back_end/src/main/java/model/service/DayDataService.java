@@ -5,6 +5,7 @@ import model.project.ProjectDataWrapper;
 import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DayDataService {
@@ -13,6 +14,35 @@ public class DayDataService {
    * French population size.
    */
   private static final double POPULATION_FRA = 67000000.0;
+
+  // Stats about french pop
+  // https://www.statista.com/statistics/464032/distribution-population-age
+  // -group-france/
+
+  /**
+   * Percentage of people in the 0-14 age class in France.
+   */
+  private static final double FR_POP_0_14 = 0.179;
+
+  /**
+   * Percentage of people in the 15-44 age class in France.
+   */
+  private static final double FR_POP_15_44 = 0.36;
+
+  /**
+   * Percentage of people in the 45-64 age class in France.
+   */
+  private static final double FR_POP_45_64 = 0.179;
+
+  /**
+   * Percentage of people in the 0-14 age class in France.
+   */
+  private static final double FR_POP_64_75 = 0.179;
+
+  /**
+   * Percentage of people in the 0-14 age class in France.
+   */
+  private static final double FR_POP_75_INF = 0.179;
 
   /**
    * Id for France.
@@ -181,4 +211,14 @@ public class DayDataService {
       + dayData.getTotalDeaths() + dayData.getTotalEphadDeaths();
   }
 
+  /**
+   * Computes for each age class the percentage of people
+   * susceptible to get infected from the COVID-19.
+   *
+   * @param latestData The data for which we should calculate such percentages.
+   * @return List of percentages.
+   */
+  public static List<Double> getSusceptibleSJYHR(final DayData latestData) {
+    return null;
+  }
 }
