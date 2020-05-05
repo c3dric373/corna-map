@@ -51,6 +51,14 @@ public class SJYHRSimulator implements Simulator {
          * Hospitalized death rate.
          */
         double mui;
+        /**
+         * The coefficient c in normal time.
+         */
+        double ci;
+        /**
+         * The coefficient c in confinement.
+         */
+        double ciConfined;
 
         /**
          * Constructor of the i-th age category.
@@ -59,9 +67,12 @@ public class SJYHRSimulator implements Simulator {
          * @param i            index of the age category.
          * @param theta        heavy infection rate.
          * @param mu           hospitalized death rate.
+         * @param c            c in normal time.
+         * @param cConfined    c in confinement.
          */
         AgeCategory(final List<Double> initialState, final int i,
-                    final double theta, final double mu) {
+                    final double theta, final double mu,
+                    final double c, final double cConfined) {
             si = new ArrayList<>();
             si.add(initialState.get(i * nbParam));
 
@@ -91,6 +102,8 @@ public class SJYHRSimulator implements Simulator {
 
             thetai = theta;
             mui = mu;
+            ci = c;
+            ciConfined = cConfined;
         }
     }
 
@@ -234,11 +247,11 @@ public class SJYHRSimulator implements Simulator {
         s0 = 67000000.; // 67 millions
 
         c = new ArrayList<>(n);
-        c.add(1.);
-        c.add(1.);
-        c.add(1.);
-        c.add(1.);
-        c.add(1.);
+        c.add(0.8);
+        c.add(0.9);
+        c.add(0.6);
+        c.add(0.3);
+        c.add(0.1);
 
         List<Double> initialState = new ArrayList<>(5 * nbParam);
         for (int k = 0; k < 5 * nbParam; ++k) {
@@ -252,15 +265,15 @@ public class SJYHRSimulator implements Simulator {
 
         ageCategories = new ArrayList<>(n);
         ageCategories.add(new AgeCategory(initialState,
-                0, 0.0072, 0.003));
+                0, 0.0072, 0.003, 0.8, 0.05));
         ageCategories.add(new AgeCategory(initialState,
-                1, 0.144, 0.01));
+                1, 0.144, 0.01, 0.9, 0.2));
         ageCategories.add(new AgeCategory(initialState,
-                2, 1.77, 0.08));
+                2, 1.77, 0.08, 0.6, 0.15));
         ageCategories.add(new AgeCategory(initialState,
-                3, 6.57, 0.22));
+                3, 6.57, 0.22, 0.3, 0.05));
         ageCategories.add(new AgeCategory(initialState,
-                4, 12.96, 0.44));
+                4, 12.96, 0.44, 0.1, 0.01));
 
         model = makeModel(initialState);
         solver = new RK4Solver();
@@ -476,5 +489,72 @@ public class SJYHRSimulator implements Simulator {
             res += nu.get(j) * state.get(i * nbParam + 1 + g + h + j) * mu;
         }
         return res;
+    }
+
+    /**
+     * Applies the government measures.
+     *
+     * @param confinedCategories Age categories to confine.
+     * @param maskedCategories   Age categories who will have to wear a mask.
+     * @param confinementRespect indicator of the respect of the confinement.
+     */
+    public void applyMeasures(final List<Integer> confinedCategories,
+                              final List<Integer> maskedCategories,
+                              double confinementRespect) {
+        applyConfinement(confinedCategories, confinementRespect);
+        setMaskUsage(maskedCategories);
+    }
+
+    /**
+     * Sets the confinement for the age categories represented by indexes and
+     * stops it for the other ones.
+     *
+     * @param confinedCategories age categories that needs to be confined.
+     * @param confinementRespect indicator of the respect of the confinement.
+     */
+    private void applyConfinement(final List<Integer> confinedCategories,
+                                  double confinementRespect) {
+        for (int i = 0; i < n; ++i) {
+            if (confinedCategories.contains(i)) {
+                applyConfinement(i, confinementRespect);
+            } else {
+                stopConfinement(i);
+            }
+        }
+    }
+
+    /**
+     * Sets the confinement for an age category.
+     *
+     * @param i                  age category index.
+     * @param confinementRespect indicator of the respect of the confinement.
+     */
+    private void applyConfinement(int i, double confinementRespect) {
+        double a = ageCategories.get(i).getCi();
+        double b = ageCategories.get(i).getCiConfined();
+        c.set(i, (b - a) * confinementRespect + a);
+    }
+
+    /**
+     * Stops the confinement for an age category.
+     *
+     * @param i age category index.
+     */
+    private void stopConfinement(int i) {
+        c.set(i, ageCategories.get(i).getCi());
+    }
+
+    /**
+     * Sets the mask usage for the age categories represented by indexes and
+     * stops it for the other ones.
+     *
+     * @param maskedCategories age categories that needs to ware a mask.
+     */
+    private void setMaskUsage(final List<Integer> maskedCategories) {
+        for (int i = 0; i < n; ++i) {
+            if (maskedCategories.contains(i)) {
+                c.set(i, c.get(i) * 0.32);
+            }
+        }
     }
 }
