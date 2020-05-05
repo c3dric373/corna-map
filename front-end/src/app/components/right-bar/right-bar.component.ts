@@ -147,6 +147,8 @@ export class RightBarComponent implements OnInit, OnChanges{
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
+          // When isSimulationStarted changes
+          case 'isSimulationStarted':
           // When actualdate changes
           case 'actualdate':
           // When locationName changes
@@ -164,10 +166,6 @@ export class RightBarComponent implements OnInit, OnChanges{
             }else{                    // france
               this.showLink = false;
             }
-            break;
-          }
-          // When isSimulationStarted changes
-          case 'isSimulationStarted': {
             if (this.isSimulationStarted && this.locationName === 'France'){
               this.getHFrance();
               // this.showLocation = true;
