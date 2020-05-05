@@ -42,13 +42,13 @@ export class SimulationService {
 
   getInfosRegion(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateService.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'simulation/infosRegion?date=2020-04-20' + '&name=' + name );
+    return this.httpClient.get(this.API_URL + 'simulation/infosRegion?date=' + stringDate + '&name=' + name );
     // si le nom est null, retourner les données de toutes les régions
   }
 
   getInfosDept(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateService.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'simulation/infosDept?date=2020-04-20' + '&name=' + name );
+    return this.httpClient.get(this.API_URL + 'simulation/infosDept?date=' + stringDate + '&name=' + name );
     // si le nom est null, retourner les données de tout les départements
   }
 

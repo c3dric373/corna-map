@@ -4,6 +4,7 @@ import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { faCalendarAlt, faExpandAlt, faCompressAlt} from '@fortawesome/free-solid-svg-icons';
 import {SimulationService} from '../../service/simulation/simulation.service';
 import {DateServiceService} from '../../service/Date/date-service.service';
+import {SimulParams} from '../../model/SimulParams';
 
 @Component({
   selector: 'app-map-content',
@@ -16,6 +17,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   expand = faExpandAlt;
   compress = faCompressAlt;
 
+  isMenuCalendarClicked: boolean;
   isRegion: boolean;
   onlyMap: boolean;
   // Color for gradient
@@ -32,13 +34,12 @@ export class MapContentComponent implements OnInit, OnChanges {
   private deptList;
   // Selected category : ex : nbDeath, ...
   public selectedCategory: string;
-  public tabCategory = ['cas hospitalisés', 'cas critiques', 'nombre de morts', 'cas soignés' ];
+  public tabCategory = [ 'Cas confirmés', 'Hospitalisés', 'Guéris', 'Cas critiques', 'Décès'];
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
   public todaysDate: NgbDate;
   public oldestDate: NgbDate;
-  test=false;
 
   // Input
   @Input() SelectedMenu: string;
@@ -73,6 +74,8 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    // Autorise simulation
+    this.simulation.startSimul(new SimulParams());
     this.isOnlyMap.emit(false);
     this.loading.emit(true);
     this.isRegion = true;
@@ -118,7 +121,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getRegInfos() {
-    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+    if (this.SelectedMenu === 'simulation') {
       this.simulation.getMapRegion(this.actualDate).subscribe(
         data => {
           this.reglist = data;
@@ -136,7 +139,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   }
 
   getDeptInfos() {
-    if (this.SelectedMenu === 'simulation' && this.isSimulationStarted) {
+    if (this.SelectedMenu === 'simulation') {
       this.simulation.getMapDept(this.actualDate).subscribe(
         data => {
           this.deptList = data;
@@ -333,17 +336,20 @@ export class MapContentComponent implements OnInit, OnChanges {
   getNbCas(index, list): number{
     let nbCas;
     switch (this.selectedCategory){
-      case 'cas hospitalisés' :
+      case 'Hospitalisés' :
         nbCas = list[index].hospitalized;
         break;
-      case 'cas critiques' :
+      case 'Cas critiques' :
         nbCas = list[index].criticalCases;
         break;
-      case 'nombre de morts' :
+      case 'Décès' :
         nbCas = list[index].totalDeaths;
         break;
-      case 'cas soignés' :
+      case 'Guéris' :
         nbCas = list[index].recoveredCases;
+        break;
+      case 'Cas confirmés' :
+        nbCas = list[index].totalCases;
         break;
     }
     return nbCas;

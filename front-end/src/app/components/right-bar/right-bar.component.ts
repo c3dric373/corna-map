@@ -15,7 +15,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() isRegion: boolean;
   @Input() actualdate: NgbDate;
   @Input() SelectedMenu;
-  @Input() isSimulationStarted : boolean;
+  @Input() isSimulationStarted: boolean;
 
   // Json of the region
   private reglist = [];
@@ -26,6 +26,10 @@ export class RightBarComponent implements OnInit, OnChanges{
   private gueris = [];
   private hospi = [];
   private deces = [];
+  private casConf2 = [];
+  private gueris2 = [];
+  private hospi2 = [];
+  private deces2 = [];
   public totCasConf: string ;
   public totGueris ;
   public totHospi ;
@@ -34,6 +38,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   private histFr;
 
   public chosenLocation;
+
 
   public differences = [];
 
@@ -82,6 +87,45 @@ export class RightBarComponent implements OnInit, OnChanges{
     ]
   };
 
+  public options2: any = {
+    Chart: {
+      type: 'area',
+      height: 10,
+      width: 10
+    },
+    title: {
+      text: 'Evolution'
+    },
+    credits: {
+      enabled: false
+    },
+    xAxis: {
+      categories: this.dates ,
+      tickmarkPlacement: 'on',
+      title: {
+        enabled: false
+      }
+    },
+    yAxis: {
+      tickInterval: 500,
+
+    },
+    series: [{
+      name: 'Cas confirmés',
+      data: this.casConf2
+    }, {
+      name: 'Décès',
+      data: this.deces2
+    }, {
+      name: 'Guéris',
+      data: this.gueris2
+    }, {
+      name: 'Hospitalisés',
+      data: this.hospi2
+    }
+    ]
+  };
+
   constructor(private simulationService: SimulationService, private mapService: MapService,
               private historiqueService: HistoriqueService, calendar: NgbCalendar)  {
     // Today's date
@@ -95,40 +139,44 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.showLocation = false;
     this.showLink = false;
     this.chosenLocation = 'France';
+    this.locationName = 'France';
     // this.isSimulationStarted = false;
   }
 
-  ngOnChanges(composant: SimpleChanges ){
-    console.log('simu start : ' + this.isSimulationStarted);
-    console.log('location : ' + this.chosenLocation);
-
-    if (this.isSimulationStarted && this.chosenLocation === 'France'){
-      this.getHFrance();
-    }
-    if (this.locationName &&  this.chosenLocation !== 'France') {// click sur region ou dpt
-      if (this.isRegion) {
-        this.getRegInfos();
-        this.getHRegion();
-      } else {
-        this.getDeptInfos();
-        this.getHDept();
+  ngOnChanges(changes: SimpleChanges ){
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          // When locationName changes
+          case 'locationName': {
+            if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
+              if (this.isRegion) {
+                this.getRegInfos();
+                this.getHRegion();
+              } else {
+                this.getDeptInfos();
+                this.getHDept();
+              }
+              this.showLocation = true;
+              this.showLink = true;
+            }else{                    // france
+              this.showLink = false;
+            }
+            break;
+          }
+          // When isSimulationStarted changes
+          case 'isSimulationStarted': {
+            if (this.isSimulationStarted && this.locationName === 'France'){
+              this.getHFrance();
+              // this.showLocation = true;
+            }
+            break;
+          }
+          default:
+            break;
+        }
       }
-      this.showLocation = true;
-      this.showLink = true;
-    }else{                    // france
-      this.showLink = false;
     }
-
-  }
-
-  public beforeChange($event: NgbPanelChangeEvent) {
-/*
-    if (this.isRegion){
-      this.getRegInfos();
-    }else{
-      this.getDeptInfos();
-    }*/
-
   }
 
   getRegInfos() {
@@ -151,6 +199,23 @@ export class RightBarComponent implements OnInit, OnChanges{
         }
       );
     }else{
+      this.simulationService.getInfosRegion(this.actualdate, this.locationName).subscribe(
+        data => {
+          this.reglist = data;
+          this.chosenLocation = data.name;
+          console.log(data);
+          this.totGueris = data.recoveredCases;
+          this.totHospi = data.hospitalized;
+          this.totDeces = data.totalDeaths;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
+
+        }
+      );
 
 
     }
@@ -174,7 +239,24 @@ export class RightBarComponent implements OnInit, OnChanges{
           }
         }
       );
-    }else{}
+    }else{
+      this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
+        data => {
+          this.deptList = data;
+          this.chosenLocation = data.name;
+          console.log(data);
+          this.totGueris = data.recoveredCases;
+          this.totHospi = data.hospitalized;
+          this.totDeces = data.totalDeaths;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
+        }
+      );
+    }
   }
 
   getHFrance(){
@@ -201,7 +283,7 @@ export class RightBarComponent implements OnInit, OnChanges{
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
+            // this.setAllDataFromFrance(data);
         }
       );
 
@@ -252,6 +334,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.sortData(this.allData);
     this.setGraph(this.allData);
     Highcharts.chart('charts', this.options);
+    Highcharts.chart('charts2', this.options2);
   }
 
   // Sort data by date
@@ -276,10 +359,10 @@ export class RightBarComponent implements OnInit, OnChanges{
         this.deces.push((list[index].totalDeaths) - (list[parseInt(index, 10) - 1].totalDeaths));
         this.gueris.push((list[index].recoveredCases) - (list[parseInt(index, 10) - 1].recoveredCases));
       }
-      // this.casConf.push(list[index].totalCases);
-      // this.hospi.push(list[index].hospitalized);
-      // this.deces.push(list[index].totalDeaths);
-      // this.gueris.push(list[index].recoveredCases);
+      this.casConf2.push(list[index].totalCases);
+      this.hospi2.push(list[index].hospitalized);
+      this.deces2.push(list[index].totalDeaths);
+      this.gueris2.push(list[index].recoveredCases);
 
     }
   }
