@@ -183,9 +183,33 @@ public class ProjectDataWrapperImplTest {
   public void testSimulateFrance_simHistorySameDayTwice_totalCasesNotZero()
     throws IOException {
     // Arrange
-    String datePast = "2020-03-19";
+    final String datePast = "2020-03-19";
     wrapper.getCurrentAllDataFrance();
     wrapper.startSimulation();
+    wrapper.simulateFrance(datePast);
+    final DayData dayDataResult = wrapper.simulateFrance(datePast);
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataResult.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simHistoryTwiceThenSimFutureTwiceThenHistoryTwice_totalCasesNotZero()
+    throws IOException {
+    // Arrange
+    final String datePast = "2020-03-19";
+    final String dateFuture = LocalDate.now().plusDays(10).toString();
+    final String dateFuture1 = LocalDate.now().plusDays(15).toString();
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(datePast);
+    wrapper.simulateFrance(datePast);
+    wrapper.simulateFrance(dateFuture);
+    wrapper.simulateFrance(dateFuture1);
     wrapper.simulateFrance(datePast);
     final DayData dayDataResult = wrapper.simulateFrance(datePast);
     final int unexpected = 0;
