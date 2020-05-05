@@ -13,12 +13,12 @@
       </div>
       <!-- Select Date -->
       <div class="btn-group" *ngIf="SelectedMenu == 'map'" ngbDropdown role="group">
-        <button class="btn btn-outline-secondary" (click)="test=!test" ngbDropdownToggle>{{dateService.formatDateToFr(date)}}
+        <button class="btn btn-outline-secondary" (click)="isMenuCalendarClicked=!isMenuCalendarClicked" ngbDropdownToggle>{{dateService.formatDateToFr(date)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
-        <div class="dropdown-menu" [style]="{'display' : test? 'block' : 'none'}" >
-          <ngb-datepicker (select)="test=!test" [(ngModel)]="model" [minDate]="oldestDate" [maxDate]="todaysDate"
-                          (dateSelect)="onDateSelect($event)">
+        <div class="dropdown-menu" [style]="{'display' : isMenuCalendarClicked ? 'block' : 'none'}" >
+          <ngb-datepicker (select)="isMenuCalendarClicked=!isMenuCalendarClicked" [(ngModel)]="model" [minDate]="oldestDate"
+                          [maxDate]="todaysDate" (dateSelect)="onDateSelect($event)">
           </ngb-datepicker>
         </div>
       </div>

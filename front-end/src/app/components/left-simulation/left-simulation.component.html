@@ -19,7 +19,7 @@
     <div *ngIf="!isStart">
       <div class="date">
         <!-- Select start Date -->
-        Start Date :
+        Date de début :
         <button class="btn btn-outline-secondary" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
           {{dateService.formatDateToFr(startDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="date">
-        End Date :
+        Date de fin :
         <!-- Select finish Date -->
         <button class="btn btn-outline-secondary" (click)="endDateCalendarVisible = !endDateCalendarVisible" type="button">
           {{dateService.formatDateToFr(endDate)}}
@@ -94,6 +94,7 @@
             <span>Respect du confinement</span>
             <mat-slider
               thumbLabel
+              [displayWith]="displayPercentage"
               [(ngModel)]="allParams.respectConfinement"
               step="5" tickInterval="20"
               min="0"
@@ -112,6 +113,7 @@
               <span>Ecoulement des jours</span>
               <mat-slider
                 thumbLabel
+                [displayWith]="displayTime"
                 [(ngModel)]="chosenInterval"
                 step="1" tickInterval="1"
                 min="1"
