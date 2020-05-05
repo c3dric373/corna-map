@@ -175,11 +175,10 @@ public class ProjectDataWrapperImplTest {
       wrapper.getProject().getLocations().get(FRA).get(datePast.toString());
 
     // Act
-    final DayData result =  wrapper.simulateFrance(datePast.toString());;
+    final DayData result = wrapper.simulateFrance(datePast.toString());
+    ;
 
     // Assert
-    System.out.println(expected);
-    System.out.println(result);
     Assert.assertEquals("wrong DayData", expected, result);
   }
 
@@ -192,6 +191,132 @@ public class ProjectDataWrapperImplTest {
     wrapper.getCurrentAllDataFrance();
     wrapper.startSimulation();
     wrapper.simulateFrance(datePast.toString());
+    final DayData dayDataRes =
+      wrapper.simulateFrance(dateFuture.toString());
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataRes.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simHistoryBeforeFutureTwice_totalCasesNonZero() throws IOException {
+    // Arrange
+    final String datePast = LocalDate.now().minusDays(10).toString();
+    final String datePast1 = LocalDate.now().minusDays(15).toString();
+    final String dateFuture = LocalDate.now().plusDays(5).toString();
+    final String dateFuture1 = LocalDate.now().plusDays(7).toString();
+
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(datePast);
+    wrapper.simulateFrance(dateFuture);
+    wrapper.simulateFrance(datePast1);
+    final DayData dayDataRes = wrapper.simulateFrance(dateFuture1);
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataRes.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simFutureTrice_totalCasesNonZero() throws IOException {
+    // Arrange
+    final String dateFuture = LocalDate.now().plusDays(5).toString();
+    final String dateFuture1 = LocalDate.now().minusDays(10).toString();
+    final String dateFuture2 = LocalDate.now().plusDays(15).toString();
+
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(dateFuture);
+    wrapper.simulateFrance(dateFuture1);
+    final DayData dayDataRes = wrapper.simulateFrance(dateFuture2);
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataRes.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simFutureTriceWithInfoInBetween_totalCasesNonZero() throws IOException {
+    // Arrange
+    final String dateFuture = LocalDate.now().plusDays(5).toString();
+    final String dateFuture1 = LocalDate.now().minusDays(10).toString();
+    final String dateFuture2 = LocalDate.now().plusDays(15).toString();
+
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(dateFuture);
+    // Info
+    wrapper.infosFrance(DATE1);
+    // Simulate second time
+    wrapper.startSimulation();
+    wrapper.simulateFrance(dateFuture1);
+    // Info
+    wrapper.infosFrance(DATE1);
+    // Simulate second time
+    wrapper.startSimulation();
+    final DayData dayDataRes = wrapper.simulateFrance(dateFuture2);
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataRes.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void
+  testSimulateFrance_simHistoryBeforeFutureTwiceWithInfoInBetween_totalCasesNonZero() throws IOException {
+    // Arrange
+    final String datePast = LocalDate.now().minusDays(10).toString();
+    final String datePast1 = LocalDate.now().minusDays(15).toString();
+    final String dateFuture = LocalDate.now().plusDays(5).toString();
+    final String dateFuture1 = LocalDate.now().plusDays(7).toString();
+
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    wrapper.simulateFrance(datePast);
+    wrapper.simulateFrance(dateFuture);
+    // Info
+    wrapper.infosFrance(DATE1);
+    // Simulate second time
+    wrapper.startSimulation();
+    wrapper.simulateFrance(datePast1);
+    final DayData dayDataRes = wrapper.simulateFrance(dateFuture1);
+    final int unexpected = 0;
+
+    // Act
+    final int result = dayDataRes.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simPastThenInfoThenSimFuture_totalCasesNonZero() throws IOException {
+    // Arrange
+    LocalDate datePast = LocalDate.now().minusDays(10);
+    LocalDate dateFuture = LocalDate.now().plusDays(5);
+
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation();
+    // Simulate past
+    wrapper.simulateFrance(datePast.toString());
+    // Get Info
+    wrapper.infosFrance(DATE1);
+    // Simulate Future
+    wrapper.startSimulation();
     final DayData dayData =
       wrapper.simulateFrance(dateFuture.toString());
     final int unexpected = 0;
