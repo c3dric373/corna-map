@@ -166,16 +166,21 @@ public class SJYHRSimulator implements Simulator {
   /**
    * The solver method.
    */
-  private final DifferentialSolver solver;
+  private  DifferentialSolver solver;
   /**
    * The precision for the solver.
    */
-  private final int nbIterations;
+  private int nbIterations;
 
   /**
    * Empty Constructor.
    */
   public SJYHRSimulator() {
+    n = 5;
+    h = 7;
+    u = 30;
+    g = 15;
+    nbParam = 1 + g + h + u + 2;
   }
 
   /**
