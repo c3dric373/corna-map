@@ -139,4 +139,11 @@ export class LeftSimulationComponent implements OnInit {
       }
     }, (this.chosenInterval * 1000));
   }
+
+  essai(int: number): string{
+    let ess = int + '%';
+    return ess;
+  }
+
 }
+
