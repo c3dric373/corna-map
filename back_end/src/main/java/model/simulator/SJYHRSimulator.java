@@ -62,7 +62,6 @@ public class SJYHRSimulator implements Simulator {
          */
         AgeCategory(final List<Double> initialState, final int i,
                     final double theta, final double mu) {
-            int nbParam = 1 + g + h + u + 2;
             si = new ArrayList<>();
             si.add(initialState.get(i * nbParam));
 
@@ -241,7 +240,6 @@ public class SJYHRSimulator implements Simulator {
         c.add(1.);
         c.add(1.);
 
-        int nbParam = 1 + g + h + u + 2;
         List<Double> initialState = new ArrayList<>(5 * nbParam);
         for (int k = 0; k < 5 * nbParam; ++k) {
             initialState.add(0.);
@@ -276,7 +274,6 @@ public class SJYHRSimulator implements Simulator {
     public void step() {
         List<Double> nextValues = solver.next(model, nbIterations);
 
-        int nbParam = 1 + g + h + u + 2;
         for (int i = 0; i < n; ++i) {
             ageCategories.get(i).getSi()
                     .add(nextValues.get(i * nbParam));
@@ -310,7 +307,6 @@ public class SJYHRSimulator implements Simulator {
      * condition
      */
     private CauchyProblem makeModel(final List<Double> state) {
-        int nbParam = 4 + h + u;
         CauchyProblem.Builder builder = new CauchyProblem.Builder();
         for (int i = 0; i < n; ++i) {
             final int i1 = i;
@@ -395,8 +391,10 @@ public class SJYHRSimulator implements Simulator {
 
     /**
      * Computes Lambda_i.
+     *
      * @param state the state of the system.
-     * @param i the ageCategory we are studying.
+     * @param i     the ageCategory we are studying.
+     *
      * @return Lambda_i.
      */
     private double makeLambdai(final List<Double> state,
@@ -407,18 +405,20 @@ public class SJYHRSimulator implements Simulator {
 
     /**
      * Intermediary function for computing Lambda_i.
+     *
      * @param state the state of the system.
+     *
      * @return iBar.
      */
     private double makeIBar(final List<Double> state) {
         double iBar = 0.;
-        for(int i = 0; i < n; ++i){
+        for (int i = 0; i < n; ++i) {
             double sumJ = 0.;
             double sumY = 0.;
-            for(int j = 0; j < g; ++j){
+            for (int j = 0; j < g; ++j) {
                 sumJ += zeta.get(j) * state.get(i * nbParam + 1 + j);
             }
-            for(int j = 0; j < g; ++j) {
+            for (int j = 0; j < g; ++j) {
                 sumJ += zeta.get(j) * state.get(i * nbParam + 1 + g + j);
             }
             iBar += c.get(i) * (sumJ + sumY);
@@ -436,7 +436,6 @@ public class SJYHRSimulator implements Simulator {
     private double heavyInfectedToHospitalized(final List<Double> state,
                                                final int i) {
         double res = 0.;
-        int nbParam = 1 + g + h + u + 2;
         for (int j = 0; j < h; ++j) {
             res += eta.get(j) * state.get(i * nbParam + 1 + g + j);
         }
@@ -453,7 +452,6 @@ public class SJYHRSimulator implements Simulator {
     private double hospitalizedToRecovered(final List<Double> state,
                                            final int i) {
         double res = 0.;
-        int nbParam = 1 + g + h + u + 2;
         double mu = ageCategories.get(i).getMui();
         for (int j = 0; j < u; ++j) {
             res += nu.get(j) * state.get(i * nbParam + 1 + g + h + j) * (1. - mu);
@@ -471,7 +469,6 @@ public class SJYHRSimulator implements Simulator {
     private double hospitalizedToDead(final List<Double> state,
                                       final int i) {
         double res = 0.;
-        int nbParam = 1 + g + h + u + 2;
         double mu = ageCategories.get(i).getMui();
         for (int j = 0; j < u; ++j) {
             res += nu.get(j) * state.get(i * nbParam + 1 + g + h + j) * mu;
