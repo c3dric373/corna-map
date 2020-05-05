@@ -1,6 +1,6 @@
+<app-loading-spin *ngIf="loading"></app-loading-spin>
+
 <div class="wrapper">
-
-
   <app-left-simulation  *ngIf="!loading" [locationName] = "location" (sendSimulStatus)="setSimulState($event)"
                        [isRegion]="isRegion" (sendDate)="setDate($event)" >
   </app-left-simulation>

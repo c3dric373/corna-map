@@ -147,6 +147,8 @@ export class RightBarComponent implements OnInit, OnChanges{
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
+          // When actualdate changes
+          case 'actualdate':
           // When locationName changes
           case 'locationName': {
             if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
