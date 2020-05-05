@@ -1,11 +1,10 @@
 package model.project;
 
-import com.google.common.collect.Iterables;
 import lombok.Getter;
 import model.data.DayData;
 import model.io.DataScrapperImpl;
+import model.service.AgeCategoryService;
 import model.service.DayDataService;
-import model.simulator.SIRSimulator;
 import model.simulator.SJYHRSimulator;
 
 import java.io.IOException;
@@ -45,17 +44,22 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   /**
    * Simulator used to simulate COVID-19.
    */
-  private SIRSimulator sirSimulator = new SIRSimulator();
+  // private SIRSimulator simulator = new SIRSimulator();
 
   /**
    * Simulator used to simulate COVID-19.
    */
-  private SJYHRSimulator sjyhrSimulator = new SJYHRSimulator();
+  private SJYHRSimulator simulator = new SJYHRSimulator();
 
   /**
    * Dictionnary mapping id to name for regions and departments.
    */
   private Map<String, String> idToName = new HashMap<>();
+
+  /**
+   * Service used to compute numbers after simulating.
+   */
+  AgeCategoryService ageCategoryService = new AgeCategoryService();
 
   @Override
   public void getCurrentAllDataFrance() throws IOException {
@@ -66,7 +70,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public void startSimulation() {
-    setSirSimulator();
+    setSimulator();
   }
 
   @Override
@@ -153,7 +157,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
-      dayData = simulateDay(latestData, sirSimulator);
+      dayData = simulateDay(latestData, simulator);
       // Add the new data to the model and increase the date which we are
       // iterating on.
       LocalDate newDate = latestDate.plusDays(1);
@@ -187,7 +191,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   /**
    * Sets the parameter on the simulator with the latest data.
    */
-  private void setSirSimulator() {
+  private void setSimulator() {
     DayData latestData = getLatestData(FRA);
     final double deathRate = DayDataService.getDeathRateSIR(latestData,
       this, FRA);
@@ -205,7 +209,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     List<Double> heavyInfected =
       DayDataService.getHeavyInfectedSJYHR(latestData);
 
-    sjyhrSimulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
+    simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
       heavyInfected);
     //simulator = new SIRSimulator(susceptible,
     // infectious, recoveryRate, deathRate);
@@ -232,34 +236,39 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * simulator.
    *
-   * @param startState   The data on the situation form which the simulated day
-   *                     should start.
-   * @param sirSimulator the given simulator.
+   * @param startState The data on the situation form which the simulated day
+   *                   should start.
+   * @param simulator  the given simulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
-                              final SIRSimulator sirSimulator) {
+                              final SJYHRSimulator simulator) {
     // Compute Start State
     final double totalDeaths = startState.getTotalDeaths();
     final double recovered = startState.getRecoveredCases();
     // Simulate a day
-    sirSimulator.step();
-    final double deadNew = Iterables.getLast(sirSimulator.getDead());
-    final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
-    final double susceptibleNew =
-      Iterables.getLast(sirSimulator.getSusceptible());
-    final double infectiousNew =
-      Iterables.getLast(sirSimulator.getInfectious());
-    final double infectedPeople = POPULATION_FRA * infectiousNew;
+    simulator.step();
+    final DayData result = new DayData();
+    final List<SJYHRSimulator.AgeCategory> ageCategories =
+      simulator.getAgeCategories();
+    final double deadNew = ageCategoryService.getDead(ageCategories);
+    final double lightInfected =
+      ageCategoryService.getLightInfected(ageCategories);
+    final double hospitalized =
+      ageCategoryService.getHospitalized(ageCategories);
+    final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
+    final double heavyInfected =
+      ageCategoryService.getHeavyInfected(ageCategories);
+    final double infected = lightInfected + heavyInfected;
+    final double susceptibleNew = 1 - infected;
     // Create Object which encapsulates the simulated data
-    final DayData dayData = new DayData();
-    dayData.setTotalDeaths((int) (totalDeaths + deadNew * infectedPeople));
-    dayData.setRecoveredCases((int) (recovered
-      + recoveredNew * infectedPeople));
-    System.out.println("recovered " + dayData.getRecoveredCases());
-    dayData.setTotalCases((int) (POPULATION_FRA
+    result.setTotalDeaths((int) (totalDeaths + deadNew * infected));
+    result.setRecoveredCases((int) (recovered
+      + recoveredNew * infected));
+    System.out.println("recovered " + result.getRecoveredCases());
+    result.setTotalCases((int) (POPULATION_FRA
       - (susceptibleNew * POPULATION_FRA)));
-    return dayData;
+    return result;
   }
 
   /**

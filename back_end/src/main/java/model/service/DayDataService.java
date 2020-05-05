@@ -17,35 +17,6 @@ public class DayDataService {
    */
   private static final double POPULATION_FRA = 67000000.0;
 
-  // Stats about french pop
-  // https://www.statista.com/statistics/464032/distribution-population-age
-  // -group-france/
-
-  /**
-   * Percentage of people in the 0-14 age class in France.
-   */
-  private static final double FR_POP_0_14 = 0.178;
-
-  /**
-   * Percentage of people in the 15-44 age class in France.
-   */
-  private static final double FR_POP_15_44 = 0.36;
-
-  /**
-   * Percentage of people in the 45-64 age class in France.
-   */
-  private static final double FR_POP_45_64 = 0.261;
-
-  /**
-   * Percentage of people in the 0-14 age class in France.
-   */
-  private static final double FR_POP_64_75 = 0.108;
-
-  /**
-   * Percentage of people in the 0-14 age class in France.
-   */
-  private static final double FR_POP_75_INF = 0.093;
-
   /**
    * Id for France.
    */
@@ -256,11 +227,11 @@ public class DayDataService {
 
   @NotNull
   private static List<Double> computePercentageAgeClasses(double param) {
-    final double infectious0_14 = param * FR_POP_0_14;
-    final double infectious15_44 = param * FR_POP_15_44;
-    final double infectious45_64 = param * FR_POP_45_64;
-    final double infectious64_75 = param * FR_POP_64_75;
-    final double infectious75_INF = param * FR_POP_75_INF;
+    final double infectious0_14 = param * AgeCategoryService.FR_POP_0_14;
+    final double infectious15_44 = param * AgeCategoryService.FR_POP_15_44;
+    final double infectious45_64 = param * AgeCategoryService.FR_POP_45_64;
+    final double infectious64_75 = param * AgeCategoryService.FR_POP_64_75;
+    final double infectious75_INF = param * AgeCategoryService.FR_POP_75_INF;
     final List<Double> result = new ArrayList<>();
     result.add(infectious0_14);
     result.add(infectious15_44);
