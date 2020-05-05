@@ -9,7 +9,7 @@ const routes: Routes = [
     component: MapMenuComponent,
   },
   {
-    path: 'map',
+    path: 'carte',
     component: MapMenuComponent,
   },
   {

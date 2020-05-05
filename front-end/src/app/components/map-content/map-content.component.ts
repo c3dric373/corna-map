@@ -16,6 +16,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   expand = faExpandAlt;
   compress = faCompressAlt;
 
+  isMenuCalendarClicked: boolean;
   isRegion: boolean;
   onlyMap: boolean;
   // Color for gradient
@@ -32,13 +33,12 @@ export class MapContentComponent implements OnInit, OnChanges {
   private deptList;
   // Selected category : ex : nbDeath, ...
   public selectedCategory: string;
-  public tabCategory = ['cas hospitalisés', 'cas critiques', 'nombre de morts', 'cas soignés' ];
+  public tabCategory = [ 'Cas confirmés', 'Hospitalisés', 'Guéris', 'Cas critiques', 'Décès'];
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
   public todaysDate: NgbDate;
   public oldestDate: NgbDate;
-  test=false;
 
   // Input
   @Input() SelectedMenu: string;
@@ -333,17 +333,20 @@ export class MapContentComponent implements OnInit, OnChanges {
   getNbCas(index, list): number{
     let nbCas;
     switch (this.selectedCategory){
-      case 'cas hospitalisés' :
+      case 'Hospitalisés' :
         nbCas = list[index].hospitalized;
         break;
-      case 'cas critiques' :
+      case 'Cas critiques' :
         nbCas = list[index].criticalCases;
         break;
-      case 'nombre de morts' :
+      case 'Décès' :
         nbCas = list[index].totalDeaths;
         break;
-      case 'cas soignés' :
+      case 'Guéris' :
         nbCas = list[index].recoveredCases;
+        break;
+      case 'Cas confirmés' :
+        nbCas = list[index].totalCases;
         break;
     }
     return nbCas;

@@ -2,23 +2,25 @@
   <div class="sidebar-header">
 
     <h4 id="titre">{{chosenLocation}}</h4>
-    <a (click)=ngOnInit() [hidden]=!showLocation>Revenir à la France</a>
+    <a (click)=ngOnInit() [hidden]=!showLink>Revenir à la France</a>
     <div class="container" [hidden]=!showLocation>
       <table class="table" >
         <thead>
         <tr>
+          <th scope="col">Cas confirmés</th>
           <th scope="col">Guéris</th>
-          <th scope="col">Hospitalisations</th>
+          <th scope="col">Hospitalisés</th>
           <th scope="col">Decès</th>
-          <th scope="col">Total</th>
+
         </tr>
         </thead>
         <tbody>
         <tr>
+          <td>{{totCasConf}}</td>
           <td>{{totGueris}}</td>
           <td>{{totHospi}}</td>
           <td>{{totDeces}}</td>
-          <td>{{totCasConf}}</td>
+
         </tr>
 
         </tbody>
@@ -26,7 +28,7 @@
     </div>
 
     <div class="container-sm" id="charts"></div>
-
+    <div class="container-sm" id="charts2"></div>
 
   </div>
 
