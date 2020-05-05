@@ -3,6 +3,7 @@ package model.service;
 import model.data.DayData;
 import model.project.ProjectDataWrapper;
 import org.apache.commons.lang.Validate;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -220,17 +221,52 @@ public class DayDataService {
     final int totalCases = latestData.getTotalCases();
     final double susceptibleFra =
       (POPULATION_FRA - totalCases) / POPULATION_FRA;
-    final double susceptible0_14 = susceptibleFra * FR_POP_0_14;
-    final double susceptible15_44 = susceptibleFra * FR_POP_15_44;
-    final double susceptible45_64 = susceptibleFra * FR_POP_45_64;
-    final double susceptible64_75 = susceptibleFra * FR_POP_64_75;
-    final double susceptible75_INF = susceptibleFra * FR_POP_75_INF;
+    return computePercentageAgeClasses(susceptibleFra);
+  }
+
+  /**
+   * Computes for each age class the percentage of people
+   * lightly infected from the COVID-19.
+   *
+   * @param latestData The data for which we should calculate such percentages.
+   * @return List of percentages.
+   */
+  public static List<Double> getLightInfectedSJYHR(final DayData latestData) {
+    Validate.notNull(latestData, "dayData null");
+    final int totalCases = latestData.getTotalCases();
+    final int criticalCases = latestData.getCriticalCases();
+    final double lightInfectedCases = totalCases - criticalCases;
+    final double infectiousFra = lightInfectedCases / POPULATION_FRA;
+    return computePercentageAgeClasses(infectiousFra);
+  }
+
+  /**
+   * Computes for each age class the percentage of people
+   * heavy infected from the COVID-19.
+   *
+   * @param latestData The data for which we should calculate such percentages.
+   * @return List of percentages.
+   */
+  public static List<Double> getHeavyInfectedSJYHR(final DayData latestData) {
+    Validate.notNull(latestData, "dayData null");
+    final int criticalCases = latestData.getCriticalCases();
+    final double heavyInfected = criticalCases / POPULATION_FRA;
+    return computePercentageAgeClasses(heavyInfected);
+  }
+
+  @NotNull
+  private static List<Double> computePercentageAgeClasses(double param) {
+    final double infectious0_14 = param * FR_POP_0_14;
+    final double infectious15_44 = param * FR_POP_15_44;
+    final double infectious45_64 = param * FR_POP_45_64;
+    final double infectious64_75 = param * FR_POP_64_75;
+    final double infectious75_INF = param * FR_POP_75_INF;
     final List<Double> result = new ArrayList<>();
-    result.add(susceptible0_14);
-    result.add(susceptible15_44);
-    result.add(susceptible45_64);
-    result.add(susceptible64_75);
-    result.add(susceptible75_INF);
+    result.add(infectious0_14);
+    result.add(infectious15_44);
+    result.add(infectious45_64);
+    result.add(infectious64_75);
+    result.add(infectious75_INF);
     return result;
   }
 }

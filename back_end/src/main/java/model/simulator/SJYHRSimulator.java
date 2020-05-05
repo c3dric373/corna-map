@@ -67,7 +67,7 @@ public class SJYHRSimulator implements Simulator {
      * @param i            index of the age category.
      * @param theta        heavy infection rate.
      * @param mu           hospitalized death rate.
-     * @param cNew        cNew in normal time.
+     * @param cNew         cNew in normal time.
      * @param cConfined    cNew in confinement.
      */
     AgeCategory(final List<Double> initialState, final int i,
@@ -171,6 +171,12 @@ public class SJYHRSimulator implements Simulator {
    * The precision for the solver.
    */
   private final int nbIterations;
+
+  /**
+   * Empty Constructor.
+   */
+  public SJYHRSimulator() {
+  }
 
   /**
    * @param initS list of size n, initial rates of susceptible.

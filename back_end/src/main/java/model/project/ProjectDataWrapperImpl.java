@@ -6,6 +6,7 @@ import model.data.DayData;
 import model.io.DataScrapperImpl;
 import model.service.DayDataService;
 import model.simulator.SIRSimulator;
+import model.simulator.SJYHRSimulator;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -44,7 +45,12 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   /**
    * Simulator used to simulate COVID-19.
    */
-  private SIRSimulator simulator = new SIRSimulator();
+  private SIRSimulator sirSimulator = new SIRSimulator();
+
+  /**
+   * Simulator used to simulate COVID-19.
+   */
+  private SJYHRSimulator sjyhrSimulator = new SJYHRSimulator();
 
   /**
    * Dictionnary mapping id to name for regions and departments.
@@ -60,7 +66,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public void startSimulation() {
-    setSimulator();
+    setSirSimulator();
   }
 
   @Override
@@ -147,7 +153,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
-      dayData = simulateDay(latestData, simulator);
+      dayData = simulateDay(latestData, sirSimulator);
       // Add the new data to the model and increase the date which we are
       // iterating on.
       LocalDate newDate = latestDate.plusDays(1);
@@ -181,7 +187,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   /**
    * Sets the parameter on the simulator with the latest data.
    */
-  private void setSimulator() {
+  private void setSirSimulator() {
     DayData latestData = getLatestData(FRA);
     final double deathRate = DayDataService.getDeathRateSIR(latestData,
       this, FRA);
@@ -190,9 +196,19 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double susceptible = DayDataService.getSusceptibleSIR(latestData);
     final List<Double> susceptibleComplex =
       DayDataService.getSusceptibleSJYHR(latestData);
-    final double infectious = 1 - susceptible;
-    simulator = new SIRSimulator(susceptible,
-      infectious, recoveryRate, deathRate);
+    List<Double> infectious = new ArrayList<>();
+    for (double susceptiblePerAgeCat : susceptibleComplex) {
+      infectious.add(1 - susceptiblePerAgeCat);
+    }
+    List<Double> lightInfected =
+      DayDataService.getLightInfectedSJYHR(latestData);
+    List<Double> heavyInfected =
+      DayDataService.getHeavyInfectedSJYHR(latestData);
+
+    sjyhrSimulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
+      heavyInfected);
+    //simulator = new SIRSimulator(susceptible,
+    // infectious, recoveryRate, deathRate);
   }
 
   /**
