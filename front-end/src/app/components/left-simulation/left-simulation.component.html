@@ -94,7 +94,7 @@
             <span>Respect du confinement</span>
             <mat-slider
               thumbLabel
-              [displayWith]="essai"
+              [displayWith]="displayPercentage"
               [(ngModel)]="allParams.respectConfinement"
               step="5" tickInterval="20"
               min="0"
@@ -113,6 +113,7 @@
               <span>Ecoulement des jours</span>
               <mat-slider
                 thumbLabel
+                [displayWith]="displayTime"
                 [(ngModel)]="chosenInterval"
                 step="1" tickInterval="1"
                 min="1"
