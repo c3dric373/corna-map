@@ -18,7 +18,6 @@ import java.util.List;
 public class ProjectDataWrapperImplTest {
 
   private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
-  private final static LocalDate DATE = LocalDate.ofEpochDay(4);
   private final static String DATE1 = "2020-04-10";
   private final static String DATE2 = "2020-04-11";
   private final static String DEP_44 = "DEP-44";
@@ -37,11 +36,9 @@ public class ProjectDataWrapperImplTest {
   private final static int TOTAL_EPHAD_DEATHS = 7;
   private final static int CRITICAL_CASES = 8;
   private final static int HOSPITALIZED = 9;
-  private final static int RECOVERD_CASES = 66;
-  private final static int RECOVERD_CASES_1 = 99;
+  private final static int RECOVERED_CASES = 66;
+  private final static int RECOVERED_CASES_1 = 99;
   private final static int TOTAL_TEST = 6;
-  private final static String EMPTY_STRING = "";
-  private final static int NEGATIVE_NUMBER = -1;
   private static DayData dayData;
   private static DayData dayData1;
   private static DayData dayData2;
@@ -75,37 +72,37 @@ public class ProjectDataWrapperImplTest {
       TOTAL_CASE,
       EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES,
       TOTAL_TEST);
     dayData1 = new DayData(TYPE, LocalDate.parse(DATE2), DEP_44, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
     dayData2 = new DayData(TYPE, LocalDate.parse(DATE1), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
     dayData3 = new DayData(TYPE, LocalDate.parse(DATE2), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
     dayData4 = new DayData(TYPE, LocalDate.parse(DATE1), REG_11, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
     dayData5 = new DayData(TYPE, LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
     dayData6 = new DayData(TYPE, LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
+      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
     customWrapper.addKey(DEP_44);
     customWrapper.addKey(DEP_45);
