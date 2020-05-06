@@ -264,6 +264,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     result.setTotalDeaths((int) (deadNew * POPULATION_FRA));
     result.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
     result.setTotalCases((int) ((1 - susceptibleNew) * POPULATION_FRA));
+    result.setHospitalized((int) (hospitalized * POPULATION_FRA));
+    result.setCriticalCases((int) (heavyInfected * POPULATION_FRA));
     return result;
   }
 
@@ -273,7 +275,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param location The location for which we want the data.
    * @return the data.
    */
-  private DayData getLatestData(final String location) {
+  public DayData getLatestData(final String location) {
     final Map<String, Map<String, DayData>> localisations =
       project.getLocations();
     final Map<String, DayData> franceMap = localisations.get(location);
