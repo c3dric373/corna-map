@@ -239,6 +239,7 @@ public class SJYHRSimulator implements Simulator {
     nu.add(0.000451463616165);
     nu.add(1.);
 
+    zeta = new ArrayList<>();
     zeta.add(0.049686146);
     zeta.add(0.107848814);
     zeta.add(0.152150834);
