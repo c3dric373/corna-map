@@ -1,10 +1,7 @@
 package model.simulator;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import model.data.DayData;
-import model.service.DayDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,23 +253,17 @@ public class SJYHRSimulator implements Simulator {
     c.add(0.1);
   }
 
-  public SJYHRSimulator(final DayData dayData) {
-      final List<Double> initS = DayDataService.getSusceptibleSJYHR(dayData);
-
-  }
-
-
-
   /**
    * @param initS list of size n, initial rates of susceptible.
    * @param initJ list of size n, initial rante of light infected.
    * @param initY list of size n, initial rante of heavy infected.
    */
-  public SJYHRSimulator(final List<Double> initS, final List<Double> initJ,
-                        final List<Double> initY, final List<Double> initH,
-                        final List<Double> initR, final List<Double> initD) {
-
-
+  public void setInitialStates(final List<Double> initS,
+                               final List<Double> initJ,
+                               final List<Double> initY,
+                               final List<Double> initH,
+                               final List<Double> initR,
+                               final List<Double> initD) {
     List<Double> initialState = new ArrayList<>(5 * nbParam);
     for (int k = 0; k < 5 * nbParam; ++k) {
       initialState.add(0.);

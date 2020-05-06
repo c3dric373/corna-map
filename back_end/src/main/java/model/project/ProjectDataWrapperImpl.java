@@ -223,17 +223,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final List<Double> initH = DayDataService.getHospitalizedSJYHR(initI,
       latestData);
     final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
-      initH,simulator);
-    final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,initJ,
-      initH,simulator);
-
-    List<Double> lightInfected =
-      DayDataService.getLightInfectedSJYHR(latestData);
-    List<Double> heavyInfected =
-      DayDataService.getHeavyInfectedSJYHR(latestData);
-    List<Double> deadList = DayDataService.getDeadSJYHR(latestData);
-    List<Double> hospitalizedList = DayDataService.getDeadSJYHR(latestData);
-    List<Double> recoveredList = DayDataService.getDeadSJYHR(latestData);
+      initH, simulator);
+    final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
+      initJ,
+      initH, simulator);
+    simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
   }
 
