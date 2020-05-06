@@ -51,6 +51,11 @@
   color : black;
 }
 
+a:hover{
+  color: #BABABA;
+  text-decoration-line: underline;
+}
+
 table{
   justify-content: center;
   justify-items: center;
