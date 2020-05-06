@@ -20,7 +20,7 @@
       <div class="date">
         <!-- Select start Date -->
         Date de début :
-        <button class="btn btn-outline-secondary" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
+        <button class="btn btn-outline-secondary" [disabled]="isPause && !isStop" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
           {{dateService.formatDateToFr(startDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
