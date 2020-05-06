@@ -39,9 +39,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * The {@link ProjectData} this wrapper manages.
    */
   @Getter
-  private ProjectData project = new ProjectDataImpl();
-
-  // private SIRSimulator simulator = new SIRSimulator();
+  private final ProjectData project = new ProjectDataImpl();
 
   /**
    * Simulator used to simulate COVID-19.
@@ -49,9 +47,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private SJYHRSimulator simulator = new SJYHRSimulator();
 
   /**
-   * Dictionnary mapping id to name for regions and departments.
+   * Dictionary mapping id to name for regions and departments.
    */
-  private Map<String, String> idToName = new HashMap<>();
+  private final Map<String, String> idToName = new HashMap<>();
 
   /**
    * Service used to compute numbers after simulating.
