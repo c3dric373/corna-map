@@ -1,5 +1,6 @@
 package model.project;
 
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import lombok.Getter;
 import model.data.DayData;
@@ -47,7 +48,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   /**
    * Simulator used to simulate COVID-19.
    */
-  private SJYHRSimulator simulator = new SJYHRSimulator();
+  private SJYHRSimulator sjyhrSimulator = new SJYHRSimulator();
 
   /**
    * {@link SIRSimulator} used to simulate COVID-19.
@@ -69,6 +70,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   SimulatorService simulatorService = new SimulatorService();
 
+  /**
+   * Flag to know if we should use a SIRSimulator or not.
+   */
+  private boolean useSir = true;
+
   @Override
   public void getCurrentAllDataFrance() throws IOException {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
@@ -77,14 +83,15 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void startSimulation(final String content,boolean sir) {
-    if(sir){
+  public void startSimulation(final String content, boolean sir) {
+    if (sir) {
       setSirSimulator();
-    }else{
-      setSimulator(content);
+      useSir = true;
+    } else {
+      setSJYHRSimulator(content);
+      useSir = false;
     }
   }
-
 
   @Override
   public void addLocation(final String location, final String date,
@@ -172,7 +179,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
-      dayData = simulateDay(latestData, simulator);
+      if (useSir) {
+        dayData = simulateDaySir(latestData, sirSimulator);
+      } else {
+        dayData = simulateDaySJYHR(sjyhrSimulator);
+      }
       // Add the new data to the model and increase the date which we are
       // iterating on.
       LocalDate newDate = latestDate.plusDays(1);
@@ -203,22 +214,63 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return dayData;
   }
 
-
   /**
    * Sets the parameter on the simulator with the latest data.
-   *
-   * @param content measures values
    */
   private void setSirSimulator() {
+    DayData latestData = getLatestData(FRA);
+    final double deathRate = DayDataService.getDeathRateSIR(latestData,
+      this, FRA);
+    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
+      this, FRA);
+    final double susceptible = DayDataService.getSusceptibleSIR(latestData);
+    final List<Double> susceptibleComplex =
+      DayDataService.getSusceptibleSJYHR(latestData);
+    final double infectious = 1 - susceptible;
+    sirSimulator = new SIRSimulator(susceptible,
+      infectious, recoveryRate, deathRate);
   }
 
-  
+  /**
+   * Simulates a the spread of COVID-19 for one day, according to a given
+   * simulator.
+   *
+   * @param startState   The data on the situation form which the simulated day
+   *                     should start.
+   * @param sirSimulator the given simulator.
+   * @return the simulated data.
+   */
+  private DayData simulateDaySir(final DayData startState,
+                                 final SIRSimulator sirSimulator) {
+    // Compute Start State
+    final double totalDeaths = startState.getTotalDeaths();
+    final double recovered = startState.getRecoveredCases();
+    // Simulate a day
+    sirSimulator.step();
+    final double deadNew = Iterables.getLast(sirSimulator.getDead());
+    final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
+    final double susceptibleNew =
+      Iterables.getLast(sirSimulator.getSusceptible());
+    final double infectiousNew =
+      Iterables.getLast(sirSimulator.getInfectious());
+    final double infectedPeople = POPULATION_FRA * infectiousNew;
+    // Create Object which encapsulates the simulated data
+    final DayData dayData = new DayData();
+    dayData.setTotalDeaths((int) (totalDeaths + deadNew * infectedPeople));
+    dayData.setRecoveredCases((int) (recovered
+      + recoveredNew * infectedPeople));
+    System.out.println("recovered " + dayData.getRecoveredCases());
+    dayData.setTotalCases((int) (POPULATION_FRA
+      - (susceptibleNew * POPULATION_FRA)));
+    return dayData;
+  }
+
   /**
    * Sets the parameter on the simulator with the latest data.
    *
    * @param content measures values
    */
-  private void setSimulator(final String content) {
+  private void setSJYHRSimulator(final String content) {
     // Latest data
     DayData latestData = getLatestData(FRA);
     System.out.println("Donne de base sim: " + latestData);
@@ -234,7 +286,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     sum = 0;
 
     final List<Double> initI = DayDataService.getInfectedSJYHR(latestData,
-      simulator);
+      sjyhrSimulator);
     for (int i = 0; i < initI.size(); i++) {
       System.out.println("initI " + i + ": " + initI.get(i) * POPULATION_FRA);
       sum += initI.get(i) * POPULATION_FRA;
@@ -288,7 +340,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
     System.out.println("Sum: " + sum);
 
-    simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
+    sjyhrSimulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
     // Apply Measures
     final Gson gson = new Gson();
@@ -297,7 +349,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final int confinedCategoriesIndex = 0;
     final int maskedCategoriesIndex = 1;
     final int confinementRespectIndex = 2;
-    simulator.applyMeasures(measures.get(confinedCategoriesIndex),
+    sjyhrSimulator.applyMeasures(measures.get(confinedCategoriesIndex),
       measures.get(maskedCategoriesIndex),
       measures.get(confinementRespectIndex).get(0));
 
@@ -322,14 +374,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * sjyhrSimulator.
    *
-   * @param startState     The data on the situation form which the simulated
-   *                       day
-   *                       should start.
    * @param sjyhrSimulator the given sjyhrSimulator.
    * @return the simulated data.
    */
-  private DayData simulateDay(final DayData startState,
-                              final SJYHRSimulator sjyhrSimulator) {
+  private DayData simulateDaySJYHR(
+    final SJYHRSimulator sjyhrSimulator) {
     // Simulate a day
     sjyhrSimulator.step();
     final DayData result = new DayData();
