@@ -192,26 +192,14 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private void setSimulator() {
     DayData latestData = getLatestData(FRA);
-    final double deathRate = DayDataService.getDeathRateSIR(latestData,
-      this, FRA);
-    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
-      this, FRA);
-    final double susceptible = DayDataService.getSusceptibleSIR(latestData);
     final List<Double> susceptibleComplex =
       DayDataService.getSusceptibleSJYHR(latestData);
-    List<Double> infectious = new ArrayList<>();
-    for (double susceptiblePerAgeCat : susceptibleComplex) {
-      infectious.add(1 - susceptiblePerAgeCat);
-    }
     List<Double> lightInfected =
       DayDataService.getLightInfectedSJYHR(latestData);
     List<Double> heavyInfected =
       DayDataService.getHeavyInfectedSJYHR(latestData);
-
     simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
       heavyInfected);
-    //simulator = new SIRSimulator(susceptible,
-    // infectious, recoveryRate, deathRate);
   }
 
   /**
@@ -222,9 +210,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private void truncateData(final String date) {
     final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> dataFrance = locations.get(FRA);
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
-      final String id = entry.getKey();
       final Map<String, DayData> mapId = entry.getValue();
       mapId.keySet().removeIf(key
         -> LocalDate.parse(key).isAfter(LocalDate.parse(date)));
@@ -236,16 +222,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * sjyhrSimulator.
    *
    * @param startState     The data on the situation form which the simulated
-   *                      day
+   *                       day
    *                       should start.
    * @param sjyhrSimulator the given sjyhrSimulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
                               final SJYHRSimulator sjyhrSimulator) {
-    // Compute Start State
-    final double totalDeaths = startState.getTotalDeaths();
-    final double recovered = startState.getRecoveredCases();
     // Simulate a day
     sjyhrSimulator.step();
     final DayData result = new DayData();
@@ -259,7 +242,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
     final double heavyInfected =
       ageCategoryService.getHeavyInfected(ageCategories);
-
     final double infected = lightInfected + heavyInfected + hospitalized;
     final double susceptibleNew = 1 - infected - deadNew;
     // Create Object which encapsulates the simulated data
