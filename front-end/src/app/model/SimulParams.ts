@@ -19,33 +19,33 @@ export class SimulParams {
 }
 
 export class MaskCategory {
-  m0_15: boolean;
-  m16_19: boolean;
-  m30_49: boolean;
-  m50_69: boolean;
-  m70: boolean;
+  m0_14: boolean;
+  m15_44: boolean;
+  m45_64: boolean;
+  m65_74: boolean;
+  m75: boolean;
 
   constructor() {
-    this.m0_15 = false;
-    this.m16_19 = false;
-    this.m30_49 = false;
-    this.m50_69 = false;
-    this.m70 = false;
+    this.m0_14 = false;
+    this.m15_44 = false;
+    this.m45_64 = false;
+    this.m65_74 = false;
+    this.m75 = false;
   }
 }
 
 export class ConfCategory {
-  c0_15: boolean;
-  c16_19: boolean;
-  c30_49: boolean;
-  c50_69: boolean;
-  c70: boolean;
+  c0_14: boolean;
+  c15_44: boolean;
+  c45_64: boolean;
+  c65_74: boolean;
+  c75: boolean;
 
   constructor() {
-    this.c0_15 = false;
-    this.c16_19 = false;
-    this.c30_49 = false;
-    this.c50_69 = false;
-    this.c70 = false;
+    this.c0_14 = false;
+    this.c15_44 = false;
+    this.c45_64 = false;
+    this.c65_74 = false;
+    this.c75 = false;
   }
 }

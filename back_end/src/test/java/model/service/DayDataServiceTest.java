@@ -170,7 +170,7 @@ public class DayDataServiceTest {
     // Arrange
 
     // Act
-    final double result = DayDataService.getDeathRate(dayData1, wrapper,
+    final double result = DayDataService.getDeathRateSIR(dayData1, wrapper,
       DEP_44);
 
     // Assert
@@ -182,7 +182,7 @@ public class DayDataServiceTest {
     // Arrange
 
     // Act
-    final double result = DayDataService.getRecoveryRate(dayData1, wrapper,
+    final double result = DayDataService.getRecoveryRateSIR(dayData1, wrapper,
       DEP_44);
 
     // Assert
@@ -196,7 +196,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("dayData null");
 
     // Act
-    DayDataService.getDeathRate(null, wrapper, DEP_44);
+    DayDataService.getDeathRateSIR(null, wrapper, DEP_44);
 
     // Assert -> via annotation
   }
@@ -277,7 +277,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("wrapper null");
 
     // Act
-    DayDataService.getDeathRate(dayData, null, DEP_44);
+    DayDataService.getDeathRateSIR(dayData, null, DEP_44);
 
     // Assert -> via annotation
   }
@@ -289,7 +289,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("location null");
 
     // Act
-    DayDataService.getDeathRate(dayData, wrapper, null);
+    DayDataService.getDeathRateSIR(dayData, wrapper, null);
 
     // Assert -> via annotation
   }
@@ -301,7 +301,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("location empty");
 
     // Act
-    DayDataService.getDeathRate(dayData, wrapper, EMPTY_STRING);
+    DayDataService.getDeathRateSIR(dayData, wrapper, EMPTY_STRING);
 
     // Assert -> via annotation
   }
@@ -313,7 +313,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("location empty");
 
     // Act
-    DayDataService.getRecoveryRate(dayData, wrapper, EMPTY_STRING);
+    DayDataService.getRecoveryRateSIR(dayData, wrapper, EMPTY_STRING);
 
     // Assert -> via annotation
   }
@@ -325,7 +325,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("wrapper null");
 
     // Act
-    DayDataService.getRecoveryRate(dayData, null, DEP_44);
+    DayDataService.getRecoveryRateSIR(dayData, null, DEP_44);
 
     // Assert -> via annotation
   }
@@ -337,7 +337,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("location null");
 
     // Act
-    DayDataService.getRecoveryRate(dayData, wrapper, null);
+    DayDataService.getRecoveryRateSIR(dayData, wrapper, null);
 
     // Assert -> via annotation
   }
@@ -349,7 +349,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("dayData null");
 
     // Act
-    DayDataService.getRecoveryRate(null, wrapper, DEP_44);
+    DayDataService.getRecoveryRateSIR(null, wrapper, DEP_44);
 
     // Assert -> via annotation
   }
@@ -361,7 +361,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("dayData null");
 
     // Act
-    DayDataService.getSusceptible(null);
+    DayDataService.getSusceptibleSIR(null);
 
     // Assert -> via annotation
   }
@@ -371,7 +371,7 @@ public class DayDataServiceTest {
     // Arrange
 
     // Act
-    final double result = DayDataService.getSusceptible(dayData);
+    final double result = DayDataService.getSusceptibleSIR(dayData);
 
     // Assert -> via annotation
     Assert.assertEquals("wrong susceptible", SUSCEPTIBLE, result, 0);

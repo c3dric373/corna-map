@@ -143,43 +143,40 @@ export class RightBarComponent implements OnInit, OnChanges{
     // this.isSimulationStarted = false;
   }
 
-  ngOnChanges(composant: SimpleChanges ){
-    /*if (composant.isRegion.currentValue !== composant.isRegion.previousValue){
-      console.log('dans le iffff');
-    }*/
-    console.log('simu start : ' + this.isSimulationStarted);
-    console.log('chosenlocation : ' + this.chosenLocation);
-    console.log('locationName : ' + this.locationName);
-    console.log('isRegion : ' + this.isRegion);
-    // this.chosenLocation = this.locationName;
-    if (this.isSimulationStarted && this.locationName === 'France'){
-      this.getHFrance();
-      // this.showLocation = true;
-    }
-    if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
-      if (this.isRegion) {
-        this.getRegInfos();
-        this.getHRegion();
-      } else {
-        this.getDeptInfos();
-        this.getHDept();
+  ngOnChanges(changes: SimpleChanges ){
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          // When isSimulationStarted changes
+          case 'isSimulationStarted':
+          // When actualdate changes
+          case 'actualdate':
+          // When locationName changes
+          case 'locationName': {
+            if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
+              if (this.isRegion) {
+                this.getRegInfos();
+                this.getHRegion();
+              } else {
+                this.getDeptInfos();
+                this.getHDept();
+              }
+              this.showLocation = true;
+              this.showLink = true;
+            }else{                    // france
+              this.showLink = false;
+            }
+            if (this.isSimulationStarted && this.locationName === 'France'){
+              this.getHFrance();
+              // this.showLocation = true;
+            }
+            break;
+          }
+          default:
+            break;
+        }
       }
-      this.showLocation = true;
-      this.showLink = true;
-    }else{                    // france
-      this.showLink = false;
     }
-
-  }
-
-  public beforeChange($event: NgbPanelChangeEvent) {
-/*
-    if (this.isRegion){
-      this.getRegInfos();
-    }else{
-      this.getDeptInfos();
-    }*/
-
   }
 
   getRegInfos() {
@@ -188,7 +185,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.reglist = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -206,7 +202,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.reglist = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -230,7 +225,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.deptList = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -243,11 +237,10 @@ export class RightBarComponent implements OnInit, OnChanges{
         }
       );
     }else{
-      /*this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
+      this.simulationService.getInfosDept(this.actualdate, this.locationName).subscribe(
         data => {
           this.deptList = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -258,7 +251,7 @@ export class RightBarComponent implements OnInit, OnChanges{
             this.totCasConf = data.totalCases;
           }
         }
-      );*/
+      );
     }
   }
 
@@ -271,10 +264,10 @@ export class RightBarComponent implements OnInit, OnChanges{
         }
       );
     }else{
-      console.log(this.actualdate);
       this.simulationService.getInfosFrance(this.actualdate).subscribe(
         data => {
           // this.histFr = data;
+          console.log('fra data :');
           console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
