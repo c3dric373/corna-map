@@ -232,7 +232,8 @@ public class DayDataService {
     final double sumCi =
       simulator.getC().stream().mapToDouble(f -> f).sum();
     final List<Double> betaI =
-      simulator.getC().stream().map(ci -> ci / sumCi * infectedCases / POPULATION_FRA)
+      simulator.getC().stream().map(ci -> ci
+        / sumCi * infectedCases / POPULATION_FRA)
         .collect(Collectors.toList());
     return computePercentageAgeClasses(betaI);
   }
@@ -284,6 +285,104 @@ public class DayDataService {
     }
    */
 
+  /**
+   * Computes list of light infected people from COVID-19 per age class.
+   *
+   * @param initI     List of infected people per age Class.
+   * @param simulator the simulator for which we compute the parameters.
+   * @return the list of ratios of light infected  people per age group.
+   */
+  public static List<Double> getLightInfectedSJYHR(final List<Double> initI,
+                                                   final SJYHRSimulator
+                                                     simulator) {
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initI.size(); i++) {
+      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
+      result.add(initI.get(i) * (1 - thetaI));
+    }
+    return result;
+  }
+
+  /**
+   * Computes list of heavy infected people from COVID-19 per age class.
+   *
+   * @param initI     List of infected people per age Class.
+   * @param simulator the simulator for which we compute the parameters.
+   * @return the list of ratios of heavy infected  people per age group.
+   */
+  public static List<Double> getHeavyInfectedSJYHR(final List<Double> initI,
+                                                   final SJYHRSimulator
+                                                     simulator) {
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initI.size(); i++) {
+      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
+      result.add(initI.get(i) * (thetaI));
+    }
+    return result;
+  }
+
+  /**
+   * Computes list of heavy infected people from COVID-19 per age class.
+   *
+   * @param initI      List of infected people per age Class.
+   * @param latestData Data that sets the base state for the calculation.
+   * @return the list of ratios of hospitalized people per age group.
+   */
+  public static List<Double> getHospitalizedSJYHR(final List<Double> initI,
+                                                  final DayData latestData) {
+    final int hospitalized = latestData.getHospitalized();
+    final double sumInitI = initI.stream().mapToDouble(f -> f).sum();
+    return initI.stream().map(infectedCat -> (infectedCat / sumInitI)
+      * hospitalized / POPULATION_FRA).collect(Collectors.toList());
+  }
+
+  /**
+   * Computes list of dead people from COVID-19 per age class.
+   *
+   * @param latestData Data setting base state.
+   * @param initH     List of hospitalized people per age Class.
+   * @param simulator the simulator for which we compute the parameters.
+   * @return the list ratios of dead people per age group.
+   */
+  public static List<Double> getDeadSJYHR(final DayData latestData,
+                                          final List<Double> initH,
+                                          final SJYHRSimulator simulator) {
+    final int totalDeaths = latestData.getTotalDeaths();
+    final double sumMuI =
+      simulator.getAgeCategories().stream().mapToDouble(SJYHRSimulator
+        .AgeCategory::getMui).sum();
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initH.size(); i++) {
+      result.add(totalDeaths * simulator.getAgeCategories().get(i).getMui()
+        / sumMuI * initH.get(i) / POPULATION_FRA);
+    }
+    return result;
+  }
+
+  /**
+   * Computes list of dead people from COVID-19 per age class.
+   *
+   * @param latestData Data setting base state.
+   * @param initH List of hospitalized people per age Class.
+   * @param initJ List of light infected people people per age Class.
+   * @return the list of ratios of recovered people per age group.
+   */
+  public static List<Double> getRecoveredSJYHR(final DayData latestData,
+                                               final List<Double> initJ,
+                                               final List<Double> initH) {
+    final double sumJ = initJ.stream().mapToDouble(f -> f).sum();
+    final double sumH = initH.stream().mapToDouble(f -> f).sum();
+    final double alphaJ = sumJ / (sumJ + sumH);
+    final double alphaH = sumH / (sumJ + sumH);
+    final int recovered = latestData.getRecoveredCases();
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initJ.size(); i++) {
+      result.add((recovered * (alphaJ * initJ.get(i)
+        + alphaH * initH.get(i))) / POPULATION_FRA);
+    }
+    return result;
+  }
+
   @NotNull
   private static List<Double> computePercentageAgeClasses(final double param) {
     final double infectious014 = param * AgeCategoryService.FR_POP_0_14;
@@ -312,79 +411,17 @@ public class DayDataService {
   }
 
   @NotNull
-  private static List<Double> createParamsList(double infectious014,
-                                               double infectious1544,
-                                               double infectious4564,
-                                               double infectious6475,
-                                               double infectious75INF) {
+  private static List<Double> createParamsList(final double param014,
+                                               final double param1544,
+                                               final double param4564,
+                                               final double param6475,
+                                               final double param75INF) {
     final List<Double> result = new ArrayList<>();
-    result.add(infectious014);
-    result.add(infectious1544);
-    result.add(infectious4564);
-    result.add(infectious6475);
-    result.add(infectious75INF);
+    result.add(param014);
+    result.add(param1544);
+    result.add(param4564);
+    result.add(param6475);
+    result.add(param75INF);
     return result;
   }
-
-  public static List<Double> getLightInfectedSJYHR(final List<Double> initI,
-                                                   final SJYHRSimulator
-                                                     simulator) {
-    final List<Double> result = new ArrayList<>(5);
-    for (int i = 0; i < initI.size(); i++) {
-      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
-      result.add(initI.get(i) * (1 - thetaI));
-    }
-    return result;
-  }
-
-  public static List<Double> getHeavyInfectedSJYHR(List<Double> initI,
-                                                   SJYHRSimulator simulator) {
-    final List<Double> result = new ArrayList<>(5);
-    for (int i = 0; i < initI.size(); i++) {
-      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
-      result.add(initI.get(i) * (thetaI));
-    }
-    return result;
-  }
-
-  public static List<Double> getHospitalizedSJYHR(final List<Double> initI,
-                                                  final DayData latestData) {
-    final int hospitalized = latestData.getHospitalized();
-    final double sumInitI = initI.stream().mapToDouble(f -> f).sum();
-    return initI.stream().map(infectedCat -> (infectedCat / sumInitI)
-      * hospitalized / POPULATION_FRA).collect(Collectors.toList());
-  }
-
-  public static List<Double> getDeadSJYHR(final DayData latestData,
-                                          final List<Double> initH,
-                                          final SJYHRSimulator simulator) {
-    final int totalDeaths = latestData.getTotalDeaths();
-    final double sumMuI =
-      simulator.getAgeCategories().stream().mapToDouble(SJYHRSimulator
-        .AgeCategory::getMui).sum();
-    final List<Double> result = new ArrayList<>(5);
-    for (int i = 0; i < initH.size(); i++) {
-      result.add(totalDeaths * simulator.getAgeCategories().get(i).getMui()
-        / sumMuI * initH.get(i) / POPULATION_FRA);
-    }
-    return result;
-  }
-
-  public static List<Double> getRecoveredSJYHR(final DayData latestData,
-                                               final List<Double> initJ,
-                                               final List<Double> initH,
-                                               final SJYHRSimulator simulator) {
-    final double sumJ = initJ.stream().mapToDouble(f -> f).sum();
-    final double sumH = initH.stream().mapToDouble(f -> f).sum();
-    final double alphaJ = sumJ / (sumJ + sumH);
-    final double alphaH = sumH / (sumJ + sumH);
-    final int recovered = latestData.getRecoveredCases();
-    final List<Double> result = new ArrayList<>(5);
-    for (int i = 0; i < initJ.size(); i++) {
-      result.add((recovered * (alphaJ * initJ.get(i)
-        + alphaH * initH.get(i))) / POPULATION_FRA);
-    }
-    return result;
-  }
-
 }

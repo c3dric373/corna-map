@@ -4,11 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import model.simulator.SJYHRSimulator;
 import org.apache.commons.lang.Validate;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * This class is a data container class which holds all the necessary
@@ -157,6 +155,5 @@ public class DayData {
     this.date = dateNew;
     this.type = typeNew;
   }
-
 
 }

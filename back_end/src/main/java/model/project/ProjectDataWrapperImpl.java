@@ -225,8 +225,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
       initH, simulator);
     final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
-      initJ,
-      initH, simulator);
+      initJ, initH);
     simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
   }

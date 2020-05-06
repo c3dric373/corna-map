@@ -255,8 +255,11 @@ public class SJYHRSimulator implements Simulator {
 
   /**
    * @param initS list of size n, initial rates of susceptible.
-   * @param initJ list of size n, initial rante of light infected.
-   * @param initY list of size n, initial rante of heavy infected.
+   * @param initJ list of size n, initial rates of light infected.
+   * @param initY list of size n, initial rates of heavy infected.
+   * @param initH list of size n, initial rates of hospitalized.
+   * @param initR list of size n, initial rates of recovered.
+   * @param initD list of size n, initial rates of dead.
    */
   public void setInitialStates(final List<Double> initS,
                                final List<Double> initJ,
