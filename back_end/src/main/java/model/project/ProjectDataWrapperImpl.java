@@ -75,6 +75,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private boolean useSir = true;
 
+  /**
+   * Latest Content
+   */
+  private String latestContent;
+
   @Override
   public void getCurrentAllDataFrance() throws IOException {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
@@ -89,6 +94,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       useSir = true;
     } else {
       setSJYHRSimulator(content);
+      latestContent = content;
       useSir = false;
     }
   }
@@ -171,6 +177,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       truncateData(date);
       // Here we need to get latest data again because we have deleted
       // every date after date.
+      if (useSir) {
+        setSirSimulator();
+      } else {
+        setSJYHRSimulator(latestContent);
+      }
       return getLatestData(FRA);
     }
     Map<String, Double> locationPercentages =
@@ -219,12 +230,12 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private void setSirSimulator() {
     DayData latestData = getLatestData(FRA);
-    final double deathRate = DayDataService.getDeathRateSIR(latestData,
-      this, FRA);
-    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
-      this, FRA);
+    final double deathRate = DayDataService.getDeathRateSIR(latestData);
+    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData);
     final double susceptible = DayDataService.getSusceptibleSIR(latestData);
     final double infectious = 1 - susceptible;
+    System.out.println("RecoveryRateBase: " + recoveryRate);
+    System.out.println("RecoveredBase:  " + recoveryRate * POPULATION_FRA);
     sirSimulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
   }
@@ -240,23 +251,17 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private DayData simulateDaySir(final DayData startState,
                                  final SIRSimulator sirSimulator) {
-    // Compute Start State
-    final double totalDeaths = startState.getTotalDeaths();
-    final double recovered = startState.getRecoveredCases();
     // Simulate a day
     sirSimulator.step();
     final double deadNew = Iterables.getLast(sirSimulator.getDead());
     final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
     final double susceptibleNew =
       Iterables.getLast(sirSimulator.getSusceptible());
-    final double infectiousNew =
-      Iterables.getLast(sirSimulator.getInfectious());
-    final double infectedPeople = POPULATION_FRA * infectiousNew;
+
     // Create Object which encapsulates the simulated data
     final DayData dayData = new DayData();
-    dayData.setTotalDeaths((int) (totalDeaths + deadNew * infectedPeople));
-    dayData.setRecoveredCases((int) (recovered
-      + recoveredNew * infectedPeople));
+    dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
+    dayData.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
     System.out.println("recovered " + dayData.getRecoveredCases());
     dayData.setTotalCases((int) (POPULATION_FRA
       - (susceptibleNew * POPULATION_FRA)));

@@ -170,8 +170,7 @@ public class DayDataServiceTest {
     // Arrange
 
     // Act
-    final double result = DayDataService.getDeathRateSIR(dayData1, wrapper,
-      DEP_44);
+    final double result = DayDataService.getDeathRateSIR(dayData1);
 
     // Assert
     Assert.assertEquals("wrong death rate", DEATH_RATE, result, delta);
@@ -182,8 +181,7 @@ public class DayDataServiceTest {
     // Arrange
 
     // Act
-    final double result = DayDataService.getRecoveryRateSIR(dayData1, wrapper,
-      DEP_44);
+    final double result = DayDataService.getRecoveryRateSIR(dayData1);
 
     // Assert
     Assert.assertEquals("wrong death rate", RECOVERY_RATE, result, delta);
@@ -196,7 +194,7 @@ public class DayDataServiceTest {
     thrown.expectMessage("dayData null");
 
     // Act
-    DayDataService.getDeathRateSIR(null, wrapper, DEP_44);
+    DayDataService.getDeathRateSIR(null);
 
     // Assert -> via annotation
   }
@@ -271,85 +269,13 @@ public class DayDataServiceTest {
   }
 
   @Test
-  public void testGetDeathRate_wrapperNull_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("wrapper null");
-
-    // Act
-    DayDataService.getDeathRateSIR(dayData, null, DEP_44);
-
-    // Assert -> via annotation
-  }
-
-  @Test
-  public void testGetDeathRate_locationNull_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("location null");
-
-    // Act
-    DayDataService.getDeathRateSIR(dayData, wrapper, null);
-
-    // Assert -> via annotation
-  }
-
-  @Test
-  public void testGetDeathRate_locationEmpty_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("location empty");
-
-    // Act
-    DayDataService.getDeathRateSIR(dayData, wrapper, EMPTY_STRING);
-
-    // Assert -> via annotation
-  }
-
-  @Test
-  public void testGetRecoveryRate_locationEmpty_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("location empty");
-
-    // Act
-    DayDataService.getRecoveryRateSIR(dayData, wrapper, EMPTY_STRING);
-
-    // Assert -> via annotation
-  }
-
-  @Test
-  public void testGetRecoveryRate_wrapperNull_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("wrapper null");
-
-    // Act
-    DayDataService.getRecoveryRateSIR(dayData, null, DEP_44);
-
-    // Assert -> via annotation
-  }
-
-  @Test
-  public void testGetRecoveryRate_locationNull_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("location null");
-
-    // Act
-    DayDataService.getRecoveryRateSIR(dayData, wrapper, null);
-
-    // Assert -> via annotation
-  }
-
-  @Test
   public void testGetRecoveryRate_dayDataNull_throwsIllegalArgumentException() {
     // Arrange
     thrown.expect(IllegalArgumentException.class);
     thrown.expectMessage("dayData null");
 
     // Act
-    DayDataService.getRecoveryRateSIR(null, wrapper, DEP_44);
+    DayDataService.getRecoveryRateSIR(null);
 
     // Assert -> via annotation
   }
