@@ -39,6 +39,27 @@ public class AgeCategoryService {
   public static final double FR_POP_75_INF = 0.093;
 
   /**
+   * Death Rate 0_15.
+   */
+  public static final double MU_0_15 = 0.003;
+  /**
+   * Death Rate 0_15.
+   */
+  public static final double MU_15_44 = 0.01;
+  /**
+   * Death Rate 0_15.
+   */
+  public static final double MU_44_64 = 0.08;
+  /**
+   * Death Rate 0_15.
+   */
+  public static final double MU_64_75 = 0.22;
+  /**
+   * Death Rate 0_15.
+   */
+  public static final double MU_75_INF = 0.44;
+
+  /**
    * Map to facilitate working with the above fields.
    */
   public Map<Integer, Double> indexToPopPercentage = new HashMap<>();

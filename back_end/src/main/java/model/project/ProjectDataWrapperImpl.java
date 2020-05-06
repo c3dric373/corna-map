@@ -205,8 +205,12 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       DayDataService.getLightInfectedSJYHR(latestData);
     List<Double> heavyInfected =
       DayDataService.getHeavyInfectedSJYHR(latestData);
+    List<Double> deadList = DayDataService.getDeadSJYHR(latestData);
+    List<Double> hospitalizedList = DayDataService.getDeadSJYHR(latestData);
+    List<Double> recoveredList = DayDataService.getDeadSJYHR(latestData);
+
     simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
-      heavyInfected);
+      heavyInfected, hospitalizedList, recoveredList, deadList);
     final Gson gson = new Gson();
     final Map map = gson.fromJson(content, Map.class);
     List<List<Integer>> measures = simulatorService.getMeasures(map);
@@ -251,7 +255,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final List<SJYHRSimulator.AgeCategory> ageCategories =
       sjyhrSimulator.getAgeCategories();
     final double dead = ageCategoryService.getDead(ageCategories);
-    for(SJYHRSimulator.AgeCategory ageCategory : ageCategories){
+    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
       System.out.println("DeadAgeCat: " + ageCategory.getDi());
     }
     System.out.println("Dead: " + dead * POPULATION_FRA);

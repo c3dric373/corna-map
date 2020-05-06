@@ -225,6 +225,39 @@ public class DayDataService {
     return computePercentageAgeClasses(heavyInfected);
   }
 
+  /**
+   * Computes for each age class the percentage of people
+   * dead from the COVID-19.
+   *
+   * @param latestData The data for which we should calculate such percentages.
+   * @return List of percentages.
+   */
+  public static List<Double> getDeadSJYHR(final DayData latestData) {
+    Validate.notNull(latestData, "dayData null");
+    final int dead = latestData.getTotalDeaths();
+    final double deathRate = dead / POPULATION_FRA;
+    return computePercentageAgeClasses(deathRate);
+  }
+
+  /*
+  @NotNull
+  private static List<Double> computeDeadPercentageAgeClasses(final double
+  param) {
+    final double infectious014 = param * AgeCategoryService.MU_0_15;
+    final double infectious1544 = param * AgeCategoryService.MU_15_44;
+    final double infectious4564 = param * AgeCategoryService.MU_44_64;
+    final double infectious6475 = param * AgeCategoryService.MU_64_75;
+    final double infectious75INF = param * AgeCategoryService.MU_75_INF;
+    final List<Double> result = new ArrayList<>();
+    result.add(infectious014);
+    result.add(infectious1544);
+    result.add(infectious4564);
+    result.add(infectious6475);
+    result.add(infectious75INF);
+    return result;
+    }
+   */
+
   @NotNull
   private static List<Double> computePercentageAgeClasses(final double param) {
     final double infectious014 = param * AgeCategoryService.FR_POP_0_14;
@@ -240,4 +273,5 @@ public class DayDataService {
     result.add(infectious75INF);
     return result;
   }
+
 }
