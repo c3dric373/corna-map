@@ -278,17 +278,6 @@ public class DayDataServiceTest {
     // Assert -> via annotation
   }
 
-  @Test
-  public void testGetSusceptible_dayDataNull_throwsIllegalArgumentException() {
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("dayData null");
-
-    // Act
-   // DayDataService.getSusceptibleSIR(null);
-
-    // Assert -> via annotation
-  }
 
   @Test
   public void testGetSusceptible_validCall_correctCalculation() {

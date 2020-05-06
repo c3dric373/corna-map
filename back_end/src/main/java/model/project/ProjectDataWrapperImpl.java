@@ -257,17 +257,17 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     sirSimulator.step();
     final double deadNew =
       sirSimulator.getDead().stream().mapToDouble(Iterables::getLast).sum();
-    final double recoveredNew =
-      sirSimulator.getRecovered().stream().mapToDouble(Iterables::getLast).sum();
-    final double susceptibleNew =
-      sirSimulator.getSusceptible().stream().mapToDouble(Iterables::getLast).sum();
+    final double recoveredNew = sirSimulator.getRecovered().stream()
+      .mapToDouble(Iterables::getLast).sum();
+    final double susceptibleNew = sirSimulator.getSusceptible().stream()
+      .mapToDouble(Iterables::getLast).sum();
 
     // Create Object which encapsulates the simulated data
     final DayData dayData = new DayData();
     dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
-    dayData.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
+    dayData.setRecoveredCases((int) (recoveredNew * POPULATION_FRA) / 10);
     dayData.setTotalCases((int) (POPULATION_FRA
-      - (susceptibleNew * POPULATION_FRA)));
+      - (susceptibleNew * POPULATION_FRA)) / 10);
     return dayData;
   }
 

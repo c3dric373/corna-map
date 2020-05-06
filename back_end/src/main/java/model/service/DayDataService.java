@@ -27,6 +27,7 @@ public class DayDataService {
    * Computes the percentage of people susceptible of catching the coronavirus
    * given on stats of specific day.
    *
+   * @param sum sum of other
    * @return percentage of susceptible people.
    */
   public static List<Double> getSusceptibleSIR(final double sum) {
@@ -81,7 +82,13 @@ public class DayDataService {
     return computePercentageAgeClasses(deathRate);
   }
 
-  public static List<Double> getInfectiousSir(DayData latestData) {
+  /**
+   * Get infectious.
+   *
+   * @param latestData latest data.
+   * @return percentage of infectious people.
+   */
+  public static List<Double> getInfectiousSir(final DayData latestData) {
     Validate.notNull(latestData, "dayData null");
     double infected = latestData.getHospitalized() * 40 / POPULATION_FRA;
     return computePercentageAgeClasses(infected);

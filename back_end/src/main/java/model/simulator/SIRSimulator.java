@@ -16,6 +16,9 @@ import java.util.List;
 @Setter
 public class SIRSimulator implements Simulator {
 
+  /**
+   * Number of age categories.
+   */
   int nbAgeCategory = 5;
   /**
    * La classe est encore en chantier.
@@ -35,7 +38,7 @@ public class SIRSimulator implements Simulator {
   private List<List<Double>> dead;
 
   /**
-   * R0 / POP_FRA
+   * R0 / POP_FRA.
    */
   private double r0Pop = 0.5 / DayDataService.POPULATION_FRA;
   /**
@@ -123,7 +126,7 @@ public class SIRSimulator implements Simulator {
     model = builder.build();
   }
 
-  private double makeTotalInfected(List<Double> y) {
+  private double makeTotalInfected(final List<Double> y) {
     double totalInfected = 0.;
     for (int k = 0; k < nbAgeCategory; ++k) {
       totalInfected += y.get(4 * k + 1);
