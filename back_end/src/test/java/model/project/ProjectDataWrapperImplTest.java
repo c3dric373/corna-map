@@ -18,6 +18,10 @@ import java.util.List;
 public class ProjectDataWrapperImplTest {
 
   private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
+  private final static String CONTENT = "{\"respectConfinement\":50," +
+    "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
+    "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
+    "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
   private final static String DATE1 = "2020-04-10";
   private final static String DATE2 = "2020-04-11";
   private final static String DEP_44 = "DEP-44";
@@ -26,6 +30,7 @@ public class ProjectDataWrapperImplTest {
   private final static String REG_12 = "REG-12";
   private final static String FRA = "FRA";
   private final static String NAME = "guadeloupe";
+  private final static String EMPTY_STRING = "";
   private final static int TOTAL_CASE = 1000;
   private final static int TOTAL_CASE_1 = 1100;
   private final static int EPHAD_CASES = 2;
@@ -149,7 +154,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
     LocalDate dateIn5Days = LocalDate.now().plusDays(5);
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     System.out.println(dateIn5Days);
     final DayData dayData =
       wrapper.simulateFrance(dateIn5Days.toString());
@@ -167,7 +172,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
     LocalDate datePast = LocalDate.now().minusDays(10);
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     final DayData expected =
       wrapper.getProject().getLocations().get(FRA).get(datePast.toString());
 
@@ -185,7 +190,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
     final String datePast = "2020-03-19";
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(datePast);
     final DayData dayDataResult = wrapper.simulateFrance(datePast);
     final int unexpected = 0;
@@ -205,7 +210,7 @@ public class ProjectDataWrapperImplTest {
     final String dateFuture = LocalDate.now().plusDays(10).toString();
     final String dateFuture1 = LocalDate.now().plusDays(15).toString();
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(datePast);
     wrapper.simulateFrance(datePast);
     wrapper.simulateFrance(dateFuture);
@@ -228,7 +233,7 @@ public class ProjectDataWrapperImplTest {
     LocalDate dateFuture = LocalDate.now().plusDays(5);
 
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(datePast.toString());
     final DayData dayDataRes =
       wrapper.simulateFrance(dateFuture.toString());
@@ -250,7 +255,7 @@ public class ProjectDataWrapperImplTest {
     final String dateFuture1 = LocalDate.now().plusDays(7).toString();
 
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(datePast);
     wrapper.simulateFrance(dateFuture);
     wrapper.simulateFrance(datePast1);
@@ -272,7 +277,7 @@ public class ProjectDataWrapperImplTest {
     final String dateFuture2 = LocalDate.now().plusDays(15).toString();
 
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(dateFuture);
     wrapper.simulateFrance(dateFuture1);
     final DayData dayDataRes = wrapper.simulateFrance(dateFuture2);
@@ -293,17 +298,17 @@ public class ProjectDataWrapperImplTest {
     final String dateFuture2 = LocalDate.now().plusDays(15).toString();
 
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(dateFuture);
     // Info
     wrapper.infosFrance(DATE1);
     // Simulate second time
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(dateFuture1);
     // Info
     wrapper.infosFrance(DATE1);
     // Simulate second time
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     final DayData dayDataRes = wrapper.simulateFrance(dateFuture2);
     final int unexpected = 0;
 
@@ -324,13 +329,13 @@ public class ProjectDataWrapperImplTest {
     final String dateFuture1 = LocalDate.now().plusDays(7).toString();
 
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(datePast);
     wrapper.simulateFrance(dateFuture);
     // Info
     wrapper.infosFrance(DATE1);
     // Simulate second time
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     wrapper.simulateFrance(datePast1);
     final DayData dayDataRes = wrapper.simulateFrance(dateFuture1);
     final int unexpected = 0;
@@ -349,13 +354,13 @@ public class ProjectDataWrapperImplTest {
     LocalDate dateFuture = LocalDate.now().plusDays(5);
 
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     // Simulate past
     wrapper.simulateFrance(datePast.toString());
     // Get Info
     wrapper.infosFrance(DATE1);
     // Simulate Future
-    wrapper.startSimulation();
+    wrapper.startSimulation(CONTENT);
     final DayData dayData =
       wrapper.simulateFrance(dateFuture.toString());
     final int unexpected = 0;

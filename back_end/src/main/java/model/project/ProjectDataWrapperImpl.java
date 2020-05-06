@@ -1,10 +1,12 @@
 package model.project;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import model.data.DayData;
 import model.io.DataScrapperImpl;
 import model.service.AgeCategoryService;
 import model.service.DayDataService;
+import model.service.SimulatorService;
 import model.simulator.SJYHRSimulator;
 
 import java.io.IOException;
@@ -39,9 +41,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * The {@link ProjectData} this wrapper manages.
    */
   @Getter
-  private ProjectData project = new ProjectDataImpl();
-
-  // private SIRSimulator simulator = new SIRSimulator();
+  private final ProjectData project = new ProjectDataImpl();
 
   /**
    * Simulator used to simulate COVID-19.
@@ -49,14 +49,19 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private SJYHRSimulator simulator = new SJYHRSimulator();
 
   /**
-   * Dictionnary mapping id to name for regions and departments.
+   * Dictionary mapping id to name for regions and departments.
    */
-  private Map<String, String> idToName = new HashMap<>();
+  private final Map<String, String> idToName = new HashMap<>();
 
   /**
    * Service used to compute numbers after simulating.
    */
   AgeCategoryService ageCategoryService = new AgeCategoryService();
+
+  /**
+   * Service used to compute numbers after simulating.
+   */
+  SimulatorService simulatorService = new SimulatorService();
 
   @Override
   public void getCurrentAllDataFrance() throws IOException {
@@ -66,8 +71,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void startSimulation() {
-    setSimulator();
+  public void startSimulation(final String content) {
+    setSimulator(content);
   }
 
   @Override
@@ -189,29 +194,28 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Sets the parameter on the simulator with the latest data.
+   *
+   * @param content measures values
    */
-  private void setSimulator() {
+  private void setSimulator(final String content) {
     DayData latestData = getLatestData(FRA);
-    final double deathRate = DayDataService.getDeathRateSIR(latestData,
-      this, FRA);
-    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
-      this, FRA);
-    final double susceptible = DayDataService.getSusceptibleSIR(latestData);
     final List<Double> susceptibleComplex =
       DayDataService.getSusceptibleSJYHR(latestData);
-    List<Double> infectious = new ArrayList<>();
-    for (double susceptiblePerAgeCat : susceptibleComplex) {
-      infectious.add(1 - susceptiblePerAgeCat);
-    }
     List<Double> lightInfected =
       DayDataService.getLightInfectedSJYHR(latestData);
     List<Double> heavyInfected =
       DayDataService.getHeavyInfectedSJYHR(latestData);
-
     simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
       heavyInfected);
-    //simulator = new SIRSimulator(susceptible,
-    // infectious, recoveryRate, deathRate);
+    final Gson gson = new Gson();
+    final Map map = gson.fromJson(content, Map.class);
+    List<List<Integer>> measures = simulatorService.getMeasures(map);
+    final int confinedCategoriesIndex = 0;
+    final int maskedCategoriesIndex = 1;
+    final int confinementRespectIndex = 2;
+    simulator.applyMeasures(measures.get(confinedCategoriesIndex),
+      measures.get(maskedCategoriesIndex),
+      measures.get(confinementRespectIndex).get(0));
   }
 
   /**
@@ -222,9 +226,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private void truncateData(final String date) {
     final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> dataFrance = locations.get(FRA);
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
-      final String id = entry.getKey();
       final Map<String, DayData> mapId = entry.getValue();
       mapId.keySet().removeIf(key
         -> LocalDate.parse(key).isAfter(LocalDate.parse(date)));
@@ -236,16 +238,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * sjyhrSimulator.
    *
    * @param startState     The data on the situation form which the simulated
-   *                      day
+   *                       day
    *                       should start.
    * @param sjyhrSimulator the given sjyhrSimulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
                               final SJYHRSimulator sjyhrSimulator) {
-    // Compute Start State
-    final double totalDeaths = startState.getTotalDeaths();
-    final double recovered = startState.getRecoveredCases();
     // Simulate a day
     sjyhrSimulator.step();
     final DayData result = new DayData();
@@ -259,7 +258,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
     final double heavyInfected =
       ageCategoryService.getHeavyInfected(ageCategories);
-
     final double infected = lightInfected + heavyInfected + hospitalized;
     final double susceptibleNew = 1 - infected - deadNew;
     // Create Object which encapsulates the simulated data
@@ -298,18 +296,23 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       return date1.compareTo(date2);
     }
   }
-/*
-  public static void main(final String[] args) throws IOException {
-    ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
-    DataScrapperImpl scrapper = new DataScrapperImpl();
-    scrapper.extract(wrapper);
-    DayData dayData = wrapper.simulateFrance("2020-04-30");
-    System.out.println("=============");
-    wrapper.simulateFrance("2020-05-06");
-    //wrapper.simulateFrance("2020-05-01");
-  }
-  */
 
+  /*
+  public static void main(final String[] args) throws IOException {
+    Gson gson = new Gson();
+    final String content = "{\"respectConfinement\":50," +
+      "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
+      "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
+      "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
+    Map map = gson.fromJson(content, Map.class);
+    LinkedTreeMap<String, Boolean> test =
+      (LinkedTreeMap<String, Boolean>) map.get(
+        "mask");
+    System.out.println(map.get("mask"));
+    System.out.println(test.get("m0_15").toString());
+
+  }
+*/
 }
 
 

@@ -96,7 +96,9 @@ public interface ProjectDataWrapper {
 
   /**
    * Notifies the model that the view is in Simulation mode.
+   *
+   * @param content measures values
    */
-  void startSimulation();
+  void startSimulation(String content);
 
 }
