@@ -109,7 +109,7 @@ export class LeftSimulationComponent implements OnInit {
 
   onChangeMask(category: string) {
     this.allParams.mask[category] = !this.allParams.mask[category];
-    console.log('Confinement catégorie : ' + category + ' : ' + this.allParams.mask[category]);
+    console.log('Masque catégorie : ' + category + ' : ' + this.allParams.mask[category]);
   }
 
   onChangeConfinement(category: string) {
