@@ -2,6 +2,7 @@ package model.service;
 
 import model.data.DayData;
 import model.project.ProjectDataWrapper;
+import model.simulator.SJYHRSimulator;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DayDataService {
 
@@ -213,6 +215,30 @@ public class DayDataService {
 
   /**
    * Computes for each age class the percentage of people
+   * lightly infected from the COVID-19.
+   *
+   * @param latestData The data for which we should calculate such percentages.
+   * @param simulator  simulator.
+   * @return List of percentages.
+   */
+  public static List<Double> getInfectedSJYHR(final DayData latestData,
+                                              final SJYHRSimulator simulator) {
+    Validate.notNull(latestData, "dayData null");
+    Validate.notNull(simulator, "simulator null");
+    final int totalCases = latestData.getTotalCases();
+    final int infectedCases =
+      totalCases - latestData.getHospitalized() - latestData.getTotalDeaths()
+        - latestData.getRecoveredCases();
+    final double sumCi =
+      simulator.getC().stream().mapToDouble(f -> f).sum();
+    final List<Double> betaI =
+      simulator.getC().stream().map(ci -> ci / sumCi * infectedCases / POPULATION_FRA)
+        .collect(Collectors.toList());
+    return computePercentageAgeClasses(betaI);
+  }
+
+  /**
+   * Computes for each age class the percentage of people
    * heavy infected from the COVID-19.
    *
    * @param latestData The data for which we should calculate such percentages.
@@ -265,12 +291,99 @@ public class DayDataService {
     final double infectious4564 = param * AgeCategoryService.FR_POP_45_64;
     final double infectious6475 = param * AgeCategoryService.FR_POP_64_75;
     final double infectious75INF = param * AgeCategoryService.FR_POP_75_INF;
+    return createParamsList(infectious014, infectious1544, infectious4564,
+      infectious6475, infectious75INF);
+  }
+
+  @NotNull
+  private static List<Double> computePercentageAgeClasses(final List<Double>
+                                                            params) {
+    final double infectious014 = params.get(0) * AgeCategoryService.FR_POP_0_14;
+    final double infectious1544 =
+      params.get(1) * AgeCategoryService.FR_POP_15_44;
+    final double infectious4564 =
+      params.get(2) * AgeCategoryService.FR_POP_45_64;
+    final double infectious6475 =
+      params.get(3) * AgeCategoryService.FR_POP_64_75;
+    final double infectious75INF =
+      params.get(4) * AgeCategoryService.FR_POP_75_INF;
+    return createParamsList(infectious014, infectious1544, infectious4564,
+      infectious6475, infectious75INF);
+  }
+
+  @NotNull
+  private static List<Double> createParamsList(double infectious014,
+                                               double infectious1544,
+                                               double infectious4564,
+                                               double infectious6475,
+                                               double infectious75INF) {
     final List<Double> result = new ArrayList<>();
     result.add(infectious014);
     result.add(infectious1544);
     result.add(infectious4564);
     result.add(infectious6475);
     result.add(infectious75INF);
+    return result;
+  }
+
+  public static List<Double> getLightInfectedSJYHR(final List<Double> initI,
+                                                   final SJYHRSimulator
+                                                     simulator) {
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initI.size(); i++) {
+      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
+      result.add(initI.get(i) * (1 - thetaI));
+    }
+    return result;
+  }
+
+  public static List<Double> getHeavyInfectedSJYHR(List<Double> initI,
+                                                   SJYHRSimulator simulator) {
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initI.size(); i++) {
+      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
+      result.add(initI.get(i) * (thetaI));
+    }
+    return result;
+  }
+
+  public static List<Double> getHospitalizedSJYHR(final List<Double> initI,
+                                                  final DayData latestData) {
+    final int hospitalized = latestData.getHospitalized();
+    final double sumInitI = initI.stream().mapToDouble(f -> f).sum();
+    return initI.stream().map(infectedCat -> (infectedCat / sumInitI)
+      * hospitalized / POPULATION_FRA).collect(Collectors.toList());
+  }
+
+  public static List<Double> getDeadSJYHR(final DayData latestData,
+                                          final List<Double> initH,
+                                          final SJYHRSimulator simulator) {
+    final int totalDeaths = latestData.getTotalDeaths();
+    final double sumMuI =
+      simulator.getAgeCategories().stream().mapToDouble(SJYHRSimulator
+        .AgeCategory::getMui).sum();
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initH.size(); i++) {
+      result.add(totalDeaths * simulator.getAgeCategories().get(i).getMui()
+        / sumMuI * initH.get(i) / POPULATION_FRA);
+    }
+    return result;
+  }
+
+  public static List<Double> getRecoveredSJYHR(final DayData latestData,
+                                               final List<Double> initJ,
+                                               final List<Double> initH,
+                                               final SJYHRSimulator simulator) {
+    final double sumJ = initJ.stream().mapToDouble(f -> f).sum();
+    final double sumH = initH.stream().mapToDouble(f -> f).sum();
+    final double alphaJ = sumJ / (sumJ + sumH);
+    final double alphaH = sumH / (sumJ + sumH);
+    final int recovered = latestData.getRecoveredCases();
+    final List<Double> result = new ArrayList<>(5);
+    for (int i = 0; i < initJ.size(); i++) {
+      result.add((recovered * (alphaJ * initJ.get(i)
+        + alphaH * initH.get(i))) / POPULATION_FRA);
+    }
     return result;
   }
 
