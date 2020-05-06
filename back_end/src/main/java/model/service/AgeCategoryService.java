@@ -3,7 +3,6 @@ package model.service;
 import com.google.common.collect.Iterators;
 import lombok.Getter;
 import model.simulator.SJYHRSimulator;
-import org.hibernate.annotations.GeneratorType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,26 +43,26 @@ public class AgeCategoryService {
   /**
    * Death Rate 0_15.
    */
-  public static final double MU_0_15 = 0.003;
+  public static final double MU_0_15 = 0.087;
   /**
    * Death Rate 15_44.
    */
-  public static final double MU_15_44 = 0.01;
+  public static final double MU_15_44 = 0.0394;
   /**
    * Death Rate 44_64.
    */
-  public static final double MU_44_64 = 0.08;
+  public static final double MU_44_64 = 0.0738;
   /**
    * Death Rate 64_75.
    */
-  public static final double MU_64_75 = 0.22;
+  public static final double MU_64_75 = 0.1308;
   /**
    * Death Rate 75_INF.
    */
-  public static final double MU_75_INF = 0.44;
+  public static final double MU_75_INF = 0.2591;
 
   /**
-   * List of MU
+   * List of MU.
    */
   @Getter
   public final List<Double> mu = new ArrayList<>();
@@ -90,10 +89,10 @@ public class AgeCategoryService {
   public static final double THETA_75_INF = 0.1296;
 
   /**
-   * List of THETA_I
+   * List of THETA_I.
    */
   @Getter
-  public final  List<Double> theta = new ArrayList<>();
+  public final List<Double> theta = new ArrayList<>();
 
   /**
    * Heavy Infection Rate 0_15.
@@ -117,7 +116,7 @@ public class AgeCategoryService {
   public static final double C_75_INF = 0.1;
 
   /**
-   * List of C_I
+   * List of C_I.
    */
   @Getter
   private final List<Double> c = new ArrayList<>();
@@ -177,7 +176,7 @@ public class AgeCategoryService {
   public double getRecovered(final List<SJYHRSimulator.AgeCategory>
                                ageCategories) {
     double sum = 0;
-    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
+    for (final SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
       sum += getRecovered(ageCategory);
     }
     return sum;
@@ -192,7 +191,7 @@ public class AgeCategoryService {
   public double getHospitalized(final List<SJYHRSimulator.AgeCategory>
                                   ageCategories) {
     double sum = 0;
-    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
+    for (final SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
       sum += getHospitalized(ageCategory);
     }
     return sum;
@@ -207,7 +206,7 @@ public class AgeCategoryService {
   public double getHeavyInfected(final List<SJYHRSimulator.AgeCategory>
                                    ageCategories) {
     double sum = 0;
-    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
+    for (final SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
       sum += getHeavyInfected(ageCategory);
     }
     return sum;
@@ -222,7 +221,7 @@ public class AgeCategoryService {
   public double getLightInfected(final List<SJYHRSimulator.AgeCategory>
                                    ageCategories) {
     double sum = 0;
-    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
+    for (final SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
       sum += getLightInfected(ageCategory);
     }
     return sum;

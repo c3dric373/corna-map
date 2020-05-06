@@ -296,7 +296,8 @@ public class DayDataService {
    * light infected  people per age group.
    */
   public static List<Double> getLightInfectedSJYHR(final List<Double> initI,
-                                                   final AgeCategoryService ageCategoryService) {
+                                                   final AgeCategoryService
+                                                     ageCategoryService) {
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initI.size(); i++) {
       final double thetaI = ageCategoryService.getTheta().get(i);
@@ -315,7 +316,8 @@ public class DayDataService {
    * heavy infected  people per age group.
    */
   public static List<Double> getHeavyInfectedSJYHR(final List<Double> initI,
-                                                   final AgeCategoryService ageCategoryService) {
+                                                   final AgeCategoryService
+                                                     ageCategoryService) {
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initI.size(); i++) {
       final double thetaI = ageCategoryService.getTheta().get(i);
@@ -333,10 +335,10 @@ public class DayDataService {
    */
   public static List<Double> getHospitalizedSJYHR(final List<Double> initI,
                                                   final DayData latestData) {
-    final int hospitalized = latestData.getHospitalized();
+    final int criticalCases = latestData.getCriticalCases();
     final double sumInitI = initI.stream().mapToDouble(f -> f).sum();
     return initI.stream().map(infectedCat -> (infectedCat / sumInitI)
-      * hospitalized / POPULATION_FRA).collect(Collectors.toList());
+      * criticalCases / POPULATION_FRA).collect(Collectors.toList());
   }
 
   /**
@@ -350,14 +352,15 @@ public class DayDataService {
    */
   public static List<Double> getDeadSJYHR(final DayData latestData,
                                           final List<Double> initH,
-                                          final AgeCategoryService ageCategoryService) {
+                                          final AgeCategoryService
+                                            ageCategoryService) {
     final int totalDeaths = latestData.getTotalDeaths();
     final double sumMuI =
       ageCategoryService.getMu().stream().mapToDouble(f -> f).sum();
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initH.size(); i++) {
-      result.add(totalDeaths / POPULATION_FRA * ageCategoryService.getMu().get(i)
-        / sumMuI);
+      result.add(totalDeaths / POPULATION_FRA
+        * ageCategoryService.getMu().get(i) / sumMuI);
     }
     return result;
   }
