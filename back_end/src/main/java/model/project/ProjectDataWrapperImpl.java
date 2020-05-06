@@ -224,8 +224,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
       this, FRA);
     final double susceptible = DayDataService.getSusceptibleSIR(latestData);
-    final List<Double> susceptibleComplex =
-      DayDataService.getSusceptibleSJYHR(latestData);
     final double infectious = 1 - susceptible;
     sirSimulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
