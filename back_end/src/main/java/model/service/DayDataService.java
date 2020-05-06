@@ -379,9 +379,10 @@ public class DayDataService {
     final double alphaH = sumH / (sumJ + sumH);
     final int recovered = latestData.getRecoveredCases();
     final List<Double> result = new ArrayList<>(5);
+    double a = 0.;
     for (int i = 0; i < initJ.size(); i++) {
-      result.add((recovered * (alphaJ * initJ.get(i)
-        + alphaH * initH.get(i))) / POPULATION_FRA);
+      result.add((recovered * (initJ.get(i) * alphaJ / sumJ
+        + initH.get(i) * alphaH / sumH)) / POPULATION_FRA);
     }
     return result;
   }
