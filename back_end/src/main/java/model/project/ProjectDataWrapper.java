@@ -97,8 +97,11 @@ public interface ProjectDataWrapper {
   /**
    * Notifies the model that the view is in Simulation mode.
    *
-   * @param content measures values
+   * @param content      measures values
+   * @param sirSimulator true iff {@link model.simulator.SIRSimulator} should
+   *                     be used to simulate covid-19. Else
+   *                     {@link model.simulator.SJYHRSimulator} will be used.
    */
-  void startSimulation(String content);
+  void startSimulation(String content, boolean sirSimulator);
 
 }

@@ -1,7 +1,6 @@
 package model.service;
 
 import model.data.DayData;
-import model.project.ProjectDataWrapper;
 import model.simulator.SJYHRSimulator;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
@@ -41,31 +40,12 @@ public class DayDataService {
    * Computes the percentage of recovered people from coronavirus
    * given on stats of specific day.
    *
-   * @param dayData  Data of specific day.
-   * @param wrapper  the {@link ProjectDataWrapper} needed
-   *                 to access previous
-   *                 days.
-   * @param location location for which we should calculate
-   *                 the rate.
+   * @param dayData Data of specific day.
    * @return percentage of recovered people.
    */
-  public static double getRecoveryRateSIR(final DayData dayData,
-                                          final ProjectDataWrapper wrapper,
-                                          final String location
-  ) {
+  public static double getRecoveryRateSIR(final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
-    Validate.notNull(wrapper, "wrapper null");
-    Validate.notNull(location, "location null");
-    Validate.notEmpty(location, "location empty");
-    Map<String, Map<String, DayData>> map =
-      wrapper.getProject().getLocations();
-    final String dayBefore = dayData.getDate().minusDays(1).toString();
-    final DayData dayBeforeData = map.get(location).get(dayBefore);
-    final int recoveredInADay = getRecoveredInADay(dayData, dayBeforeData);
-    final int infectedDayBefore =
-      dayBeforeData.getTotalCases()
-        - dayBeforeData.getRecoveredCases() - dayBeforeData.getTotalDeaths();
-    return recoveredInADay / (double) infectedDayBefore;
+    return dayData.getRecoveredCases() / POPULATION_FRA;
   }
 
   /**
@@ -91,31 +71,13 @@ public class DayDataService {
    * Computes the current deathRate of the coronavirus
    * given on stats of specific day.
    *
-   * @param dayData  Data of specific day.
-   * @param wrapper  the {@link ProjectDataWrapper} needed to access previous
-   *                 days.
-   * @param location location for which we should calculate the rate.
+   * @param dayData Data of specific day.
    * @return deathRate.
    */
   public static double getDeathRateSIR(
-    final DayData dayData,
-    final ProjectDataWrapper wrapper,
-    final String location) {
+    final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
-    Validate.notNull(wrapper, "wrapper null");
-    Validate.notNull(location, "location null");
-    Validate.notEmpty(location, "location empty");
-    Map<String, Map<String, DayData>> map =
-      wrapper.getProject().getLocations();
-    final String dayBefore = dayData.getDate().minusDays(1).toString();
-    final DayData dayBeforeData = map.get(location).get(dayBefore);
-    final int deadInADay = getDeadInADay(dayData, dayBeforeData);
-    final int infectedDayBefore =
-      dayBeforeData.getTotalCases()
-        - dayBeforeData.getRecoveredCases() - dayBeforeData.getTotalDeaths();
-    System.out.println("deadDay" + deadInADay);
-    System.out.println("infecced day befg" + infectedDayBefore);
-    return deadInADay / (double) infectedDayBefore;
+    return dayData.getTotalDeaths() / POPULATION_FRA;
   }
 
   /**

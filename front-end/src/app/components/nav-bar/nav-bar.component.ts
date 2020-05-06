@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,10 +10,21 @@ export class NavBarComponent implements OnInit {
   public  isMap: boolean;
   private url: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    // On routes changes
+    router.events.subscribe((val) => {
+      if (val instanceof  NavigationEnd) {
+        this.url = router.url;
+        if (this.url === '/simulation') {
+          this.changeSimul();
+        } else {
+          this.changeMap();
+        }
+      }
+    });
+  }
 
   ngOnInit(): void {
-    this.isMap = true;
   }
 
   changeMap(){

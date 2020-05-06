@@ -33,15 +33,15 @@ public class SIRSimulator implements Simulator {
   /**
    * La classe est encore en chantier.
    */
-  private double beta = 0.01;
+  private double beta = 0.095;
   /**
    * La classe est encore en chantier.
    */
-  private double lambda = 0.1;
+  private double lambda = 0.05;
   /**
    * La classe est encore en chantier.
    */
-  private double mu = 0.07;
+  private double mu = 0.009;
 
   /**
    * La classe est encore en chantier.
