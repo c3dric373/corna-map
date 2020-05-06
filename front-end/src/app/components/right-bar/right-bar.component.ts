@@ -139,7 +139,7 @@ export class RightBarComponent implements OnInit, OnChanges{
       color : '#171616'
     }, {
       name: 'Guéris',
-      data: this.gueris ,
+      data: this.gueris2 ,
       color : '#6ca644ff'
     }, {
       name: 'Hospitalisés',

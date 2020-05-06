@@ -1,6 +1,6 @@
 import {browser, logging, by, element, protractor} from 'protractor';
 
-describe('test header', () => {
+describe('test sidebar', () => {
 
   beforeAll(() => {
     browser.get(browser.baseUrl);
@@ -9,7 +9,7 @@ describe('test header', () => {
   it('should contain France', () => {
     const sidebar = element(by.tagName('app-side-bar'));
     const titre = sidebar.element(by.id('titre'));
-    expect(titre.getText()).toEqual('France');
+    expect(titre.getText()).toEqual('Données Françaises');
   });
 
   it('should contain confirmed cases', () => {
@@ -27,7 +27,7 @@ describe('test header', () => {
   it('should contain confirmed cases', () => {
     const sidebar = element(by.tagName('app-side-bar'));
     const cas = sidebar.element(by.id('Hospitalisations'));
-    expect(cas.getText()).toContain('Hospitalisations');
+    expect(cas.getText()).toContain('Hospitalisés');
   });
 
   it('should contain confirmed cases', () => {
