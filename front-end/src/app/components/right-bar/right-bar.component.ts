@@ -57,7 +57,7 @@ export class RightBarComponent implements OnInit, OnChanges{
       width: 10,
     },
     title: {
-      text: 'Variation'
+      text: 'Variation en France'
     },
     credits: {
       enabled: false
@@ -106,7 +106,7 @@ export class RightBarComponent implements OnInit, OnChanges{
       width: 10
     },
     title: {
-      text: 'Evolution'
+      text: 'Evolution en France'
     },
     credits: {
       enabled: false
@@ -171,32 +171,40 @@ export class RightBarComponent implements OnInit, OnChanges{
           // When isSimulationStarted changes
           case 'isSimulationStarted':
           // When actualdate changes
-          case 'actualdate':
+          case 'actualdate': {
+            this.inputChange();
+            break;
+          }
           // When locationName changes
           case 'locationName': {
-            if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
-              if (this.isRegion) {
-                this.getRegInfos();
-                this.getHRegion();
-              } else {
-                this.getDeptInfos();
-                this.getHDept();
-              }
-              this.showLocation = true;
-              this.showLink = true;
-            }else{                    // france
-              this.showLink = false;
-            }
-            if (this.isSimulationStarted && this.locationName === 'France'){
-              this.getHFrance();
-              // this.showLocation = true;
-            }
+            this.resetGraph();
+            this.inputChange();
             break;
           }
           default:
             break;
         }
       }
+    }
+  }
+
+  inputChange(){
+    if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
+      if (this.isRegion) {
+        this.getRegInfos();
+        this.getHRegion();
+      } else {
+        this.getDeptInfos();
+        this.getHDept();
+      }
+      this.showLocation = true;
+      this.showLink = true;
+    }else{                    // france
+      this.showLink = false;
+    }
+    if (this.isSimulationStarted && this.locationName === 'France'){
+      this.getHFrance();
+      // this.showLocation = true;
     }
   }
 
@@ -314,6 +322,7 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
+
         }
       );
 
@@ -329,7 +338,32 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.setAllDataFromFrance(data);
         }
       );
-    }else{}
+    }else{
+      this.simulationService.getInfosRegion( this.actualdate , this.locationName).subscribe(
+        data => {
+          // this.histFr = data;
+          console.log('fra data :');
+          console.log(data);
+          this.totGueris = data.recoveredCases;
+          this.totDeces = data.totalDeaths;
+          this.totHospi = data.hospitalized;
+          this.totCritiques = data.criticalCases;
+          this.showLocation = true;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
+              + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
+          // this.setAllDataFromFrance(data);
+          this.setGraphSimulation(data);
+          Highcharts.chart('charts', this.options);
+          Highcharts.chart('charts2', this.options2);
+
+        }
+      );
+    }
   }
 
   getHDept(){
@@ -341,7 +375,32 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.setAllDataFromFrance(data);
         }
       );
-    }else{}
+    }else{
+      this.simulationService.getInfosDept( this.actualdate , this.locationName).subscribe(
+        data => {
+          // this.histFr = data;
+          console.log('fra data :');
+          console.log(data);
+          this.totGueris = data.recoveredCases;
+          this.totDeces = data.totalDeaths;
+          this.totHospi = data.hospitalized;
+          this.totCritiques = data.criticalCases;
+          this.showLocation = true;
+          if (data.totalCases === 0){
+            this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
+              parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
+              + parseInt(data.criticalCases.toString(), 10)).toString();
+          }else{
+            this.totCasConf = data.totalCases;
+          }
+          // this.setAllDataFromFrance(data);
+          this.setGraphSimulation(data);
+          Highcharts.chart('charts', this.options);
+          Highcharts.chart('charts2', this.options2);
+
+        }
+      );
+    }
   }
 
   // Get Data from list and put it in this.allData
