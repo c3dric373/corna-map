@@ -30,12 +30,12 @@ export class MapService {
 
   getInfosRegion(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateService.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'map/infosRegion?date=2020-04-27&name=' + name );
+    return this.httpClient.get(this.API_URL + 'map/infosRegion?date=' + stringDate + '&name=' + name );
   }
 
   getInfosDept(date: NgbDate, name: string): Observable<any>{
     const stringDate = this.dateService.dateToString(date);
-    return this.httpClient.get(this.API_URL + 'map/infosDept?date=2020-04-27&name=' + name );
+    return this.httpClient.get(this.API_URL + 'map/infosDept?date='+ stringDate + '&name=' + name );
   }
 
 

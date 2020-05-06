@@ -17,6 +17,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() actualdate: NgbDate;
   @Input() SelectedMenu;
   @Input() isSimulationStarted: boolean;
+  @Input() isPaused: boolean;
 
   @Output() isOnlyGraph = new EventEmitter<boolean>();
 
@@ -164,6 +165,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   }
 
   ngOnInit() {
+    this.isPaused = false;
+    this.resetGraph();
     this.getHFrance();
     this.showLocation = false;
     this.showLink = false;
@@ -176,13 +179,14 @@ export class RightBarComponent implements OnInit, OnChanges{
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
-          // When isSimulationStarted changes
-          case 'isSimulationStarted':
+          case 'isPaused':
           // When actualdate changes
           case 'actualdate': {
             this.inputChange();
             break;
           }
+          // When isSimulationStarted changes
+          case 'isSimulationStarted':
           // When locationName changes
           case 'locationName': {
             this.resetGraph();
@@ -484,35 +488,11 @@ export class RightBarComponent implements OnInit, OnChanges{
       const currentDate = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day - 1);
       this.dates.push(currentDate.toDateString());
     }
-    // this.dates.push(data.date);
-
-/*
-    this.casConf2.push(data.totalCases);
-    this.hospi2.push(data.hospitalized);
-    this.deces2.push(data.totalDeaths);
-    this.gueris2.push(data.recoveredCases);
-    if (this.casConf.length === 0){
-      this.casConf.push(data.totalCases);
-      this.hospi.push(data.hospitalized);
-      this.deces.push(data.totalDeaths);
-      this.gueris.push(data.recoveredCases);
-    }else{
-      this.casConf.push(data.totalCases - this.casConf2[this.casConf.length - 1]);
-      this.hospi.push(data.hospitalized - this.hospi2[this.hospi.length - 1]);
-      this.deces.push(data.totalDeaths - this.deces2[this.deces.length - 1]);
-      this.gueris.push(data.recoveredCases - this.gueris2[this.gueris.length - 1]);
-     }*/
     this.casConf2.push(data.totalCases);
     this.hospi2.push(data.hospitalized);
     this.deces2.push(data.totalDeaths);
     this.gueris2.push(data.recoveredCases);
     this.critiques2.push(data.criticalCases);
-    /*if (this.casConf2.length === 1) {
-      this.casConf.push(data.totalCases);
-      this.hospi.push(data.hospitalized);
-      this.deces.push(data.totalDeaths);
-      this.gueris.push(data.recoveredCases);
-    }else{*/
     if (this.casConf2.length > 1){
       this.casConf.push(this.casConf2[this.casConf2.length - 1 ] - this.casConf2[this.casConf2.length - 2 ]);
       this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);

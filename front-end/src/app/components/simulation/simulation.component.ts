@@ -16,6 +16,7 @@ export class SimulationComponent implements OnInit {
   public type = 'simulation';
   public isSimulStarted: boolean;
   public isOnlyGraph = false;
+  public isPause = false;
 
   constructor(private calendar: NgbCalendar) {
     this.date =  new NgbDate(2020, 3, 18);
@@ -53,6 +54,10 @@ export class SimulationComponent implements OnInit {
 
   setSimulState(isStarted: boolean) {
     this.isSimulStarted = isStarted;
+  }
+
+  setOnPause(paused: boolean) {
+    this.isPause = paused;
   }
 
 }

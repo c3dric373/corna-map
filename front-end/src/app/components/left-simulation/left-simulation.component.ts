@@ -18,6 +18,7 @@ export class LeftSimulationComponent implements OnInit {
   @Input() isRegion: boolean;
   @Output() sendDate = new EventEmitter<NgbDate>();
   @Output() sendSimulStatus = new EventEmitter<boolean>();
+  @Output() sendIsPaused = new EventEmitter<boolean>();
 
   // Icons
   faStop = faStop;
@@ -52,6 +53,7 @@ export class LeftSimulationComponent implements OnInit {
     this.endDateCalendarVisible = false;
     this.isStart = false;
     this.isPause = false;
+    this.sendIsPaused.emit(this.isPause);
     this.isStop = false;
     this.allParams = new SimulParams();
     this.simulationIsCompute = this.startSimul();
@@ -91,8 +93,8 @@ export class LeftSimulationComponent implements OnInit {
     this.isPause = true;
     this.isStart = false;
     this.isStop = false;
+    this.sendIsPaused.emit(this.isPause);
     this.displayAccordion = 'block';
-    this.sendSimulStatus.emit(this.isStart);
   }
 
   onstop() {
@@ -103,6 +105,7 @@ export class LeftSimulationComponent implements OnInit {
     this.displayAccordion = 'block';
     // Send simulation state
     this.sendSimulStatus.emit(this.isStart);
+    this.sendIsPaused.emit(this.isPause);
     // reset params
     this.initializeParams();
   }
