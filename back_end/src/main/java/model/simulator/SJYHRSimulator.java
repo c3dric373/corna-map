@@ -2,6 +2,7 @@ package model.simulator;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.service.AgeCategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -289,15 +290,15 @@ public class SJYHRSimulator implements Simulator {
 
     ageCategories = new ArrayList<>(n);
     ageCategories.add(new AgeCategory(initialState,
-      0, 0.0072, 0.003, 0.8, 0.05));
+      0, AgeCategoryService.THETA_0_15, 0.003, 0.8, 0.05));
     ageCategories.add(new AgeCategory(initialState,
-      1, 0.144, 0.01, 0.9, 0.2));
+      1, AgeCategoryService.THETA_15_44, 0.01, 0.9, 0.2));
     ageCategories.add(new AgeCategory(initialState,
-      2, 1.77, 0.08, 0.6, 0.15));
+      2, AgeCategoryService.THETA_44_64, 0.08, 0.6, 0.15));
     ageCategories.add(new AgeCategory(initialState,
-      3, 6.57, 0.22, 0.3, 0.05));
+      3, AgeCategoryService.THETA_64_75, 0.22, 0.3, 0.05));
     ageCategories.add(new AgeCategory(initialState,
-      4, 12.96, 0.44, 0.1, 0.01));
+      4, AgeCategoryService.THETA_75_INF, 0.44, 0.1, 0.01));
 
     model = makeModel(initialState);
     solver = new RK4Solver();

@@ -200,19 +200,65 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private void setSimulator(final String content) {
     // Latest data
     DayData latestData = getLatestData(FRA);
+    System.out.println("Donne de base sim: " + latestData);
 
     // Apply InitialState
     final List<Double> initS = DayDataService.getSusceptibleSJYHR(latestData);
+    int sum = 0;
+    for (int i = 0; i < initS.size(); i++) {
+      System.out.println("InitS " + i + ": " + initS.get(i) * POPULATION_FRA);
+      sum += initS.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
     final List<Double> initI = DayDataService.getInfectedSJYHR(latestData,
       simulator);
+    for (int i = 0; i < initI.size(); i++) {
+      System.out.println("initI " + i + ": " + initI.get(i) * POPULATION_FRA);
+      sum += initI.get(i) * POPULATION_FRA;
+
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
     final List<Double> initJ = DayDataService.getLightInfectedSJYHR(initI,
       ageCategoryService);
+    for (int i = 0; i < initJ.size(); i++) {
+      System.out.println("initJ " + i + ": " + initJ.get(i) * POPULATION_FRA);
+      sum += initJ.get(i) * POPULATION_FRA;
+
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
     final List<Double> initY = DayDataService.getHeavyInfectedSJYHR(initI,
       ageCategoryService);
+    for (int i = 0; i < initY.size(); i++) {
+      System.out.println("initY " + i + ": " + initY.get(i) * POPULATION_FRA);
+      sum += initY.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
     final List<Double> initH = DayDataService.getHospitalizedSJYHR(initI,
       latestData);
+    for (int i = 0; i < initH.size(); i++) {
+      System.out.println("initH " + i + ": " + initH.get(i) * POPULATION_FRA);
+      sum += initH.get(i) * POPULATION_FRA;
+
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
     final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
       initH, ageCategoryService);
+    for (int i = 0; i < initD.size(); i++) {
+      System.out.println("InitD " + i + ": " + initD.get(i) * POPULATION_FRA);
+      sum += initD.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+
     final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
       initJ, initH);
     simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);

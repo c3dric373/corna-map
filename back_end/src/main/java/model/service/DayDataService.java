@@ -194,6 +194,7 @@ public class DayDataService {
     final int totalCases = latestData.getTotalCases();
     final double susceptibleFra =
       (POPULATION_FRA - totalCases) / POPULATION_FRA;
+    System.out.println("Susceptible FRA: " + susceptibleFra);
     return computePercentageAgeClasses(susceptibleFra);
   }
 
@@ -227,8 +228,8 @@ public class DayDataService {
     Validate.notNull(simulator, "simulator null");
     final int totalCases = latestData.getTotalCases();
     final int infectedCases =
-      totalCases - latestData.getHospitalized() - latestData.getTotalDeaths()
-        - latestData.getRecoveredCases();
+      (totalCases - latestData.getHospitalized() - latestData.getTotalDeaths()
+        - latestData.getRecoveredCases()) * 150;
     final double sumCi =
       simulator.getC().stream().mapToDouble(f -> f).sum();
     final List<Double> betaI =

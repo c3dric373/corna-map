@@ -71,23 +71,23 @@ public class AgeCategoryService {
   /**
    * Heavy Infection Rate 0_15.
    */
-  public static final double THETA_0_15 = 0.0072;
+  public static final double THETA_0_15 = 0.000072;
   /**
    * Heavy Infection Rate 15_44.
    */
-  public static final double THETA_15_44 = 0.144;
+  public static final double THETA_15_44 = 0.00144;
   /**
    * Heavy Infection Rate 44_64.
    */
-  public static final double THETA_44_64 = 0.144;
+  public static final double THETA_44_64 = 0.0177;
   /**
    * Heavy Infection Rate 64_75.
    */
-  public static final double THETA_64_75 = 6.57;
+  public static final double THETA_64_75 = 0.0657;
   /**
    * Heavy Infection Rate 75_INF.
    */
-  public static final double THETA_75_INF = 12.96;
+  public static final double THETA_75_INF = 0.1296;
 
   /**
    * List of THETA_I
