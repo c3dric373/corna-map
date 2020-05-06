@@ -146,7 +146,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     if (latestDate.isAfter(LocalDate.parse(date))
       || latestDate.equals(LocalDate.parse(date))) {
       truncateData(date);
-      return latestData;
+      // Here we need to get latest data again because we have deleted
+      // every date after date.
+      return getLatestData(FRA);
     }
     Map<String, Double> locationPercentages =
       DayDataService.getLocationPercentages(this.project.getLocations(),
