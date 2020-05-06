@@ -194,6 +194,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Sets the parameter on the simulator with the latest data.
+   *
+   * @param content measures values
    */
   private void setSimulator(final String content) {
     DayData latestData = getLatestData(FRA);

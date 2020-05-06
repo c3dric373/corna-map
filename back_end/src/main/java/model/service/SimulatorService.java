@@ -17,31 +17,31 @@ public class SimulatorService {
   /**
    * Name ageCat 0-15.
    */
-  private final static String M_0_15 = "m0_15";
+  private static final String M_0_15 = "m0_15";
 
   /**
    * Name ageCat 15-44.
    */
-  private final static String M_15_44 = "m15_44";
+  private static final String M_15_44 = "m15_44";
 
   /**
    * Name ageCat 44-64.
    */
-  private final static String M_44_64 = "m44_64";
+  private static final String M_44_64 = "m44_64";
   /**
    * Name ageCat 64-75.
    */
-  private final static String M_64_75 = "m64_75";
+  private static final String M_64_75 = "m64_75";
 
   /**
    * Name ageCat 75+.
    */
-  private final static String M_75_INF = "m75";
+  private static final String M_75_INF = "m75";
 
   /**
    * Key of the degree that people respect the confinement.
    */
-  private final static String RESPECT_CONF = "respectConfinement";
+  private static final String RESPECT_CONF = "respectConfinement";
 
   /**
    * Empty Constructor. Initialize Map.
@@ -56,12 +56,12 @@ public class SimulatorService {
 
   /**
    * Convertes map of measures that needs to be apply to a
-   * {@link model.simulator.SJYHRSimulator} to a list of a list of integers
+   * {@link model.simulator.SJYHRSimulator} to a list of a list of integers.
    *
    * @param map the map to be converted
    * @return the value for each measure.
    */
-  public List<List<Integer>> getMeasures(Map map) {
+  public List<List<Integer>> getMeasures(final Map map) {
     List<Integer> masks;
     List<Integer> confinedCategories;
     List<Integer> respectConfAsList = new ArrayList<>();
