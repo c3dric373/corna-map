@@ -140,17 +140,17 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   public DayData simulateFrance(final String date) {
     DayData latestData = getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
-    Map<String, Double> locationPercentages =
-      DayDataService.getLocationPercentages(this.project.getLocations(),
-        latestDate.toString());
     // We need to check if the date is in the future or the past
     // if it's in the past we only return the data of the asked day and delete
     // the days coming after
     if (latestDate.isAfter(LocalDate.parse(date))
       || latestDate.equals(LocalDate.parse(date))) {
       truncateData(date);
-      return getLatestData(FRA);
+      return latestData;
     }
+    Map<String, Double> locationPercentages =
+      DayDataService.getLocationPercentages(this.project.getLocations(),
+        latestDate.toString());
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
@@ -233,9 +233,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * sjyhrSimulator.
    *
-   * @param startState The data on the situation form which the simulated day
-   *                   should start.
-   * @param sjyhrSimulator  the given sjyhrSimulator.
+   * @param startState     The data on the situation form which the simulated
+   *                      day
+   *                       should start.
+   * @param sjyhrSimulator the given sjyhrSimulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
@@ -256,15 +257,13 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
     final double heavyInfected =
       ageCategoryService.getHeavyInfected(ageCategories);
-    final double infected = lightInfected + heavyInfected;
-    final double susceptibleNew = 1 - infected;
+
+    final double infected = lightInfected + heavyInfected + hospitalized;
+    final double susceptibleNew = 1 - infected - deadNew;
     // Create Object which encapsulates the simulated data
-    result.setTotalDeaths((int) (totalDeaths + deadNew * infected));
-    result.setRecoveredCases((int) (recovered
-      + recoveredNew * infected));
-    System.out.println("recovered " + result.getRecoveredCases());
-    result.setTotalCases((int) (POPULATION_FRA
-      - (susceptibleNew * POPULATION_FRA)));
+    result.setTotalDeaths((int) (deadNew * POPULATION_FRA));
+    result.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptibleNew) * POPULATION_FRA));
     return result;
   }
 
