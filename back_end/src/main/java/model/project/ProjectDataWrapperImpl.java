@@ -198,15 +198,78 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param content measures values
    */
   private void setSimulator(final String content) {
+    // Latest data
     DayData latestData = getLatestData(FRA);
-    final List<Double> susceptibleComplex =
-      DayDataService.getSusceptibleSJYHR(latestData);
-    List<Double> lightInfected =
-      DayDataService.getLightInfectedSJYHR(latestData);
-    List<Double> heavyInfected =
-      DayDataService.getHeavyInfectedSJYHR(latestData);
-    simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
-      heavyInfected);
+    System.out.println("Donne de base sim: " + latestData);
+
+    // Apply InitialState
+    final List<Double> initS = DayDataService.getSusceptibleSJYHR(latestData);
+    int sum = 0;
+    for (int i = 0; i < initS.size(); i++) {
+      System.out.println("InitS " + i + ": " + initS.get(i) * POPULATION_FRA);
+      sum += initS.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
+    final List<Double> initI = DayDataService.getInfectedSJYHR(latestData,
+      simulator);
+    for (int i = 0; i < initI.size(); i++) {
+      System.out.println("initI " + i + ": " + initI.get(i) * POPULATION_FRA);
+      sum += initI.get(i) * POPULATION_FRA;
+
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
+    final List<Double> initJ = DayDataService.getLightInfectedSJYHR(initI,
+      ageCategoryService);
+    for (int i = 0; i < initJ.size(); i++) {
+      System.out.println("initJ " + i + ": " + initJ.get(i) * POPULATION_FRA);
+      sum += initJ.get(i) * POPULATION_FRA;
+
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
+    final List<Double> initY = DayDataService.getHeavyInfectedSJYHR(initI,
+      ageCategoryService);
+    for (int i = 0; i < initY.size(); i++) {
+      System.out.println("initY " + i + ": " + initY.get(i) * POPULATION_FRA);
+      sum += initY.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
+    final List<Double> initH = DayDataService.getHospitalizedSJYHR(initI,
+      latestData);
+    for (int i = 0; i < initH.size(); i++) {
+      System.out.println("initH " + i + ": " + initH.get(i) * POPULATION_FRA);
+      sum += initH.get(i) * POPULATION_FRA;
+
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+
+    final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
+      initH, ageCategoryService);
+    for (int i = 0; i < initD.size(); i++) {
+      System.out.println("InitD " + i + ": " + initD.get(i) * POPULATION_FRA);
+      sum += initD.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+    sum = 0;
+    final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
+      initJ, initH);
+    for (int i = 0; i < initR.size(); i++) {
+      System.out.println("initR " + i + ": " + initR.get(i) * POPULATION_FRA);
+      sum += initR.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+
+    simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
+
+    // Apply Measures
     final Gson gson = new Gson();
     final Map map = gson.fromJson(content, Map.class);
     List<List<Integer>> measures = simulatorService.getMeasures(map);
@@ -216,6 +279,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     simulator.applyMeasures(measures.get(confinedCategoriesIndex),
       measures.get(maskedCategoriesIndex),
       measures.get(confinementRespectIndex).get(0));
+
   }
 
   /**
@@ -250,20 +314,26 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final DayData result = new DayData();
     final List<SJYHRSimulator.AgeCategory> ageCategories =
       sjyhrSimulator.getAgeCategories();
-    final double deadNew = ageCategoryService.getDead(ageCategories);
+    final double dead = ageCategoryService.getDead(ageCategories);
+    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
+      System.out.println("DeadAgeCat: " + ageCategory.getDi());
+    }
+    System.out.println("Dead: " + dead);
     final double lightInfected =
       ageCategoryService.getLightInfected(ageCategories);
     final double hospitalized =
       ageCategoryService.getHospitalized(ageCategories);
-    final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
+    final double recovered = ageCategoryService.getRecovered(ageCategories);
     final double heavyInfected =
       ageCategoryService.getHeavyInfected(ageCategories);
     final double infected = lightInfected + heavyInfected + hospitalized;
-    final double susceptibleNew = 1 - infected - deadNew;
+    final double susceptible = 1 - infected - dead;
     // Create Object which encapsulates the simulated data
-    result.setTotalDeaths((int) (deadNew * POPULATION_FRA));
-    result.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
-    result.setTotalCases((int) ((1 - susceptibleNew) * POPULATION_FRA));
+    result.setTotalDeaths((int) (dead * POPULATION_FRA));
+    result.setRecoveredCases((int) (recovered * POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptible) * POPULATION_FRA));
+    result.setHospitalized((int) (hospitalized * POPULATION_FRA));
+    result.setCriticalCases((int) (heavyInfected * POPULATION_FRA));
     return result;
   }
 
@@ -273,7 +343,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param location The location for which we want the data.
    * @return the data.
    */
-  private DayData getLatestData(final String location) {
+  public DayData getLatestData(final String location) {
     final Map<String, Map<String, DayData>> localisations =
       project.getLocations();
     final Map<String, DayData> franceMap = localisations.get(location);

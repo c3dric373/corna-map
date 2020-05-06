@@ -4,6 +4,7 @@ import model.data.DayData;
 import model.data.TypeLocalisation;
 import model.io.DataScrapper;
 import model.io.DataScrapperImpl;
+import org.apache.tomcat.jni.Local;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -162,6 +163,27 @@ public class ProjectDataWrapperImplTest {
 
     // Act
     final int result = dayData.getTotalCases();
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_sim1dayInFuture_totalCasesNonZero() throws IOException {
+    // Arrange
+    wrapper.getCurrentAllDataFrance();
+    DayData latestData = wrapper.getLatestData(FRA);
+    LocalDate latestDate =  latestData.getDate();
+    LocalDate datePast = latestDate.minusDays(1);
+    wrapper.startSimulation(CONTENT);
+    wrapper.simulateFrance(datePast.toString());
+    DayData resData  = wrapper.simulateFrance(latestDate.toString());
+    final int unexpected = 0;
+
+    // Act
+    final int result = resData.getTotalCases();
+    System.out.println(" Expected: " + latestData);
+    System.out.println(" Actual: " + resData);
 
     // Assert
     Assert.assertNotEquals("totalCases Zero", unexpected, result);
