@@ -4,7 +4,7 @@
     <h4 id="titre">{{chosenLocation}}</h4>
 
 
-    <a (click)=ngOnInit() [hidden]=!showLink>Revenir à la France</a>
+    <a (click)=ngOnInit() [hidden]=!showLink >Revenir à la France</a>
     <div class="container" [hidden]=!showLocation>
 
       <table class="table" >
@@ -34,10 +34,13 @@
         </table>
       <div id="leg" class="container" >
         <div  class="container" >
-          <div>C : Cas confirmés</div> <div>G : Guéris</div> <div> H : Hospitalisés</div>
+          <div style="color:#ffd966ff ;font-weight: bold ">C : Cas confirmés</div>
+          <div style="color:#6ca644ff ;font-weight: bold">G : Guéris</div>
+          <div style="color:#fd9d3dff ;font-weight: bold"> H : Hospitalisés</div>
         </div>
         <div class="container">
-           <div>CR : Cas Critiques</div> <div> D : Decès</div>
+           <div style="color:#a50026ff ;font-weight: bold">CR : Cas Critiques</div>
+           <div style="color:#171616 ;font-weight: bold"> D : Decès</div>
         </div>
       </div>
 
