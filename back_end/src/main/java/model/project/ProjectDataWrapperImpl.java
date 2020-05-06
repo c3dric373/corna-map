@@ -258,9 +258,15 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       sum += initD.get(i) * POPULATION_FRA;
     }
     System.out.println("Sum: " + sum);
-
+    sum = 0;
     final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
       initJ, initH);
+    for (int i = 0; i < initR.size(); i++) {
+      System.out.println("initR " + i + ": " + initR.get(i) * POPULATION_FRA);
+      sum += initR.get(i) * POPULATION_FRA;
+    }
+    System.out.println("Sum: " + sum);
+
     simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
     // Apply Measures
