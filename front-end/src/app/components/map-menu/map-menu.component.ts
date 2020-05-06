@@ -13,6 +13,7 @@ export class MapMenuComponent implements OnInit {
   public isOnlyMap = false;
   public date: NgbDate;
   public type = 'map';
+  public isOnlyGraph = false;
 
   constructor() {}
 
@@ -35,6 +36,10 @@ export class MapMenuComponent implements OnInit {
 
   setOnlyMap(isMap: boolean) {
     this.isOnlyMap = isMap;
+  }
+
+  setOnlyGrah(isGraph: boolean) {
+    this.isOnlyGraph = isGraph;
   }
 
   setDate(actualDate: NgbDate) {

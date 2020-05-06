@@ -15,6 +15,7 @@ export class SimulationComponent implements OnInit {
   public date: NgbDate;
   public type = 'simulation';
   public isSimulStarted: boolean;
+  public isOnlyGraph = false;
 
   constructor(private calendar: NgbCalendar) {
     this.date =  new NgbDate(2020, 3, 18);
@@ -40,6 +41,10 @@ export class SimulationComponent implements OnInit {
 
   setOnlyMap(isMap: boolean) {
     this.isOnlyMap = isMap;
+  }
+
+  setOnlyGrah(isGraph: boolean) {
+    this.isOnlyGraph = isGraph;
   }
 
   setDate(actualDate: NgbDate) {
