@@ -7,6 +7,7 @@ import model.io.DataScrapperImpl;
 import model.service.AgeCategoryService;
 import model.service.DayDataService;
 import model.service.SimulatorService;
+import model.simulator.SIRSimulator;
 import model.simulator.SJYHRSimulator;
 
 import java.io.IOException;
@@ -49,6 +50,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private SJYHRSimulator simulator = new SJYHRSimulator();
 
   /**
+   * {@link SIRSimulator} used to simulate COVID-19.
+   */
+  private SIRSimulator sirSimulator = new SIRSimulator();
+
+  /**
    * Dictionary mapping id to name for regions and departments.
    */
   private final Map<String, String> idToName = new HashMap<>();
@@ -71,9 +77,14 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void startSimulation(final String content) {
-    setSimulator(content);
+  public void startSimulation(final String content,boolean sir) {
+    if(sir){
+      setSirSimulator();
+    }else{
+      setSimulator(content);
+    }
   }
+
 
   @Override
   public void addLocation(final String location, final String date,
@@ -192,6 +203,16 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return dayData;
   }
 
+
+  /**
+   * Sets the parameter on the simulator with the latest data.
+   *
+   * @param content measures values
+   */
+  private void setSirSimulator() {
+  }
+
+  
   /**
    * Sets the parameter on the simulator with the latest data.
    *
