@@ -28,12 +28,14 @@
 
 #charts{
   font-size: xx-small;
-  max-width: 27vw !important;
+  max-width: 26vw !important;
+
 }
 
 #charts2{
   font-size: xx-small;
-  max-width: 27vw !important;
+  max-width: 26vw !important;
+  margin-bottom: 2vh;
 }
 
 .container-sm {
@@ -45,12 +47,21 @@ table{
   justify-items: center;
   justify-self: center;
   text-align: center;
+  font-size: 100%;
 
 }
 
-th{
-  font-size: small;
+#leg{
+  justify-content : left;
+  justify-items: left;
+  justify-self: left;
+  text-align: left;
+  padding: 0;
+  display: flex;
 }
+
+
+
 
 
 /* Scroll Bar */

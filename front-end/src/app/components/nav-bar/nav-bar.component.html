@@ -6,10 +6,10 @@
   <div>
     <ul class="navbar-nav list-inline" >
       <li class="nav-item " >
-        <a class="nav-link"[ngClass]="{active: act}" (click)="changeAct()" routerLink="/carte">Carte</a>
+        <a class="nav-link"[ngClass]="{active: isMap}" (click)="changeMap()" routerLink="/carte">Carte</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"[ngClass]="{active: !act}" (click)="changeAct()" routerLink="/simulation">Simulation</a>
+        <a class="nav-link"[ngClass]="{active: !isMap}" (click)="changeSimul()" routerLink="/simulation">Simulation</a>
       </li>
     </ul>
   </div>
