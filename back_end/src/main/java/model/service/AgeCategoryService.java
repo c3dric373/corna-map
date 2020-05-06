@@ -82,11 +82,9 @@ public class AgeCategoryService {
    * @return the percentage of dead people from covid-19.
    */
   public double getDead(final List<SJYHRSimulator.AgeCategory> ageCategories) {
-    int i = 0;
     double sum = 0;
-    for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
-      sum += getDead(ageCategory) * indexToPopPercentage.get(i);
-      i++;
+    for (final SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
+      sum += getDead(ageCategory);
     }
     return sum;
   }
@@ -99,11 +97,9 @@ public class AgeCategoryService {
    */
   public double getRecovered(final List<SJYHRSimulator.AgeCategory>
                                ageCategories) {
-    int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
-      sum += getRecovered(ageCategory) * indexToPopPercentage.get(i);
-      i++;
+      sum += getRecovered(ageCategory);
     }
     return sum;
   }
@@ -116,11 +112,9 @@ public class AgeCategoryService {
    */
   public double getHospitalized(final List<SJYHRSimulator.AgeCategory>
                                   ageCategories) {
-    int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
-      sum += getHospitalized(ageCategory) * indexToPopPercentage.get(i);
-      i++;
+      sum += getHospitalized(ageCategory);
     }
     return sum;
   }
@@ -133,11 +127,9 @@ public class AgeCategoryService {
    */
   public double getHeavyInfected(final List<SJYHRSimulator.AgeCategory>
                                    ageCategories) {
-    int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
-      sum += getHeavyInfected(ageCategory) * indexToPopPercentage.get(i);
-      i++;
+      sum += getHeavyInfected(ageCategory);
     }
     return sum;
   }
@@ -150,11 +142,9 @@ public class AgeCategoryService {
    */
   public double getLightInfected(final List<SJYHRSimulator.AgeCategory>
                                    ageCategories) {
-    int i = 0;
     double sum = 0;
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
-      sum += getLightInfected(ageCategory) * indexToPopPercentage.get(i);
-      i++;
+      sum += getLightInfected(ageCategory);
     }
     return sum;
   }

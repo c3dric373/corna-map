@@ -258,7 +258,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     for (SJYHRSimulator.AgeCategory ageCategory : ageCategories) {
       System.out.println("DeadAgeCat: " + ageCategory.getDi());
     }
-    System.out.println("Dead: " + dead * POPULATION_FRA);
+    System.out.println("Dead: " + dead );
     final double lightInfected =
       ageCategoryService.getLightInfected(ageCategories);
     final double hospitalized =
