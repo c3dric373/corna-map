@@ -76,7 +76,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private boolean useSir = true;
 
   /**
-   * Latest Content
+   * Latest Content.
    */
   private String latestContent;
 
@@ -88,7 +88,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void startSimulation(final String content, boolean sir) {
+  public void startSimulation(final String content, final boolean sir) {
     if (sir) {
       setSirSimulator();
       useSir = true;
@@ -191,9 +191,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
       if (useSir) {
-        dayData = simulateDaySir(latestData, sirSimulator);
+        dayData = simulateDaySir();
       } else {
-        dayData = simulateDaySJYHR(sjyhrSimulator);
+        dayData = simulateDaySJYHR();
       }
       // Add the new data to the model and increase the date which we are
       // iterating on.
@@ -219,7 +219,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
         addLocation(id, newDate.toString(), dayDataLocation);
       }
       latestDate = newDate;
-      latestData = dayData;
     }
 
     return dayData;
@@ -244,13 +243,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * simulator.
    *
-   * @param startState   The data on the situation form which the simulated day
-   *                     should start.
-   * @param sirSimulator the given simulator.
    * @return the simulated data.
    */
-  private DayData simulateDaySir(final DayData startState,
-                                 final SIRSimulator sirSimulator) {
+  private DayData simulateDaySir() {
     // Simulate a day
     sirSimulator.step();
     final double deadNew = Iterables.getLast(sirSimulator.getDead());
@@ -377,11 +372,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Simulates a the spread of COVID-19 for one day, according to a given
    * sjyhrSimulator.
    *
-   * @param sjyhrSimulator the given sjyhrSimulator.
    * @return the simulated data.
    */
-  private DayData simulateDaySJYHR(
-    final SJYHRSimulator sjyhrSimulator) {
+  private DayData simulateDaySJYHR() {
     // Simulate a day
     sjyhrSimulator.step();
     final DayData result = new DayData();

@@ -189,12 +189,35 @@ public class ProjectDataWrapperImplTest {
     Assert.assertNotEquals("totalCases Zero", unexpected, result);
   }
   @Test
-  public void testSimulateFrance_simCompleteEpidemic_totalCasesNonZero() throws IOException {
+  public void testSimulateFrance_simCompleteEpidemicStart0319_totalCasesNonZero() throws IOException {
     // Arrange
     wrapper.getCurrentAllDataFrance();
     DayData latestData = wrapper.getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
     String startDate = "2020-03-19";
+    System.out.println();
+    wrapper.startSimulation(CONTENT, USE_SIR);
+    DayData start = wrapper.simulateFrance(startDate);
+    System.out.println("Start: " + start);
+    DayData resData = wrapper.simulateFrance(latestDate.toString());
+    final int unexpected = 0;
+
+    // Act
+    final int result = resData.getTotalCases();
+    System.out.println("Expected: " + latestData);
+    System.out.println("Actual: " + resData);
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
+  public void testSimulateFrance_simCompleteEpidemic_totalCasesNonZero() throws IOException {
+    // Arrange
+    wrapper.getCurrentAllDataFrance();
+    DayData latestData = wrapper.getLatestData(FRA);
+    LocalDate latestDate = latestData.getDate();
+    String startDate = "2020-03-18";
     System.out.println();
     wrapper.startSimulation(CONTENT, USE_SIR);
     DayData start = wrapper.simulateFrance(startDate);

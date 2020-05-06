@@ -65,13 +65,11 @@ public class DayDataServiceTest {
   private static final double POPULATION_FRA = 67000000.0;
   private static final double SUSCEPTIBLE =
     (POPULATION_FRA - TOTAL_CASE_1) / POPULATION_FRA;
-  private static final int INFECTED_DAY1 =
-    TOTAL_CASE_1 - RECOVERD_CASES - TOTAL_DEATHS;
   private static final int DEAD_DAY1 = TOTAL_DEATHS_1 - TOTAL_DEATHS;
   private static final int RECOVERED_DAY1 = RECOVERD_CASES_1 - RECOVERD_CASES;
-  private static final double DEATH_RATE = (double) DEAD_DAY1 / INFECTED_DAY1;
+  private static final double DEATH_RATE = (double) DEAD_DAY1 / POPULATION_FRA;
   private static final double RECOVERY_RATE =
-    (double) RECOVERED_DAY1 / INFECTED_DAY1;
+    (double) RECOVERED_DAY1 / POPULATION_FRA;
 
   private static ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
   final static double delta = 0.001;
