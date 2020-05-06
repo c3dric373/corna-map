@@ -43,23 +43,23 @@ public class AgeCategoryService {
   /**
    * Death Rate 0_15.
    */
-  public static final double MU_0_15 = 0.087;
+  public static final double MU_0_15 = 0.00001/15;
   /**
    * Death Rate 15_44.
    */
-  public static final double MU_15_44 = 0.0394;
+  public static final double MU_15_44 = 0.0005/15;
   /**
    * Death Rate 44_64.
    */
-  public static final double MU_44_64 = 0.0738;
+  public static final double MU_44_64 = 0.002/15;
   /**
    * Death Rate 64_75.
    */
-  public static final double MU_64_75 = 0.1308;
+  public static final double MU_64_75 = 0.005/15;
   /**
    * Death Rate 75_INF.
    */
-  public static final double MU_75_INF = 0.2591;
+  public static final double MU_75_INF = 0.083/15;
 
   /**
    * List of MU.

@@ -16,7 +16,7 @@ public class DayDataService {
   /**
    * French population size.
    */
-  private static final double POPULATION_FRA = 67000000.0;
+  public static final double POPULATION_FRA = 67000000.0;
 
   /**
    * Id for France.
@@ -27,13 +27,12 @@ public class DayDataService {
    * Computes the percentage of people susceptible of catching the coronavirus
    * given on stats of specific day.
    *
-   * @param dayData Data of specific day.
    * @return percentage of susceptible people.
    */
-  public static double getSusceptibleSIR(final DayData dayData) {
-    Validate.notNull(dayData, "dayData null");
-    final int totalCases = dayData.getTotalCases();
-    return (POPULATION_FRA - totalCases) / POPULATION_FRA;
+  public static List<Double> getSusceptibleSIR(final double sum) {
+    double susceptible = 1 - sum;
+    return computePercentageAgeClasses(susceptible);
+
   }
 
   /**
@@ -43,9 +42,10 @@ public class DayDataService {
    * @param dayData Data of specific day.
    * @return percentage of recovered people.
    */
-  public static double getRecoveryRateSIR(final DayData dayData) {
+  public static List<Double> getRecoveryRateSIR(final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
-    return dayData.getRecoveredCases() / POPULATION_FRA;
+    double recoveryRate = dayData.getRecoveredCases() * 10 / POPULATION_FRA;
+    return computePercentageAgeClasses(recoveryRate);
   }
 
   /**
@@ -74,10 +74,17 @@ public class DayDataService {
    * @param dayData Data of specific day.
    * @return deathRate.
    */
-  public static double getDeathRateSIR(
+  public static List<Double> getDeathRateSIR(
     final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
-    return dayData.getTotalDeaths() / POPULATION_FRA;
+    double deathRate = dayData.getTotalDeaths() / POPULATION_FRA;
+    return computePercentageAgeClasses(deathRate);
+  }
+
+  public static List<Double> getInfectiousSir(DayData latestData) {
+    Validate.notNull(latestData, "dayData null");
+    double infected = latestData.getHospitalized() * 40 / POPULATION_FRA;
+    return computePercentageAgeClasses(infected);
   }
 
   /**
@@ -393,4 +400,5 @@ public class DayDataService {
     result.add(param75INF);
     return result;
   }
+
 }
