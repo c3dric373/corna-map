@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RightBarComponent } from './right-bar.component';
 import {HttpClientModule} from '@angular/common/http';
 

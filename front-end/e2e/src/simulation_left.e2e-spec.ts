@@ -1,6 +1,6 @@
 import {browser, logging, by, element, protractor} from 'protractor';
 
-describe('test header', () => {
+describe('test left simulation', () => {
 
   beforeAll(() => {
     browser.get(browser.baseUrl + '/simulation');
@@ -15,7 +15,7 @@ describe('test header', () => {
   it('should contain start Date', () => {
     const leftPanel = element(by.tagName('app-left-simulation'));
     const startDate = leftPanel.all(by.className('date')).get(0);
-    expect(startDate.getText()).toContain('Start Date : ');
+    expect(startDate.getText()).toContain('Date de début : ');
     const calendar = startDate.all(by.tagName('button')).get(0);
     expect(calendar.getText()).toContain('/2020');
   });
@@ -23,7 +23,7 @@ describe('test header', () => {
   it('should contain end Date', () => {
     const leftPanel = element(by.tagName('app-left-simulation'));
     const startDate = leftPanel.all(by.className('date')).get(1);
-    expect(startDate.getText()).toContain('End Date : ');
+    expect(startDate.getText()).toContain('Date de fin : ');
     const calendar = startDate.all(by.tagName('button')).get(0);
     expect(calendar.getText()).toContain('/2020');
   });
