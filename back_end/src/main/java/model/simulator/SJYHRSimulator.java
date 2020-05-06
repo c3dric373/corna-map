@@ -17,7 +17,7 @@ public class SJYHRSimulator implements Simulator {
    */
   @Getter
   @Setter
-  private class AgeCategory {
+  public class AgeCategory {
     /**
      * Susceptible.
      */
@@ -67,7 +67,7 @@ public class SJYHRSimulator implements Simulator {
      * @param i            index of the age category.
      * @param theta        heavy infection rate.
      * @param mu           hospitalized death rate.
-     * @param cNew        cNew in normal time.
+     * @param cNew         cNew in normal time.
      * @param cConfined    cNew in confinement.
      */
     AgeCategory(final List<Double> initialState, final int i,
@@ -158,6 +158,7 @@ public class SJYHRSimulator implements Simulator {
   /**
    * The n age categories.
    */
+  @Getter
   private List<AgeCategory> ageCategories;
   /**
    * The differential equations that describes the model.
@@ -166,11 +167,22 @@ public class SJYHRSimulator implements Simulator {
   /**
    * The solver method.
    */
-  private final DifferentialSolver solver;
+  private  DifferentialSolver solver;
   /**
    * The precision for the solver.
    */
-  private final int nbIterations;
+  private int nbIterations;
+
+  /**
+   * Empty Constructor.
+   */
+  public SJYHRSimulator() {
+    n = 5;
+    h = 7;
+    u = 30;
+    g = 15;
+    nbParam = 1 + g + h + u + 2;
+  }
 
   /**
    * @param initS list of size n, initial rates of susceptible.
@@ -227,6 +239,7 @@ public class SJYHRSimulator implements Simulator {
     nu.add(0.000451463616165);
     nu.add(1.);
 
+    zeta = new ArrayList<>();
     zeta.add(0.049686146);
     zeta.add(0.107848814);
     zeta.add(0.152150834);
@@ -327,13 +340,13 @@ public class SJYHRSimulator implements Simulator {
       // S_i
       builder.addParameter(state.get(i * nbParam),
         // S_i -> J_i1 and Y_i1
-        ty -> -makeLambdai(ty.getY(), i1)
+        ty -> -makeLambdaI(ty.getY(), i1)
           * ty.getYi(i1 * nbParam));
 
       // J_i1
       builder.addParameter(state.get(i * nbParam + 1),
         // S_i -> J_i1
-        ty -> makeLambdai(ty.getY(), i1) * (1. - thetai)
+        ty -> makeLambdaI(ty.getY(), i1) * (1. - thetai)
           * ty.getYi(i1 * nbParam)
           // J_i1 -> J_i2
           - ty.getYi(i1 * nbParam + 1));
@@ -351,7 +364,7 @@ public class SJYHRSimulator implements Simulator {
       // Y_i1
       builder.addParameter(state.get(i * nbParam + 1 + g),
         // S_i -> Y_i1
-        ty -> makeLambdai(ty.getY(), i1) * thetai
+        ty -> makeLambdaI(ty.getY(), i1) * thetai
           * ty.getYi(i1 * nbParam)
           // Y_i1 -> Y_i2 and H_i1
           - ty.getYi(i1 * nbParam + 1 + g));
@@ -408,7 +421,7 @@ public class SJYHRSimulator implements Simulator {
    * @param i     the ageCategory we are studying.
    * @return Lambda_i.
    */
-  private double makeLambdai(final List<Double> state,
+  private double makeLambdaI(final List<Double> state,
                              final int i) {
     double iBar = makeIBar(state);
     return iBar / (s0 / (c.get(i) * r0) + iBar);
