@@ -23,7 +23,7 @@ public class SIRSimulatorTest {
     subject = new SIRSimulator(SUSCEPTIBLE, INFECTIOUS, RECOVERED, DEAD);
     subject.setMu(MU);
     subject.setBeta(BETA);
-    subject.setLambda(LAMBDA);
+    subject.setGamma(LAMBDA);
     subject.setNbIterations(1000);
   }
 
