@@ -82,6 +82,7 @@ public class SIRSimulator implements Simulator {
             infectious.add(new ArrayList<>());
             recovered.add(new ArrayList<>());
             dead.add(new ArrayList<>());
+
             susceptible.get(k).add(iSusceptible.get(k));
             infectious.get(k).add(iInfectious.get(k));
             recovered.get(k).add(iRecovered.get(k));
@@ -129,23 +130,33 @@ public class SIRSimulator implements Simulator {
      */
     public void step() {
         List<Double> nextValues = solver.next(model, nbIterations);
-        susceptible.add(nextValues.get(0));
-        infectious.add(nextValues.get(1));
-        recovered.add(nextValues.get(2));
-        dead.add(nextValues.get(3));
+        for (int k = 0; k < nbAgeCategory; ++k) {
+            susceptible.get(k).add(nextValues.get(4 * k));
+            infectious.get(k).add(nextValues.get(4 * k + 1));
+            recovered.get(k).add(nextValues.get(4 * k + 2));
+            dead.get(k).add(nextValues.get(4 * k + 3));
+        }
 
-        model = CauchyProblem.builder()
-                .addParameter(nextValues.get(0),
-                        ty -> -beta * ty.getYi(0) * ty.getYi(1))
-                .addParameter(nextValues.get(1),
-                        ty -> beta * ty.getYi(0) * ty.getYi(1)
-                                - gamma * ty.getYi(1)
-                                - mu * ty.getYi(1))
-                .addParameter(nextValues.get(2),
-                        ty -> gamma * ty.getYi(1))
-                .addParameter(nextValues.get(3),
-                        ty -> mu * ty.getYi(1))
-                .build();
+        CauchyProblem.Builder builder = CauchyProblem.builder();
+        for (int k = 0; k < nbAgeCategory; ++k) {
+            int k1 = k;
+            builder.addParameter(nextValues.get(4 * k),
+                    ty -> -beta.get(k1)
+                            * ty.getY().get(4 * k1)
+                            * makeTotalInfected(ty.getY()));
+            builder.addParameter(nextValues.get(4 * k + 1),
+                    ty -> beta.get(k1)
+                            * ty.getY().get(4 * k1)
+                            * makeTotalInfected(ty.getY())
+                            - gamma * ty.getY().get(4 * k1 + 1)
+                            - mu.get(k1) * ty.getY().get(4 * k1 + 1));
+            builder.addParameter(nextValues.get(4 * k + 2),
+                    ty -> gamma * ty.getY().get(4 * k1 + 1));
+            builder.addParameter(nextValues.get(4 * k + 3),
+                    ty -> mu.get(k1) * ty.getY().get(4 * k1 + 1));
+        }
+
+        model = builder.build();
     }
 
 }
