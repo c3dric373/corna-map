@@ -201,6 +201,22 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     // Latest data
     DayData latestData = getLatestData(FRA);
 
+    // Apply InitialState
+    final List<Double> initS = DayDataService.getSusceptibleSJYHR(latestData);
+    final List<Double> initI = DayDataService.getInfectedSJYHR(latestData,
+      simulator);
+    final List<Double> initJ = DayDataService.getLightInfectedSJYHR(initI,
+      ageCategoryService);
+    final List<Double> initY = DayDataService.getHeavyInfectedSJYHR(initI,
+      ageCategoryService);
+    final List<Double> initH = DayDataService.getHospitalizedSJYHR(initI,
+      latestData);
+    final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
+      initH, ageCategoryService);
+    final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
+      initJ, initH);
+    simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
+
     // Apply Measures
     final Gson gson = new Gson();
     final Map map = gson.fromJson(content, Map.class);
@@ -211,22 +227,6 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     simulator.applyMeasures(measures.get(confinedCategoriesIndex),
       measures.get(maskedCategoriesIndex),
       measures.get(confinementRespectIndex).get(0));
-
-    // Apply InitialState
-    final List<Double> initS = DayDataService.getSusceptibleSJYHR(latestData);
-    final List<Double> initI = DayDataService.getInfectedSJYHR(latestData,
-      simulator);
-    final List<Double> initJ = DayDataService.getLightInfectedSJYHR(initI,
-      simulator);
-    final List<Double> initY = DayDataService.getHeavyInfectedSJYHR(initI,
-      simulator);
-    final List<Double> initH = DayDataService.getHospitalizedSJYHR(initI,
-      latestData);
-    final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
-      initH, simulator);
-    final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
-      initJ, initH);
-    simulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
   }
 

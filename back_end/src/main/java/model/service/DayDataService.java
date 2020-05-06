@@ -288,16 +288,17 @@ public class DayDataService {
   /**
    * Computes list of light infected people from COVID-19 per age class.
    *
-   * @param initI     List of infected people per age Class.
-   * @param simulator the simulator for which we compute the parameters.
-   * @return the list of ratios of light infected  people per age group.
+   * @param initI              List of infected people per age Class.
+   * @param ageCategoryService ageCategoryService giving us access to initial
+   *                           parameters
+   * @return the list of ratios of
+   * light infected  people per age group.
    */
   public static List<Double> getLightInfectedSJYHR(final List<Double> initI,
-                                                   final SJYHRSimulator
-                                                     simulator) {
+                                                   final AgeCategoryService ageCategoryService) {
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initI.size(); i++) {
-      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
+      final double thetaI = ageCategoryService.getTheta().get(i);
       result.add(initI.get(i) * (1 - thetaI));
     }
     return result;
@@ -306,16 +307,17 @@ public class DayDataService {
   /**
    * Computes list of heavy infected people from COVID-19 per age class.
    *
-   * @param initI     List of infected people per age Class.
-   * @param simulator the simulator for which we compute the parameters.
-   * @return the list of ratios of heavy infected  people per age group.
+   * @param initI              List of infected people per age Class.
+   * @param ageCategoryService ageCategoryService giving us access to initial
+   *                           parameters
+   * @return the list of ratios of
+   * heavy infected  people per age group.
    */
   public static List<Double> getHeavyInfectedSJYHR(final List<Double> initI,
-                                                   final SJYHRSimulator
-                                                     simulator) {
+                                                   final AgeCategoryService ageCategoryService) {
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initI.size(); i++) {
-      final double thetaI = simulator.getAgeCategories().get(i).getThetai();
+      final double thetaI = ageCategoryService.getTheta().get(i);
       result.add(initI.get(i) * (thetaI));
     }
     return result;
@@ -339,21 +341,21 @@ public class DayDataService {
   /**
    * Computes list of dead people from COVID-19 per age class.
    *
-   * @param latestData Data setting base state.
-   * @param initH     List of hospitalized people per age Class.
-   * @param simulator the simulator for which we compute the parameters.
+   * @param latestData         Data setting base state.
+   * @param initH              List of hospitalized people per age Class.
+   * @param ageCategoryService ageCategoryService giving us access to initial
+   *                           parameters
    * @return the list ratios of dead people per age group.
    */
   public static List<Double> getDeadSJYHR(final DayData latestData,
                                           final List<Double> initH,
-                                          final SJYHRSimulator simulator) {
+                                          final AgeCategoryService ageCategoryService) {
     final int totalDeaths = latestData.getTotalDeaths();
     final double sumMuI =
-      simulator.getAgeCategories().stream().mapToDouble(SJYHRSimulator
-        .AgeCategory::getMui).sum();
+      ageCategoryService.getMu().stream().mapToDouble(f -> f).sum();
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initH.size(); i++) {
-      result.add(totalDeaths * simulator.getAgeCategories().get(i).getMui()
+      result.add(totalDeaths * ageCategoryService.getMu().get(i)
         / sumMuI * initH.get(i) / POPULATION_FRA);
     }
     return result;
@@ -363,8 +365,8 @@ public class DayDataService {
    * Computes list of dead people from COVID-19 per age class.
    *
    * @param latestData Data setting base state.
-   * @param initH List of hospitalized people per age Class.
-   * @param initJ List of light infected people people per age Class.
+   * @param initH      List of hospitalized people per age Class.
+   * @param initJ      List of light infected people people per age Class.
    * @return the list of ratios of recovered people per age group.
    */
   public static List<Double> getRecoveredSJYHR(final DayData latestData,

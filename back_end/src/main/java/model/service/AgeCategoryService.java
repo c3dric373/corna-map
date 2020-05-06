@@ -1,8 +1,11 @@
 package model.service;
 
 import com.google.common.collect.Iterators;
+import lombok.Getter;
 import model.simulator.SJYHRSimulator;
+import org.hibernate.annotations.GeneratorType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,21 +46,81 @@ public class AgeCategoryService {
    */
   public static final double MU_0_15 = 0.003;
   /**
-   * Death Rate 0_15.
+   * Death Rate 15_44.
    */
   public static final double MU_15_44 = 0.01;
   /**
-   * Death Rate 0_15.
+   * Death Rate 44_64.
    */
   public static final double MU_44_64 = 0.08;
   /**
-   * Death Rate 0_15.
+   * Death Rate 64_75.
    */
   public static final double MU_64_75 = 0.22;
   /**
-   * Death Rate 0_15.
+   * Death Rate 75_INF.
    */
   public static final double MU_75_INF = 0.44;
+
+  /**
+   * List of MU
+   */
+  @Getter
+  public final List<Double> mu = new ArrayList<>();
+
+  /**
+   * Heavy Infection Rate 0_15.
+   */
+  public static final double THETA_0_15 = 0.0072;
+  /**
+   * Heavy Infection Rate 15_44.
+   */
+  public static final double THETA_15_44 = 0.144;
+  /**
+   * Heavy Infection Rate 44_64.
+   */
+  public static final double THETA_44_64 = 0.144;
+  /**
+   * Heavy Infection Rate 64_75.
+   */
+  public static final double THETA_64_75 = 6.57;
+  /**
+   * Heavy Infection Rate 75_INF.
+   */
+  public static final double THETA_75_INF = 12.96;
+
+  /**
+   * List of THETA_I
+   */
+  @Getter
+  public final  List<Double> theta = new ArrayList<>();
+
+  /**
+   * Heavy Infection Rate 0_15.
+   */
+  public static final double C_0_15 = 0.8;
+  /**
+   * Heavy Infection Rate 15_44.
+   */
+  public static final double C_15_44 = 0.9;
+  /**
+   * Heavy Infection Rate 44_64.
+   */
+  public static final double C_44_64 = 0.6;
+  /**
+   * Heavy Infection Rate 64_75.
+   */
+  public static final double C_64_75 = 0.3;
+  /**
+   * Heavy Infection Rate 75_INF.
+   */
+  public static final double C_75_INF = 0.1;
+
+  /**
+   * List of C_I
+   */
+  @Getter
+  private final List<Double> c = new ArrayList<>();
 
   /**
    * Map to facilitate working with the above fields.
@@ -68,11 +131,27 @@ public class AgeCategoryService {
    * Empty Constructor.
    */
   public AgeCategoryService() {
+    c.add(C_0_15);
+    c.add(C_15_44);
+    c.add(C_44_64);
+    c.add(C_64_75);
+    c.add(C_75_INF);
+    theta.add(THETA_0_15);
+    theta.add(THETA_15_44);
+    theta.add(THETA_44_64);
+    theta.add(THETA_64_75);
+    theta.add(THETA_75_INF);
+    mu.add(MU_0_15);
+    mu.add(MU_15_44);
+    mu.add(MU_44_64);
+    mu.add(MU_64_75);
+    mu.add(MU_75_INF);
     indexToPopPercentage.put(0, FR_POP_0_14);
     indexToPopPercentage.put(1, FR_POP_15_44);
     indexToPopPercentage.put(2, FR_POP_45_64);
     indexToPopPercentage.put(3, FR_POP_64_75);
     indexToPopPercentage.put(4, FR_POP_75_INF);
+
   }
 
   /**
