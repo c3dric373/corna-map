@@ -269,7 +269,7 @@ public class Controller {
     try {
       projectState = State.SIMULATION;
       System.out.println(content);
-      wrapper.startSimulation(content);
+      wrapper.startSimulation(content, true);
       return gson.toJson("bien reçu chef!");
     } finally {
       lock.unlock();
@@ -284,7 +284,7 @@ public class Controller {
     try {
       projectState = State.SIMULATION;
       Gson gson = new Gson();
-      wrapper.startSimulation("");
+      wrapper.startSimulation("", true);
       return gson.toJson("bien reçu chef!");
     } finally {
       lock.unlock();
