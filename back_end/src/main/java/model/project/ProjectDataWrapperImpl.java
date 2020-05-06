@@ -1,11 +1,13 @@
 package model.project;
 
-import com.google.common.collect.Iterables;
+import com.google.gson.Gson;
 import lombok.Getter;
 import model.data.DayData;
 import model.io.DataScrapperImpl;
+import model.service.AgeCategoryService;
 import model.service.DayDataService;
-import model.simulator.SIRSimulator;
+import model.service.SimulatorService;
+import model.simulator.SJYHRSimulator;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -39,17 +41,27 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * The {@link ProjectData} this wrapper manages.
    */
   @Getter
-  private ProjectData project = new ProjectDataImpl();
+  private final ProjectData project = new ProjectDataImpl();
 
   /**
    * Simulator used to simulate COVID-19.
    */
-  private SIRSimulator simulator = new SIRSimulator();
+  private SJYHRSimulator simulator = new SJYHRSimulator();
 
   /**
-   * Dictionnary mapping id to name for regions and departments.
+   * Dictionary mapping id to name for regions and departments.
    */
-  private Map<String, String> idToName = new HashMap<>();
+  private final Map<String, String> idToName = new HashMap<>();
+
+  /**
+   * Service used to compute numbers after simulating.
+   */
+  AgeCategoryService ageCategoryService = new AgeCategoryService();
+
+  /**
+   * Service used to compute numbers after simulating.
+   */
+  SimulatorService simulatorService = new SimulatorService();
 
   @Override
   public void getCurrentAllDataFrance() throws IOException {
@@ -59,8 +71,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   @Override
-  public void startSimulation() {
-    setSimulator();
+  public void startSimulation(final String content) {
+    setSimulator(content);
   }
 
   @Override
@@ -133,17 +145,19 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   public DayData simulateFrance(final String date) {
     DayData latestData = getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
-    Map<String, Double> locationPercentages =
-      DayDataService.getLocationPercentages(this.project.getLocations(),
-        latestDate.toString());
     // We need to check if the date is in the future or the past
     // if it's in the past we only return the data of the asked day and delete
     // the days coming after
     if (latestDate.isAfter(LocalDate.parse(date))
       || latestDate.equals(LocalDate.parse(date))) {
       truncateData(date);
+      // Here we need to get latest data again because we have deleted
+      // every date after date.
       return getLatestData(FRA);
     }
+    Map<String, Double> locationPercentages =
+      DayDataService.getLocationPercentages(this.project.getLocations(),
+        latestDate.toString());
     DayData dayData = new DayData();
     while (!LocalDate.parse(date).equals(latestDate)) {
       // Simulate a day
@@ -180,19 +194,28 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Sets the parameter on the simulator with the latest data.
+   *
+   * @param content measures values
    */
-  private void setSimulator() {
+  private void setSimulator(final String content) {
     DayData latestData = getLatestData(FRA);
-    final double deathRate = DayDataService.getDeathRateSIR(latestData,
-      this, FRA);
-    final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData,
-      this, FRA);
-    final double susceptible = DayDataService.getSusceptibleSIR(latestData);
     final List<Double> susceptibleComplex =
       DayDataService.getSusceptibleSJYHR(latestData);
-    final double infectious = 1 - susceptible;
-    simulator = new SIRSimulator(susceptible,
-      infectious, recoveryRate, deathRate);
+    List<Double> lightInfected =
+      DayDataService.getLightInfectedSJYHR(latestData);
+    List<Double> heavyInfected =
+      DayDataService.getHeavyInfectedSJYHR(latestData);
+    simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
+      heavyInfected);
+    final Gson gson = new Gson();
+    final Map map = gson.fromJson(content, Map.class);
+    List<List<Integer>> measures = simulatorService.getMeasures(map);
+    final int confinedCategoriesIndex = 0;
+    final int maskedCategoriesIndex = 1;
+    final int confinementRespectIndex = 2;
+    simulator.applyMeasures(measures.get(confinedCategoriesIndex),
+      measures.get(maskedCategoriesIndex),
+      measures.get(confinementRespectIndex).get(0));
   }
 
   /**
@@ -203,9 +226,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private void truncateData(final String date) {
     final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> dataFrance = locations.get(FRA);
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
-      final String id = entry.getKey();
       final Map<String, DayData> mapId = entry.getValue();
       mapId.keySet().removeIf(key
         -> LocalDate.parse(key).isAfter(LocalDate.parse(date)));
@@ -214,36 +235,36 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Simulates a the spread of COVID-19 for one day, according to a given
-   * simulator.
+   * sjyhrSimulator.
    *
-   * @param startState   The data on the situation form which the simulated day
-   *                     should start.
-   * @param sirSimulator the given simulator.
+   * @param startState     The data on the situation form which the simulated
+   *                       day
+   *                       should start.
+   * @param sjyhrSimulator the given sjyhrSimulator.
    * @return the simulated data.
    */
   private DayData simulateDay(final DayData startState,
-                              final SIRSimulator sirSimulator) {
-    // Compute Start State
-    final double totalDeaths = startState.getTotalDeaths();
-    final double recovered = startState.getRecoveredCases();
+                              final SJYHRSimulator sjyhrSimulator) {
     // Simulate a day
-    sirSimulator.step();
-    final double deadNew = Iterables.getLast(sirSimulator.getDead());
-    final double recoveredNew = Iterables.getLast(sirSimulator.getRecovered());
-    final double susceptibleNew =
-      Iterables.getLast(sirSimulator.getSusceptible());
-    final double infectiousNew =
-      Iterables.getLast(sirSimulator.getInfectious());
-    final double infectedPeople = POPULATION_FRA * infectiousNew;
+    sjyhrSimulator.step();
+    final DayData result = new DayData();
+    final List<SJYHRSimulator.AgeCategory> ageCategories =
+      sjyhrSimulator.getAgeCategories();
+    final double deadNew = ageCategoryService.getDead(ageCategories);
+    final double lightInfected =
+      ageCategoryService.getLightInfected(ageCategories);
+    final double hospitalized =
+      ageCategoryService.getHospitalized(ageCategories);
+    final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
+    final double heavyInfected =
+      ageCategoryService.getHeavyInfected(ageCategories);
+    final double infected = lightInfected + heavyInfected + hospitalized;
+    final double susceptibleNew = 1 - infected - deadNew;
     // Create Object which encapsulates the simulated data
-    final DayData dayData = new DayData();
-    dayData.setTotalDeaths((int) (totalDeaths + deadNew * infectedPeople));
-    dayData.setRecoveredCases((int) (recovered
-      + recoveredNew * infectedPeople));
-    System.out.println("recovered " + dayData.getRecoveredCases());
-    dayData.setTotalCases((int) (POPULATION_FRA
-      - (susceptibleNew * POPULATION_FRA)));
-    return dayData;
+    result.setTotalDeaths((int) (deadNew * POPULATION_FRA));
+    result.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptibleNew) * POPULATION_FRA));
+    return result;
   }
 
   /**
@@ -275,18 +296,23 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       return date1.compareTo(date2);
     }
   }
-/*
-  public static void main(final String[] args) throws IOException {
-    ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
-    DataScrapperImpl scrapper = new DataScrapperImpl();
-    scrapper.extract(wrapper);
-    DayData dayData = wrapper.simulateFrance("2020-04-30");
-    System.out.println("=============");
-    wrapper.simulateFrance("2020-05-06");
-    //wrapper.simulateFrance("2020-05-01");
-  }
-  */
 
+  /*
+  public static void main(final String[] args) throws IOException {
+    Gson gson = new Gson();
+    final String content = "{\"respectConfinement\":50," +
+      "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
+      "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
+      "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
+    Map map = gson.fromJson(content, Map.class);
+    LinkedTreeMap<String, Boolean> test =
+      (LinkedTreeMap<String, Boolean>) map.get(
+        "mask");
+    System.out.println(map.get("mask"));
+    System.out.println(test.get("m0_15").toString());
+
+  }
+*/
 }
 
 
