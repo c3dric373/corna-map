@@ -167,7 +167,7 @@ public class SJYHRSimulator implements Simulator {
   /**
    * The solver method.
    */
-  private  DifferentialSolver solver;
+  private DifferentialSolver solver;
   /**
    * The precision for the solver.
    */
@@ -190,8 +190,9 @@ public class SJYHRSimulator implements Simulator {
    * @param initY list of size n, initial rante of heavy infected.
    */
   public SJYHRSimulator(final List<Double> initS,
-                        final List<Double> initJ,
-                        final List<Double> initY) {
+                        final List<Double> initJ, final List<Double> initY,
+                        final List<Double> initH, final List<Double> initR,
+                        final List<Double> initD) {
     n = 5;
     h = 7;
     u = 30;

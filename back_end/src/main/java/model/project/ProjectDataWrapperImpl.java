@@ -250,20 +250,24 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final DayData result = new DayData();
     final List<SJYHRSimulator.AgeCategory> ageCategories =
       sjyhrSimulator.getAgeCategories();
-    final double deadNew = ageCategoryService.getDead(ageCategories);
+    final double dead = ageCategoryService.getDead(ageCategories);
+    for(SJYHRSimulator.AgeCategory ageCategory : ageCategories){
+      System.out.println("DeadAgeCat: " + ageCategory.getDi());
+    }
+    System.out.println("Dead: " + dead * POPULATION_FRA);
     final double lightInfected =
       ageCategoryService.getLightInfected(ageCategories);
     final double hospitalized =
       ageCategoryService.getHospitalized(ageCategories);
-    final double recoveredNew = ageCategoryService.getRecovered(ageCategories);
+    final double recovered = ageCategoryService.getRecovered(ageCategories);
     final double heavyInfected =
       ageCategoryService.getHeavyInfected(ageCategories);
     final double infected = lightInfected + heavyInfected + hospitalized;
-    final double susceptibleNew = 1 - infected - deadNew;
+    final double susceptible = 1 - infected - dead;
     // Create Object which encapsulates the simulated data
-    result.setTotalDeaths((int) (deadNew * POPULATION_FRA));
-    result.setRecoveredCases((int) (recoveredNew * POPULATION_FRA));
-    result.setTotalCases((int) ((1 - susceptibleNew) * POPULATION_FRA));
+    result.setTotalDeaths((int) (dead * POPULATION_FRA));
+    result.setRecoveredCases((int) (recovered * POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptible) * POPULATION_FRA));
     result.setHospitalized((int) (hospitalized * POPULATION_FRA));
     result.setCriticalCases((int) (heavyInfected * POPULATION_FRA));
     return result;
