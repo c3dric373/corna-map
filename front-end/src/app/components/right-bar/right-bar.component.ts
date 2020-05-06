@@ -147,6 +147,10 @@ export class RightBarComponent implements OnInit, OnChanges{
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
+          // When isSimulationStarted changes
+          case 'isSimulationStarted':
+          // When actualdate changes
+          case 'actualdate':
           // When locationName changes
           case 'locationName': {
             if (this.locationName &&  this.locationName !== 'France' ) {// click sur region ou dpt
@@ -162,10 +166,6 @@ export class RightBarComponent implements OnInit, OnChanges{
             }else{                    // france
               this.showLink = false;
             }
-            break;
-          }
-          // When isSimulationStarted changes
-          case 'isSimulationStarted': {
             if (this.isSimulationStarted && this.locationName === 'France'){
               this.getHFrance();
               // this.showLocation = true;
@@ -185,7 +185,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.reglist = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -203,7 +202,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.reglist = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -227,7 +225,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.deptList = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -244,7 +241,6 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.deptList = data;
           this.chosenLocation = data.name;
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totHospi = data.hospitalized;
           this.totDeces = data.totalDeaths;
@@ -268,10 +264,10 @@ export class RightBarComponent implements OnInit, OnChanges{
         }
       );
     }else{
-      console.log(this.actualdate);
       this.simulationService.getInfosFrance(this.actualdate).subscribe(
         data => {
           // this.histFr = data;
+          console.log('fra data :');
           console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;

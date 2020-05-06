@@ -6,6 +6,11 @@
   font-size: 150%;
 }
 
+.nav-link.active{
+  font-size: 170%;
+  font-weight: bold;
+}
+
 
 .navbar-brand{
   color: black;

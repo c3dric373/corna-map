@@ -32,7 +32,6 @@ export class SideBarComponent implements OnInit, OnChanges {
     this.mapService.getInfosFrance(this.date).subscribe(
       data => {
         this.donnees = data;
-        console.log(data);
       }
     );
 }
