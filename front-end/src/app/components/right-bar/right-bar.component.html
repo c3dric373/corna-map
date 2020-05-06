@@ -1,5 +1,10 @@
-<nav id="sidebar">
-  <div class="sidebar-header">
+<nav id="sidebar" class="sidebar" [ngClass]="{'extand': onlyGraph}">
+  <div class="sidebar-header" [ngClass]="{'extand': onlyGraph}">
+
+    <button id="extandButton" type="button" class="btn btn-outline-secondary" (click)="onClickExtend()">
+      <fa-icon *ngIf="!onlyGraph" [icon]="expand"></fa-icon>
+      <fa-icon *ngIf="onlyGraph" [icon]="compress"></fa-icon>
+    </button>
 
     <h4 id="titre">{{chosenLocation}}</h4>
 
@@ -43,8 +48,8 @@
 
     </div>
 
-    <div class="container-sm charts" id="charts2"></div>
-    <div class="container-sm charts" id="charts"></div>
+    <div class="container-sm charts" id="charts2" [ngClass]="{'extand': onlyGraph}"></div>
+    <div class="container-sm charts" id="charts" [ngClass]="{'extand': onlyGraph}"></div>
 
 
   </div>

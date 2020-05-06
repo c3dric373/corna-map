@@ -1,10 +1,8 @@
-#sidebar {
-  min-width: 30vw;
-  max-width: 30vw;
+.sidebar {
+  width: 30vw;
   background: #f2f2f2ff;
   color: black;
   transition: all 0.3s;
-  display: grid;
   font-family : Bahnschrift;
   height: 85vh;
   overflow: auto;
@@ -20,21 +18,32 @@
   overflow:visible;
 }
 
+/* Extand options */
+.sidebar.extand {
+  width: 80vw;
+}
+
+.sidebar-header.extand {
+  width: 79vw;
+}
+
 #titre{
   color: black;
   text-align:center;
   font-size: 150%;
 }
 
-#charts{
-  font-size: xx-small;
-  max-width: 26vw !important;
+.charts{
+  height:45vh;
+  width: 26vw;
+}
 
+.charts.extand {
+  height: 60vh;
+  width: 70vw;
 }
 
 #charts2{
-  font-size: xx-small;
-  max-width: 26vw !important;
   margin-bottom: 2vh;
 }
 
@@ -60,9 +69,11 @@ table{
   display: flex;
 }
 
-
-
-
+#extandButton {
+  position: absolute;
+  right:1vw;
+  top: 11vh;
+}
 
 /* Scroll Bar */
 ::-webkit-scrollbar {

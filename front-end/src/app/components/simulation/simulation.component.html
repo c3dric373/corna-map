@@ -5,14 +5,14 @@
                        [isRegion]="isRegion" (sendDate)="setDate($event)" >
   </app-left-simulation>
 
-  <app-map-content [hidden]="loading" [SelectedMenu]="type" [actualDate]="date" [isSimulationStarted]="isSimulStarted"
-                   (chosenLocation)="clickOnLocation($event)" (boolIsRegion)="setIsRegion($event)"
+  <app-map-content [hidden]="loading" [ngbCollapse]="isOnlyGraph" [SelectedMenu]="type" [actualDate]="date"
+                   [isSimulationStarted]="isSimulStarted" (chosenLocation)="clickOnLocation($event)" (boolIsRegion)="setIsRegion($event)"
                    (loading)="setLoading($event)" (isOnlyMap)="setOnlyMap($event)">
   </app-map-content>
 
   <!-- Sidebar  -->
   <app-right-bar [ngbCollapse]="isOnlyMap" *ngIf="!loading" [locationName] = "location" [isSimulationStarted]="isSimulStarted"
-                 [isRegion]="isRegion" [actualdate]="date"  >
+                 [isRegion]="isRegion" [actualdate]="date" (isOnlyGraph)="setOnlyGrah($event)" >
   </app-right-bar>
 
 </div>
