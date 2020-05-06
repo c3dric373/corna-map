@@ -62,8 +62,8 @@ public class SimulatorService {
    * @return the value for each measure.
    */
   public List<List<Integer>> getMeasures(Map map) {
-    List<Integer> masks = new ArrayList<>();
-    List<Integer> confinedCategories = new ArrayList<>();
+    List<Integer> masks;
+    List<Integer> confinedCategories;
     List<Integer> respectConfAsList = new ArrayList<>();
     List<List<Integer>> result = new ArrayList<>();
 
@@ -73,8 +73,9 @@ public class SimulatorService {
     LinkedTreeMap<String, Boolean> conf =
       (LinkedTreeMap<String, Boolean>) map.get(
         "conf");
-    int respectConfValue = (int) map.get(RESPECT_CONF);
-    respectConfAsList.add(respectConfValue);
+    double respectConfValue = (double) map.get(RESPECT_CONF);
+    int respectConfValueAsInt = (int) respectConfValue;
+    respectConfAsList.add(respectConfValueAsInt);
 
     masks = mask.entrySet().stream().filter(Map.Entry::getValue).
       collect(Collectors.toList()).stream()

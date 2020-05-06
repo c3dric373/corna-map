@@ -1,7 +1,6 @@
 package model.project;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import lombok.Getter;
 import model.data.DayData;
 import model.io.DataScrapperImpl;
@@ -206,11 +205,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       DayDataService.getHeavyInfectedSJYHR(latestData);
     simulator = new SJYHRSimulator(susceptibleComplex, lightInfected,
       heavyInfected);
-    Gson gson = new Gson();
-    Map map = gson.fromJson(content, Map.class);
-    final int respectConfinement =
-      (int) map.get("respectConfinement");
-
+    final Gson gson = new Gson();
+    final Map map = gson.fromJson(content, Map.class);
     List<List<Integer>> measures = simulatorService.getMeasures(map);
     final int confinedCategoriesIndex = 0;
     final int maskedCategoriesIndex = 1;
@@ -299,6 +295,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
+  /*
   public static void main(final String[] args) throws IOException {
     Gson gson = new Gson();
     final String content = "{\"respectConfinement\":50," +
@@ -313,7 +310,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println(test.get("m0_15").toString());
 
   }
-
+*/
 }
 
 
