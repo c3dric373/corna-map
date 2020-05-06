@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -6,16 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
+  public  isMap: boolean;
+  private url: string;
 
-  constructor() { }
-
-  act = true;
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
-
+    this.isMap = true;
   }
 
-  changeAct(){
-    this.act = !this.act;
+  changeMap(){
+      this.isMap = true;
+  }
+
+  changeSimul(){
+    this.isMap = false;
   }
 }
