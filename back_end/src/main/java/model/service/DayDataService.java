@@ -356,8 +356,8 @@ public class DayDataService {
       ageCategoryService.getMu().stream().mapToDouble(f -> f).sum();
     final List<Double> result = new ArrayList<>(5);
     for (int i = 0; i < initH.size(); i++) {
-      result.add(totalDeaths * ageCategoryService.getMu().get(i)
-        / sumMuI * initH.get(i) / POPULATION_FRA);
+      result.add(totalDeaths / POPULATION_FRA * ageCategoryService.getMu().get(i)
+        / sumMuI);
     }
     return result;
   }
