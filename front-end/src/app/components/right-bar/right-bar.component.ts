@@ -57,7 +57,7 @@ export class RightBarComponent implements OnInit, OnChanges{
       width: 10,
     },
     title: {
-      text: 'Variation en France'
+      text: 'Variation journalière'
     },
     credits: {
       enabled: false
@@ -106,7 +106,7 @@ export class RightBarComponent implements OnInit, OnChanges{
       width: 10
     },
     title: {
-      text: 'Evolution en France'
+      text: 'Evolution globale'
     },
     credits: {
       enabled: false
