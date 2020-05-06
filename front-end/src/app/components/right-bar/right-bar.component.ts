@@ -1,9 +1,10 @@
-import {Component, Input, OnInit, SimpleChanges, OnChanges} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges, OnChanges, Output, EventEmitter} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {NgbCalendar, NgbDate, NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {MapService} from '../../service/map/map.service';
 import {HistoriqueService} from '../../service/historique/historique.service';
 import {SimulationService} from '../../service/simulation/simulation.service';
+import {faCompressAlt, faExpandAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-right-bar',
@@ -17,10 +18,16 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() SelectedMenu;
   @Input() isSimulationStarted: boolean;
 
+  @Output() isOnlyGraph = new EventEmitter<boolean>();
+
+  // Icons
+  expand = faExpandAlt;
+  compress = faCompressAlt;
   // Json of the region
   private reglist = [];
   // Json of the Dept
   private deptList;
+  // Tables
   private allData = [];
   private casConf = [];
   private gueris = [];
@@ -37,11 +44,10 @@ export class RightBarComponent implements OnInit, OnChanges{
   public totHospi ;
   public totDeces ;
   public totCritiques;
-  // Json of France
-  private histFr;
+  // Extand status
+  public onlyGraph: boolean;
 
   public chosenLocation;
-
 
   public differences = [];
 
@@ -53,8 +59,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   public options: any = {
     Chart: {
       type: 'area',
-      height: 10,
-      width: 10,
+      height: 50,
+      width: 50,
     },
     title: {
       text: 'Variation journalière'
@@ -103,7 +109,7 @@ export class RightBarComponent implements OnInit, OnChanges{
     Chart: {
       type: 'area',
       height: 10,
-      width: 10
+      width: 10,
     },
     title: {
       text: 'Evolution globale'
@@ -153,6 +159,8 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.actualdate = calendar.getToday();
     // set date to 2 days before today
     this.actualdate = calendar.getPrev(this.actualdate, 'd', 2);
+    // set extand
+    this.onlyGraph = false;
   }
 
   ngOnInit() {
@@ -512,9 +520,16 @@ export class RightBarComponent implements OnInit, OnChanges{
       this.gueris.push(this.gueris2[this.gueris2.length - 1 ] - this.gueris2[this.gueris2.length - 2 ]);
       this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
     }
-
-
   }
 
+  onClickExtend(): void {
+    const chart1 = Highcharts.chart('charts', this.options);
+    const chart2 = Highcharts.chart('charts2', this.options2);
+    this.onlyGraph = !this.onlyGraph;
+    this.isOnlyGraph.emit(this.onlyGraph);
+    setTimeout(() => {
+      chart1.reflow();
+      chart2.reflow(); } , 5);
+  }
 
 }
