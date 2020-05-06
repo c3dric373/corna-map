@@ -155,4 +155,5 @@ public class DayData {
     this.date = dateNew;
     this.type = typeNew;
   }
+
 }

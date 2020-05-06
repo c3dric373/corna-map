@@ -2,6 +2,7 @@ package model.simulator;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.service.AgeCategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,7 @@ public class SJYHRSimulator implements Simulator {
   /**
    * Distance rate of every age category, c is an array of size n.
    */
+  @Getter
   List<Double> c;
 
   /**
@@ -167,7 +169,7 @@ public class SJYHRSimulator implements Simulator {
   /**
    * The solver method.
    */
-  private  DifferentialSolver solver;
+  private DifferentialSolver solver;
   /**
    * The precision for the solver.
    */
@@ -177,21 +179,6 @@ public class SJYHRSimulator implements Simulator {
    * Empty Constructor.
    */
   public SJYHRSimulator() {
-    n = 5;
-    h = 7;
-    u = 30;
-    g = 15;
-    nbParam = 1 + g + h + u + 2;
-  }
-
-  /**
-   * @param initS list of size n, initial rates of susceptible.
-   * @param initJ list of size n, initial rante of light infected.
-   * @param initY list of size n, initial rante of heavy infected.
-   */
-  public SJYHRSimulator(final List<Double> initS,
-                        final List<Double> initJ,
-                        final List<Double> initY) {
     n = 5;
     h = 7;
     u = 30;
@@ -265,28 +252,53 @@ public class SJYHRSimulator implements Simulator {
     c.add(0.6);
     c.add(0.3);
     c.add(0.1);
+  }
 
+  /**
+   * @param initS list of size n, initial rates of susceptible.
+   * @param initJ list of size n, initial rates of light infected.
+   * @param initY list of size n, initial rates of heavy infected.
+   * @param initH list of size n, initial rates of hospitalized.
+   * @param initR list of size n, initial rates of recovered.
+   * @param initD list of size n, initial rates of dead.
+   */
+  public void setInitialStates(final List<Double> initS,
+                               final List<Double> initJ,
+                               final List<Double> initY,
+                               final List<Double> initH,
+                               final List<Double> initR,
+                               final List<Double> initD) {
     List<Double> initialState = new ArrayList<>(5 * nbParam);
     for (int k = 0; k < 5 * nbParam; ++k) {
       initialState.add(0.);
     }
     for (int i = 0; i < 5; ++i) {
       initialState.set(i * nbParam, initS.get(i));
-      initialState.set(i * nbParam + 1, initJ.get(i));
-      initialState.set(i * nbParam + 1 + g, initY.get(i));
+      for (int j = 0; j < g; ++j) {
+        initialState.set(i * nbParam + 1 + j, initJ.get(i) / g);
+      }
+      for (int j = 0; j < h; ++j) {
+        initialState.set(i * nbParam + 1 + g + j, initY.get(i) / h);
+      }
+      for (int j = 0; j < u; ++j) {
+        initialState.set(i * nbParam + 1 + g + h + j,
+          initH.get(i) / u);
+      }
+      initialState.set(i * nbParam + 1 + g + h + u, initR.get(i));
+      initialState.set(i * nbParam + 1 + g + h + u + 1, initD.get(i));
     }
 
     ageCategories = new ArrayList<>(n);
     ageCategories.add(new AgeCategory(initialState,
-      0, 0.0072, 0.003, 0.8, 0.05));
+      0, AgeCategoryService.THETA_0_15, 0.003, 0.8, 0.05));
     ageCategories.add(new AgeCategory(initialState,
-      1, 0.144, 0.01, 0.9, 0.2));
+      1, AgeCategoryService.THETA_15_44, 0.01, 0.9, 0.2));
     ageCategories.add(new AgeCategory(initialState,
-      2, 1.77, 0.08, 0.6, 0.15));
+      2, AgeCategoryService.THETA_44_64, 0.08, 0.6, 0.15));
     ageCategories.add(new AgeCategory(initialState,
-      3, 6.57, 0.22, 0.3, 0.05));
+      3, AgeCategoryService.THETA_64_75, 0.22, 0.3, 0.05));
     ageCategories.add(new AgeCategory(initialState,
-      4, 12.96, 0.44, 0.1, 0.01));
+      4, AgeCategoryService.THETA_75_INF, 0.44, 0.1, 0.01));
 
     model = makeModel(initialState);
     solver = new RK4Solver();
