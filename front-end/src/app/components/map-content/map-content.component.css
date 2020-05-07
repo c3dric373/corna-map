@@ -1,0 +1,22 @@
+.carte {
+  width: 40vw;
+  align: center;
+  margin: 3vh auto;
+}
+
+.carte.extand {
+  width: 44vw;
+  margin: 1vh auto;
+}
+
+.map-zone {
+  width: 50vw;
+  height: 88vh;
+  margin: 0 auto;
+  background-color: rgb(238,234,222);
+}
+
+.map-zone.extand {
+  width: 80vw;
+}
+

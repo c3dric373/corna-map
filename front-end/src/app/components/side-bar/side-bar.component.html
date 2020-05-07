@@ -1,0 +1,28 @@
+<nav id="sidebar">
+  <div class="sidebar-header shadow-lg rounded">
+
+    <h4 id="titre">Données Françaises</h4>
+    <div class="container">
+      <div class="row shadow-lg rounded" id="CasConfirmes" >
+         Cas confirmés
+        <span id="nbCC">{{donnees.totalCases}}</span>
+      </div>
+      <div class="row shadow-lg rounded" id="Guris">
+          Guéris
+        <span id="nbG">{{donnees.recoveredCases}}</span>
+      </div>
+      <div class="row shadow-lg rounded" id="Hospitalisations">
+        Hospitalisés
+        <span id="nbH">{{donnees.hospitalized}}</span>
+      </div>
+      <div class="row shadow-lg rounded" id="CasCritique">
+        Cas critiques
+        <span id="nbCCr">{{donnees.criticalCases}}</span>
+      </div>
+      <div class="row shadow-lg rounded" id="Deces">
+        Décès
+        <span id="nbD">{{donnees.totalDeaths}}</span>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,20 @@
+.navbar{
+  background-color: #e5dfcdff;
+}
+
+.nav-link{
+  font-size: 150%;
+}
+
+.nav-link.active{
+  font-size: 152%;
+  font-weight: bold;
+}
+
+
+.navbar-brand{
+  color: black;
+  font-family: Elephant;
+  font-size: 180%;
+  width: 19%;
+}

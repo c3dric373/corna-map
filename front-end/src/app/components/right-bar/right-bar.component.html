@@ -1,0 +1,60 @@
+<nav id="sidebar" class="sidebar" [ngClass]="{'extand': onlyGraph}">
+  <div class="sidebar-header" [ngClass]="{'extand': onlyGraph}">
+
+    <button id="extandButton" type="button" class="btn btn-outline-secondary" (click)="onClickExtend()">
+      <fa-icon *ngIf="!onlyGraph" [icon]="expand"></fa-icon>
+      <fa-icon *ngIf="onlyGraph" [icon]="compress"></fa-icon>
+    </button>
+
+    <h4 id="titre">{{chosenLocation}}</h4>
+
+
+    <a (click)=ngOnInit() [hidden]=!showLink >Revenir à la France</a>
+    <div class="container" [hidden]=!showLocation>
+
+      <table class="table" >
+        <thead>
+        <tr>
+          <th scope="col">C</th>
+          <th scope="col">G</th>
+          <th scope="col">H</th>
+          <th scope="col">CR</th>
+          <th scope="col">D</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{totCasConf}}</td>
+          <td>{{totGueris}}</td>
+          <td>{{totHospi}}</td>
+          <td>{{totCritiques}}</td>
+          <td>{{totDeces}}</td>
+
+        </tr>
+        <tr></tr>
+
+        </tbody>
+        </table>
+      <div id="leg" class="container" >
+        <div  class="container" >
+          <div style="color:#ffd966ff ;font-weight: bold ">C : Cas confirmés</div>
+          <div style="color:#6ca644ff ;font-weight: bold">G : Guéris</div>
+          <div style="color:#fd9d3dff ;font-weight: bold"> H : Hospitalisés</div>
+        </div>
+        <div class="container">
+           <div style="color:#a50026ff ;font-weight: bold">CR : Cas Critiques</div>
+           <div style="color:#171616 ;font-weight: bold"> D : Decès</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container-sm charts" id="charts2" [ngClass]="{'extand': onlyGraph}"></div>
+    <div class="container-sm charts" id="charts" [ngClass]="{'extand': onlyGraph}"></div>
+
+
+  </div>
+
+</nav>

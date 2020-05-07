@@ -1,0 +1,18 @@
+<app-loading-spin *ngIf="loading"></app-loading-spin>
+
+<div class="wrapper">
+  <app-left-simulation  *ngIf="!loading" [locationName] = "location" (sendSimulStatus)="setSimulState($event)"
+                       [isRegion]="isRegion" (sendDate)="setDate($event)" (sendIsPaused)="setOnPause($event)">
+  </app-left-simulation>
+
+  <app-map-content [hidden]="loading" [ngbCollapse]="isOnlyGraph" [SelectedMenu]="type" [actualDate]="date"
+                   [isSimulationStarted]="isSimulStarted" (chosenLocation)="clickOnLocation($event)" (boolIsRegion)="setIsRegion($event)"
+                   (loading)="setLoading($event)" (isOnlyMap)="setOnlyMap($event)">
+  </app-map-content>
+
+  <!-- Sidebar  -->
+  <app-right-bar [ngbCollapse]="isOnlyMap" *ngIf="!loading" [locationName] = "location" [isSimulationStarted]="isSimulStarted"
+                 [isRegion]="isRegion" [actualdate]="date" [isPaused]="isPause" (isOnlyGraph)="setOnlyGrah($event)" >
+  </app-right-bar>
+
+</div>

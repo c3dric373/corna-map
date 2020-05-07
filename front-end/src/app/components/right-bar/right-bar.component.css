@@ -1,0 +1,102 @@
+.sidebar {
+  width: 30vw;
+  background: #f2f2f2ff;
+  color: black;
+  transition: all 0.3s;
+  font-family : Bahnschrift;
+  height: 88vh;
+  overflow: auto;
+}
+
+#sidebar.active {
+  margin-left: -400px;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #f2f2f2ff;
+  overflow:visible;
+}
+
+/* Extand options */
+.sidebar.extand {
+  width: 80vw;
+}
+
+.sidebar-header.extand {
+  width: 79vw;
+}
+
+#titre{
+  color: black;
+  text-align:center;
+  font-size: 150%;
+}
+
+.charts{
+  height:45vh;
+  width: 26vw;
+}
+
+.charts.extand {
+  height: 60vh;
+  width: 70vw;
+}
+
+#charts2{
+  margin-bottom: 2vh;
+}
+
+.container-sm {
+  color : black;
+}
+
+a:hover{
+  color: #BABABA;
+  text-decoration-line: underline;
+}
+
+table{
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+  text-align: center;
+  font-size: 100%;
+
+}
+
+#leg{
+  justify-content : left;
+  justify-items: left;
+  justify-self: left;
+  text-align: left;
+  padding: 0;
+  display: flex;
+}
+
+#extandButton {
+  position: absolute;
+  right:1vw;
+  top: 12vh;
+}
+
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #cdc9c9;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
