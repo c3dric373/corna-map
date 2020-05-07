@@ -41,7 +41,7 @@ public class SIRSimulator implements Simulator {
   /**
    * R0 / POP_FRA.
    */
-  private double r0Pop = 0.5 / DayDataService.POPULATION_FRA;
+  private double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
   /**
    * La classe est encore en chantier.
    */
@@ -185,20 +185,22 @@ public class SIRSimulator implements Simulator {
   public void applyMeasures(final List<Integer> confinedCategories,
                             final List<Integer> maskCategories,
                             final Integer respectConf) {
-    Validate.notNull(confinedCategories,"confCategoriesNull");
-    Validate.notNull(maskCategories,"maskCategoriesNull");
-    Validate.isTrue(respectConf>=0,"respectConf negative");
-    Validate.isTrue(respectConf<=100,"respectConf bigger 100");
+    Validate.notNull(confinedCategories, "confCategoriesNull");
+    Validate.notNull(maskCategories, "maskCategoriesNull");
+    Validate.isTrue(respectConf >= 0, "respectConf negative");
+    Validate.isTrue(respectConf <= 100, "respectConf bigger 100");
     int i = 0;
-
+    double respectConfN = respectConf / 100.;
+    System.out.println(beta);
     for (int confinedCat : confinedCategories) {
       final double betaI = beta.get(confinedCat);
-      beta.set(confinedCat, (((0.5 / 3.3) - 1) * respectConf + 1) * betaI);
+      beta.set(confinedCat, betaI * (1 + respectConfN * (0.5 / 3.3 - 1)));
     }
 
     for (int maskCat : maskCategories) {
       final double betaI = beta.get(maskCat);
       beta.set(maskCat, 0.32 * betaI);
     }
+    System.out.println(beta);
   }
 }

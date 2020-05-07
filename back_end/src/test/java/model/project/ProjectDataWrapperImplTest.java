@@ -61,7 +61,8 @@ public class ProjectDataWrapperImplTest {
     "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
     "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
     "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
-  private final static String CONTENT1 = "{\"respectConfinement\":90," +
+
+  private final static String CONTENT1 = "{\"respectConfinement\":100," +
     "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
     "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":true," +
     "\"c16_19\":true,\"c30_49\":true,\"c50_69\":true,\"c70\":true}}";
@@ -135,16 +136,25 @@ public class ProjectDataWrapperImplTest {
     wrapper.getCurrentAllDataFrance();
     DayData latestData = wrapper.getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
-    LocalDate datePast = latestDate.minusDays(1);
+    System.out.println("1");
+    LocalDate datePast = latestDate.minusDays(30);
     wrapper.startSimulation(CONTENT1, USE_SIR);
+    System.out.println("2");
     wrapper.simulateFrance(datePast.toString());
     DayData resData = wrapper.simulateFrance(latestDate.toString());
+    System.out.println("3");
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation(CONTENT, USE_SIR);
+    System.out.println("4");
+    wrapper.simulateFrance(datePast.toString());
+    DayData resData1 = wrapper.simulateFrance(latestDate.toString());
     final int unexpected = 0;
 
     // Act
     final int result = resData.getTotalCases();
     System.out.println(" Expected: " + latestData);
-    System.out.println(" Actual: " + resData);
+    System.out.println(" Res No Conf: " + resData1);
+    System.out.println(" Res With Conf: " + resData);
 
     // Assert
     Assert.assertNotEquals("totalCases Zero", unexpected, result);

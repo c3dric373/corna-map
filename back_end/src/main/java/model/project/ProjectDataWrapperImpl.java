@@ -243,10 +243,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double sumI = infectious.stream().mapToDouble(f -> f).sum();
     final List<Double> susceptible =
       DayDataService.getSusceptibleSIR(sumDR + sumI + sumRR);
-    System.out.println("Set susceptible: " + susceptible);
 
-    System.out.println("RecoveryRateBase: " + recoveryRate);
-    //System.out.println("RecoveredBase:  " + recoveryRate * POPULATION_FRA);
     sirSimulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
     // Apply Measures
