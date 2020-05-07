@@ -90,7 +90,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public void startSimulation(final String content, final boolean sir) {
     if (sir) {
-      setSirSimulator();
+      setSirSimulator(content);
       useSir = true;
     } else {
       setSJYHRSimulator(content);
@@ -178,7 +178,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       // Here we need to get latest data again because we have deleted
       // every date after date.
       if (useSir) {
-        setSirSimulator();
+        setSirSimulator(latestContent);
       } else {
         setSJYHRSimulator(latestContent);
       }
@@ -226,8 +226,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Sets the parameter on the simulator with the latest data.
+   *
+   * @param content content.
    */
-  private void setSirSimulator() {
+  private void setSirSimulator(final String content) {
     DayData latestData = getLatestData(FRA);
     final double deathRate = DayDataService.getDeathRateSIR(latestData);
     final double recoveryRate = DayDataService.getRecoveryRateSIR(latestData);
@@ -237,6 +239,16 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     System.out.println("RecoveredBase:  " + recoveryRate * POPULATION_FRA);
     sirSimulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
+    // Apply Measures
+    final Gson gson = new Gson();
+    final Map map = gson.fromJson(content, Map.class);
+    List<List<Integer>> measures = simulatorService.getMeasures(map);
+    final int confinedCategoriesIndex = 0;
+    final int maskedCategoriesIndex = 1;
+    final int confinementRespectIndex = 2;
+    sirSimulator.applyMeasures(measures.get(confinedCategoriesIndex),
+      measures.get(maskedCategoriesIndex),
+      measures.get(confinementRespectIndex).get(0));
   }
 
   /**
