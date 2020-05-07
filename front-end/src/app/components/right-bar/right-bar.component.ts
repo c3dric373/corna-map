@@ -47,14 +47,12 @@ export class RightBarComponent implements OnInit, OnChanges{
   public totCritiques;
   // Extand status
   public onlyGraph: boolean;
-
+  // Chosen location
   public chosenLocation;
-
-  public differences = [];
-
   public showLocation = false;
+  // show 'Revenir à la France'
   public showLink = false;
-
+  // Date table
   private dates = [];
 
   public options: any = {
@@ -172,13 +170,13 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.showLink = false;
     this.chosenLocation = 'France';
     this.locationName = 'France';
-    // this.isSimulationStarted = false;
   }
 
   ngOnChanges(changes: SimpleChanges ){
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
+          // When isPaused changes
           case 'isPaused':
           // When actualdate changes
           case 'actualdate': {
@@ -216,7 +214,6 @@ export class RightBarComponent implements OnInit, OnChanges{
     }
     if (this.isSimulationStarted && this.locationName === 'France'){
       this.getHFrance();
-      // this.showLocation = true;
     }
   }
 
@@ -308,16 +305,12 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.SelectedMenu === 'map'){
       this.historiqueService.getHistoriqueFrance().subscribe(
         data => {
-          // this.histFr = data;
           this.setAllDataFromFrance(data);
         }
       );
     }else{
       this.simulationService.getInfosFrance(this.actualdate).subscribe(
         data => {
-          // this.histFr = data;
-          console.log('fra data :');
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
           this.totHospi = data.hospitalized;
@@ -330,7 +323,6 @@ export class RightBarComponent implements OnInit, OnChanges{
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
@@ -345,17 +337,12 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.SelectedMenu === 'map'){
       this.historiqueService.getHistoriqueRegion(this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          // console.log(data);
           this.setAllDataFromFrance(data);
         }
       );
     }else{
       this.simulationService.getInfosRegion( this.actualdate , this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          console.log('fra data :');
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
           this.totHospi = data.hospitalized;
@@ -368,7 +355,6 @@ export class RightBarComponent implements OnInit, OnChanges{
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
@@ -382,17 +368,12 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.SelectedMenu === 'map'){
       this.historiqueService.getHistoriqueDept(this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          // console.log(data);
           this.setAllDataFromFrance(data);
         }
       );
     }else{
       this.simulationService.getInfosDept( this.actualdate , this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          console.log('fra data :');
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
           this.totHospi = data.hospitalized;
@@ -400,12 +381,11 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
-              parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
+              parseInt(this.totHospi.toString(), 10)
               + parseInt(data.criticalCases.toString(), 10)).toString();
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
