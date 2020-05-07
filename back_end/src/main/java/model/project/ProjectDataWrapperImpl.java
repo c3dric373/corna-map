@@ -91,6 +91,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   public void startSimulation(final String content, final boolean sir) {
     if (sir) {
       setSirSimulator(content);
+      latestContent = content;
       useSir = true;
     } else {
       setSJYHRSimulator(content);
