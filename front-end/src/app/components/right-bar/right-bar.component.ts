@@ -17,6 +17,7 @@ export class RightBarComponent implements OnInit, OnChanges{
   @Input() actualdate: NgbDate;
   @Input() SelectedMenu;
   @Input() isSimulationStarted: boolean;
+  @Input() isPaused: boolean;
 
   @Output() isOnlyGraph = new EventEmitter<boolean>();
 
@@ -138,7 +139,7 @@ export class RightBarComponent implements OnInit, OnChanges{
       color : '#171616'
     }, {
       name: 'Guéris',
-      data: this.gueris ,
+      data: this.gueris2 ,
       color : '#6ca644ff'
     }, {
       name: 'Hospitalisés',
@@ -164,6 +165,8 @@ export class RightBarComponent implements OnInit, OnChanges{
   }
 
   ngOnInit() {
+    this.isPaused = false;
+    this.resetGraph();
     this.getHFrance();
     this.showLocation = false;
     this.showLink = false;
@@ -176,13 +179,14 @@ export class RightBarComponent implements OnInit, OnChanges{
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
-          // When isSimulationStarted changes
-          case 'isSimulationStarted':
+          case 'isPaused':
           // When actualdate changes
           case 'actualdate': {
             this.inputChange();
             break;
           }
+          // When isSimulationStarted changes
+          case 'isSimulationStarted':
           // When locationName changes
           case 'locationName': {
             this.resetGraph();
@@ -461,18 +465,18 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.resetGraph();
     for (const index in list) {
       this.dates.push(list[index].date);
-      if (parseInt(index, 10) !== 0 ){
-        this.casConf.push((list[index].totalCases) - (list[parseInt(index, 10) - 1].totalCases));
-        this.hospi.push((list[index].hospitalized) - (list[parseInt(index, 10) - 1].hospitalized));
-        this.deces.push((list[index].totalDeaths) - (list[parseInt(index, 10) - 1].totalDeaths));
-        this.gueris.push((list[index].recoveredCases) - (list[parseInt(index, 10) - 1].recoveredCases));
-        this.critiques.push((list[index].criticalCases) - (list[parseInt(index, 10) - 1].criticalCases));
-      }
       this.casConf2.push(list[index].totalCases);
       this.hospi2.push(list[index].hospitalized);
       this.deces2.push(list[index].totalDeaths);
       this.gueris2.push(list[index].recoveredCases);
       this.critiques2.push(list[index].criticalCases);
+      if (this.casConf2.length > 1){
+        this.casConf.push(this.casConf2[this.casConf2.length - 1  ] - this.casConf2[this.casConf2.length - 2 ]);
+        this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);
+        this.deces.push(this.deces2[this.deces2.length - 1 ] - this.deces2[this.deces2.length - 2 ]);
+        this.gueris.push(this.gueris2[this.gueris2.length - 1 ] - this.gueris2[this.gueris2.length - 2 ]);
+        this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
+      }
     }
   }
 
@@ -484,35 +488,11 @@ export class RightBarComponent implements OnInit, OnChanges{
       const currentDate = new Date(dateStruct.year, dateStruct.month - 1, dateStruct.day - 1);
       this.dates.push(currentDate.toDateString());
     }
-    // this.dates.push(data.date);
-
-/*
-    this.casConf2.push(data.totalCases);
-    this.hospi2.push(data.hospitalized);
-    this.deces2.push(data.totalDeaths);
-    this.gueris2.push(data.recoveredCases);
-    if (this.casConf.length === 0){
-      this.casConf.push(data.totalCases);
-      this.hospi.push(data.hospitalized);
-      this.deces.push(data.totalDeaths);
-      this.gueris.push(data.recoveredCases);
-    }else{
-      this.casConf.push(data.totalCases - this.casConf2[this.casConf.length - 1]);
-      this.hospi.push(data.hospitalized - this.hospi2[this.hospi.length - 1]);
-      this.deces.push(data.totalDeaths - this.deces2[this.deces.length - 1]);
-      this.gueris.push(data.recoveredCases - this.gueris2[this.gueris.length - 1]);
-     }*/
     this.casConf2.push(data.totalCases);
     this.hospi2.push(data.hospitalized);
     this.deces2.push(data.totalDeaths);
     this.gueris2.push(data.recoveredCases);
     this.critiques2.push(data.criticalCases);
-    /*if (this.casConf2.length === 1) {
-      this.casConf.push(data.totalCases);
-      this.hospi.push(data.hospitalized);
-      this.deces.push(data.totalDeaths);
-      this.gueris.push(data.recoveredCases);
-    }else{*/
     if (this.casConf2.length > 1){
       this.casConf.push(this.casConf2[this.casConf2.length - 1 ] - this.casConf2[this.casConf2.length - 2 ]);
       this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);

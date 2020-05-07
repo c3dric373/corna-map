@@ -1,7 +1,7 @@
 import {browser, logging, by, element, protractor} from 'protractor';
 import {applySourceSpanToExpressionIfNeeded} from '@angular/compiler/src/output/output_ast';
 
-describe('test header', () => {
+describe('test map content', () => {
 
   beforeAll(() => {
     browser.get(browser.baseUrl);
@@ -23,21 +23,21 @@ describe('test header', () => {
     expect(deptButton.getText()).toEqual('Départements');
   });
 
-  it('should contain drop-down button cas hospitalisés', () => {
+  it('should contain drop-down button Cas confirmés', () => {
     const mapComponent = element(by.tagName('app-map-content'));
     const nav = mapComponent.element(by.tagName('nav'));
     const dropdown = nav.all(by.css('.dropdown-toggle'));
-    expect(dropdown.first().getText()).toEqual('cas hospitalisés');
+    expect(dropdown.first().getText()).toEqual('Cas confirmés');
   });
 
-  it('should contain drop-down button cas hospitalisés hidden options', () => {
+  it('should contain drop-down button Cas confirmés hidden options', () => {
     const mapComponent = element(by.tagName('app-map-content'));
     const nav = mapComponent.element(by.tagName('nav'));
     const dropdownMenu = nav.all(by.css('.dropdown-menu')).get(0);
     expect(dropdownMenu.isDisplayed()).toBe(false);
   });
 
-  it('should contain drop-down button cas hospitalisés view options', () => {
+  it('should contain drop-down button Cas confirmés view options', () => {
     const mapComponent = element(by.tagName('app-map-content'));
     const nav = mapComponent.element(by.tagName('nav'));
     nav.all(by.css('.dropdown-toggle')).get(0).click();

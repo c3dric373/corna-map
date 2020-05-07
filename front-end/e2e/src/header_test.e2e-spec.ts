@@ -16,7 +16,7 @@ describe('test header', () => {
     const img = navbar.element(by.tagName('img'));
     img.isPresent();
     const imgSrc = img.getAttribute('src');
-    expect(imgSrc).toEqual('http://localhost:4200/assets/images/virus.svg');
+    expect(imgSrc).toEqual('http://localhost:4200/assets/images/Logo%20-%20CoronaMap.png');
   });
 
   it('should display the good number of menu options', () => {
@@ -30,18 +30,18 @@ describe('test header', () => {
     const navbar = element(by.tagName('app-nav-bar'));
     const navbarmenu = navbar.element(by.tagName('ul'));
     const liste = navbarmenu.all(by.tagName('li'));
-    expect(liste.first().getText()).toEqual('Map');
+    expect(liste.first().getText()).toEqual('Carte');
     expect(liste.last().getText()).toEqual('Simulation');
   });
 
-  it('should display the good page on click on Map', () => {
+  it('should display the good page on click on Carte', () => {
     const navbar = element(by.tagName('app-nav-bar'));
     const navbarmenu = navbar.element(by.tagName('ul'));
     const liste = navbarmenu.all(by.tagName('li'));
     liste.first().click();
     // Test URL contains map
     const EC = protractor.ExpectedConditions;
-    browser.wait(EC.urlContains('map'), 5000);
+    browser.wait(EC.urlContains('carte'), 5000);
   });
 
   it('should display the good page on click on Simulation', () => {

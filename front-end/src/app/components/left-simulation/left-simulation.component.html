@@ -17,10 +17,11 @@
     </div>
 
     <div *ngIf="!isStart">
+
       <div class="date">
         <!-- Select start Date -->
         Date de début :
-        <button class="btn btn-outline-secondary" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
+        <button class="btn btn-outline-secondary" [disabled]="isPause && !isStop" (click)="startDateCalendarVisible = !startDateCalendarVisible" type="button">
           {{dateService.formatDateToFr(startDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
@@ -33,7 +34,7 @@
       <div class="date">
         Date de fin :
         <!-- Select finish Date -->
-        <button class="btn btn-outline-secondary" (click)="endDateCalendarVisible = !endDateCalendarVisible" type="button">
+        <button class="btn btn-outline-secondary" (click)="endDateCalendarVisible = !endDateCalendarVisible" type="button" style="margin-left: 7.5%">
           {{dateService.formatDateToFr(endDate)}}
           <fa-icon [icon]="calendarIcon"></fa-icon>
         </button>
