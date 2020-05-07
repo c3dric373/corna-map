@@ -143,11 +143,12 @@ public class ProjectDataWrapperImplTest {
     wrapper.simulateFrance(datePast.toString());
     DayData resData = wrapper.simulateFrance(latestDate.toString());
     System.out.println("3");
-    wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation(CONTENT, USE_SIR);
+    ProjectDataWrapperImpl wrapper1 = new ProjectDataWrapperImpl();
+    wrapper1.getCurrentAllDataFrance();
+    wrapper1.startSimulation(CONTENT, USE_SIR);
     System.out.println("4");
-    wrapper.simulateFrance(datePast.toString());
-    DayData resData1 = wrapper.simulateFrance(latestDate.toString());
+    wrapper1.simulateFrance(datePast.toString());
+    DayData resData1 = wrapper1.simulateFrance(latestDate.toString());
     final int unexpected = 0;
 
     // Act

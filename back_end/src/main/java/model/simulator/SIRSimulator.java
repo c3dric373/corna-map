@@ -41,7 +41,7 @@ public class SIRSimulator implements Simulator {
   /**
    * R0 / POP_FRA.
    */
-  private double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
+  private double r0Pop = 0.5 / DayDataService.POPULATION_FRA;
   /**
    * La classe est encore en chantier.
    */
@@ -192,11 +192,13 @@ public class SIRSimulator implements Simulator {
     int i = 0;
     double respectConfN = respectConf / 100.;
     System.out.println(beta);
+    /*
     for (int confinedCat : confinedCategories) {
       final double betaI = beta.get(confinedCat);
-      beta.set(confinedCat, betaI * (1 + respectConfN * (0.5 / 3.3 - 1)));
+      beta.set(confinedCat,
+        betaI * (1 + respectConfN * (0.5 / 3.3 * 0.0000001- 1)));
     }
-
+*/
     for (int maskCat : maskCategories) {
       final double betaI = beta.get(maskCat);
       beta.set(maskCat, 0.32 * betaI);

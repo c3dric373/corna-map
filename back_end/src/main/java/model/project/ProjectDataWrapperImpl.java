@@ -266,6 +266,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private DayData simulateDaySir() {
     // Simulate a day
+    System.out.println(sirSimulator.getBeta());
     sirSimulator.step();
     final double deadNew =
       sirSimulator.getDead().stream().mapToDouble(Iterables::getLast).sum();
