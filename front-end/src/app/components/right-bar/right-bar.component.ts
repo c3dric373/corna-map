@@ -465,18 +465,18 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.resetGraph();
     for (const index in list) {
       this.dates.push(list[index].date);
-      if (parseInt(index, 10) !== 0 ){
-        this.casConf.push((list[index].totalCases) - (list[parseInt(index, 10) - 1].totalCases));
-        this.hospi.push((list[index].hospitalized) - (list[parseInt(index, 10) - 1].hospitalized));
-        this.deces.push((list[index].totalDeaths) - (list[parseInt(index, 10) - 1].totalDeaths));
-        this.gueris.push((list[index].recoveredCases) - (list[parseInt(index, 10) - 1].recoveredCases));
-        this.critiques.push((list[index].criticalCases) - (list[parseInt(index, 10) - 1].criticalCases));
-      }
       this.casConf2.push(list[index].totalCases);
       this.hospi2.push(list[index].hospitalized);
       this.deces2.push(list[index].totalDeaths);
       this.gueris2.push(list[index].recoveredCases);
       this.critiques2.push(list[index].criticalCases);
+      if (this.casConf2.length > 1){
+        this.casConf.push(this.casConf2[this.casConf2.length - 1  ] - this.casConf2[this.casConf2.length - 2 ]);
+        this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);
+        this.deces.push(this.deces2[this.deces2.length - 1 ] - this.deces2[this.deces2.length - 2 ]);
+        this.gueris.push(this.gueris2[this.gueris2.length - 1 ] - this.gueris2[this.gueris2.length - 2 ]);
+        this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
+      }
     }
   }
 
