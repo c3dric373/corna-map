@@ -10,6 +10,7 @@ import model.service.DayDataService;
 import model.service.SimulatorService;
 import model.simulator.SIRSimulator;
 import model.simulator.SJYHRSimulator;
+import org.apache.commons.lang.Validate;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -92,6 +93,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     if (sir) {
       setSirSimulator(content);
       useSir = true;
+      latestContent = content;
     } else {
       setSJYHRSimulator(content);
       latestContent = content;
@@ -230,6 +232,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param content content.
    */
   private void setSirSimulator(final String content) {
+    Validate.notNull(content, "content Null");
     DayData latestData = getLatestData(FRA);
     final List<Double> deathRate = DayDataService.getDeathRateSIR(latestData);
     final double sumDR = deathRate.stream().mapToDouble(f -> f).sum();

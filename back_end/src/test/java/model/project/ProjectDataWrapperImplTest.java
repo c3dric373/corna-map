@@ -125,14 +125,16 @@ public class ProjectDataWrapperImplTest {
   }
 
   @Test
-  public void testSimulateFrance_dateBeforeLatestDate_correctDayDataReturn() {
+  public void testSimulateFrance_dateBeforeLatestDate_correctDayDataReturn() throws IOException {
     // Arrange
     final String dateBeforeLatest = "2020-04-26";
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation(CONTENT,USE_SIR);
     final DayData expectedDayData =
-      subject.getProject().getLocations().get(FRA).get(dateBeforeLatest);
+      wrapper.getProject().getLocations().get(FRA).get(dateBeforeLatest);
 
     // Act
-    final DayData result = subject.simulateFrance(dateBeforeLatest);
+    final DayData result = wrapper.simulateFrance(dateBeforeLatest);
 
     // Assert
     Assert.assertEquals("wrong DayData returned", expectedDayData, result);
