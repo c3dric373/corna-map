@@ -174,4 +174,24 @@ public class SIRSimulator implements Simulator {
     model = builder.build();
   }
 
+  /**
+   * Gouvernemental measures to apply.
+   *
+   * @param confinedCategories age categories to be confined.
+   * @param maskCategories     masked categories to be confined.
+   * @param respectConf        percentage of confinement respect.
+   */
+  public void applyMeasures(final List<Integer> confinedCategories,
+                            final List<Integer> maskCategories,
+                            final Integer respectConf) {
+    for (int confinedCat : confinedCategories) {
+      final double betaI = beta.get(confinedCat);
+      beta.set(confinedCat, (((0.5 / 3.3) - 1) * respectConf + 1) * betaI);
+    }
+
+    for (int maskCat : maskCategories) {
+      final double betaI = beta.get(maskCat);
+      beta.set(maskCat, 0.32 * betaI);
+    }
+  }
 }
