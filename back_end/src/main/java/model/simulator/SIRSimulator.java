@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import model.service.AgeCategoryService;
 import model.service.DayDataService;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -184,6 +185,12 @@ public class SIRSimulator implements Simulator {
   public void applyMeasures(final List<Integer> confinedCategories,
                             final List<Integer> maskCategories,
                             final Integer respectConf) {
+    Validate.notNull(confinedCategories,"confCategoriesNull");
+    Validate.notNull(maskCategories,"maskCategoriesNull");
+    Validate.isTrue(respectConf>=0,"respectConf negative");
+    Validate.isTrue(respectConf<=100,"respectConf bigger 100");
+    int i = 0;
+
     for (int confinedCat : confinedCategories) {
       final double betaI = beta.get(confinedCat);
       beta.set(confinedCat, (((0.5 / 3.3) - 1) * respectConf + 1) * betaI);

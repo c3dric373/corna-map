@@ -18,10 +18,7 @@ import java.util.List;
 public class ProjectDataWrapperImplTest {
 
   private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
-  private final static String CONTENT = "{\"respectConfinement\":50," +
-    "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
-    "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
-    "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
+
   private final static String DATE1 = "2020-04-10";
   private final static String DATE2 = "2020-04-11";
   private final static String DEP_44 = "DEP-44";
@@ -60,6 +57,14 @@ public class ProjectDataWrapperImplTest {
 
   private static ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
 
+  private final static String CONTENT = "{\"respectConfinement\":50," +
+    "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
+    "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
+    "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
+  private final static String CONTENT1 = "{\"respectConfinement\":90," +
+    "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
+    "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":true," +
+    "\"c16_19\":true,\"c30_49\":true,\"c50_69\":true,\"c70\":true}}";
   private static final String PATH_TO_DATA = System.getProperty("user.dir")
     + "/src/test"
     + "/resources"
@@ -125,11 +130,33 @@ public class ProjectDataWrapperImplTest {
   }
 
   @Test
+  public void testSimulateFrance_sim1dayInFutureWithConf_totalCasesNonZero() throws IOException {
+    // Arrange
+    wrapper.getCurrentAllDataFrance();
+    DayData latestData = wrapper.getLatestData(FRA);
+    LocalDate latestDate = latestData.getDate();
+    LocalDate datePast = latestDate.minusDays(1);
+    wrapper.startSimulation(CONTENT1, USE_SIR);
+    wrapper.simulateFrance(datePast.toString());
+    DayData resData = wrapper.simulateFrance(latestDate.toString());
+    final int unexpected = 0;
+
+    // Act
+    final int result = resData.getTotalCases();
+    System.out.println(" Expected: " + latestData);
+    System.out.println(" Actual: " + resData);
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+
+  @Test
   public void testSimulateFrance_dateBeforeLatestDate_correctDayDataReturn() throws IOException {
     // Arrange
     final String dateBeforeLatest = "2020-04-26";
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation(CONTENT,USE_SIR);
+    wrapper.startSimulation(CONTENT, USE_SIR);
     final DayData expectedDayData =
       wrapper.getProject().getLocations().get(FRA).get(dateBeforeLatest);
 
@@ -190,6 +217,7 @@ public class ProjectDataWrapperImplTest {
     // Assert
     Assert.assertNotEquals("totalCases Zero", unexpected, result);
   }
+
   @Test
   public void testSimulateFrance_simCompleteEpidemicStart0319_totalCasesNonZero() throws IOException {
     // Arrange
@@ -236,7 +264,6 @@ public class ProjectDataWrapperImplTest {
     Assert.assertNotEquals("totalCases Zero", unexpected, result);
   }
 
-
   @Test
   public void testSimulateFrance_simHistory_correctDayData() throws IOException {
     // Arrange
@@ -249,11 +276,9 @@ public class ProjectDataWrapperImplTest {
     // Act
     final DayData result = wrapper.simulateFrance(datePast.toString());
 
-
     // Assert
     Assert.assertEquals("wrong DayData", expected, result);
   }
-
 
   @Test
   public void testSimulateFrance_simHistorySameDayTwice_totalCasesNotZero()
