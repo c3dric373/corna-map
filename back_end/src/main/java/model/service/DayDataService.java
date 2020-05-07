@@ -16,7 +16,7 @@ public class DayDataService {
   /**
    * French population size.
    */
-  private static final double POPULATION_FRA = 67000000.0;
+  public static final double POPULATION_FRA = 67000000.0;
 
   /**
    * Id for France.

@@ -2,6 +2,8 @@ package model.simulator;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.data.DayData;
+import model.service.DayDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +35,16 @@ public class SIRSimulator implements Simulator {
   /**
    * La classe est encore en chantier.
    */
-  private double beta = 0.095;
-  /**
-   * La classe est encore en chantier.
-   */
-  private double lambda = 0.05;
-  /**
-   * La classe est encore en chantier.
-   */
-  private double mu = 0.009;
+  private double lambda = 1 / 15.;
 
+  /**
+   * La classe est encore en chantier.
+   */
+  private double mu = 0.0053;
+  /**
+   * La classe est encore en chantier.
+   */
+  private double beta = 3.3/((mu+lambda)* DayDataService.POPULATION_FRA);
   /**
    * La classe est encore en chantier.
    */
@@ -131,14 +133,10 @@ public class SIRSimulator implements Simulator {
   public void applyMeasures(final List<Integer> confinedCategories,
                             final List<Integer> maskCategories,
                             final Integer respectConf) {
-    for (int confinedCat : confinedCategories) {
-      final double betaI = beta.get(confinedCat);
-      beta.set(confinedCat, (((0.5 / 3.3) - 1) * respectConf + 1) * betaI);
+    double masqueCoeff = 0.32;
+    if(maskCategories.size()>0){
+      beta = beta * masqueCoeff;
     }
 
-    for (int maskCat : maskCategories) {
-      final double betaI = beta.get(maskCat);
-      beta.set(maskCat, 0.32 * betaI);
-    }
   }
 }
