@@ -63,7 +63,8 @@ public class SIRDSimulator implements Simulator {
    */
   @Setter
   private List<Double> beta =
-    Arrays.asList(r0Pop * 0.8 / AgeCategoryService.FR_POP_0_14 * (mu.get(0) + gamma),
+    Arrays.asList(
+      r0Pop * 0.8 / AgeCategoryService.FR_POP_0_14 * (mu.get(0) + gamma),
       r0Pop * 0.9 / AgeCategoryService.FR_POP_15_44 * (mu.get(0) + gamma),
       r0Pop * 0.7 / AgeCategoryService.FR_POP_45_64 * (mu.get(0) + gamma),
       r0Pop * 0.6 / AgeCategoryService.FR_POP_64_75 * (mu.get(0) + gamma),
@@ -134,6 +135,11 @@ public class SIRDSimulator implements Simulator {
 
   /**
    * SetUp.
+   *
+   * @param iSusceptible List of susceptible people per age category.
+   * @param iInfectious  List of susceptible infectious per age category.
+   * @param iRecovered   List of susceptible recovered per age category.
+   * @param iDead        List of susceptible dead per age category.
    */
   private void setUp(final List<Double> iSusceptible,
                      final List<Double> iInfectious,
