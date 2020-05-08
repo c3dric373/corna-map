@@ -302,6 +302,7 @@ public class DayDataService {
    * converts a parameter into a list of weighted parameters according to the
    * age distribution in france.
    *
+   * @param param the given parameter
    * @return the list with the weighted parameters
    */
   private static List<Double> computePercentageAgeClasses(final double param) {
@@ -365,7 +366,7 @@ public class DayDataService {
   }
 
   /**
-   * Sets all parameters on a {@link DayData}
+   * Sets all parameters on a {@link DayData}.
    *
    * @param dead          number of dead people.
    * @param recovered     number of recovered people.
@@ -374,9 +375,11 @@ public class DayDataService {
    * @param heavyInfected number of heavyInfected people.
    * @return the  created {@link DayData}
    */
-  public static DayData setSJYHRDayData(double dead, double recovered,
-                                        double susceptible, double hospitalized,
-                                        double heavyInfected) {
+  public static DayData setSJYHRDayData(final double dead,
+                                        final double recovered,
+                                        final double susceptible,
+                                        final double hospitalized,
+                                        final double heavyInfected) {
     final DayData result = new DayData();
     result.setTotalDeaths((int) (dead * DayDataService.POPULATION_FRA));
     result.setRecoveredCases((int) (recovered
@@ -391,7 +394,7 @@ public class DayDataService {
   }
 
   /**
-   * * Sets all parameters on a {@link DayData}
+   * * Sets all parameters on a {@link DayData}.
    *
    * @param dead        number of dead people.
    * @param recovered   number of recovered people.

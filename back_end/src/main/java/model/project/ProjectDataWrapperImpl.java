@@ -386,7 +386,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   /**
    * Simulates a the spread of COVID-19 for one day, according to a given
-   * {@link SJYHRSimulator}
+   * {@link SJYHRSimulator}.
    *
    * @return the simulated data.
    */
