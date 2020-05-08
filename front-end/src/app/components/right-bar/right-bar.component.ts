@@ -243,9 +243,9 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.reglist = data;
           this.chosenLocation = data.name;
           this.totGueris = data.recoveredCases;
-          this.totHospi = data.hospitalized;
+          this.totHospi = '-'; // data.hospitalized;
           this.totDeces = data.totalDeaths;
-          this.totCritiques = data.criticalCases;
+          this.totCritiques = '-'; // data.criticalCases;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
               parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
@@ -286,9 +286,9 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.deptList = data;
           this.chosenLocation = data.name;
           this.totGueris = data.recoveredCases;
-          this.totHospi = data.hospitalized;
+          this.totHospi = '-'; // data.hospitalized;
           this.totDeces = data.totalDeaths;
-          this.totCritiques = data.criticalCases;
+          this.totCritiques = '-'; // data.criticalCases;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
               parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
@@ -313,8 +313,8 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
-          this.totHospi = data.hospitalized;
-          this.totCritiques = data.criticalCases;
+          this.totHospi = '-'; // data.hospitalized;
+          this.totCritiques = '-'; // data.criticalCases;
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
@@ -345,8 +345,8 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
-          this.totHospi = data.hospitalized;
-          this.totCritiques = data.criticalCases;
+          this.totHospi = '-'; // data.hospitalized;
+          this.totCritiques = '-'; // data.criticalCases;
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
@@ -376,8 +376,8 @@ export class RightBarComponent implements OnInit, OnChanges{
         data => {
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
-          this.totHospi = data.hospitalized;
-          this.totCritiques = data.criticalCases;
+          this.totHospi = '-'; // data.hospitalized;
+          this.totCritiques = '-'; // data.criticalCases;
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
@@ -469,16 +469,16 @@ export class RightBarComponent implements OnInit, OnChanges{
       this.dates.push(currentDate.toDateString());
     }
     this.casConf2.push(data.totalCases);
-    this.hospi2.push(data.hospitalized);
+    // this.hospi2.push(data.hospitalized);
     this.deces2.push(data.totalDeaths);
     this.gueris2.push(data.recoveredCases);
-    this.critiques2.push(data.criticalCases);
+    // this.critiques2.push(data.criticalCases);
     if (this.casConf2.length > 1){
       this.casConf.push(this.casConf2[this.casConf2.length - 1 ] - this.casConf2[this.casConf2.length - 2 ]);
-      this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);
+      // this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);
       this.deces.push(this.deces2[this.deces2.length - 1 ] - this.deces2[this.deces2.length - 2 ]);
       this.gueris.push(this.gueris2[this.gueris2.length - 1 ] - this.gueris2[this.gueris2.length - 2 ]);
-      this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
+      // this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
     }
   }
 
