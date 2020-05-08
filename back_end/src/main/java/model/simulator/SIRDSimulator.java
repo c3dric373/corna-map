@@ -37,22 +37,6 @@ public class SIRDSimulator implements Simulator {
    * List containing dead ratio per age category.
    */
   private List<List<Double>> dead;
-
-  /**
-   * R0 / POP_FRA.
-   */
-  private final double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
-  /**
-   * Beta parameter in SIR for each age category (=transmission).
-   * Source: https://web.stanford.edu/~jhj1/teachingdocs/Jones-on-R0.pdf
-   */
-  @Setter
-  private List<Double> beta =
-    Arrays.asList(r0Pop * 0.8 / AgeCategoryService.FR_POP_0_14,
-      r0Pop * 0.9 / AgeCategoryService.FR_POP_15_44,
-      r0Pop * 0.7 / AgeCategoryService.FR_POP_45_64,
-      r0Pop * 0.6 / AgeCategoryService.FR_POP_64_75,
-      r0Pop * 0.5 / AgeCategoryService.FR_POP_75_INF);
   /**
    * Gamma parameter in sir, recovery Rate.
    * Source: https://annals.org/aim/fullarticle/2762808/incubation-period
@@ -68,6 +52,22 @@ public class SIRDSimulator implements Simulator {
   private List<Double> mu = Arrays.asList(AgeCategoryService.MU_0_15,
     AgeCategoryService.MU_15_44, AgeCategoryService.MU_44_64,
     AgeCategoryService.MU_64_75, AgeCategoryService.MU_75_INF);
+
+  /**
+   * R0 / POP_FRA.
+   */
+  private final double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
+  /**
+   * Beta parameter in SIR for each age category (=transmission).
+   * Source: https://web.stanford.edu/~jhj1/teachingdocs/Jones-on-R0.pdf
+   */
+  @Setter
+  private List<Double> beta =
+    Arrays.asList(r0Pop * 0.8 / AgeCategoryService.FR_POP_0_14 * (mu.get(0) + gamma),
+      r0Pop * 0.9 / AgeCategoryService.FR_POP_15_44 * (mu.get(0) + gamma),
+      r0Pop * 0.7 / AgeCategoryService.FR_POP_45_64 * (mu.get(0) + gamma),
+      r0Pop * 0.6 / AgeCategoryService.FR_POP_64_75 * (mu.get(0) + gamma),
+      r0Pop * 0.5 / AgeCategoryService.FR_POP_75_INF);
 
   /**
    * Cauchy Problem used to represent our SIRD model.
