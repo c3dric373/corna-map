@@ -50,6 +50,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   // Selected category : ex : nbDeath, ...
   public selectedCategory: string;
   public tabCategory = [ 'Cas confirmés', 'Hospitalisés', 'Guéris', 'Cas critiques', 'Décès'];
+  public simulCategory = [ 'Cas confirmés', 'Guéris', 'Décès'];
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
