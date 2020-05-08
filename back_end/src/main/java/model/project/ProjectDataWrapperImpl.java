@@ -250,15 +250,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     sirSimulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
     // Apply Measures
-    final Gson gson = new Gson();
-    final Map map = gson.fromJson(content, Map.class);
-    List<List<Integer>> measures = simulatorService.getMeasures(map);
-    final int confinedCategoriesIndex = 0;
-    final int maskedCategoriesIndex = 1;
-    final int confinementRespectIndex = 2;
-    sirSimulator.applyMeasures(measures.get(confinedCategoriesIndex),
-      measures.get(maskedCategoriesIndex),
-      measures.get(confinementRespectIndex).get(0));
+    List<List<Integer>> measures = getMeasures(content);
+    sirSimulator.applyMeasures(measures);
   }
 
   /**
@@ -364,15 +357,23 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     sjyhrSimulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
     // Apply Measures
+    final List<List<Integer>> measures = getMeasures(content);
+
+    sjyhrSimulator.applyMeasures(measures);
+
+  }
+
+  /**
+   * Call {@link SimulatorService} to convert a String of measures into a
+   * list of lists of integer.
+   *
+   * @param content The measures to apply as String.
+   * @return the measures as a list of lists of integers.
+   */
+  private List<List<Integer>> getMeasures(final String content) {
     final Gson gson = new Gson();
     final Map map = gson.fromJson(content, Map.class);
-    List<List<Integer>> measures = simulatorService.getMeasures(map);
-    final int confinedCategoriesIndex = 0;
-    final int maskedCategoriesIndex = 1;
-    final int confinementRespectIndex = 2;
-    sjyhrSimulator.applyMeasures(measures.get(confinedCategoriesIndex),
-      measures.get(maskedCategoriesIndex),
-      measures.get(confinementRespectIndex).get(0));
+    return simulatorService.getMeasures(map);
 
   }
 
@@ -454,24 +455,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       final LocalDate date2 = LocalDate.parse(t1);
       return date1.compareTo(date2);
     }
-  }
 
-  /*
-  public static void main(final String[] args) throws IOException {
-    Gson gson = new Gson();
-    final String content = "{\"respectConfinement\":50," +
-      "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
-      "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
-      "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
-    Map map = gson.fromJson(content, Map.class);
-    LinkedTreeMap<String, Boolean> test =
-      (LinkedTreeMap<String, Boolean>) map.get(
-        "mask");
-    System.out.println(map.get("mask"));
-    System.out.println(test.get("m0_15").toString());
-
-  }
-*/
 }
 
 

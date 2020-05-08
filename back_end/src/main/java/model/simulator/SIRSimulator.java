@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import model.service.AgeCategoryService;
 import model.service.DayDataService;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -177,19 +178,26 @@ public class SIRSimulator implements Simulator {
   /**
    * Gouvernemental measures to apply.
    *
-   * @param confinedCategories age categories to be confined.
-   * @param maskCategories     masked categories to be confined.
-   * @param respectConf        percentage of confinement respect.
+   * @param measures measures to apply
    */
-  public void applyMeasures(final List<Integer> confinedCategories,
-                            final List<Integer> maskCategories,
-                            final Integer respectConf) {
+  public void applyMeasures(final List<List<Integer>> measures) {
+    Validate.notNull(measures, "measures Null");
+    // Get measures
+    final int confinedCategoriesIndex = 0;
+    final int maskedCategoriesIndex = 1;
+    final int confinementRespectIndex = 2;
+    final List<Integer> confinedCategories =
+      measures.get(confinedCategoriesIndex);
+    final List<Integer> maskedCategories = measures.get(maskedCategoriesIndex);
+    final double confinementRespect =
+      measures.get(confinementRespectIndex).get(0);
     for (int confinedCat : confinedCategories) {
       final double betaI = beta.get(confinedCat);
-      beta.set(confinedCat, (((0.5 / 3.3) - 1) * respectConf + 1) * betaI);
+      beta.set(confinedCat,
+        (((0.5 / 3.3) - 1) * confinementRespect + 1) * betaI);
     }
 
-    for (int maskCat : maskCategories) {
+    for (int maskCat : maskedCategories) {
       final double betaI = beta.get(maskCat);
       beta.set(maskCat, 0.32 * betaI);
     }
