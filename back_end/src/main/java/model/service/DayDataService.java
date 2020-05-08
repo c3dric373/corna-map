@@ -25,6 +25,7 @@ public class DayDataService {
   /**
    * Factor used to approximate the total number of infected people in relation
    * to the total number of cases.
+   * Taken from:https://hal-pasteur.archives-ouvertes.fr/pasteur-02548181
    */
   private static final int TOTAL_CASES_TO_INFECTED_FACTOR = 40;
 
@@ -395,7 +396,7 @@ public class DayDataService {
    * @param dead        number of dead people.
    * @param recovered   number of recovered people.
    * @param susceptible number of susceptible people.
-   * @return
+   * @return the created {@link DayData}
    */
   public static DayData setSIRDayData(final double dead,
                                       final double recovered,
@@ -410,36 +411,4 @@ public class DayDataService {
     return dayData;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

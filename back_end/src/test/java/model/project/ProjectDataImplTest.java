@@ -33,7 +33,6 @@ public class ProjectDataImplTest {
   private static DayData dayData;
 
   private static final ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
-  final static double delta = 0.001;
   private static ProjectData subject;
   private final HashMap<String, Map<String, DayData>> expectedMap =
     new HashMap<>();

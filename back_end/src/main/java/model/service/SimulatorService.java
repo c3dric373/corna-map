@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class SimulatorService {
 
   /**
-   * Map ageCategorie as String to it's index in the simulator.
+   * Map ageCategories as String to it's index in the simulator.
    */
   Map<String, Integer> ageCatToIndex = new HashMap<>();
   /**
