@@ -148,28 +148,6 @@ public class DayDataServiceTest {
   }
 
   @Test
-  public void testGetDeathRate_validCall_correctResult() {
-    // Arrange
-
-    // Act
-    //final double result = DayDataService.getDeathRateSIR(dayData1);
-
-    // Assert
-    //Assert.assertEquals("wrong death rate", DEATH_RATE, result, delta);
-  }
-
-  @Test
-  public void testGetRecoveryRate_validCall_correctResult() {
-    // Arrange
-
-    // Act
-    // final double result = DayDataService.getRecoveryRateSIR(dayData1);
-
-    // Assert
-    //Assert.assertEquals("wrong death rate", RECOVERY_RATE, result, delta);
-  }
-
-  @Test
   public void testGetDeathRate_dayDataNull_throwsIllegalArgumentException() {
     // Arrange
     thrown.expect(IllegalArgumentException.class);

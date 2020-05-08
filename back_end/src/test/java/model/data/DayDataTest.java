@@ -59,23 +59,7 @@ public class DayDataTest {
     assertEquals("DayData not equal", dayData, expectedDayData);
 
   }
-
-  @Test
-  public void testCTOR_typeNull_throwsIllegalArgumentException() {
-
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("typeNew null");
-
-    // Act
-    new DayData(DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
-      EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
-      TOTAL_TEST);
-
-    // Assert via Annotation
-  }
-
+  
   @Test
   public void testCTOR_dateNull_throwsIllegalArgumentException() {
 
