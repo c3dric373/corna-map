@@ -12,8 +12,8 @@ import java.util.Map;
 public class AgeCategoryService {
 
   // Stats about french pop
-  // https://www.statista.com/statistics/464032/distribution-population-age
-  // -group-france/
+  // https://www.statista.com/statistics/464032/
+  // distribution-population-age-group-france/
 
   /**
    * Percentage of people in the 0-14 age class in France.
@@ -41,7 +41,8 @@ public class AgeCategoryService {
   public static final double FR_POP_75_INF = 0.093;
 
   /**
-   * Death Rate 0_15.
+   * Death Rate 0_15. All the Following death rate are taken from:
+   * https://www.santepubliquefrance.fr/content/download/249184/2589560
    */
   public static final double MU_0_15 = 0.00001 / 15;
   /**

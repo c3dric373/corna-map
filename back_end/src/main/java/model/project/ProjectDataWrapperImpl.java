@@ -8,7 +8,7 @@ import model.io.DataScrapperImpl;
 import model.service.AgeCategoryService;
 import model.service.DayDataService;
 import model.service.SimulatorService;
-import model.simulator.SIRSimulator;
+import model.simulator.SIRDSimulator;
 import model.simulator.SJYHRSimulator;
 import org.apache.commons.lang.Validate;
 
@@ -48,9 +48,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   private final SJYHRSimulator sjyhrSimulator = new SJYHRSimulator();
 
   /**
-   * {@link SIRSimulator} used to simulate COVID-19.
+   * {@link SIRDSimulator} used to simulate COVID-19.
    */
-  private SIRSimulator sirSimulator;
+  private SIRDSimulator sirSimulator;
 
   /**
    * Dictionary mapping id to name for regions and departments.
@@ -325,7 +325,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       DayDataService.getSusceptibleSIR(sumDR + sumI + sumRR);
     //System.out.println("RecoveredBase:  " + recoveryRate * DayDataService
     // .POPULATION_FRA);
-    sirSimulator = new SIRSimulator(susceptible,
+    sirSimulator = new SIRDSimulator(susceptible,
       infectious, recoveryRate, deathRate);
     // Apply Measures
     List<List<Integer>> measures = getMeasures(content);
