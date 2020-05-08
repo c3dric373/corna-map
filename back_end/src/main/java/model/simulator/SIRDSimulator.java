@@ -34,7 +34,7 @@ public class SIRDSimulator implements Simulator {
    */
   private List<List<Double>> recovered;
   /**
-   * List containing dead ratio per age category. en chantier.
+   * List containing dead ratio per age category.
    */
   private List<List<Double>> dead;
 

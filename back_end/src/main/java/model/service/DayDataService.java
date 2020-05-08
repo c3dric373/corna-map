@@ -128,7 +128,12 @@ public class DayDataService {
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
       String id = entry.getKey();
       Map<String, DayData> mapId = entry.getValue();
+
       DayData dayDataLocation = mapId.get(date);
+      if (dayDataLocation == null) {
+        dayDataLocation = new DayData();
+        dayDataLocation.setId(id);
+      }
       int totalCasesId = dayDataLocation.getTotalCases();
       if (totalCasesId == 0) {
         totalCasesId = computeTotalCases(dayDataLocation);

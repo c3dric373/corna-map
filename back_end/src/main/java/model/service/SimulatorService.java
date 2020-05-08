@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SimulatorService {
 
@@ -62,8 +61,8 @@ public class SimulatorService {
    * @return the value for each measure.
    */
   public List<List<Integer>> getMeasures(final Map map) {
-    List<Integer> masks;
-    List<Integer> confinedCategories;
+    List<Integer> masks = new ArrayList<>();
+    List<Integer> confinedCategories = new ArrayList<>();
     List<Integer> respectConfAsList = new ArrayList<>();
     List<List<Integer>> result = new ArrayList<>();
 
@@ -77,14 +76,16 @@ public class SimulatorService {
     int respectConfValueAsInt = (int) respectConfValue;
     respectConfAsList.add(respectConfValueAsInt);
 
-    masks = mask.entrySet().stream().filter(Map.Entry::getValue).
-      collect(Collectors.toList()).stream()
-      .map(entry -> ageCatToIndex.get(entry.getKey()))
-      .collect(Collectors.toList());
-    confinedCategories = conf.entrySet().stream().filter(Map.Entry::getValue).
-      collect(Collectors.toList()).stream()
-      .map(entry -> ageCatToIndex.get(entry.getKey()))
-      .collect(Collectors.toList());
+    for (Map.Entry<String, Boolean> entry : mask.entrySet()) {
+      if (entry.getValue()) {
+        masks.add(ageCatToIndex.get(entry.getKey()));
+      }
+    }
+    for (Map.Entry<String, Boolean> entry : conf.entrySet()) {
+      if (entry.getValue()) {
+        confinedCategories.add(ageCatToIndex.get(entry.getKey()));
+      }
+    }
     result.add(confinedCategories);
     result.add(masks);
     result.add(respectConfAsList);

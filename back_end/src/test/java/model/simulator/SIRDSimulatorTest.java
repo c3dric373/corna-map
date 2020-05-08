@@ -84,6 +84,6 @@ public class SIRDSimulatorTest {
       infectiousStep2,
       delta);
   }
-  
+
 
 }
