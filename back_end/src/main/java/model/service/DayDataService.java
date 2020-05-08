@@ -24,6 +24,12 @@ public class DayDataService {
   private static final String FRA = "FRA";
 
   /**
+   * Factor used to approximate the total number of infected people in relation
+   * to the total number of cases.
+   */
+  private static final int TOTAL_CASES_TO_INFECTED_FACTOR = 40;
+
+  /**
    * Computes the percentage of people susceptible of catching the coronavirus
    * given on stats of specific day.
    *
@@ -45,7 +51,8 @@ public class DayDataService {
    */
   public static List<Double> getRecoveryRateSIR(final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
-    double recoveryRate = dayData.getRecoveredCases() * 10 / POPULATION_FRA;
+    double recoveryRate =
+      dayData.getRecoveredCases() * TOTAL_CASES_TO_INFECTED_FACTOR / POPULATION_FRA;
     return computePercentageAgeClasses(recoveryRate);
   }
 
@@ -90,7 +97,8 @@ public class DayDataService {
    */
   public static List<Double> getInfectiousSir(final DayData latestData) {
     Validate.notNull(latestData, "dayData null");
-    double infected = latestData.getHospitalized() * 40 / POPULATION_FRA;
+    double infected =
+      latestData.getHospitalized() * TOTAL_CASES_TO_INFECTED_FACTOR / POPULATION_FRA;
     return computePercentageAgeClasses(infected);
   }
 
@@ -408,4 +416,77 @@ public class DayDataService {
     return result;
   }
 
+  /**
+   * Sets all parameters on a {@link DayData}
+   *
+   * @param dead          number of dead people.
+   * @param recovered     number of recovered people.
+   * @param susceptible   number of susceptible people.
+   * @param hospitalized  number of hospitalized people.
+   * @param heavyInfected number of heavyInfected people.
+   * @return the  created {@link DayData}
+   */
+  public static DayData setSJYHRDayData(double dead, double recovered,
+                                        double susceptible, double hospitalized,
+                                        double heavyInfected) {
+    final DayData result = new DayData();
+    result.setTotalDeaths((int) (dead * DayDataService.POPULATION_FRA));
+    result.setRecoveredCases((int) (recovered * DayDataService.POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptible) * DayDataService.POPULATION_FRA));
+    result.setHospitalized((int) (hospitalized * DayDataService.POPULATION_FRA));
+    result.setCriticalCases((int) (heavyInfected * DayDataService.POPULATION_FRA));
+    return result;
+  }
+
+  /**
+   * * Sets all parameters on a {@link DayData}
+   *
+   * @param dead        number of dead people.
+   * @param recovered   number of recovered people.
+   * @param susceptible number of susceptible people.
+   * @return
+   */
+  public static DayData setSIRDayData(final double dead,
+                                      final double recovered,
+                                      final double susceptible) {
+    final DayData dayData = new DayData();
+    dayData.setTotalDeaths((int) (dead * DayDataService.POPULATION_FRA));
+    dayData.setRecoveredCases((int) (recovered * DayDataService.POPULATION_FRA) / TOTAL_CASES_TO_INFECTED_FACTOR);
+    dayData.setTotalCases((int) (DayDataService.POPULATION_FRA
+      - (susceptible * DayDataService.POPULATION_FRA)) / TOTAL_CASES_TO_INFECTED_FACTOR);
+    return dayData;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
