@@ -17,9 +17,13 @@ import java.util.List;
 public class ProjectDataWrapperImplTest {
 
   private final static String CONTENT = "{\"respectConfinement\":50," +
-    "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
-    "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
-    "\"c16_19\":false,\"c30_49\":false,\"c50_69\":false,\"c70\":false}}";
+    "\"mask\":{\"m0_15\":false,\"m15_44\":false,\"m44_64\":false," +
+    "\"m64_75\":false,\"m75\":false},\"conf\":{\"m0_15\":false," +
+    "\"m15_44\":false,\"m44_64\":false,\"m64_75\":false,\"m75\":false}}";
+  private final static String CONTENT1 = "{\"respectConfinement\":90," +
+    "\"mask\":{\"m0_15\":true,\"m15_44\":true,\"m44_64\":true," +
+    "\"m64_75\":true,\"m75\":true},\"conf\":{\"m0_15\":true," +
+    "\"m15_44\":true,\"m44_64\":true,\"m64_75\":true,\"m75\":true}}";
   private final static String DATE1 = "2020-04-10";
   private final static String DATE2 = "2020-04-11";
   private final static String DEP_44 = "DEP-44";
@@ -28,7 +32,6 @@ public class ProjectDataWrapperImplTest {
   private final static String REG_12 = "REG-12";
   private final static String FRA = "FRA";
   private final static String NAME = "guadeloupe";
-  private final static String EMPTY_STRING = "";
   private final static int TOTAL_CASE = 1000;
   private final static int TOTAL_CASE_1 = 1100;
   private final static int EPHAD_CASES = 2;
@@ -43,6 +46,11 @@ public class ProjectDataWrapperImplTest {
   private final static int RECOVERED_CASES_1 = 99;
   private final static int TOTAL_TEST = 6;
   private final static boolean USE_SIR = true;
+  private static final String PATH_TO_DATA = System.getProperty("user.dir")
+    + "/src/test"
+    + "/resources"
+    + "/output.csv";
+  private static final DataScrapper scrapper = new DataScrapperImpl();
   private static DayData dayData;
   private static DayData dayData1;
   private static DayData dayData2;
@@ -50,21 +58,11 @@ public class ProjectDataWrapperImplTest {
   private static DayData dayData4;
   private static DayData dayData5;
   private static DayData dayData6;
-
-  private static ProjectDataWrapperImpl subject =
+  private static final ProjectDataWrapperImpl subject =
     new ProjectDataWrapperImpl();
-  private static ProjectDataWrapperImpl customWrapper =
+  private static final ProjectDataWrapperImpl customWrapper =
     new ProjectDataWrapperImpl();
-
-  private static ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
-
-  private static final String PATH_TO_DATA = System.getProperty("user.dir")
-    + "/src/test"
-    + "/resources"
-    + "/output.csv";
-
-  private static final DataScrapper scrapper = new DataScrapperImpl();
-
+  private static final ProjectDataWrapperImpl wrapper = new ProjectDataWrapperImpl();
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
@@ -72,38 +70,38 @@ public class ProjectDataWrapperImplTest {
   public void setUp() throws IOException {
     scrapper.setPathToData(PATH_TO_DATA);
     scrapper.extract(subject);
-    dayData = new DayData( LocalDate.parse(DATE1), DEP_44, NAME,
+    dayData = new DayData(LocalDate.parse(DATE1), DEP_44, NAME,
       TOTAL_CASE,
       EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES,
       TOTAL_TEST);
-    dayData1 = new DayData( LocalDate.parse(DATE2), DEP_44, NAME,
+    dayData1 = new DayData(LocalDate.parse(DATE2), DEP_44, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData2 = new DayData( LocalDate.parse(DATE1), FRA, NAME,
+    dayData2 = new DayData(LocalDate.parse(DATE1), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData3 = new DayData( LocalDate.parse(DATE2), FRA, NAME,
+    dayData3 = new DayData(LocalDate.parse(DATE2), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData4 = new DayData( LocalDate.parse(DATE1), REG_11, NAME,
+    dayData4 = new DayData(LocalDate.parse(DATE1), REG_11, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData5 = new DayData( LocalDate.parse(DATE1), REG_12, NAME,
+    dayData5 = new DayData(LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData6 = new DayData( LocalDate.parse(DATE1), REG_12, NAME,
+    dayData6 = new DayData(LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
@@ -127,7 +125,7 @@ public class ProjectDataWrapperImplTest {
     // Arrange
     final String dateBeforeLatest = "2020-04-26";
     wrapper.getCurrentAllDataFrance();
-    wrapper.startSimulation(CONTENT,USE_SIR);
+    wrapper.startSimulation(CONTENT, USE_SIR);
     final DayData expectedDayData =
       wrapper.getProject().getLocations().get(FRA).get(dateBeforeLatest);
 
@@ -169,6 +167,33 @@ public class ProjectDataWrapperImplTest {
   }
 
   @Test
+  public void testSimulateFrance_sim30daysInFutureWithConf_totalCasesNonZero() throws IOException {
+    // Arrange
+    wrapper.getCurrentAllDataFrance();
+    DayData latestData = wrapper.getLatestData(FRA);
+    LocalDate latestDate = latestData.getDate();
+    LocalDate datePast = latestDate.minusDays(30);
+    wrapper.startSimulation(CONTENT1, USE_SIR);
+    wrapper.simulateFrance(datePast.toString());
+    DayData resData = wrapper.simulateFrance(latestDate.toString());
+    wrapper.getCurrentAllDataFrance();
+    wrapper.startSimulation(CONTENT, USE_SIR);
+    wrapper.simulateFrance(datePast.toString());
+    DayData resData1 = wrapper.simulateFrance(latestDate.toString());
+
+    final int unexpected = 0;
+
+    // Act
+    final int result = resData.getTotalCases();
+    System.out.println(" Expected: " + latestData);
+    System.out.println(" Actual Conf: " + resData);
+    System.out.println(" Actual no Conf: " + resData1);
+
+    // Assert
+    Assert.assertNotEquals("totalCases Zero", unexpected, result);
+  }
+
+  @Test
   public void testSimulateFrance_sim1dayInFuture_totalCasesNonZero() throws IOException {
     // Arrange
     wrapper.getCurrentAllDataFrance();
@@ -188,13 +213,14 @@ public class ProjectDataWrapperImplTest {
     // Assert
     Assert.assertNotEquals("totalCases Zero", unexpected, result);
   }
+
   @Test
   public void testSimulateFrance_simCompleteEpidemicStart0319_totalCasesNonZero() throws IOException {
     // Arrange
     wrapper.getCurrentAllDataFrance();
     DayData latestData = wrapper.getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
-    String startDate = "2020-03-19";
+    final String startDate = "2020-03-19";
     System.out.println();
     wrapper.startSimulation(CONTENT, USE_SIR);
     DayData start = wrapper.simulateFrance(startDate);
@@ -234,7 +260,6 @@ public class ProjectDataWrapperImplTest {
     Assert.assertNotEquals("totalCases Zero", unexpected, result);
   }
 
-
   @Test
   public void testSimulateFrance_simHistory_correctDayData() throws IOException {
     // Arrange
@@ -247,11 +272,9 @@ public class ProjectDataWrapperImplTest {
     // Act
     final DayData result = wrapper.simulateFrance(datePast.toString());
 
-
     // Assert
     Assert.assertEquals("wrong DayData", expected, result);
   }
-
 
   @Test
   public void testSimulateFrance_simHistorySameDayTwice_totalCasesNotZero()

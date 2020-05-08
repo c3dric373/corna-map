@@ -11,15 +11,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * La classe est encore en chantier.
+ * Implementation of a SIRD simulator.
  */
 @Getter
-@Setter
-public class SIRSimulator implements Simulator {
+public class SIRDSimulator implements Simulator {
 
   /**
    * Number of age categories.
    */
+  @Setter
   int nbAgeCategory = 5;
   /**
    * List containing susceptible ratio per age category.
@@ -34,34 +34,41 @@ public class SIRSimulator implements Simulator {
    */
   private List<List<Double>> recovered;
   /**
-   * List containing dead ratio per age category. en chantier.
+   * List containing dead ratio per age category.
    */
   private List<List<Double>> dead;
-
-  /**
-   * R0 / POP_FRA.
-   */
-  private double r0Pop = 0.5 / DayDataService.POPULATION_FRA;
-  /**
-   * Beta parameter in SIR for each age category (=transmission).
-   */
-  @Setter
-  private List<Double> beta =
-    Arrays.asList(r0Pop * 0.8, r0Pop * 0.9, r0Pop * 0.7, r0Pop * 0.6,
-      r0Pop * 0.5);
   /**
    * Gamma parameter in sir, recovery Rate.
+   * Source: https://annals.org/aim/fullarticle/2762808/incubation-period
+   * -coronavirus-disease-2019-covid-19-from-publicly-reported
    */
   @Setter
   private double gamma = 1 / 15.;
+
   /**
    * Mu parameter in SIR for each age category (=lethality).
    */
   @Setter
   private List<Double> mu = Arrays.asList(AgeCategoryService.MU_0_15,
-    AgeCategoryService.MU_15_44,
-    AgeCategoryService.MU_44_64, AgeCategoryService.MU_64_75,
-    AgeCategoryService.MU_75_INF);
+    AgeCategoryService.MU_15_44, AgeCategoryService.MU_44_64,
+    AgeCategoryService.MU_64_75, AgeCategoryService.MU_75_INF);
+
+  /**
+   * R0 / POP_FRA.
+   */
+  private final double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
+  /**
+   * Beta parameter in SIR for each age category (=transmission).
+   * Source: https://web.stanford.edu/~jhj1/teachingdocs/Jones-on-R0.pdf
+   */
+  @Setter
+  private List<Double> beta =
+    Arrays.asList(
+      r0Pop * 0.8 / AgeCategoryService.FR_POP_0_14 * (mu.get(0) + gamma),
+      r0Pop * 0.9 / AgeCategoryService.FR_POP_15_44 * (mu.get(0) + gamma),
+      r0Pop * 0.7 / AgeCategoryService.FR_POP_45_64 * (mu.get(0) + gamma),
+      r0Pop * 0.6 / AgeCategoryService.FR_POP_64_75 * (mu.get(0) + gamma),
+      r0Pop * 0.5 / AgeCategoryService.FR_POP_75_INF);
 
   /**
    * Cauchy Problem used to represent our SIRD model.
@@ -70,24 +77,74 @@ public class SIRSimulator implements Simulator {
   /**
    * Differential Equation solver used to simulate our model.
    */
-  private DifferentialSolver solver = new RK4Solver();
+  private final DifferentialSolver solver = new RK4Solver();
   /**
    * Granularity of our solver differential equation solver.
    */
-  private int nbIterations = 100;
+  private final int nbIterations = 100;
 
   /**
-   * La classe est encore en chantier.
+   * Constructor.
    *
-   * @param iSusceptible La classe est encore en chantier.
-   * @param iInfectious  La classe est encore en chantier.
-   * @param iRecovered   La classe est encore en chantier.
-   * @param iDead        La classe est encore en chantier.
+   * @param iSusceptible List of susceptible people per age category.
+   * @param iInfectious  List of susceptible infectious per age category.
+   * @param iRecovered   List of susceptible recovered per age category.
+   * @param iDead        List of susceptible dead per age category.
    */
-  public SIRSimulator(final List<Double> iSusceptible,
-                      final List<Double> iInfectious,
-                      final List<Double> iRecovered,
-                      final List<Double> iDead) {
+  public SIRDSimulator(final List<Double> iSusceptible,
+                       final List<Double> iInfectious,
+                       final List<Double> iRecovered,
+                       final List<Double> iDead) {
+    setUp(iSusceptible, iInfectious, iRecovered, iDead);
+  }
+
+  /**
+   * Constructor.
+   *
+   * @param iSusceptible     List of susceptible people per age category.
+   * @param iInfectious      List of susceptible infectious per age category.
+   * @param iRecovered       List of susceptible recovered per age category.
+   * @param iDead            List of susceptible dead per age category.
+   * @param muNew            List of deadRates per age category.
+   * @param betaNew          List of transmission rate dead per age category.
+   * @param gammaNew         Recovery rate.
+   * @param nbAgeCategoryNew number of age Categories.
+   */
+  public SIRDSimulator(final List<Double> iSusceptible,
+                       final List<Double> iInfectious,
+                       final List<Double> iRecovered,
+                       final List<Double> iDead, final List<Double> muNew,
+                       final List<Double> betaNew, final double gammaNew,
+                       final int nbAgeCategoryNew) {
+    Validate.notNull(iSusceptible, "iSusceptible null");
+    Validate.notNull(iInfectious, "iInfectious null");
+    Validate.notNull(iRecovered, "iRecovered null");
+    Validate.notNull(iDead, "iDead null");
+    Validate.notNull(muNew, "muNew null");
+    Validate.notNull(betaNew, "betaNew null");
+    Validate.isTrue(muNew.size() == nbAgeCategoryNew,
+      "more or less mus than age categories");
+    Validate.isTrue(betaNew.size() == nbAgeCategoryNew,
+      "more or less beta than age categories");
+    gamma = gammaNew;
+    beta = betaNew;
+    mu = muNew;
+    nbAgeCategory = nbAgeCategoryNew;
+    setUp(iSusceptible, iInfectious, iRecovered, iDead);
+  }
+
+  /**
+   * SetUp.
+   *
+   * @param iSusceptible List of susceptible people per age category.
+   * @param iInfectious  List of susceptible infectious per age category.
+   * @param iRecovered   List of susceptible recovered per age category.
+   * @param iDead        List of susceptible dead per age category.
+   */
+  private void setUp(final List<Double> iSusceptible,
+                     final List<Double> iInfectious,
+                     final List<Double> iRecovered,
+                     final List<Double> iDead) {
     susceptible = new ArrayList<>(nbAgeCategory);
     infectious = new ArrayList<>(nbAgeCategory);
     recovered = new ArrayList<>(nbAgeCategory);
