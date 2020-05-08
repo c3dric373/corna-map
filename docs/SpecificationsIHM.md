@@ -1,6 +1,8 @@
 # Spécifications de l’IHM
 
 ![essai ](./EssaiIHM.png)
+
+
 Ebauche de la fenêtre correspondant aux CU1 et CU2
 (ici visualisation des données réelles, pas la simulation)
 	
