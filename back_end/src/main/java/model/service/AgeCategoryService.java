@@ -60,13 +60,6 @@ public class AgeCategoryService {
    * Death Rate 75_INF.
    */
   public static final double MU_75_INF = 0.083 / 15;
-
-  /**
-   * List of MU.
-   */
-  @Getter
-  public final List<Double> mu = new ArrayList<>();
-
   /**
    * Heavy Infection Rate 0_15.
    */
@@ -87,13 +80,6 @@ public class AgeCategoryService {
    * Heavy Infection Rate 75_INF.
    */
   public static final double THETA_75_INF = 0.1296;
-
-  /**
-   * List of THETA_I.
-   */
-  @Getter
-  public final List<Double> theta = new ArrayList<>();
-
   /**
    * Heavy Infection Rate 0_15.
    */
@@ -114,7 +100,16 @@ public class AgeCategoryService {
    * Heavy Infection Rate 75_INF.
    */
   public static final double C_75_INF = 0.1;
-
+  /**
+   * List of MU.
+   */
+  @Getter
+  public final List<Double> mu = new ArrayList<>();
+  /**
+   * List of THETA_I.
+   */
+  @Getter
+  public final List<Double> theta = new ArrayList<>();
   /**
    * List of C_I.
    */

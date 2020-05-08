@@ -1,7 +1,6 @@
 package model.project;
 
 import model.data.DayData;
-import model.data.TypeLocalisation;
 import model.io.DataScrapper;
 import model.io.DataScrapperImpl;
 import org.junit.Assert;
@@ -17,7 +16,6 @@ import java.util.List;
 
 public class ProjectDataWrapperImplTest {
 
-  private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
   private final static String CONTENT = "{\"respectConfinement\":50," +
     "\"mask\":{\"m0_15\":false,\"m16_19\":false,\"m30_49\":false," +
     "\"m50_69\":false,\"m70\":false},\"conf\":{\"c0_15\":false," +
@@ -74,38 +72,38 @@ public class ProjectDataWrapperImplTest {
   public void setUp() throws IOException {
     scrapper.setPathToData(PATH_TO_DATA);
     scrapper.extract(subject);
-    dayData = new DayData(TYPE, LocalDate.parse(DATE1), DEP_44, NAME,
+    dayData = new DayData( LocalDate.parse(DATE1), DEP_44, NAME,
       TOTAL_CASE,
       EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES,
       TOTAL_TEST);
-    dayData1 = new DayData(TYPE, LocalDate.parse(DATE2), DEP_44, NAME,
+    dayData1 = new DayData( LocalDate.parse(DATE2), DEP_44, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData2 = new DayData(TYPE, LocalDate.parse(DATE1), FRA, NAME,
+    dayData2 = new DayData( LocalDate.parse(DATE1), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData3 = new DayData(TYPE, LocalDate.parse(DATE2), FRA, NAME,
+    dayData3 = new DayData( LocalDate.parse(DATE2), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData4 = new DayData(TYPE, LocalDate.parse(DATE1), REG_11, NAME,
+    dayData4 = new DayData( LocalDate.parse(DATE1), REG_11, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData5 = new DayData(TYPE, LocalDate.parse(DATE1), REG_12, NAME,
+    dayData5 = new DayData( LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,
       TOTAL_TEST);
-    dayData6 = new DayData(TYPE, LocalDate.parse(DATE1), REG_12, NAME,
+    dayData6 = new DayData( LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERED_CASES_1,

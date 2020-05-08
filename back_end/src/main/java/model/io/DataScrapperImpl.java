@@ -2,7 +2,6 @@ package model.io;
 
 import lombok.Setter;
 import model.data.DayData;
-import model.data.TypeLocalisation;
 import model.project.ProjectDataWrapper;
 import model.service.DayDataService;
 import okhttp3.OkHttpClient;
@@ -34,6 +33,9 @@ public class DataScrapperImpl implements DataScrapper {
     + "/resources"
     + "/output.csv";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void getCurrentDataFromWeb() throws IOException {
 
@@ -57,6 +59,9 @@ public class DataScrapperImpl implements DataScrapper {
 
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void extract(final ProjectDataWrapper projectDataWrapper)
     throws IOException {
@@ -124,15 +129,12 @@ public class DataScrapperImpl implements DataScrapper {
       }
 
     }
-    DateTimeFormatter formatter = DateTimeFormatter
-      .ofPattern("yyyy-MMM-dd");
     LocalDate date = LocalDate.parse(row[dateCsvIndex]);
     if (row.length <= maxLength) {
       return;
     }
     final DayData dayData =
-      new DayData(TypeLocalisation.valueOf(row[typeIndex]
-        .toUpperCase()), date, row[idIndex], row[nameIndex],
+      new DayData(date, row[idIndex], row[nameIndex],
         Integer.parseInt(row[totalCasesIndex]),
         Integer.parseInt(row[ephadCasesIndex]),
         Integer.parseInt(row[ephadConfirmedCasesIndex]),

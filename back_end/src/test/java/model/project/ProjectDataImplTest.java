@@ -1,7 +1,6 @@
 package model.project;
 
 import model.data.DayData;
-import model.data.TypeLocalisation;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 public class ProjectDataImplTest {
 
-  private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
   private final static String DATE1 = "2020-04-10";
   private final static String DATE2 = "2020-04-11";
   private final static String ID = "DEP-44";
@@ -35,7 +33,6 @@ public class ProjectDataImplTest {
   private static DayData dayData;
 
   private static final ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
-  final static double delta = 0.001;
   private static ProjectData subject;
   private final HashMap<String, Map<String, DayData>> expectedMap =
     new HashMap<>();
@@ -45,12 +42,12 @@ public class ProjectDataImplTest {
 
   @BeforeClass
   public static void setUp() {
-    dayData = new DayData(TYPE, LocalDate.parse(DATE1), ID, NAME, TOTAL_CASE,
+    dayData = new DayData( LocalDate.parse(DATE1), ID, NAME, TOTAL_CASE,
       EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
-    DayData dayData1 = new DayData(TYPE, LocalDate.parse(DATE2), ID, NAME,
+    DayData dayData1 = new DayData( LocalDate.parse(DATE2), ID, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,

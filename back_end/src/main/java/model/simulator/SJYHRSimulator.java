@@ -3,6 +3,7 @@ package model.simulator;
 import lombok.Getter;
 import lombok.Setter;
 import model.service.AgeCategoryService;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -513,13 +514,20 @@ public class SJYHRSimulator implements Simulator {
   /**
    * Applies the government measures.
    *
-   * @param confinedCategories Age categories to confine.
-   * @param maskedCategories   Age categories who will have to wear a mask.
-   * @param confinementRespect indicator of the respect of the confinement.
+   * @param measures to apply
    */
-  public void applyMeasures(final List<Integer> confinedCategories,
-                            final List<Integer> maskedCategories,
-                            final double confinementRespect) {
+  public void applyMeasures(final List<List<Integer>> measures) {
+    Validate.notNull(measures, "measures Null");
+    // Get measures
+    final int confinedCategoriesIndex = 0;
+    final int maskedCategoriesIndex = 1;
+    final int confinementRespectIndex = 2;
+    final List<Integer> confinedCategories =
+      measures.get(confinedCategoriesIndex);
+    final List<Integer> maskedCategories = measures.get(maskedCategoriesIndex);
+    final double confinementRespect =
+      measures.get(confinementRespectIndex).get(0);
+    // Apply Measures
     applyConfinement(confinedCategories, confinementRespect);
     setMaskUsage(maskedCategories);
   }

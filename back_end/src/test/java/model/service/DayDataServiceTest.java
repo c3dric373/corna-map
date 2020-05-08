@@ -1,7 +1,6 @@
 package model.service;
 
 import model.data.DayData;
-import model.data.TypeLocalisation;
 import model.project.ProjectDataWrapper;
 import model.project.ProjectDataWrapperImpl;
 import org.junit.Assert;
@@ -16,8 +15,6 @@ import java.util.Map;
 
 public class DayDataServiceTest {
 
-  private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
-  private final static LocalDate DATE = LocalDate.ofEpochDay(4);
   private final static String DATE1 = "2020-04-10";
   private final static String DATE2 = "2020-04-11";
   private final static String DEP_44 = "DEP-44";
@@ -54,25 +51,10 @@ public class DayDataServiceTest {
   private final static int RECOVERD_CASES_1 = 99;
   private final static int TOTAL_TEST = 6;
   private final static String EMPTY_STRING = "";
-  private final static int NEGATIVE_NUMBER = -1;
   private static DayData dayData;
-  private static DayData dayData1;
-  private static DayData dayData2;
-  private static DayData dayData3;
-  private static DayData dayData4;
-  private static DayData dayData5;
-  private static DayData dayData6;
-  private static final double POPULATION_FRA = 67000000.0;
-  private static final double SUSCEPTIBLE =
-    (POPULATION_FRA - TOTAL_CASE_1) / POPULATION_FRA;
-  private static final int DEAD_DAY1 = TOTAL_DEATHS_1 - TOTAL_DEATHS;
-  private static final int RECOVERED_DAY1 = RECOVERD_CASES_1 - RECOVERD_CASES;
-  private static final double DEATH_RATE = (double) DEAD_DAY1 / POPULATION_FRA;
-  private static final double RECOVERY_RATE =
-    (double) RECOVERED_DAY1 / POPULATION_FRA;
 
-  private static ProjectDataWrapper wrapper = new ProjectDataWrapperImpl();
-  final static double delta = 0.001;
+  private static final ProjectDataWrapper wrapper =
+    new ProjectDataWrapperImpl();
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
@@ -80,38 +62,38 @@ public class DayDataServiceTest {
   @BeforeClass
   public static void setUp() {
 
-    dayData = new DayData(TYPE, LocalDate.parse(DATE1), DEP_44, NAME,
+    dayData = new DayData( LocalDate.parse(DATE1), DEP_44, NAME,
       TOTAL_CASE_1,
       EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
-    dayData1 = new DayData(TYPE, LocalDate.parse(DATE2), DEP_44, NAME,
+    DayData dayData1 = new DayData( LocalDate.parse(DATE2), DEP_44, NAME,
       TOTAL_CASE_DEP_44_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
       TOTAL_TEST);
-    dayData2 = new DayData(TYPE, LocalDate.parse(DATE1), FRA, NAME,
+    DayData dayData2 = new DayData( LocalDate.parse(DATE1), FRA, NAME,
       TOTAL_CASE_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
       TOTAL_TEST);
-    dayData3 = new DayData(TYPE, LocalDate.parse(DATE2), FRA, NAME,
+    DayData dayData3 = new DayData( LocalDate.parse(DATE2), FRA, NAME,
       TOTAL_CASE_2, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
       TOTAL_TEST);
-    dayData4 = new DayData(TYPE, LocalDate.parse(DATE1), REG_11, NAME,
+    DayData dayData4 = new DayData( LocalDate.parse(DATE1), REG_11, NAME,
       TOTAL_CASE_REG_11_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
       TOTAL_TEST);
-    dayData5 = new DayData(TYPE, LocalDate.parse(DATE1), REG_12, NAME,
+    DayData dayData5 = new DayData( LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_REG_12_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
       TOTAL_TEST);
-    dayData6 = new DayData(TYPE, LocalDate.parse(DATE1), REG_12, NAME,
+    DayData dayData6 = new DayData( LocalDate.parse(DATE1), REG_12, NAME,
       TOTAL_CASE_DEP_45_1, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS_1,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES_1,
@@ -141,7 +123,8 @@ public class DayDataServiceTest {
     final int result = DayDataService.computeTotalCases(dayData);
 
     // Assert
-    Assert.assertEquals("wrong computation of total cases", expected, result);
+    Assert.assertEquals("wrong computation of total cases", expected,
+      result);
   }
 
   @Test
@@ -156,33 +139,12 @@ public class DayDataServiceTest {
 
     // Act
     Map<String, Double> actualMap =
-      DayDataService.getLocationPercentages(wrapper.getProject().getLocations(), DATE1);
+      DayDataService.getLocationPercentages(wrapper.getProject().getLocations(),
+        DATE1);
 
     // Assert
     Assert.assertEquals("wrong map", expectedMap, actualMap);
 
-  }
-
-  @Test
-  public void testGetDeathRate_validCall_correctResult() {
-    // Arrange
-
-    // Act
-    //final double result = DayDataService.getDeathRateSIR(dayData1);
-
-    // Assert
-    //Assert.assertEquals("wrong death rate", DEATH_RATE, result, delta);
-  }
-
-  @Test
-  public void testGetRecoveryRate_validCall_correctResult() {
-    // Arrange
-
-    // Act
-   // final double result = DayDataService.getRecoveryRateSIR(dayData1);
-
-    // Assert
-    //Assert.assertEquals("wrong death rate", RECOVERY_RATE, result, delta);
   }
 
   @Test
@@ -276,19 +238,6 @@ public class DayDataServiceTest {
     DayDataService.getRecoveryRateSIR(null);
 
     // Assert -> via annotation
-  }
-
-
-  @Test
-  public void testGetSusceptible_validCall_correctCalculation() {
-    // Arrange
-
-    // Act
-    // final double result = DayDataService.getSusceptibleSIR(dayData);
-
-    // Assert -> via annotation
-    // Assert.assertEquals("wrong susceptible", SUSCEPTIBLE, result, 0);
-
   }
 
 }
