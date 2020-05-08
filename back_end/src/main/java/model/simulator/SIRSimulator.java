@@ -22,19 +22,19 @@ public class SIRSimulator implements Simulator {
    */
   int nbAgeCategory = 5;
   /**
-   * La classe est encore en chantier.
+   * List containing susceptible ratio per age category.
    */
   private List<List<Double>> susceptible;
   /**
-   * La classe est encore en chantier.
+   * List containing infectious ratio per age category.
    */
   private List<List<Double>> infectious;
   /**
-   * La classe est encore en chantier.
+   * List containing recovered ratio per age category.
    */
   private List<List<Double>> recovered;
   /**
-   * La classe est encore en chantier.
+   * List containing dead ratio per age category. en chantier.
    */
   private List<List<Double>> dead;
 
@@ -43,19 +43,19 @@ public class SIRSimulator implements Simulator {
    */
   private double r0Pop = 0.5 / DayDataService.POPULATION_FRA;
   /**
-   * La classe est encore en chantier.
+   * Beta parameter in SIR for each age category (=transmission).
    */
   @Setter
   private List<Double> beta =
     Arrays.asList(r0Pop * 0.8, r0Pop * 0.9, r0Pop * 0.7, r0Pop * 0.6,
       r0Pop * 0.5);
   /**
-   * La classe est encore en chantier.
+   * Gamma parameter in sir, recovery Rate.
    */
   @Setter
   private double gamma = 1 / 15.;
   /**
-   * La classe est encore en chantier.
+   * Mu parameter in SIR for each age category (=lethality).
    */
   @Setter
   private List<Double> mu = Arrays.asList(AgeCategoryService.MU_0_15,
@@ -64,15 +64,15 @@ public class SIRSimulator implements Simulator {
     AgeCategoryService.MU_75_INF);
 
   /**
-   * La classe est encore en chantier.
+   * Cauchy Problem used to represent our SIRD model.
    */
   private CauchyProblem model;
   /**
-   * La classe est encore en chantier.
+   * Differential Equation solver used to simulate our model.
    */
   private DifferentialSolver solver = new RK4Solver();
   /**
-   * La classe est encore en chantier.
+   * Granularity of our solver differential equation solver.
    */
   private int nbIterations = 100;
 
@@ -136,13 +136,7 @@ public class SIRSimulator implements Simulator {
   }
 
   /**
-   * Empty Constructor.
-   */
-  public SIRSimulator() {
-  }
-
-  /**
-   * La classe est encore en chantier.
+   * Simulate a day.
    */
   public void step() {
     List<Double> nextValues = solver.next(model, nbIterations);

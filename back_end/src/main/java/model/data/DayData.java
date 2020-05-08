@@ -20,55 +20,55 @@ import java.time.LocalDate;
 public class DayData {
 
   /**
-   * wip.
+   * Id of location of data.
    */
   private String id;
   /**
-   * wip.
+   * Name of location.
    */
   private String name;
   /**
-   * wip.
+   * Number of critical cases.
    */
   private int criticalCases;
   /**
-   * wip.
+   * Number of hospitalized cases.
    */
   private int hospitalized;
   /**
-   * wip.
+   * Number of total cases.
    */
   private int totalCases;
   /**
-   * wip.
+   * Number of ephad cases.
    */
   private int ephadCases;
   /**
-   * wip.
+   * Number of ephad confirmed cases.
    */
   private int ephadConfirmedCases;
   /**
-   * wip.
+   * Number of ephad Possible cases.
    */
   private int ephadPossibleCases;
   /**
-   * wip.
+   * Number of total detaths.
    */
   private int totalDeaths;
   /**
-   * wip.
+   * Number of total ephad deaths.
    */
   private int totalEphadDeaths;
   /**
-   * wip.
+   * Number of recovered cases.
    */
   private int recoveredCases;
   /**
-   * wip.
+   * Number of total Tests.
    */
   private int totalTests;
   /**
-   * wip.
+   * Date of the data..
    */
   private LocalDate date;
 
