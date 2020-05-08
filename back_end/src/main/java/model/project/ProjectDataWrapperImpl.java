@@ -32,10 +32,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * Id for france to access data.
    */
   private static final String FRA = "FRA";
-  /**
-   * Population of France.
-   */
-  private static final double POPULATION_FRA = 67000000.0;
+
   /**
    * Comparator used to compare dates as string.
    */
@@ -81,6 +78,16 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private String latestContent;
 
+  /**
+   * Region identifier.
+   */
+  private static final String REG = "REG";
+
+  /**
+   * County identifier.
+   */
+  private static final String DEP = "DEP";
+
   @Override
   public void getCurrentAllDataFrance() throws IOException {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
@@ -104,20 +111,24 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   @Override
   public void addLocation(final String location, final String date,
                           final DayData dayData) {
+    Validate.notNull(date, "location null");
+    Validate.notEmpty(date, "location empty");
+    Validate.notNull(date, "date null");
+    Validate.notEmpty(date, "date empty");
+    Validate.notNull(dayData, "dayData null");
     project.getLocations().get(location).put(date, dayData);
     idToName.put(dayData.getId(), dayData.getName());
   }
 
   @Override
   public DayData infosFrance(final String date) {
-    final Map<String, Map<String, DayData>> localisations =
-      project.getLocations();
-    final Map<String, DayData> tmp = localisations.get(FRA);
-    return tmp.get(date);
+    return getDayData(date, FRA);
   }
 
   @Override
   public List<DayData> historyLocation(final String name) {
+    Validate.notNull(name, "name null");
+    Validate.notEmpty(name, "name empty");
     final Map<String, Map<String, DayData>> locations =
       project.getLocations();
     final Map<String, DayData> tmp = locations.get(name);
@@ -126,42 +137,25 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public DayData infosLocation(final String name, final String date) {
-    final Map<String, Map<String, DayData>> localisations =
-      project.getLocations();
-    final Map<String, DayData> tmp = localisations.get(name);
-    return tmp.get(date);
+    Validate.notNull(date, "date null");
+    Validate.notEmpty(date, "date empty");
+    return getDayData(date, name);
   }
 
   @Override
   public List<DayData> infosRegion(final String date) {
-    final Map<String, Map<String, DayData>> locations =
-      project.getLocations().entrySet().stream().filter(map -> map.getKey()
-        .contains("REG")).
-        collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    final List<DayData> res = new ArrayList<>(locations.size());
-    for (Map<String, DayData> map : locations.values()) {
-      res.add(map.get(date));
-    }
-    return res;
+    return getDayDataList(date, REG);
   }
 
   @Override
   public List<DayData> infosDept(final String date) {
-    final Map<String, Map<String, DayData>> locations =
-      project.getLocations().entrySet().stream().filter(
-        map -> map.getKey()
-          .contains("DEP")).
-        collect(Collectors.toMap(Map.Entry::getKey,
-          Map.Entry::getValue));
-    final List<DayData> res = new ArrayList<>(locations.size());
-    for (Map<String, DayData> map : locations.values()) {
-      res.add(map.get(date));
-    }
-    return res;
+    return getDayDataList(date, DEP);
   }
 
   @Override
   public void addKey(final String key) {
+    Validate.notNull(key, "key null");
+    Validate.notEmpty(key, "key empty");
     final Map<String, Map<String, DayData>> locations =
       project.getLocations();
     locations.computeIfAbsent(key, k -> new HashMap<>());
@@ -169,6 +163,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
   @Override
   public DayData simulateFrance(final String date) {
+    Validate.notNull(date, "date null");
+    Validate.notEmpty(date, "date empty");
     DayData latestData = getLatestData(FRA);
     LocalDate latestDate = latestData.getDate();
     // We need to check if the date is in the future or the past
@@ -227,11 +223,54 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
   }
 
   /**
+   * Get List of DayData at a specific date, For a given type of location(
+   * region or county).
+   *
+   * @param date       the date for which we  should get the data.
+   * @param locationId Id of the type of location.
+   * @return List of {@link DayData} fitting the requierments (date and
+   * location)
+   */
+  private List<DayData> getDayDataList(String date, String locationId) {
+    Validate.notNull(date, "date null");
+    Validate.notEmpty(date, "date empty");
+    final Map<String, Map<String, DayData>> locations =
+      project.getLocations().entrySet().stream().filter(
+        map -> map.getKey()
+          .contains(locationId)).
+        collect(Collectors.toMap(Map.Entry::getKey,
+          Map.Entry::getValue));
+    final List<DayData> res = new ArrayList<>(locations.size());
+    for (Map<String, DayData> map : locations.values()) {
+      res.add(map.get(date));
+    }
+    return res;
+  }
+
+  /**
+   * Get specific {@link DayData} on specific date with a given location.
+   *
+   * @param date     specific date.
+   * @param location given location.
+   * @return the asked {@link DayData}.
+   */
+  private DayData getDayData(final String date, final String location) {
+    Validate.notNull(date, "date null");
+    Validate.notEmpty(date, "date empty");
+    final Map<String, Map<String, DayData>> localisations =
+      project.getLocations();
+    final Map<String, DayData> tmp = localisations.get(location);
+    return tmp.get(date);
+  }
+
+  /**
    * Sets the parameter on the simulator with the latest data.
    *
    * @param content content.
    */
   private void setSirSimulator(final String content) {
+    Validate.notNull(content, "content null");
+    Validate.notEmpty(content, "content empty");
     Validate.notNull(content, "content Null");
     DayData latestData = getLatestData(FRA);
     final List<Double> deathRate = DayDataService.getDeathRateSIR(latestData);
@@ -243,10 +282,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double sumI = infectious.stream().mapToDouble(f -> f).sum();
     final List<Double> susceptible =
       DayDataService.getSusceptibleSIR(sumDR + sumI + sumRR);
-    System.out.println("Set susceptible: " + susceptible);
-
-    System.out.println("RecoveryRateBase: " + recoveryRate);
-    //System.out.println("RecoveredBase:  " + recoveryRate * POPULATION_FRA);
+    //System.out.println("RecoveredBase:  " + recoveryRate * DayDataService
+    // .POPULATION_FRA);
     sirSimulator = new SIRSimulator(susceptible,
       infectious, recoveryRate, deathRate);
     // Apply Measures
@@ -272,10 +309,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
 
     // Create Object which encapsulates the simulated data
     final DayData dayData = new DayData();
-    dayData.setTotalDeaths((int) (deadNew * POPULATION_FRA));
-    dayData.setRecoveredCases((int) (recoveredNew * POPULATION_FRA) / 10);
-    dayData.setTotalCases((int) (POPULATION_FRA
-      - (susceptibleNew * POPULATION_FRA)) / 10);
+    dayData.setTotalDeaths((int) (deadNew * DayDataService.POPULATION_FRA));
+    dayData.setRecoveredCases((int) (recoveredNew * DayDataService.POPULATION_FRA) / 10);
+    dayData.setTotalCases((int) (DayDataService.POPULATION_FRA
+      - (susceptibleNew * DayDataService.POPULATION_FRA)) / 10);
     return dayData;
   }
 
@@ -285,82 +322,30 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param content measures values
    */
   private void setSJYHRSimulator(final String content) {
+    Validate.notNull(content, "content null");
+    Validate.notEmpty(content, "content empty");
     // Latest data
     DayData latestData = getLatestData(FRA);
-    System.out.println("Donne de base sim: " + latestData);
 
     // Apply InitialState
     final List<Double> initS = DayDataService.getSusceptibleSJYHR(latestData);
-    int sum = 0;
-    for (int i = 0; i < initS.size(); i++) {
-      System.out.println("InitS " + i + ": " + initS.get(i) * POPULATION_FRA);
-      sum += initS.get(i) * POPULATION_FRA;
-    }
-    System.out.println("Sum: " + sum);
-    sum = 0;
-
     final List<Double> initI = DayDataService.getInfectedSJYHR(latestData,
       sjyhrSimulator);
-    for (int i = 0; i < initI.size(); i++) {
-      System.out.println("initI " + i + ": " + initI.get(i) * POPULATION_FRA);
-      sum += initI.get(i) * POPULATION_FRA;
-
-    }
-    System.out.println("Sum: " + sum);
-    sum = 0;
-
     final List<Double> initJ = DayDataService.getLightInfectedSJYHR(initI,
       ageCategoryService);
-    for (int i = 0; i < initJ.size(); i++) {
-      System.out.println("initJ " + i + ": " + initJ.get(i) * POPULATION_FRA);
-      sum += initJ.get(i) * POPULATION_FRA;
-
-    }
-    System.out.println("Sum: " + sum);
-    sum = 0;
-
     final List<Double> initY = DayDataService.getHeavyInfectedSJYHR(initI,
       ageCategoryService);
-    for (int i = 0; i < initY.size(); i++) {
-      System.out.println("initY " + i + ": " + initY.get(i) * POPULATION_FRA);
-      sum += initY.get(i) * POPULATION_FRA;
-    }
-    System.out.println("Sum: " + sum);
-    sum = 0;
-
     final List<Double> initH = DayDataService.getHospitalizedSJYHR(initI,
       latestData);
-    for (int i = 0; i < initH.size(); i++) {
-      System.out.println("initH " + i + ": " + initH.get(i) * POPULATION_FRA);
-      sum += initH.get(i) * POPULATION_FRA;
-
-    }
-    System.out.println("Sum: " + sum);
-    sum = 0;
-
     final List<Double> initD = DayDataService.getDeadSJYHR(latestData,
       initH, ageCategoryService);
-    for (int i = 0; i < initD.size(); i++) {
-      System.out.println("InitD " + i + ": " + initD.get(i) * POPULATION_FRA);
-      sum += initD.get(i) * POPULATION_FRA;
-    }
-    System.out.println("Sum: " + sum);
-    sum = 0;
     final List<Double> initR = DayDataService.getRecoveredSJYHR(latestData,
       initJ, initH);
-    for (int i = 0; i < initR.size(); i++) {
-      System.out.println("initR " + i + ": " + initR.get(i) * POPULATION_FRA);
-      sum += initR.get(i) * POPULATION_FRA;
-    }
-    System.out.println("Sum: " + sum);
-
     sjyhrSimulator.setInitialStates(initS, initJ, initY, initH, initR, initD);
 
     // Apply Measures
     final List<List<Integer>> measures = getMeasures(content);
-
     sjyhrSimulator.applyMeasures(measures);
-
   }
 
   /**
@@ -371,6 +356,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @return the measures as a list of lists of integers.
    */
   private List<List<Integer>> getMeasures(final String content) {
+    Validate.notNull(content, "content null");
+    Validate.notEmpty(content, "content empty");
     final Gson gson = new Gson();
     final Map map = gson.fromJson(content, Map.class);
     return simulatorService.getMeasures(map);
@@ -383,6 +370,8 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @param date the specific date.
    */
   private void truncateData(final String date) {
+    Validate.notNull(date, "date null");
+    Validate.notEmpty(date, "date empty");
     final Map<String, Map<String, DayData>> locations =
       project.getLocations();
     for (Map.Entry<String, Map<String, DayData>> entry : locations.entrySet()) {
@@ -419,11 +408,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double infected = lightInfected + heavyInfected + hospitalized;
     final double susceptible = 1 - infected - dead;
     // Create Object which encapsulates the simulated data
-    result.setTotalDeaths((int) (dead * POPULATION_FRA));
-    result.setRecoveredCases((int) (recovered * POPULATION_FRA));
-    result.setTotalCases((int) ((1 - susceptible) * POPULATION_FRA));
-    result.setHospitalized((int) (hospitalized * POPULATION_FRA));
-    result.setCriticalCases((int) (heavyInfected * POPULATION_FRA));
+    result.setTotalDeaths((int) (dead * DayDataService.POPULATION_FRA));
+    result.setRecoveredCases((int) (recovered * DayDataService.POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptible) * DayDataService.POPULATION_FRA));
+    result.setHospitalized((int) (hospitalized * DayDataService.POPULATION_FRA));
+    result.setCriticalCases((int) (heavyInfected * DayDataService.POPULATION_FRA));
     return result;
   }
 
@@ -434,9 +423,10 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    * @return the data.
    */
   public DayData getLatestData(final String location) {
-    final Map<String, Map<String, DayData>> localisations =
+    Validate.notNull(location, "location null");
+    final Map<String, Map<String, DayData>> locations =
       project.getLocations();
-    final Map<String, DayData> franceMap = localisations.get(location);
+    final Map<String, DayData> franceMap = locations.get(location);
     final Optional<String> latestDate =
       franceMap.keySet().stream().max(dateComparator);
     if (latestDate.isEmpty()) {
@@ -456,6 +446,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
       return date1.compareTo(date2);
     }
 
+  }
 }
 
 
