@@ -3,7 +3,6 @@ package model.service;
 import model.data.DayData;
 import model.simulator.SJYHRSimulator;
 import org.apache.commons.lang.Validate;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +29,11 @@ public class DayDataService {
   private static final int TOTAL_CASES_TO_INFECTED_FACTOR = 40;
 
   /**
+   * Number of age categories in our model.
+   */
+  private static final int NB_AGE_CATEGORIES = 5;
+
+  /**
    * Computes the percentage of people susceptible of catching the coronavirus
    * given on stats of specific day.
    *
@@ -52,7 +56,8 @@ public class DayDataService {
   public static List<Double> getRecoveryRateSIR(final DayData dayData) {
     Validate.notNull(dayData, "dayData null");
     double recoveryRate =
-      dayData.getRecoveredCases() * TOTAL_CASES_TO_INFECTED_FACTOR / POPULATION_FRA;
+      dayData.getRecoveredCases() * TOTAL_CASES_TO_INFECTED_FACTOR
+        / POPULATION_FRA;
     return computePercentageAgeClasses(recoveryRate);
   }
 
@@ -98,7 +103,8 @@ public class DayDataService {
   public static List<Double> getInfectiousSir(final DayData latestData) {
     Validate.notNull(latestData, "dayData null");
     double infected =
-      latestData.getHospitalized() * TOTAL_CASES_TO_INFECTED_FACTOR / POPULATION_FRA;
+      latestData.getHospitalized() * TOTAL_CASES_TO_INFECTED_FACTOR
+        / POPULATION_FRA;
     return computePercentageAgeClasses(infected);
   }
 
@@ -187,22 +193,6 @@ public class DayDataService {
    * lightly infected from the COVID-19.
    *
    * @param latestData The data for which we should calculate such percentages.
-   * @return List of percentages.
-   */
-  public static List<Double> getLightInfectedSJYHR(final DayData latestData) {
-    Validate.notNull(latestData, "dayData null");
-    final int totalCases = latestData.getTotalCases();
-    final int criticalCases = latestData.getCriticalCases();
-    final double lightInfectedCases = totalCases - criticalCases;
-    final double infectiousFra = lightInfectedCases / POPULATION_FRA;
-    return computePercentageAgeClasses(infectiousFra);
-  }
-
-  /**
-   * Computes for each age class the percentage of people
-   * lightly infected from the COVID-19.
-   *
-   * @param latestData The data for which we should calculate such percentages.
    * @param simulator  simulator.
    * @return List of percentages.
    */
@@ -222,53 +212,6 @@ public class DayDataService {
         .collect(Collectors.toList());
     return computePercentageAgeClasses(betaI);
   }
-
-  /**
-   * Computes for each age class the percentage of people
-   * heavy infected from the COVID-19.
-   *
-   * @param latestData The data for which we should calculate such percentages.
-   * @return List of percentages.
-   */
-  public static List<Double> getHeavyInfectedSJYHR(final DayData latestData) {
-    Validate.notNull(latestData, "dayData null");
-    final int criticalCases = latestData.getCriticalCases();
-    final double heavyInfected = criticalCases / POPULATION_FRA;
-    return computePercentageAgeClasses(heavyInfected);
-  }
-
-  /**
-   * Computes for each age class the percentage of people
-   * dead from the COVID-19.
-   *
-   * @param latestData The data for which we should calculate such percentages.
-   * @return List of percentages.
-   */
-  public static List<Double> getDeadSJYHR(final DayData latestData) {
-    Validate.notNull(latestData, "dayData null");
-    final int dead = latestData.getTotalDeaths();
-    final double deathRate = dead / POPULATION_FRA;
-    return computePercentageAgeClasses(deathRate);
-  }
-
-  /*
-  @NotNull
-  private static List<Double> computeDeadPercentageAgeClasses(final double
-  param) {
-    final double infectious014 = param * AgeCategoryService.MU_0_15;
-    final double infectious1544 = param * AgeCategoryService.MU_15_44;
-    final double infectious4564 = param * AgeCategoryService.MU_44_64;
-    final double infectious6475 = param * AgeCategoryService.MU_64_75;
-    final double infectious75INF = param * AgeCategoryService.MU_75_INF;
-    final List<Double> result = new ArrayList<>();
-    result.add(infectious014);
-    result.add(infectious1544);
-    result.add(infectious4564);
-    result.add(infectious6475);
-    result.add(infectious75INF);
-    return result;
-    }
-   */
 
   /**
    * Computes list of light infected people from COVID-19 per age class.
@@ -365,8 +308,7 @@ public class DayDataService {
     final double alphaJ = sumJ / (sumJ + sumH);
     final double alphaH = sumH / (sumJ + sumH);
     final int recovered = latestData.getRecoveredCases();
-    final List<Double> result = new ArrayList<>(5);
-    double a = 0.;
+    final List<Double> result = new ArrayList<>(NB_AGE_CATEGORIES);
     for (int i = 0; i < initJ.size(); i++) {
       result.add((recovered * (initJ.get(i) * alphaJ / sumJ
         + initH.get(i) * alphaH / sumH)) / POPULATION_FRA);
@@ -374,7 +316,12 @@ public class DayDataService {
     return result;
   }
 
-  @NotNull
+  /**
+   * converts a parameter into a list of weighted parameters according to the
+   * age distribution in france.
+   *
+   * @return the list with the weighted parameters
+   */
   private static List<Double> computePercentageAgeClasses(final double param) {
     final double infectious014 = param * AgeCategoryService.FR_POP_0_14;
     final double infectious1544 = param * AgeCategoryService.FR_POP_15_44;
@@ -385,9 +332,19 @@ public class DayDataService {
       infectious6475, infectious75INF);
   }
 
-  @NotNull
+  /**
+   * Apply weight of people distribution according to age categories in france
+   * to a list of
+   * size 5.
+   *
+   * @param params List of parameters.
+   * @return weighted list of params.
+   */
   private static List<Double> computePercentageAgeClasses(final List<Double>
                                                             params) {
+    Validate.notNull(params, "params null");
+    Validate.isTrue(params.size() == NB_AGE_CATEGORIES,
+      "list does not contains exactly 5 elements");
     final double infectious014 = params.get(0) * AgeCategoryService.FR_POP_0_14;
     final double infectious1544 =
       params.get(1) * AgeCategoryService.FR_POP_15_44;
@@ -401,7 +358,16 @@ public class DayDataService {
       infectious6475, infectious75INF);
   }
 
-  @NotNull
+  /**
+   * Create a liste with all the given parameters in order from method call.
+   *
+   * @param param014   Param at index 0 in returned List.
+   * @param param1544  Param at index 1 in returned List.
+   * @param param4564  Param at index 2 in returned List.
+   * @param param6475  Param at index 3 in returned List.
+   * @param param75INF Param at index 4 in returned List.
+   * @return List containing all methods parameters.
+   */
   private static List<Double> createParamsList(final double param014,
                                                final double param1544,
                                                final double param4564,
@@ -431,10 +397,14 @@ public class DayDataService {
                                         double heavyInfected) {
     final DayData result = new DayData();
     result.setTotalDeaths((int) (dead * DayDataService.POPULATION_FRA));
-    result.setRecoveredCases((int) (recovered * DayDataService.POPULATION_FRA));
-    result.setTotalCases((int) ((1 - susceptible) * DayDataService.POPULATION_FRA));
-    result.setHospitalized((int) (hospitalized * DayDataService.POPULATION_FRA));
-    result.setCriticalCases((int) (heavyInfected * DayDataService.POPULATION_FRA));
+    result.setRecoveredCases((int) (recovered
+      * DayDataService.POPULATION_FRA));
+    result.setTotalCases((int) ((1 - susceptible)
+      * DayDataService.POPULATION_FRA));
+    result.setHospitalized((int) (hospitalized
+      * DayDataService.POPULATION_FRA));
+    result.setCriticalCases((int) (heavyInfected
+      * DayDataService.POPULATION_FRA));
     return result;
   }
 
@@ -451,9 +421,11 @@ public class DayDataService {
                                       final double susceptible) {
     final DayData dayData = new DayData();
     dayData.setTotalDeaths((int) (dead * DayDataService.POPULATION_FRA));
-    dayData.setRecoveredCases((int) (recovered * DayDataService.POPULATION_FRA) / TOTAL_CASES_TO_INFECTED_FACTOR);
+    dayData.setRecoveredCases((int) (recovered * DayDataService.POPULATION_FRA)
+      / TOTAL_CASES_TO_INFECTED_FACTOR);
     dayData.setTotalCases((int) (DayDataService.POPULATION_FRA
-      - (susceptible * DayDataService.POPULATION_FRA)) / TOTAL_CASES_TO_INFECTED_FACTOR);
+      - (susceptible * DayDataService.POPULATION_FRA))
+      / TOTAL_CASES_TO_INFECTED_FACTOR);
     return dayData;
   }
 }
