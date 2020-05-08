@@ -5,6 +5,7 @@ Date au format: "yyyy-MMM-dd"
 
 ### Récupérer les informations globales relatives au Coronavirus en France à la date sélectionnée :
 **/map/infosFrance?date=...**
+
 output :
 ```json
 [  
@@ -31,6 +32,7 @@ output :
 ```
 ### Récupérer les informations régionales relatives au Coronavirus à la date sélectionnée :
 **/map/infosRegion?date=...**
+
 output :
 ```json
 [
@@ -66,6 +68,7 @@ output :
 ```
 ### Récupérer les informations relatives au Coronavirus pour la région et la date sélectionnées :
 **/map/infosRegion?name=...&date=....**
+
 output :
 ```json
 [
@@ -86,6 +89,7 @@ output :
 ```
 ### Récupérer les informations régionales relatives au Coronavirus en France pour le département et la date sélectionnés :
 **/map/infosDept?name=...&date=....**
+
 output :
 ```json
 [
@@ -106,6 +110,7 @@ output :
 ```
 ### Récupérer les informations départementales relatives au Coronavirus en France à la date sélectionnée :
 **/map/infosDept?date=...**
+
 output :
 ```json
 [
@@ -144,6 +149,8 @@ Permet d’afficher sur un graphique l’évolution des données en fonction du 
 
 ### Récupérer toutes les données de la France :
 **/historique?location=FRA**
+
+output:
 ```json
 [  
 	{  
@@ -190,6 +197,7 @@ Permet d’afficher sur un graphique l’évolution des données en fonction du 
 ```
  ### Récupérer toutes les données de la Région ayant pour identifiant X:
 **/historique?location=REG-X**
+
 output :
 ```json
 [
@@ -225,6 +233,7 @@ output :
 ```
 ### Récupérer toutes les données du département ayant pour identifiant X:
 **/historique?location=DEP-X**
+
 output :
 ```json
 [
@@ -261,6 +270,7 @@ output :
 ## service Simulation
 Commencer la simulation en envoyant les paramètres :
 **POST /simulation/start**
+
 format Json
 Params :
 ```json
@@ -284,6 +294,7 @@ Params :
 ```
 ### Récupérer les données simulées globales relatives au Coronavirus en France à la date sélectionnée :
 **/simulation/infosFrance?date=...**
+
 output :
 ```json
 [  
@@ -310,6 +321,7 @@ output :
 ```
 ### Récupérer les données régionales simulées relatives au Coronavirus à la date sélectionnée:
 **/simulation/infosRegion?date=...**
+
 output :
 ```json
 [
@@ -345,6 +357,7 @@ output :
 ```
 ### Récupérer les données régionales simulées relatives au Coronavirus pour la région et la date sélectionnées :
 **/simulation/infosRegion?date=...&name=...**
+
 output :
 ```json
 [
@@ -365,6 +378,7 @@ output :
 ```
 ### Récupérer les données départementales simulées relatives au Coronavirus à la date sélectionnée :
 **/simulation/infosDept?date=...**
+
 output :
 ```json
 [
@@ -400,6 +414,7 @@ output :
 ```
 ### Récupérer les données simulées relatives au Coronavirus pour le département et la date sélectionnés :
 **/simulation/infosDept?date=...&name=...**
+
 output :
 ```json
 [
