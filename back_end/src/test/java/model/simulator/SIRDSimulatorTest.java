@@ -5,24 +5,30 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
-public class SIRSimulatorTest {
-/*
+public class SIRDSimulatorTest {
+
   private final static double MU = 0.05;
   private final static double LAMBDA = 0.2;
   private final static double BETA = 0.5;
   private final static double SUSCEPTIBLE = 0.9;
   private final static double DEAD = 0;
   private final static double RECOVERED = 0;
+  private final static int NB_AGE_CATEGORIES = 1;
   private final static double INFECTIOUS = 1 - SUSCEPTIBLE;
-  private static SIRSimulator subject;
+  private static SIRDSimulator subject;
 
   @BeforeClass
   public static void setUp() {
-    subject = new SIRSimulator(SUSCEPTIBLE, INFECTIOUS, RECOVERED, DEAD);
-    subject.setMu(MU);
-    subject.setBeta(BETA);
+
+    subject = new SIRDSimulator(Collections.singletonList(SUSCEPTIBLE),
+      Collections.singletonList(INFECTIOUS),
+      Collections.singletonList(RECOVERED),
+      Collections.singletonList(DEAD), NB_AGE_CATEGORIES);
+    subject.setMu(Collections.singletonList(MU));
+    subject.setBeta(Collections.singletonList(BETA));
     subject.setGamma(LAMBDA);
     subject.setNbIterations(1000);
   }
@@ -48,10 +54,10 @@ public class SIRSimulatorTest {
     subject.step();
 
     // Assert
-    final List<Double> dead = subject.getDead();
-    final List<Double> infectious = subject.getInfectious();
-    final List<Double> recovered = subject.getRecovered();
-    final List<Double> susceptible = subject.getSusceptible();
+    final List<Double> dead = subject.getDead().get(0);
+    final List<Double> infectious = subject.getInfectious().get(0);
+    final List<Double> recovered = subject.getRecovered().get(0);
+    final List<Double> susceptible = subject.getSusceptible().get(0);
     final double deadStep1 = dead.get(step1Index);
     final double deadStep2 = Iterables.getLast(dead);
     final double recoveredStep1 = recovered.get(step1Index);
@@ -105,5 +111,5 @@ public class SIRSimulatorTest {
     Assert.assertEquals("wrong CauchyProblem", actualModel, expectedModel);
 
   }
-  */
+
 }

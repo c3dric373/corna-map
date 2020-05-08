@@ -1,6 +1,7 @@
 package model.project;
 
 import model.data.DayData;
+import model.simulator.SIRDSimulator;
 
 import java.io.IOException;
 import java.util.List;
@@ -98,7 +99,7 @@ public interface ProjectDataWrapper {
    * Notifies the model that the view is in Simulation mode.
    *
    * @param content      measures values
-   * @param sirSimulator true iff {@link model.simulator.SIRSimulator} should
+   * @param sirSimulator true iff {@link SIRDSimulator} should
    *                     be used to simulate covid-19. Else
    *                     {@link model.simulator.SJYHRSimulator} will be used.
    */
