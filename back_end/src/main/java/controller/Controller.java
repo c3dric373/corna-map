@@ -208,6 +208,14 @@ public class Controller {
     }
   }
 
+  /**
+   * Simulates the spread of covid in france until a given date. Then retruns
+   * the data for a given region.
+   *
+   * @param date date until which we should simulate.
+   * @param name name of given region.
+   * @return the {@link model.data.DayData} containing the wanted information.
+   */
   @RequestMapping(value = {"simulation/infosRegion"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -233,6 +241,14 @@ public class Controller {
     }
   }
 
+  /**
+   * Simulates the spread of covid in france until a given date. Then return
+   * the data for a given department.
+   *
+   * @param date date until which we should simulate.
+   * @param name name of given region.
+   * @return the {@link model.data.DayData} containing the wanted information.
+   */
   @RequestMapping(value = {"simulation/infosDept"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -260,6 +276,13 @@ public class Controller {
 
   }
 
+  /**
+   * Start simulation.
+   *
+   * @param content info that should be taken into consideration when starting
+   *                the simulation.
+   * @return Ack.
+   */
   @RequestMapping(value = {"simulation/start"}, method =
     RequestMethod.POST,
     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -276,6 +299,11 @@ public class Controller {
     }
   }
 
+  /**
+   * Start simulation.
+   *
+   * @return Ack.
+   */
   @RequestMapping(value = {"simulation/start"}, method =
     RequestMethod.GET,
     produces = MediaType.APPLICATION_JSON_VALUE)

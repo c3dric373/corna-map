@@ -5,9 +5,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
-public class SIRSimulatorTest {
+public class SIRDSimulatorTest {
 
   private final static double MU = 0.05;
   private final static double LAMBDA = 0.2;
@@ -15,16 +16,19 @@ public class SIRSimulatorTest {
   private final static double SUSCEPTIBLE = 0.9;
   private final static double DEAD = 0;
   private final static double RECOVERED = 0;
+  private final static int NB_AGE_CATEGORIES = 1;
   private final static double INFECTIOUS = 1 - SUSCEPTIBLE;
-  private static SIRSimulator subject;
+  private static SIRDSimulator subject;
 
   @BeforeClass
   public static void setUp() {
-    subject = new SIRSimulator(SUSCEPTIBLE, INFECTIOUS, RECOVERED, DEAD);
-    subject.setMu(MU);
-    subject.setBeta(BETA);
-    subject.setLambda(LAMBDA);
-    subject.setNbIterations(1000);
+
+    subject = new SIRDSimulator(Collections.singletonList(SUSCEPTIBLE),
+      Collections.singletonList(INFECTIOUS),
+      Collections.singletonList(RECOVERED),
+      Collections.singletonList(DEAD), Collections.singletonList(MU),
+      Collections.singletonList(BETA), LAMBDA,
+      NB_AGE_CATEGORIES);
   }
 
   @Test
@@ -48,10 +52,10 @@ public class SIRSimulatorTest {
     subject.step();
 
     // Assert
-    final List<Double> dead = subject.getDead();
-    final List<Double> infectious = subject.getInfectious();
-    final List<Double> recovered = subject.getRecovered();
-    final List<Double> susceptible = subject.getSusceptible();
+    final List<Double> dead = subject.getDead().get(0);
+    final List<Double> infectious = subject.getInfectious().get(0);
+    final List<Double> recovered = subject.getRecovered().get(0);
+    final List<Double> susceptible = subject.getSusceptible().get(0);
     final double deadStep1 = dead.get(step1Index);
     final double deadStep2 = Iterables.getLast(dead);
     final double recoveredStep1 = recovered.get(step1Index);
@@ -81,28 +85,5 @@ public class SIRSimulatorTest {
       delta);
   }
 
-  @Test
-  public void testSetModel_validCall_setCorrectModel() {
-    // Arrange
-    final double param = 2.3;
-    final CauchyProblem expectedModel = CauchyProblem.builder()
-      .addParameter(param,
-        T -> -BETA * T.getYi(0) * T.getYi(1))
-      .addParameter(param, T -> BETA * T.getYi(0) * T.getYi(1)
-        - LAMBDA * T.getYi(1)
-        - MU * T.getYi(1))
-      .addParameter(param,
-        T -> LAMBDA * T.getYi(1))
-      .addParameter(DEAD,
-        T -> MU * T.getYi(1))
-      .build();
 
-    // Act
-    subject.setModel(expectedModel);
-
-    // Assert
-    final CauchyProblem actualModel = subject.getModel();
-    Assert.assertEquals("wrong CauchyProblem", actualModel, expectedModel);
-
-  }
 }

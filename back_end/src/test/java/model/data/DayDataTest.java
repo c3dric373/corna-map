@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DayDataTest {
 
-  private final static TypeLocalisation TYPE = TypeLocalisation.DEPARTEMENT;
   private final static LocalDate DATE = LocalDate.ofEpochDay(4);
   private final static String ID = "DEP-44";
   private final static String NAME = "guadeloupe";
@@ -36,7 +35,7 @@ public class DayDataTest {
 
   @BeforeClass
   public static void setUp() {
-    subject = new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    subject = new DayData(DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -46,11 +45,10 @@ public class DayDataTest {
   public void testEmptyCTOR_validCall_correctDayData() {
     // Arrange
     final int intInitValue = 0;
-    final DayData expectedDayData = new DayData(TYPE, DATE,
+    final DayData expectedDayData = new DayData(DATE,
       ID, NAME, intInitValue, intInitValue, intInitValue,
       intInitValue, intInitValue, intInitValue, intInitValue, intInitValue,
       intInitValue, intInitValue);
-    expectedDayData.setType(null);
     expectedDayData.setDate(null);
     expectedDayData.setId(null);
     expectedDayData.setName(null);
@@ -61,23 +59,7 @@ public class DayDataTest {
     assertEquals("DayData not equal", dayData, expectedDayData);
 
   }
-
-  @Test
-  public void testCTOR_typeNull_throwsIllegalArgumentException() {
-
-    // Arrange
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("typeNew null");
-
-    // Act
-    new DayData(null, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
-      EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
-      TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
-      TOTAL_TEST);
-
-    // Assert via Annotation
-  }
-
+  
   @Test
   public void testCTOR_dateNull_throwsIllegalArgumentException() {
 
@@ -86,7 +68,7 @@ public class DayDataTest {
     thrown.expectMessage("dateNew null");
 
     // Act
-    new DayData(TYPE, null, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( null, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -102,7 +84,7 @@ public class DayDataTest {
     thrown.expectMessage("idNew null");
 
     // Act
-    new DayData(TYPE, DATE, null, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, null, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -118,7 +100,7 @@ public class DayDataTest {
     thrown.expectMessage("idNew empty");
 
     // Act
-    new DayData(TYPE, DATE, EMPTY_STRING, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, EMPTY_STRING, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -134,7 +116,7 @@ public class DayDataTest {
     thrown.expectMessage("nomNew empty");
 
     // Act
-    new DayData(TYPE, DATE, ID, EMPTY_STRING, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, EMPTY_STRING, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -149,7 +131,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, NEGATIVE_NUMBER, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, NEGATIVE_NUMBER, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -164,7 +146,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, NEGATIVE_NUMBER,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, NEGATIVE_NUMBER,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -180,7 +162,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       NEGATIVE_NUMBER, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -196,7 +178,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, NEGATIVE_NUMBER, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -211,7 +193,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, NEGATIVE_NUMBER,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -227,7 +209,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       NEGATIVE_NUMBER, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -242,7 +224,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, NEGATIVE_NUMBER, HOSPITALIZED, RECOVERD_CASES,
       TOTAL_TEST);
@@ -258,7 +240,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, NEGATIVE_NUMBER, RECOVERD_CASES,
       TOTAL_TEST);
@@ -273,7 +255,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, NEGATIVE_NUMBER,
       TOTAL_TEST);
@@ -288,7 +270,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
+    new DayData( DATE, ID, NAME, TOTAL_CASE, EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
       NEGATIVE_NUMBER);
@@ -303,7 +285,7 @@ public class DayDataTest {
     thrown.expect(IllegalArgumentException.class);
 
     // Act
-    final DayData result = new DayData(TYPE, DATE, ID, NAME, TOTAL_CASE,
+    final DayData result = new DayData( DATE, ID, NAME, TOTAL_CASE,
       EPHAD_CASES,
       EPHAD_CONFIRMED_CASES, EPHAD_POSSIBLE_CASES, TOTAL_DEATHS,
       TOTAL_EPHAD_DEATHS, CRITICAL_CASES, HOSPITALIZED, RECOVERD_CASES,
@@ -311,18 +293,6 @@ public class DayDataTest {
 
     // Assert via Annotation
     Assert.assertEquals(subject, result);
-  }
-
-  @Test
-  public void testGetType_validCall_correctRes() {
-
-    // Arrange
-
-    // Act
-    final TypeLocalisation result = subject.getType();
-
-    // Assert
-    assertEquals("Incorrect Type!", result, TYPE);
   }
 
   @Test

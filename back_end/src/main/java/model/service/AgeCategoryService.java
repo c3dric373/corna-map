@@ -12,8 +12,8 @@ import java.util.Map;
 public class AgeCategoryService {
 
   // Stats about french pop
-  // https://www.statista.com/statistics/464032/distribution-population-age
-  // -group-france/
+  // https://www.statista.com/statistics/464032/
+  // distribution-population-age-group-france/
 
   /**
    * Percentage of people in the 0-14 age class in France.
@@ -41,32 +41,26 @@ public class AgeCategoryService {
   public static final double FR_POP_75_INF = 0.093;
 
   /**
-   * Death Rate 0_15.
+   * Death Rate 0_15. All the Following death rate are taken from:
+   * https://www.santepubliquefrance.fr/content/download/249184/2589560
    */
-  public static final double MU_0_15 = 0.087;
+  public static final double MU_0_15 = 0.00001 / 15;
   /**
    * Death Rate 15_44.
    */
-  public static final double MU_15_44 = 0.0394;
+  public static final double MU_15_44 = 0.0005 / 15;
   /**
    * Death Rate 44_64.
    */
-  public static final double MU_44_64 = 0.0738;
+  public static final double MU_44_64 = 0.002 / 15;
   /**
    * Death Rate 64_75.
    */
-  public static final double MU_64_75 = 0.1308;
+  public static final double MU_64_75 = 0.005 / 15;
   /**
    * Death Rate 75_INF.
    */
-  public static final double MU_75_INF = 0.2591;
-
-  /**
-   * List of MU.
-   */
-  @Getter
-  public final List<Double> mu = new ArrayList<>();
-
+  public static final double MU_75_INF = 0.083 / 15;
   /**
    * Heavy Infection Rate 0_15.
    */
@@ -87,13 +81,6 @@ public class AgeCategoryService {
    * Heavy Infection Rate 75_INF.
    */
   public static final double THETA_75_INF = 0.1296;
-
-  /**
-   * List of THETA_I.
-   */
-  @Getter
-  public final List<Double> theta = new ArrayList<>();
-
   /**
    * Heavy Infection Rate 0_15.
    */
@@ -114,7 +101,16 @@ public class AgeCategoryService {
    * Heavy Infection Rate 75_INF.
    */
   public static final double C_75_INF = 0.1;
-
+  /**
+   * List of MU.
+   */
+  @Getter
+  public final List<Double> mu = new ArrayList<>();
+  /**
+   * List of THETA_I.
+   */
+  @Getter
+  public final List<Double> theta = new ArrayList<>();
   /**
    * List of C_I.
    */

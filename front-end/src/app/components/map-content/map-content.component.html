@@ -7,8 +7,11 @@
       <div class="btn-group" ngbDropdown role="group">
         <!-- Select category -->
         <button class="btn btn-outline-secondary" ngbDropdownToggle>{{selectedCategory}}</button>
-        <div class="dropdown-menu" ngbDropdownMenu>
+        <div class="dropdown-menu" ngbDropdownMenu *ngIf="SelectedMenu === 'map'">
           <button ngbDropdownItem *ngFor="let category of tabCategory" (click)="onChangeCategory(category)">{{category}}</button>
+        </div>
+        <div class="dropdown-menu" ngbDropdownMenu *ngIf="SelectedMenu !== 'map'">
+            <button ngbDropdownItem *ngFor="let category of simulCategory" (click)="onChangeCategory(category)">{{category}}</button>
         </div>
       </div>
       <!-- Select Date -->

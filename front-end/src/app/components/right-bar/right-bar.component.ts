@@ -47,14 +47,12 @@ export class RightBarComponent implements OnInit, OnChanges{
   public totCritiques;
   // Extand status
   public onlyGraph: boolean;
-
+  // Chosen location
   public chosenLocation;
-
-  public differences = [];
-
   public showLocation = false;
+  // show 'Revenir à la France'
   public showLink = false;
-
+  // Date table
   private dates = [];
 
   public options: any = {
@@ -172,13 +170,13 @@ export class RightBarComponent implements OnInit, OnChanges{
     this.showLink = false;
     this.chosenLocation = 'France';
     this.locationName = 'France';
-    // this.isSimulationStarted = false;
   }
 
   ngOnChanges(changes: SimpleChanges ){
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
+          // When isPaused changes
           case 'isPaused':
           // When actualdate changes
           case 'actualdate': {
@@ -216,7 +214,6 @@ export class RightBarComponent implements OnInit, OnChanges{
     }
     if (this.isSimulationStarted && this.locationName === 'France'){
       this.getHFrance();
-      // this.showLocation = true;
     }
   }
 
@@ -246,9 +243,9 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.reglist = data;
           this.chosenLocation = data.name;
           this.totGueris = data.recoveredCases;
-          this.totHospi = data.hospitalized;
+          this.totHospi = '-'; // data.hospitalized;
           this.totDeces = data.totalDeaths;
-          this.totCritiques = data.criticalCases;
+          this.totCritiques = '-'; // data.criticalCases;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
               parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
@@ -289,9 +286,9 @@ export class RightBarComponent implements OnInit, OnChanges{
           this.deptList = data;
           this.chosenLocation = data.name;
           this.totGueris = data.recoveredCases;
-          this.totHospi = data.hospitalized;
+          this.totHospi = '-'; // data.hospitalized;
           this.totDeces = data.totalDeaths;
-          this.totCritiques = data.criticalCases;
+          this.totCritiques = '-'; // data.criticalCases;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
               parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
@@ -308,20 +305,16 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.SelectedMenu === 'map'){
       this.historiqueService.getHistoriqueFrance().subscribe(
         data => {
-          // this.histFr = data;
           this.setAllDataFromFrance(data);
         }
       );
     }else{
       this.simulationService.getInfosFrance(this.actualdate).subscribe(
         data => {
-          // this.histFr = data;
-          console.log('fra data :');
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
-          this.totHospi = data.hospitalized;
-          this.totCritiques = data.criticalCases;
+          this.totHospi = '-'; // data.hospitalized;
+          this.totCritiques = '-'; // data.criticalCases;
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
@@ -330,7 +323,6 @@ export class RightBarComponent implements OnInit, OnChanges{
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
@@ -345,21 +337,16 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.SelectedMenu === 'map'){
       this.historiqueService.getHistoriqueRegion(this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          // console.log(data);
           this.setAllDataFromFrance(data);
         }
       );
     }else{
       this.simulationService.getInfosRegion( this.actualdate , this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          console.log('fra data :');
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
-          this.totHospi = data.hospitalized;
-          this.totCritiques = data.criticalCases;
+          this.totHospi = '-'; // data.hospitalized;
+          this.totCritiques = '-'; // data.criticalCases;
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
@@ -368,7 +355,6 @@ export class RightBarComponent implements OnInit, OnChanges{
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
@@ -382,30 +368,24 @@ export class RightBarComponent implements OnInit, OnChanges{
     if (this.SelectedMenu === 'map'){
       this.historiqueService.getHistoriqueDept(this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          // console.log(data);
           this.setAllDataFromFrance(data);
         }
       );
     }else{
       this.simulationService.getInfosDept( this.actualdate , this.locationName).subscribe(
         data => {
-          // this.histFr = data;
-          console.log('fra data :');
-          console.log(data);
           this.totGueris = data.recoveredCases;
           this.totDeces = data.totalDeaths;
-          this.totHospi = data.hospitalized;
-          this.totCritiques = data.criticalCases;
+          this.totHospi = '-'; // data.hospitalized;
+          this.totCritiques = '-'; // data.criticalCases;
           this.showLocation = true;
           if (data.totalCases === 0){
             this.totCasConf = (parseInt(this.totGueris.toString(), 10) +
-              parseInt(this.totHospi.toString(), 10) /* + parseInt(this.totGueris.toString(), 10) */
+              parseInt(this.totHospi.toString(), 10)
               + parseInt(data.criticalCases.toString(), 10)).toString();
           }else{
             this.totCasConf = data.totalCases;
           }
-          // this.setAllDataFromFrance(data);
           this.setGraphSimulation(data);
           Highcharts.chart('charts', this.options);
           Highcharts.chart('charts2', this.options2);
@@ -489,16 +469,16 @@ export class RightBarComponent implements OnInit, OnChanges{
       this.dates.push(currentDate.toDateString());
     }
     this.casConf2.push(data.totalCases);
-    this.hospi2.push(data.hospitalized);
+    // this.hospi2.push(data.hospitalized);
     this.deces2.push(data.totalDeaths);
     this.gueris2.push(data.recoveredCases);
-    this.critiques2.push(data.criticalCases);
+    // this.critiques2.push(data.criticalCases);
     if (this.casConf2.length > 1){
       this.casConf.push(this.casConf2[this.casConf2.length - 1 ] - this.casConf2[this.casConf2.length - 2 ]);
-      this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);
+      // this.hospi.push(this.hospi2[this.hospi2.length - 1 ] - this.hospi2[this.hospi2.length - 2 ]);
       this.deces.push(this.deces2[this.deces2.length - 1 ] - this.deces2[this.deces2.length - 2 ]);
       this.gueris.push(this.gueris2[this.gueris2.length - 1 ] - this.gueris2[this.gueris2.length - 2 ]);
-      this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
+      // this.critiques.push(this.critiques2[this.critiques2.length - 1 ] - this.critiques2[this.critiques2.length - 2 ]);
     }
   }
 

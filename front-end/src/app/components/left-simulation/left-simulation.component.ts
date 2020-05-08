@@ -70,9 +70,7 @@ export class LeftSimulationComponent implements OnInit {
   }
 
   startSimul(): boolean {
-    console.log('sendParams');
     const isCompute = this.simulationService.startSimul(this.allParams);
-    console.log(this.allParams);
     return isCompute;
   }
 

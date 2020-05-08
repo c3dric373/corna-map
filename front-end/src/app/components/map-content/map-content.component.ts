@@ -21,8 +21,23 @@ export class MapContentComponent implements OnInit, OnChanges {
   isRegion: boolean;
   onlyMap: boolean;
   // Color for gradient
-  private rgbYellow = [244, 165, 130];
-  private rgbRed = [178, 24, 43];
+  private darkColor = [];
+  private lightColor = [];
+  // Cas critiques
+  private rgblightRed = [244, 165, 130];
+  private rgbRed = [165, 0, 38];
+  // Hospitalisés
+  private rgbOrange = [253, 129, 0];
+  private rgbLightOrange = [253, 164, 71];
+  // Guéris
+  private rgbGreen = [53, 111, 13];
+  private rgblightGreen = [121, 205, 61];
+  // Cas Confirmés
+  private rgbYellow = [226, 169, 0];
+  private rgbLightYellow = [255, 206, 71];
+  // Décès
+  private rgbGrey = [127, 117, 117];
+  private rgbBlack = [0, 0, 0];
   // list of function used in initializeMapReg and initializeMapDept
   private mousOverReg;
   private mousLeaveReg;
@@ -35,6 +50,7 @@ export class MapContentComponent implements OnInit, OnChanges {
   // Selected category : ex : nbDeath, ...
   public selectedCategory: string;
   public tabCategory = [ 'Cas confirmés', 'Hospitalisés', 'Guéris', 'Cas critiques', 'Décès'];
+  public simulCategory = [ 'Cas confirmés', 'Guéris', 'Décès'];
   // date elements
   public date: NgbDate;
   model: NgbDateStruct;
@@ -290,6 +306,7 @@ export class MapContentComponent implements OnInit, OnChanges {
 
   // Assign a gradient of color depending on the number provided in param
   assignColor(nb, list): string{
+    this.updateColor();
     const min = this.minNumber(list);
     const max = this.maxNumber(list);
     let coeff = (nb - min) / (max - min);
@@ -298,12 +315,37 @@ export class MapContentComponent implements OnInit, OnChanges {
     if ( min === max) {
       coeff = 0;
     }
-    for (let i = 0; i < this.rgbRed.length; i++) {
-      const value = this.rgbYellow[i] * (1 - coeff) + this.rgbRed[i] * coeff;
+    for (let i = 0; i < this.darkColor.length; i++) {
+      const value = this.lightColor[i] * (1 - coeff) + this.darkColor[i] * coeff;
       colorTab.push(value);
     }
     color = 'rgb(' + colorTab[0] + ', ' + colorTab[1] + ', ' + colorTab[2] + ')';
     return color;
+  }
+
+  updateColor() {
+    switch (this.selectedCategory){
+      case 'Hospitalisés' :
+        this.lightColor = this.rgbLightOrange;
+        this.darkColor = this.rgbOrange;
+        break;
+      case 'Cas critiques' :
+        this.lightColor = this.rgblightRed;
+        this.darkColor = this.rgbRed;
+        break;
+      case 'Décès' :
+        this.lightColor = this.rgbGrey;
+        this.darkColor = this.rgbBlack;
+        break;
+      case 'Guéris' :
+        this.lightColor = this.rgblightGreen;
+        this.darkColor = this.rgbGreen;
+        break;
+      case 'Cas confirmés' :
+        this.lightColor = this.rgbLightYellow;
+        this.darkColor = this.rgbYellow;
+        break;
+    }
   }
 
   // get the min number of the list
