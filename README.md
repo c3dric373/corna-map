@@ -11,10 +11,10 @@ Specification about the code can be found [here](../docs/):
 - Back End specification are [here](../docs/back_end.md)
 
 ## TEAM H4222
-David Hamidovic 
-Grazia Ribbeni 
-Ousmane Touat 
-Corentin Laharotte 
-Félix Castillon 
-Roxane Debord
-Cédric Milinaire
+- David Hamidovic 
+- Grazia Ribbeni 
+- Ousmane Touat 
+- Corentin Laharotte 
+- Félix Castillon 
+- Roxane Debord
+- Cédric Milinaire
