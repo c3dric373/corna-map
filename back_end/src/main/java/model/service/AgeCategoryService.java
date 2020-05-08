@@ -12,7 +12,8 @@ import java.util.Map;
 public class AgeCategoryService {
 
   // Stats about french pop
-  // https://www.statista.com/statistics/464032/distribution-population-age-group-france/
+  // https://www.statista.com/statistics/464032/
+  // distribution-population-age-group-france/
 
   /**
    * Percentage of people in the 0-14 age class in France.

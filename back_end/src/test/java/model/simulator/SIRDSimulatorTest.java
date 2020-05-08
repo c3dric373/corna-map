@@ -26,11 +26,9 @@ public class SIRDSimulatorTest {
     subject = new SIRDSimulator(Collections.singletonList(SUSCEPTIBLE),
       Collections.singletonList(INFECTIOUS),
       Collections.singletonList(RECOVERED),
-      Collections.singletonList(DEAD), NB_AGE_CATEGORIES);
-    subject.setMu(Collections.singletonList(MU));
-    subject.setBeta(Collections.singletonList(BETA));
-    subject.setGamma(LAMBDA);
-    subject.setNbIterations(1000);
+      Collections.singletonList(DEAD), Collections.singletonList(MU),
+      Collections.singletonList(BETA), LAMBDA,
+      NB_AGE_CATEGORIES);
   }
 
   @Test
@@ -86,30 +84,6 @@ public class SIRDSimulatorTest {
       infectiousStep2,
       delta);
   }
-
-  @Test
-  public void testSetModel_validCall_setCorrectModel() {
-    // Arrange
-    final double param = 2.3;
-    final CauchyProblem expectedModel = CauchyProblem.builder()
-      .addParameter(param,
-        T -> -BETA * T.getYi(0) * T.getYi(1))
-      .addParameter(param, T -> BETA * T.getYi(0) * T.getYi(1)
-        - LAMBDA * T.getYi(1)
-        - MU * T.getYi(1))
-      .addParameter(param,
-        T -> LAMBDA * T.getYi(1))
-      .addParameter(DEAD,
-        T -> MU * T.getYi(1))
-      .build();
-
-    // Act
-    subject.setModel(expectedModel);
-
-    // Assert
-    final CauchyProblem actualModel = subject.getModel();
-    Assert.assertEquals("wrong CauchyProblem", actualModel, expectedModel);
-
-  }
+  
 
 }

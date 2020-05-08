@@ -14,7 +14,6 @@ import java.util.List;
  * Implementation of a SIRD simulator.
  */
 @Getter
-@Setter
 public class SIRDSimulator implements Simulator {
 
   /**
@@ -42,7 +41,7 @@ public class SIRDSimulator implements Simulator {
   /**
    * R0 / POP_FRA.
    */
-  private double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
+  private final double r0Pop = 3.3 / DayDataService.POPULATION_FRA;
   /**
    * Beta parameter in SIR for each age category (=transmission).
    * Source: https://web.stanford.edu/~jhj1/teachingdocs/Jones-on-R0.pdf
@@ -77,11 +76,11 @@ public class SIRDSimulator implements Simulator {
   /**
    * Differential Equation solver used to simulate our model.
    */
-  private DifferentialSolver solver = new RK4Solver();
+  private final DifferentialSolver solver = new RK4Solver();
   /**
    * Granularity of our solver differential equation solver.
    */
-  private int nbIterations = 100;
+  private final int nbIterations = 100;
 
   /**
    * Constructor.
@@ -101,15 +100,34 @@ public class SIRDSimulator implements Simulator {
   /**
    * Constructor.
    *
-   * @param iSusceptible List of susceptible people per age category.
-   * @param iInfectious  List of susceptible infectious per age category.
-   * @param iRecovered   List of susceptible recovered per age category.
-   * @param iDead        List of susceptible dead per age category.
+   * @param iSusceptible     List of susceptible people per age category.
+   * @param iInfectious      List of susceptible infectious per age category.
+   * @param iRecovered       List of susceptible recovered per age category.
+   * @param iDead            List of susceptible dead per age category.
+   * @param muNew            List of deadRates per age category.
+   * @param betaNew          List of transmission rate dead per age category.
+   * @param gammaNew         Recovery rate.
+   * @param nbAgeCategoryNew number of age Categories.
    */
   public SIRDSimulator(final List<Double> iSusceptible,
                        final List<Double> iInfectious,
                        final List<Double> iRecovered,
-                       final List<Double> iDead, final int nbAgeCategoryNew) {
+                       final List<Double> iDead, final List<Double> muNew,
+                       final List<Double> betaNew, final double gammaNew,
+                       final int nbAgeCategoryNew) {
+    Validate.notNull(iSusceptible, "iSusceptible null");
+    Validate.notNull(iInfectious, "iInfectious null");
+    Validate.notNull(iRecovered, "iRecovered null");
+    Validate.notNull(iDead, "iDead null");
+    Validate.notNull(muNew, "muNew null");
+    Validate.notNull(betaNew, "betaNew null");
+    Validate.isTrue(muNew.size() == nbAgeCategoryNew,
+      "more or less mus than age categories");
+    Validate.isTrue(betaNew.size() == nbAgeCategoryNew,
+      "more or less beta than age categories");
+    gamma = gammaNew;
+    beta = betaNew;
+    mu = muNew;
     nbAgeCategory = nbAgeCategoryNew;
     setUp(iSusceptible, iInfectious, iRecovered, iDead);
   }
