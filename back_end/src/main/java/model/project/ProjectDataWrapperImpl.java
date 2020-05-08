@@ -88,6 +88,11 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
    */
   private static final String DEP = "DEP";
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IOException
+   */
   @Override
   public void getCurrentAllDataFrance() throws IOException {
     final DataScrapperImpl dataScrapper = new DataScrapperImpl();
@@ -95,6 +100,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     dataScrapper.extract(this);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void startSimulation(final String content, final boolean sir) {
     Validate.notNull(content, "content null");
@@ -110,6 +118,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addLocation(final String location, final String date,
                           final DayData dayData) {
@@ -122,11 +133,17 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     idToName.put(dayData.getId(), dayData.getName());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public DayData infosFrance(final String date) {
     return getDayData(date, FRA);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<DayData> historyLocation(final String name) {
     Validate.notNull(name, "name null");
@@ -137,6 +154,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return new ArrayList<>(tmp.values());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public DayData infosLocation(final String name, final String date) {
     Validate.notNull(date, "date null");
@@ -144,6 +164,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return getDayData(date, name);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<DayData> infosRegion(final String date) {
     Validate.notNull(date, "date null");
@@ -151,6 +174,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return getDayDataList(date, REG);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<DayData> infosDept(final String date) {
     Validate.notNull(date, "date null");
@@ -158,6 +184,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     return getDayDataList(date, DEP);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addKey(final String key) {
     Validate.notNull(key, "key null");
@@ -167,6 +196,9 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     locations.computeIfAbsent(key, k -> new HashMap<>());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public DayData simulateFrance(final String date) {
     Validate.notNull(date, "date null");
@@ -316,7 +348,7 @@ public class ProjectDataWrapperImpl implements ProjectDataWrapper {
     final double susceptibleNew = sirSimulator.getSusceptible().stream()
       .mapToDouble(Iterables::getLast).sum();
 
-    return DayDataService.setSIRDayData(deadNew,recoveredNew,susceptibleNew);
+    return DayDataService.setSIRDayData(deadNew, recoveredNew, susceptibleNew);
   }
 
   /**

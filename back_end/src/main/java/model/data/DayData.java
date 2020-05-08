@@ -71,10 +71,6 @@ public class DayData {
    * wip.
    */
   private LocalDate date;
-  /**
-   * wip.
-   */
-  private TypeLocalisation type;
 
   /**
    * Empty Constructor.
@@ -86,8 +82,6 @@ public class DayData {
    * Constructor. All the number arguments are the numbers of people in a
    * given category related to the covid-19.
    *
-   * @param typeNew                Type of the data it represents, i.e region
-   *                               county or country.
    * @param dateNew                Date of data.
    * @param idNew                  Id of the type of data.
    * @param nomNew                 Name.
@@ -102,7 +96,7 @@ public class DayData {
    * @param recoveredCasesNew      Number of recovered cases.
    * @param totalTestsNew          Number of tests done in this location.
    */
-  public DayData(final TypeLocalisation typeNew, final LocalDate dateNew,
+  public DayData(final LocalDate dateNew,
                  final String idNew,
                  final String nomNew, final int totalCasesNew,
                  final int ephadCasesNew,
@@ -114,7 +108,6 @@ public class DayData {
                  final int hospitalizedNew,
                  final int recoveredCasesNew,
                  final int totalTestsNew) {
-    Validate.notNull(typeNew, "typeNew null");
     Validate.notNull(dateNew, "dateNew null");
     Validate.notNull(idNew, "idNew null");
     Validate.notEmpty(idNew, "idNew empty");
@@ -153,7 +146,6 @@ public class DayData {
     this.recoveredCases = recoveredCasesNew;
     this.totalTests = totalTestsNew;
     this.date = dateNew;
-    this.type = typeNew;
   }
 
 }

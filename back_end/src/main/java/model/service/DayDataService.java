@@ -62,25 +62,6 @@ public class DayDataService {
   }
 
   /**
-   * Calculates the newly infected people from one dayData to another.
-   *
-   * @param dayData       the first dayData.
-   * @param dayBeforeData the second dayData.
-   * @return the number of people recovered in a day.
-   */
-  private static int getRecoveredInADay(final DayData dayData,
-                                        final DayData dayBeforeData) {
-    Validate.notNull(dayBeforeData, "dayBeforeData is null");
-    Validate.notNull(dayData, "dayData is null");
-
-    final int dayBeforeRecovered = dayBeforeData.getRecoveredCases();
-    final int recovered = dayData.getRecoveredCases();
-    System.out.println(recovered);
-    System.out.println(dayBeforeRecovered);
-    return recovered - dayBeforeRecovered;
-  }
-
-  /**
    * Computes the current deathRate of the coronavirus
    * given on stats of specific day.
    *
